@@ -1,0 +1,92 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run type checking
+        run: npm run astro check
+
+      - name: Build Astro site
+        run: npm run build
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            # Create target directory if it doesn't exist
+            sudo mkdir -p ${{ secrets.VPS_TARGET_DIR }}
+            sudo chown -R ${{ secrets.VPS_USERNAME }}:${{ secrets.VPS_USERNAME }} ${{ secrets.VPS_TARGET_DIR }}
+
+            # Create temp directory for new build
+            mkdir -p ~/temp_deploy
+
+      - name: Transfer files to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
+          port: ${{ secrets.VPS_PORT }}
+          source: "dist/*"
+          target: "~/temp_deploy/"
+          strip_components: 1
+          overwrite: true
+
+      - name: Atomic deployment and cleanup
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            # Backup current deployment (if exists)
+            if [ -d "${{ secrets.VPS_TARGET_DIR }}" ] && [ "$(ls -A ${{ secrets.VPS_TARGET_DIR }})" ]; then
+              sudo cp -r ${{ secrets.VPS_TARGET_DIR }} ${{ secrets.VPS_TARGET_DIR }}.backup.$(date +%Y%m%d_%H%M%S)
+              # Keep only last 3 backups
+              ls -dt ${{ secrets.VPS_TARGET_DIR }}.backup.* | tail -n +4 | xargs sudo rm -rf
+            fi
+
+            # Deploy new build
+            sudo rsync -avz --delete ~/temp_deploy/ ${{ secrets.VPS_TARGET_DIR }}/
+
+            # Set proper permissions
+            sudo chown -R www-data:www-data ${{ secrets.VPS_TARGET_DIR }}
+            sudo find ${{ secrets.VPS_TARGET_DIR }} -type d -exec chmod 755 {} \;
+            sudo find ${{ secrets.VPS_TARGET_DIR }} -type f -exec chmod 644 {} \;
+
+            # Test and reload Nginx
+            sudo nginx -t && sudo systemctl reload nginx
+
+            # Cleanup temp directory
+            rm -rf ~/temp_deploy
+
+            echo "✅ Deployment completed successfully!"
+            echo "📦 Deployed to: ${{ secrets.VPS_TARGET_DIR }}"
+            echo "🕐 Time: $(date)"
