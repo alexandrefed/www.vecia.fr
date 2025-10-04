@@ -1,4 +1,7 @@
-name: Deploy to VPS
+# GitHub Actions Workflow for Astro Deployment to Vecia VPS
+# Save this file as .github/workflows/deploy.yml in your Astro repository
+
+name: Deploy Astro to Vecia VPS
 
 on:
   push:
@@ -27,22 +30,29 @@ jobs:
 
       - name: Build Astro site
         run: npm run build
+        env:
+          # Add any build-time environment variables here
+          PUBLIC_SITE_URL: https://vecia.fr
+          PUBLIC_CAL_EMBED_URL: https://cal.vecia.fr
 
-      - name: Deploy to VPS
+      - name: Deploy to VPS via SSH
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
           port: ${{ secrets.VPS_PORT }}
           script: |
+            # Backup current deployment
+            if [ -d "${{ secrets.VPS_TARGET_DIR }}" ] && [ "$(ls -A ${{ secrets.VPS_TARGET_DIR }})" ]; then
+              sudo cp -r ${{ secrets.VPS_TARGET_DIR }} ${{ secrets.VPS_TARGET_DIR }}.backup.$(date +%Y%m%d_%H%M%S)
+              echo "✅ Backup created"
+            fi
+
             # Create target directory if it doesn't exist
             sudo mkdir -p ${{ secrets.VPS_TARGET_DIR }}
-            sudo chown -R ${{ secrets.VPS_USERNAME }}:${{ secrets.VPS_USERNAME }} ${{ secrets.VPS_TARGET_DIR }}
-
-            # Create temp directory for new build
-            mkdir -p ~/temp_deploy
+            sudo chown -R ${{ secrets.VPS_USERNAME }}:www-data ${{ secrets.VPS_TARGET_DIR }}
+            echo "✅ Directory prepared"
 
       - name: Transfer files to VPS
         uses: appleboy/scp-action@v0.1.7
@@ -50,43 +60,31 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
           port: ${{ secrets.VPS_PORT }}
           source: "dist/*"
-          target: "~/temp_deploy/"
+          target: ${{ secrets.VPS_TARGET_DIR }}
           strip_components: 1
           overwrite: true
 
-      - name: Atomic deployment and cleanup
+      - name: Set permissions and reload nginx
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            # Backup current deployment (if exists)
-            if [ -d "${{ secrets.VPS_TARGET_DIR }}" ] && [ "$(ls -A ${{ secrets.VPS_TARGET_DIR }})" ]; then
-              sudo cp -r ${{ secrets.VPS_TARGET_DIR }} ${{ secrets.VPS_TARGET_DIR }}.backup.$(date +%Y%m%d_%H%M%S)
-              # Keep only last 3 backups
-              ls -dt ${{ secrets.VPS_TARGET_DIR }}.backup.* | tail -n +4 | xargs sudo rm -rf
-            fi
-
-            # Deploy new build
-            sudo rsync -avz --delete ~/temp_deploy/ ${{ secrets.VPS_TARGET_DIR }}/
-
             # Set proper permissions
             sudo chown -R www-data:www-data ${{ secrets.VPS_TARGET_DIR }}
             sudo find ${{ secrets.VPS_TARGET_DIR }} -type d -exec chmod 755 {} \;
             sudo find ${{ secrets.VPS_TARGET_DIR }} -type f -exec chmod 644 {} \;
 
-            # Test and reload Nginx
+            # Test and reload nginx
             sudo nginx -t && sudo systemctl reload nginx
 
-            # Cleanup temp directory
-            rm -rf ~/temp_deploy
-
-            echo "✅ Deployment completed successfully!"
-            echo "📦 Deployed to: ${{ secrets.VPS_TARGET_DIR }}"
-            echo "🕐 Time: $(date)"
+            # Display deployment info
+            echo "✅ Deployment successful!"
+            echo "📁 Files deployed to: ${{ secrets.VPS_TARGET_DIR }}"
+            echo "🌐 Website available at: https://vecia.fr"
+            echo "📅 Deployed at: $(date)"
+            echo "📊 File count: $(find ${{ secrets.VPS_TARGET_DIR }} -type f | wc -l) files"
