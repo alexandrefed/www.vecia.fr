@@ -1,0 +1,68 @@
+---
+import Navigation from '../components/Navigation.astro';
+import Hero from '../components/Hero.astro';
+import { ui } from '../i18n/ui';
+import '../styles/global.css';
+
+const t = ui.fr;
+---
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero Test - Vecia</title>
+  <link rel="icon" type="image/png" href="/vecia_favicon.png">
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js" defer></script>
+</head>
+<body class="font-body text-text bg-background">
+  <Navigation lang="fr" />
+
+  <Hero
+    headlinePart1={t['hero.headline.part1']}
+    headlinePart2={t['hero.headline.part2']}
+    headlinePart3={t['hero.headline.part3']}
+    subheadline={t['hero.subheadline']}
+    cta1Text={t['hero.cta.audit']}
+    cta2Text={t['hero.cta.cases']}
+  />
+
+  <!-- Test Content Below -->
+  <div class="min-h-screen bg-gray-50 py-20">
+    <div class="max-w-4xl mx-auto px-8">
+      <h2 class="text-4xl font-heading font-bold mb-6">Hero Component Test</h2>
+
+      <div class="space-y-4 text-lg">
+        <p>✅ Particle animation background (optimized 2025)</p>
+        <p>✅ Gradient text on middle headline</p>
+        <p>✅ Two CTA buttons with hover effects</p>
+        <p>✅ Responsive typography (5xl → 8xl)</p>
+        <p>✅ Full-screen hero section</p>
+      </div>
+
+      <div class="mt-12 p-6 bg-white rounded-lg shadow-sm">
+        <h3 class="text-2xl font-heading font-bold mb-4">Performance Optimizations:</h3>
+        <ul class="list-disc list-inside space-y-2">
+          <li>Using requestAnimationFrame for smooth 60fps</li>
+          <li>Particle count based on viewport size</li>
+          <li>Limited connection distance checks (150px)</li>
+          <li>Efficient canvas clearing</li>
+          <li>Cleanup on page unload</li>
+        </ul>
+      </div>
+
+      <div class="mt-8 p-6 bg-accent3 rounded-lg">
+        <h3 class="text-2xl font-heading font-bold mb-4">Test Instructions:</h3>
+        <ol class="list-decimal list-inside space-y-2">
+          <li>Check particle animation smoothness</li>
+          <li>Resize window to test responsive text</li>
+          <li>Test CTA button hover effects</li>
+          <li>Verify gradient text on "Économisez Plus de 20h par Semaine"</li>
+          <li>Check mobile layout (resize to < 640px)</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

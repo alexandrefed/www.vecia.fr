@@ -1,0 +1,165 @@
+---
+interface Props {
+  headlinePart1: string;
+  headlinePart2: string;
+  headlinePart3: string;
+  subheadline: string;
+  cta1Text: string;
+  cta2Text: string;
+}
+
+const { headlinePart1, headlinePart2, headlinePart3, subheadline, cta1Text, cta2Text } = Astro.props;
+---
+
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-[70px]">
+  <!-- Particle Animation Canvas -->
+  <canvas id="particle-canvas" class="absolute inset-0 w-full h-full"></canvas>
+
+  <!-- Content -->
+  <div class="relative z-10 max-w-6xl mx-auto px-8 py-20 text-center">
+    <!-- Headline -->
+    <h1 class="text-5xl md:text-7xl lg:text-8xl font-heading font-bold leading-tight mb-16">
+      {headlinePart1}
+      <br />
+      <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+        {headlinePart2}
+      </span>
+      <br />
+      {headlinePart3}
+    </h1>
+
+    <!-- Subheadline -->
+    <p class="text-lg md:text-xl lg:text-2xl text-gray-700 max-w-4xl mx-auto mb-12 leading-relaxed">
+      {subheadline}
+    </p>
+
+    <!-- CTA Buttons -->
+    <div class="flex flex-row gap-6 justify-center items-center">
+      <a
+        href="#audit"
+        class="px-10 py-4 text-lg font-semibold rounded-lg text-white bg-secondary hover:bg-secondary/90 hover:scale-105 hover:shadow-xl transition-all capitalize"
+      >
+        {cta1Text.toLowerCase()}
+      </a>
+      <a
+        href="#cases"
+        class="px-10 py-4 text-lg font-semibold rounded-lg text-white bg-accent1 hover:bg-accent1/90 hover:scale-105 hover:shadow-xl transition-all capitalize"
+      >
+        {cta2Text.toLowerCase()}
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Particle Animation with 2025 Performance Optimizations
+  const canvas = document.getElementById('particle-canvas') as HTMLCanvasElement;
+  const ctx = canvas.getContext('2d')!;
+
+  let particles: Particle[] = [];
+  let animationId: number;
+
+  // Gradient color palette
+  const colors = [
+    'rgba(91, 139, 255, 0.6)',   // primary
+    'rgba(155, 89, 246, 0.6)',   // secondary
+    'rgba(59, 180, 255, 0.6)',   // accent1
+    'rgba(123, 111, 222, 0.6)',  // accent2
+  ];
+
+  class Particle {
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    radius: number;
+    color: string;
+
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5;
+      this.radius = Math.random() * 6 + 4; // 4x bigger (was 1-3, now 4-10)
+      this.color = colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+
+      // Wrap around edges
+      if (this.x < 0) this.x = canvas.width;
+      if (this.x > canvas.width) this.x = 0;
+      if (this.y < 0) this.y = canvas.height;
+      if (this.y > canvas.height) this.y = 0;
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    }
+  }
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function initParticles() {
+    particles = [];
+    const particleCount = Math.min(100, Math.floor((canvas.width * canvas.height) / 10000));
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+  }
+
+  function animate() {
+    // Clear canvas (optimized - only clear what's needed)
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Update and draw particles
+    particles.forEach(particle => {
+      particle.update();
+      particle.draw();
+    });
+
+    // Draw connections (optimized - limit distance checks)
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 150) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(91, 139, 255, ${0.2 * (1 - distance / 150)})`;
+          ctx.lineWidth = 1;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    animationId = requestAnimationFrame(animate);
+  }
+
+  // Initialize
+  resizeCanvas();
+  initParticles();
+  animate();
+
+  // Handle resize
+  window.addEventListener('resize', () => {
+    resizeCanvas();
+    initParticles();
+  });
+
+  // Cleanup on page unload
+  window.addEventListener('beforeunload', () => {
+    cancelAnimationFrame(animationId);
+  });
+</script>

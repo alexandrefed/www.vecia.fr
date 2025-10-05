@@ -1,17 +1,23 @@
 # Product Requirements Document: Vecia AI Agency Website
 
-**Document Version:** 3.0  
-**Date:** June 20, 2025  
-**Last Updated:** June 25, 2025 (Updated with Effortel-inspired design specifications)  
-**Product Owner:** Vecia AI Agency  
+**Document Version:** 3.1
+**Date:** June 20, 2025
+**Last Updated:** October 5, 2025 (V5 Implementation with 2025 Best Practices)
+**Product Owner:** Vecia AI Agency
 **Document Type:** Website Redesign PRD with Effortel-Inspired Design & High-Conversion Strategy
+
+**🔗 Related Documentation:**
+- [2025 Best Practices & Updates](./2025-UPDATES.md) - Critical technology updates
+- [Implementation Plan](./IMPLEMENTATION-PLAN.md) - Complete V5 build roadmap
+- [Tailwind v4 Reference](./TAILWIND-REFERENCE.md) - Modern styling approach
+- [Astro i18n Reference](./ASTRO-I18N-REFERENCE.md) - Internationalization guide
 
 ---
 
 ## 1. Executive Summary
 
 ### 1.1 Project Overview
-Complete redesign and development of Vecia AI Agency's website based on Effortel's proven design patterns, adapted for AI automation services. The website will create a high-converting sales funnel that drives qualified leads through multiple conversion points: email capture, content engagement, and ultimately booking 30-minute discovery calls via Calendly. The design leverages Effortel's interactive pill-button navigation, smooth animations, and clear service categorization while showcasing AI automation case studies and supporting international markets with multi-language and IP-based dynamic pricing.
+The website will create a high-converting sales funnel that drives qualified leads through multiple conversion points: email capture, content engagement, and ultimately booking 30-minute discovery calls via cal.com. The design leverages clear service categorization while showcasing AI automation case studies and supporting international markets with multi-language and IP-based dynamic pricing.
 
 ### 1.2 Primary Objectives
 - **Multi-Level Conversion**: Implement 3-tier conversion strategy (email → nurture → appointment)
@@ -79,7 +85,7 @@ Complete redesign and development of Vecia AI Agency's website based on Effortel
 
 #### **Quick Win Lead Magnet** (MVP Launch)
 - **Title**: "5-Minute AI Automation Assessment"
-- **Format**: 2-page PDF checklist
+- **Format**: 2-page google form (or other tool for forms)
 - **Content**: 10 questions to identify automation opportunities
 - **Value Prop**: "Discover 10+ hours of time savings in 5 minutes"
 
@@ -108,234 +114,212 @@ Complete redesign and development of Vecia AI Agency's website based on Effortel
 
 ---
 
-## 4. Core Features & Functionality - Effortel to Vecia Mapping
+## 4. Core Features & Functionality
 
-### 4.0 Complete Page Structure Overview
+### 4.0 Homepage Structure Overview
 
-**Page Order (Top to Bottom)**:
+**Current V3 Page Order (Top to Bottom)**:
 1. Navigation Bar
-2. Hero Section  
-3. Company Logos Carousel
-4. BSS/OSS → AI Services (4 pill buttons)
-5. Features/Excellence Section (7 services carousel) - IMMEDIATELY AFTER pill buttons
-6. Process Section (3×2 grid layout)
-7. Business Cases Section (4 case studies)
-8. Success Metrics Section
-9. Lead Capture Form
-10. Final CTA
-11. Footer
+2. Hero Section with Particle Animation Background
+3. AI Technology Logos Carousel
+4. AI Implementation Suite (4 Interactive Tabs)
+5. AI Products Carousel (7 Service Cards)
+6. Customer Journey Section (Bento Grid - Asymmetric Layout)
+7. Business Cases Section (4 Industry Slides)
+8. Lead Capture Form
+9. Final CTA
+10. Footer
 
-### 4.1 Homepage Structure (Top to Bottom)
-
-**IMPORTANT**: This section shows the exact mapping of each Effortel element to its Vecia replacement, in order from top to bottom of the page.
+### 4.1 Section-by-Section Details
 
 #### Section 1: Navigation Bar
-**Effortel Elements**:
-- PRODUCTS, SOLUTIONS, RESOURCES, SERVICES (center aligned)
-- Logo (left), "Book a meeting" button (right)
-
-**Vecia Replacement**:
-- Remove: PRODUCTS, SOLUTIONS, RESOURCES, SERVICES
-- Add: ABOUT US, BLOG (right-aligned)
-- Keep: Logo (left), "Book a meeting" button (right)
+**Content**:
+- Logo (left) - switches to "V" icon on mobile
+- Navigation links: "À Propos", "Blog" and "Contact"
+- Language dropdown or toggle (FR/EN toggle with flags)
+- Two CTA buttons: "Réserver un Appel" and "Commencer"
+- Mobile hamburger menu
 
 #### Section 2: Hero Section
-**Effortel Elements**:
-- Tagline: "(RECOGNIZED AS THE BEST MVNE GLOBALLY)"
-- Headline: "Streamline Operations, Skyrocket Revenue, and Delight Customers"
-- CTAs: "Services" and "Product" buttons
-- Animation: Percentage counter (0-100%)
+**Content**:
+- Headline: "Implémentez l'IA, Économisez Plus de 20h par Semaine, et Accélerez votre croissance"
+- Gradient text highlight on "Économisez Plus de 20h par Semaine"
+- Subheading about AI automation benefits
+- Two CTA buttons: "AUDIT IA GRATUIT" and "ÉCHANGEZ AVEC NOUS"
 
-**Vecia Replacement**:
-- Tagline: "(SCALE WITH AI)"
-- Headline: Keep same structure but adapt for AI context
-- CTAs: Keep "Services" and "Product" buttons with arrow animations
-- Animation: Keep percentage counter
+**Animation**:
+- **Particle dots background**
+- 4 movement patterns: Fractal Orbit, Golden Spiral, Breathing, Neural Wander
+- Intelligent positioning that never overlaps text
+- Performance-optimized for mobile (reduced count, simplified motion)
+- 60fps continuous smooth animation
 
-#### Section 3: Company Logos Carousel
-**Effortel Elements**:
-- Text: "Trusted by 100+ of the largest companies"
-- Carousel: Telecom company logos (Melita, Tele2, Orange, etc.)
-- Animation: Auto-scrolling with hover-pause
+#### Section 3: AI Technology Logos Carousel
+**Content**:
+- Header: "Propulsé par les Technologies IA de Pointe"
+- AI tool logos: Claude AI, OpenAI, n8n, LangChain, Neo4j, Supabase, PostgreSQL, Make, Notion, Zapier, Google AI, Azure AI, EBP, Copilot
 
-**Vecia Replacement**:
-- Text: "Powered by Leading AI Technologies"
-- Carousel: AI tool logos (OpenAI, Claude, n8n, Notion, Copilot, Make, Zapier, Google Cloud AI, Meta AI, HubSpot, Salesforce, Azure AI, Shopify)
-- Animation: Keep same auto-scrolling behavior
+**Animation**:
+- Infinite horizontal scroll
+- Hover-to-pause functionality
+- Grayscale to color transition on hover
 
-#### Section 4: BSS/OSS Capabilities → AI Services
-**Effortel Elements**:
-- Header: "Unparalleled BSS/OSS Capabilities"
-- Subtitle: "(Efficiency, Scalability, and Agility)"
-- Four pill buttons: Billing, Charging, Catalog, Events
+#### Section 4: AI Implementation Suite (Tab-Slider)
+**Content**:
+- Header: "■ Plateforme IA Complète"
+- **4 Interactive Tabs** (Alpine.js powered):
+  1. **Data Flow Automations** - Dashboard with metrics (12.4TB processed, 847 workflows, 99.97% success rate)
+  2. **CRM Agentic Assistants** - Chat interface showing personalized LinkedIn outreach
+  3. **Marketing AI Analytics** - ROI dashboard (342% ROI, 23 active tests, 8.4% conversion)
+  4. **Knowledge Base Agents** - Task prioritization chat interface
 
-**Vecia Replacement**:
-- Header: "Powerful AI Implementations"
-- Subtitle: "(AI to Leverage Revenue, Costs and Time)"
-- Four pill buttons with new content:
+**Features**:
+- Auto-rotation every 8 seconds
+- Stops when user is hovering over the card
+- Progress bar animation on active tab
+- Split layout: 40% description + features, 60% dashboard mockup
+- Responsive gradient backgrounds per tab theme
 
-  1. **Billing → Data Flow Automations**
-     - Icon: Dashboard/chart icon
-     - Title: "Manual or Put aside data to Dashboards"
-     - Description: "Transform scattered data into actionable insights"
-     - Visual: Analytics dashboard mockup
-
-  2. **Charging → CRM Agentic Assistants**
-     - Icon: Chat/message icon
-     - Title: "Capture value at every step"
-     - Description: "Lead generation, customized messages, proper onboarding"
-     - Visual: Hyper-personalized chat message example
-
-  3. **Catalog → Marketing AI Analytics**
-     - Icon: Target/analytics icon
-     - Title: "Have AI be your Marketing assistant"
-     - Description: "A/B tests, campaign publishing, performance reports"
-     - Visual: Meta ads analytics dashboard
-
-  4. **Events → Knowledge Base Agents**
-     - Icon: Brain/database icon
-     - Title: "Agents connected to your databases and tools"
-     - Description: "All information and functionalities one prompt away"
-     - Visual: Telegram chat interface
-
-#### Section 5: Features/Excellence Section
-**Effortel Elements**:
-- Header: "(Empower Your Team And Your Customers)"
-- Four feature cards with numbers (01, 02, 03, 04)
-
-**Vecia Replacement**:
-- Header: "(Excellence Through AI Automation)"
-- Seven AI automation service cards (carousel format):
-  1. Internal Reporting and Analytics Automation
-  2. Sales Pipeline & Follow-Up Automation
-  3. Onboarding & Client Intake Automation
-  4. Proposal & Document Generation Automation
+#### Section 5: AI Products Carousel
+**Content**:
+- Header: "■ Outils IA Spécialisés"
+- **7 Product Cards**:
+  1. Analyses et Rapports Internes
+  2. Sales Pipeline Automation
+  3. Onboarding Automation
+  4. Proposal Generation
   5. CRM Automation
-  6. API Powered Invoice and Payment Automation
-  7. Deep Personalization Cold Outreach System
+  6. Invoice/Payment Automation
+  7. Deep Personalization Outreach
 
-**Note**: This section appears IMMEDIATELY AFTER the four pill buttons
+**Features**:
+- Manual navigation (prev/next arrows + dot indicators)
+- Responsive: Shows 1-3 cards depending on screen size
+- Each card has icon + title + 3 feature bullets
 
-#### Section 6: Process Section - AI Strategy Workshop (3×2 Grid)
-**Effortel Elements**:
-- Header: "(MVNO LaunchPad – Accelerate Your Journey)"
-- Six cards in 3×2 grid layout
+#### Section 6: Customer Journey (Bento Grid)
+**Content**:
+- Header: "■ Comment nous Procédons"
+- **Asymmetric 3-row grid layout**:
 
-**Vecia Replacement**:
-- Header: "(AI Strategy Workshop and Mission)"
-- Three rows with two columns each:
+**Row 1** (1/3 + 2/3 split):
+- **Left Column**:
+  - Title: "Comprendre Votre Défi"
+  - Content: Consultation initiale et évaluation des besoins
+  - Bullets: Identification du défi et alignement des objectifs
+  - Visual: Icône cercles concentriques
 
-**Row 1: Vecia Journey**
-- **Left Column**: 
-  - Title: "Start Your AI Journey"
-  - Content: "Book a free 15-30 minute discovery call"
-  - CTA Button: "Schedule Free Call"
-  - Visual: Phone/calendar icon
-  
 - **Right Column**:
-  - Title: "Your Path to AI Excellence"
-  - Visual: 4-step horizontal flow:
-    1. AI Strategy Workshop (€250/CHF300/AED1000/$250)
-    2. Custom Report & Roadmap
-    3. Implementation Planning
-    4. Delivery & Optimization
+  - Title: "Votre Feuille de Route Transformation IA"
+  - Subtitle: "Une approche structurée pour implémenter l'IA avec des résultats mesurables"
+  - Visual: Flux horizontal en 4 étapes:
+    1. Atelier Stratégique (€250/CHF300/AED1000/$250)
+    2. Rapport Actionnable (insights détaillés et prochaines étapes)
+    3. Plan d'Implémentation (calendrier et configuration de l'accord)
+    4. Livraison & Support (lancement et optimisation continue)
 
-**Row 2: Investment & Returns**
-- **Left Column**: Dynamic Pricing Cards (IP-based display)
-  - **Victoire Rapide**: €1,900 / CHF 1,850 / AED 8,000 / $2,100
+**Row 2** (2/3 + 1/3 split):
+- **Left Column**: Plans d'Investissement (IP-based display)
+  - **Victoires Rapides**: €1,900 / CHF 1,850 / AED 8,000 / $2,100
+    - 1 automatisation principale
+    - Implémentation 2 semaines
+    - Support 30 jours
   - **Transformation** (LE PLUS POPULAIRE): €4,500 / CHF 4,400 / AED 19,000 / $4,900
+    - 2-3 automatisations intégrées
+    - Implémentation 4 semaines
+    - Optimisation 90 jours
   - **Accélération Entreprise**: €9,000 / CHF 8,800 / AED 38,000 / $9,900
-  
-- **Right Column**: ROI Metrics
-  - 4x Average ROI (within 6 months)
-  - 50% Cost Reduction
-  - 3x Productivity Gain
-  - 90% Accuracy Improvement
+    - Suite d'automatisation complète
+    - Implémentation 6-8 semaines
+    - Partenariat 6 mois
 
-**Row 3: Trust & Security**
-- **Left Column**: 
-  - Title: "Enterprise-Grade Security"
+- **Right Column**: Impact Business
+  - 40% Réduction des Coûts
+  - 20+ Heures Économisées par Semaine
+  - 300% Augmentation de Productivité
+
+**Row 3** (1/3 + 2/3 split):
+- **Left Column**:
+  - Title: "Rejoignez les Implémenteurs IA à Succès"
   - Badges: GDPR, SOC2 (in progress), ISO 27001 principles
-  
+
 - **Right Column**:
-  - Title: "Our Commitment to Your Success"
-  - 100% Satisfaction Guarantee
-  - 24/7 Support During Implementation
-  - Free Strategy Workshop Included
-  - No Lock-in Contracts
+  - Title: "Pérennisez Votre Entreprise"
+  - Subtitle: "Gardez une longueur d'avance avec des solutions IA évolutives"
+  - Features (grille 2 colonnes):
+    - Infrastructure Prête pour l'IA
+    - Intelligence Concurrentielle
+    - Solutions Évolutives
+    - Partenariats Industriels
 
-#### Section 7: Business Cases Section
-**Effortel Elements**:
-- Uses the "Empower Your Team And Your Customers" section design
-- Four feature cards layout
+**Features**:
+- Dynamic pricing with IDs for region-based updates
+- Gradient icons and checkmarks
+- Responsive grid that reflows on mobile
 
-**Vecia Replacement**:
-- Header: "(Real Results from Real Businesses)"
-- Four detailed case studies:
+#### Section 7: Business Cases (Slides)
+**Content**:
+- Header: "■ Résultats Réels de Vraies Entreprises"
+- **4 Études de Cas**:
+  1. **Intégration Dashboard E-commerce**
+   - Industrie: E-commerce (icône)
+   - Défi: "4 boutiques Shopify nécessitant 8 heures mensuelles de rapports manuels"
+   - Solution: "Tableau de bord automatisé: Shopify → n8n → Google Analytics"
+   - Métrique: "8h économisées par mois"
+   - ROI: "96 heures/an × 50€/heure = 4 800€ économisés"
 
-1. **E-commerce Dashboard Integration**
-   - Industry: E-commerce (icon)
-   - Challenge: "4 Shopify stores requiring 8 hours monthly for manual reporting"
-   - Solution: "Automated dashboard: Shopify → n8n → Google Analytics"
-   - Metric: "8h/month saved"
+2. **Automatisation Marketing pour Créateurs de Cours**
+   - Industrie: Éducation (icône)
+   - Défi: "Création manuelle de publicités et ciblage approximatif"
+   - Solution: "Automatisation des publicités Meta propulsée par IA avec tests A/B"
+   - Métrique: "+47% d'augmentation des inscriptions"
+   - Impact: "De 100 à 147 inscriptions/mois en plus"
 
-2. **Marketing Automation for Course Creators**
-   - Industry: Education (icon)
-   - Challenge: "Manual ad creation and targeting guesswork"
-   - Solution: "AI-powered Meta ads automation with A/B testing"
-   - Metric: "+47% enrollments"
+3. **Assistant IA pour Email & Calendrier**
+   - Industrie: Services Professionnels (icône)
+   - Défi: "Submergé par les emails, suivis manqués et points d'action oubliés"
+   - Solution: "Assistant IA gérant la boîte de réception, planification et suivis automatisés"
+   - Métrique: "3x de réponse plus rapide"
+   - Impact: "De plus de 24h à 8h en moyenne"
 
-3. **AI Assistant for Email & Calendar**
-   - Industry: Professional Services (icon)
-   - Challenge: "Drowning in emails, missed follow-ups"
-   - Solution: "AI assistant for inbox and scheduling"
-   - Metric: "3x faster response"
+4. **Communication Fournisseurs B2B**
+   - Industrie: Logistique (icône)
+   - Défi: "Clients frustrés par le manque de visibilité sur les retards fournisseurs"
+   - Solution: "Système de notification automatisé suivant les expéditions et alertant les clients"
+   - Métrique: "+22% d'augmentation de la fidélisation"
+   - Impact: "Clients plus satisfaits"
 
-4. **B2B Supplier Communication**
-   - Industry: Logistics (icon)
-   - Challenge: "Lack of visibility into supplier delays"
-   - Solution: "Automated notification system"
-   - Metric: "+22% retention"
+**Features**:
+- Horizontal scroll/swipe navigation
+- Each slide: Industry badge, challenge/solution/result structure, metric highlight
 
-#### Section 8: Success Metrics
-**Effortel Elements**:
-- Header: "(Industry Recognition and Awards)"
-- Awards and badges display
+#### Section 8: Lead Capture Section
+- **Headline**: "Pas Encore Prêt pour un Appel ? Commencez avec Notre Évaluation Gratuite"
+- **Form**: Nom, Email, Taille de l'entreprise (menu déroulant)
+- **CTA**: "Obtenir Mon Évaluation Gratuite"
+- **Privacy**: "Nous respectons votre vie privée. Désinscription à tout moment."
 
-**Vecia Replacement**:
-- Header: "(Join Successful AI Implementers)"
-- Three animated metric displays:
-  - "50+ Hours Saved Monthly" (counter animation)
-  - "4x Average ROI" (percentage animation)
-  - "100% Client Satisfaction" (progress bar animation)
+#### Section 9: Final CTA
+**Content**:
+- Headline: "Prêt à Automatiser et Développer ?"
+- Body: "Rejoignez plus de 100 entreprises économisant plus de 20h par semaine avec nos solutions d'automatisation IA"
+- Two CTA buttons:
+  - "Réserver un Appel Gratuit" (bouton blanc)
+  - "Voir Notre Blog" (bouton contour blanc)
+- Background: Gradient purple-to-cyan
+- Links to: cal.com integration
 
-#### Section 9: Lead Capture Section
-- **Headline**: "Not Ready for a Call? Start with Our Free Assessment"
-- **Form**: Name, Email, Company Size dropdown
-- **CTA**: "Get My Free Assessment"
-- **Privacy**: "We respect your privacy. Unsubscribe anytime."
 
-#### Section 10: Final CTA
-**Effortel Elements**:
-- Floating "Book a Meeting" button section
+#### Section 10: Footer
+**Content**:
+- Vecia logo
+- Navigation links: À Propos, Blog, Privacy, Terms, Cookies, AI Ethics
+- Social icons: LinkedIn and Twitter with gradient hover
+- Copyright: "© 2025 Vecia. Tous droits réservés."
 
-**Vecia Replacement**:
-- Keep same design with "Book a Meeting" CTA
-- Links to Calendly integration
-
-#### Section 11: Footer
-**Effortel Elements**:
-- Multi-column footer with Products, Solutions, Resources, Main, Legals
-- Social media links
-- Logo and design credit
-
-**Vecia Replacement**:
-- Simplified footer structure
-- Legal links: Cookie Policy, Privacy Policy, Terms of Use
-- Social links: LinkedIn, Twitter/X, Facebook
-- Logo (left) and "Design & Dev by [Vecia & Claude Code]" credit
-- Newsletter signup with lead magnet offer
-- Note: Language toggle (FR/EN) stays in header only
+**Layout**:
+- Single row on desktop, stacked on mobile
+- Minimalist design with gradient accents
 
 ### 4.2 Blog Section
 
@@ -447,8 +431,8 @@ Complete redesign and development of Vecia AI Agency's website based on Effortel
 - **Background**: #FFFFFF (White)
 
 #### Typography
-- **Headings**: Modern sans-serif (e.g., Inter, Plus Jakarta Sans)
-- **Body**: Clean, readable sans-serif
+- **Headings**: Grotesk
+- **Body**: Inter
 - **Font Sizes**: Responsive scale from 16px base
 - **CTA Buttons**: 18px bold with adequate padding
 
@@ -467,35 +451,74 @@ Complete redesign and development of Vecia AI Agency's website based on Effortel
 
 ### 5.2 UI Components
 
-#### Effortel-Inspired Interactive Elements
-- **Pill Buttons** (Main Service Navigation):
-  - Rounded pill shape with icon + text
-  - Smooth expand animation on click
-  - Content reveals below with fade-in
-  - Active state with color change
-  - Mobile: Stack vertically with same interactions
-  
-- **CTA Buttons**: 
-  - Rounded corners matching Effortel style
-  - Arrow icon appears/slides on hover
-  - Subtle scale effect on hover
-  - High contrast with gradient backgrounds
-  
-- **Metric Cards**:
-  - Number counter animations on scroll
-  - Gradient backgrounds with subtle shadows
-  - Hover effects for interactivity
-  
-- **Service Cards**:
-  - Clean borders with hover elevation
-  - Sequential number badges (01, 02, etc.)
-  - Expandable content areas
-  
-- **Forms**:
-  - Minimal fields matching Effortel's clean style
-  - Inline validation
-  - Success state animations
-  - Rounded input fields
+#### AI Tab-Slider
+- **State Management**:
+  - `activeTab` index (0-3)
+  - Auto-rotation every 8 seconds
+  - Progress bar animation resets on tab change
+- **Interactions**:
+  - Click tab to switch content
+  - Smooth content transitions (fade + slide)
+  - Tab expansion/collapse animation
+  - Responsive: Vertical stack on mobile
+- **Data**: 4 tabs with title, icon (Hugeicons), description, features, color theme
+
+#### AI Products Carousel
+- **Navigation**:
+  - Previous/Next arrow buttons
+  - Dot indicators for slide position
+- **Responsive Cards**:
+  - 1 card (mobile)
+  - 2 cards (tablet)
+  - 3 cards (desktop)
+- **Behavior**: Smooth CSS transitions, active indicator highlighting
+- **Content**: 7 product cards with icon, title, features list
+
+#### Language Dropdown (Alpine.js)
+- **Trigger**: Hover to open/close (mouseenter/mouseleave)
+- **Animation**: Fade + scale transition (200ms enter, 150ms leave)
+- **Options**:
+  - Current: 🇫🇷 Français (highlighted)
+  - Link: 🇬🇧 English → `/en/`
+- **Desktop**: Dropdown menu
+- **Mobile**: Consider inline toggle or modal selector
+
+#### Mobile Menu
+- **Trigger**: Hamburger icon (3 horizontal lines)
+- **State**: `mobileMenuOpen` boolean toggle
+- **Animation**: Slide-in navigation panel with backdrop
+- **Close**: Click outside, close button, or navigation link
+
+#### CTA Buttons
+- **Hover Effects**:
+  - Scale up (1.05x)
+  - Lift effect: translateY(-4px)
+  - Shadow enhancement
+- **Styles**:
+  - Rounded corners (Tailwind: `rounded-full` or `rounded-lg`)
+  - Gradient backgrounds with high contrast
+  - Icon animations (optional: arrow slide-in on hover)
+
+#### Metric Counters
+- **Class**: `.metric-animated`
+- **Attributes**: `data-counter="40"` or `data-metric="50"`
+- **Behavior**: Count-up animation on scroll into viewport
+- **Usage**: Business impact stats (40% cost reduction, 20+ hours saved, 300% productivity)
+
+#### Cards & Hover Effects
+- **Interactive Cards**:
+  - Tab cards: Scale on hover with gradient backgrounds
+  - Product cards: Border + elevation on hover
+  - Business case cards: Horizontal scroll/swipe navigation
+- **Links**: Color transition to brand blue (#5B8BFF) on hover
+- **Icons**: Rotate or scale animations on hover
+
+#### Forms
+- **Style**: Minimal fields with rounded borders
+- **Validation**: Inline error messages
+- **States**: Focus, error, success animations
+- **Fields**: Name, email, dropdown (company size)
+- **Privacy**: Checkbox or text below submit button
 
 ### 5.3 ChatGPT Image Generation Prompts
 
@@ -555,19 +578,25 @@ Complete redesign and development of Vecia AI Agency's website based on Effortel
 
 ### 7.1 V5 Tech Stack (Updated October 2025)
 
+**🔗 See Also**: [`docs/2025-UPDATES.md`](./2025-UPDATES.md) for breaking changes & migration guide
+
 #### Frontend Framework
-- **Astro 4.x+** - Static Site Generator with built-in i18n
+- **Astro 5.x** - Static Site Generator with built-in i18n
   - **Why Astro**: Component-based architecture, excellent performance, native multi-language support
   - **Output**: Static HTML (no server required)
-  - **Deployment**: Vercel (vecia.fr domain)
+  - **Deployment**: VPS (own server, NOT Vercel)
 
-#### Styling & Interactivity
+#### Styling & Interactivity (⚠️ 2025 Updates)
 - **Tailwind CSS v4** - Utility-first CSS framework
-  - Custom theme matching graphic_chart.md colors
-  - Responsive design system
-- **Alpine.js v3.x** - Lightweight JavaScript for interactions
+  - **Method**: `@tailwindcss/vite` plugin (NOT `@astrojs/tailwind` - deprecated)
+  - **Config**: `@theme` directive in CSS (NOT tailwind.config.mjs)
+  - **Setup**: `@import "tailwindcss"` in global.css
+  - Custom theme matching design tokens
+  - Auto-generated utilities from `@theme` block
+- **Alpine.js 3.14.1** - Lightweight JavaScript (version pinned for production)
   - Tabs, carousels, mobile menu, language switcher
-  - No build step required, works with Astro
+  - CDN delivery (no build step)
+  - Version pinned (NOT `3.x.x` wildcard)
 
 #### Hero Particle Animation
 - **Vanilla JavaScript** - Custom particle system from V3
@@ -621,16 +650,28 @@ export default defineConfig({
 });
 ```
 
-**Translation System:**
-- All text in TypeScript files (`ui.ts`)
-- Type-safe translation keys
-- French complete, English to be translated
+**Translation System (⚠️ 2025 Type-Safe Pattern):**
+- All text in TypeScript files (`src/i18n/ui.ts`)
+- **Type-safe with `as const`** → compile-time validation
+- **Autocomplete** for all translation keys (TypeScript)
+- 140+ strings translated (FR + EN complete)
 - Components reference keys, not hardcoded text
+
+```ts
+// src/i18n/ui.ts (2025 pattern)
+export const ui = {
+  fr: { 'nav.home': 'Accueil' },
+  en: { 'nav.home': 'Home' }
+} as const;  // ← Type-safe literal types
+
+export type UIKeys = keyof typeof ui['fr'];  // ← Autocomplete
+```
 
 **Workflow:**
 - Change design/layout → Edit ONE Astro component → Both languages update
-- Change French text → Edit `ui.ts` French object → English untouched
-- Change English text → Edit `ui.ts` English object → French untouched
+- Change French text → Edit `ui.ts` French object → TypeScript validates
+- Change English text → Edit `ui.ts` English object → TypeScript validates
+- Missing translation → **Compile error** (not runtime error)
 
 #### Dynamic Pricing (IP-Based Currency)
 
@@ -648,8 +689,8 @@ Country Detection:
 - Others → USD (fallback)
 
 Detection Method:
-- Vercel: request.headers.get('x-vercel-ip-country')
-- Cloudflare: request.headers.get('cf-ipcountry')
+- VPS: ipapi.co free tier (1,000 req/day)
+- Fallback chain: localStorage → IP API → browser lang → EUR default
 ```
 
 **Pricing Tiers:**
@@ -660,6 +701,30 @@ Victoire Rapide    €1,900  CHF 1,850  AED 8,000  $2,100
 Transformation     €4,500  CHF 4,400  AED 19,000 $4,900
 Accélération       €9,000  CHF 8,800  AED 38,000 $9,900
 ```
+
+---
+
+#### 🔑 Critical 2025 Technology Updates
+
+**The following BREAKING CHANGES have been applied to V5:**
+
+1. **Tailwind CSS v4 Migration**
+   - ❌ OLD: `@astrojs/tailwind` integration
+   - ✅ NEW: `@tailwindcss/vite` plugin in `vite.plugins[]`
+   - ✅ NEW: `@theme` directive replaces `tailwind.config.mjs`
+
+2. **Type-Safe i18n**
+   - ❌ OLD: Plain translation objects, runtime errors
+   - ✅ NEW: `as const` + TypeScript types = compile-time validation
+   - ✅ NEW: Full autocomplete for all translation keys
+
+3. **Native Astro i18n**
+   - ❌ OLD: `astro-i18next` (archived/unmaintained)
+   - ✅ NEW: Built-in Astro i18n (official, maintained)
+
+**📖 Full migration guide**: See [`docs/2025-UPDATES.md`](./2025-UPDATES.md)
+
+---
 
 #### Content Management
 - **Markdown Files** for blog articles

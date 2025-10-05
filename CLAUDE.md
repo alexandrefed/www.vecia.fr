@@ -12,7 +12,38 @@ This is an **Astro-based website** for Vecia, built with modern web development 
 - 🤖 **Claude Code Agents Guide: `docs/claude-code-agents.md` - Create specialized AI agents/subagents**
 - 🔧 **VPS Deployment with GitHub Actions: `docs/vps-deployment-github-actions.md` - Complete CI/CD setup from Mac to VPS**
 
+**V5 Implementation Documentation (2025):**
+- 📋 **Implementation Plan: `docs/IMPLEMENTATION-PLAN.md` - Complete build roadmap for V5**
+- 🌍 **i18n Reference: `docs/ASTRO-I18N-REFERENCE.md` - Astro internationalization guide**
+- 🎨 **Tailwind Reference: `docs/TAILWIND-REFERENCE.md` - Tailwind CSS v4 configuration**
+- ⚡ **Alpine.js Reference: `docs/ALPINEJS-REFERENCE.md` - Interactive component patterns**
+- 📝 **Content Extraction: `docs/TEXT-EXTRACTION-Homepage.md` - French/English content source**
+- ✨ **2025 Best Practices: `docs/2025-UPDATES.md` - Critical updates for modern development**
+
 **IMPORTANT:** Always refer to these documentation files when working with Astro-specific features, configurations, or deployment. They contain the latest 2025 best practices.
+
+---
+
+## 🚨 Phase Implementation Protocol (MANDATORY)
+
+**BEFORE implementing ANY phase, you MUST:**
+
+1. **Open** `docs/PHASE-CHECKLIST.md`
+2. **Search** Tavily/Context7 for "2025 best practices [phase technology]"
+3. **Report** findings to user in this format:
+   ```
+   ## Phase X Best Practices Check ✅
+   **Searched**: [queries]
+   **Findings**: [summary]
+   **Changes Needed**: [Yes/No]
+   **Recommendation**: [proceed/update]
+   ```
+4. **WAIT** for user approval before coding
+5. **Update** todo list with phase tasks
+
+**If user says "Check phase checklist"** → immediately reference `docs/PHASE-CHECKLIST.md`
+
+**NO EXCEPTIONS** - This ensures we always use 2025 best practices.
 
 ---
 
