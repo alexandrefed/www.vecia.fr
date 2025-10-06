@@ -11,17 +11,22 @@ interface Props {
 const { headlinePart1, headlinePart2, headlinePart3, subheadline, cta1Text, cta2Text } = Astro.props;
 ---
 
-<section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-[70px]">
-  <!-- Particle Animation Canvas -->
-  <canvas id="particle-canvas" class="absolute inset-0 w-full h-full"></canvas>
+<section class="relative min-h-screen flex items-center justify-center overflow-visible pt-[70px]">
+  <!-- Gradient Fade Overlay - Smooth transition to next section (BELOW particles) -->
+  <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-background pointer-events-none z-[0]"></div>
+
+  <!-- Particle Container - exact Hero + Carousel height -->
+  <div class="particle-container absolute top-0 left-0 w-full pointer-events-none z-[1]" style="height: calc(100vh + 200px); overflow: visible;">
+    <canvas id="particle-canvas" class="absolute inset-0 w-full h-full"></canvas>
+  </div>
 
   <!-- Content -->
   <div class="relative z-10 max-w-6xl mx-auto px-8 py-20 text-center">
     <!-- Headline -->
-    <h1 class="text-5xl md:text-7xl lg:text-8xl font-heading font-bold leading-tight mb-16">
+    <h1 class="text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-8" style="line-height: 1.3;">
       {headlinePart1}
       <br />
-      <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+      <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent whitespace-nowrap text-4xl md:text-5xl lg:text-6xl">
         {headlinePart2}
       </span>
       <br />
@@ -29,23 +34,29 @@ const { headlinePart1, headlinePart2, headlinePart3, subheadline, cta1Text, cta2
     </h1>
 
     <!-- Subheadline -->
-    <p class="text-lg md:text-xl lg:text-2xl text-gray-700 max-w-4xl mx-auto mb-12 leading-relaxed">
+    <p class="text-base md:text-lg lg:text-xl text-gray-700 max-w-3xl mx-auto mb-12 leading-relaxed">
       {subheadline}
     </p>
 
     <!-- CTA Buttons -->
-    <div class="flex flex-row gap-6 justify-center items-center">
+    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
       <a
         href="#audit"
-        class="px-10 py-4 text-lg font-semibold rounded-lg text-white bg-secondary hover:bg-secondary/90 hover:scale-105 hover:shadow-xl transition-all capitalize"
+        class="flex items-center justify-center gap-2 px-8 py-4 text-white font-semibold rounded-lg shadow-lg bg-primary hover:bg-primary/90 hover:shadow-xl hover:-translate-y-1 hover:scale-105 active:scale-95 transition-all"
       >
-        {cta1Text.toLowerCase()}
+        {cta1Text}
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
       </a>
       <a
         href="#cases"
-        class="px-10 py-4 text-lg font-semibold rounded-lg text-white bg-accent1 hover:bg-accent1/90 hover:scale-105 hover:shadow-xl transition-all capitalize"
+        class="flex items-center justify-center gap-2 px-8 py-4 text-white font-semibold rounded-lg shadow-lg bg-gradient-to-r from-secondary to-accent1 hover:shadow-xl hover:-translate-y-1 hover:scale-105 active:scale-95 transition-all"
       >
-        {cta2Text.toLowerCase()}
+        {cta2Text}
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
       </a>
     </div>
   </div>
@@ -67,6 +78,16 @@ const { headlinePart1, headlinePart2, headlinePart3, subheadline, cta1Text, cta2
     'rgba(123, 111, 222, 0.6)',  // accent2
   ];
 
+  // Text zone boundary (focus particles around hero content)
+  const textZone = {
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0
+  };
+
+  type ParticlePattern = 'spiral' | 'figure8' | 'breathing' | 'linear';
+
   class Particle {
     x: number;
     y: number;
@@ -75,20 +96,159 @@ const { headlinePart1, headlinePart2, headlinePart3, subheadline, cta1Text, cta2
     radius: number;
     color: string;
 
-    constructor() {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height;
-      this.vx = (Math.random() - 0.5) * 0.5;
-      this.vy = (Math.random() - 0.5) * 0.5;
-      this.radius = Math.random() * 6 + 4; // 4x bigger (was 1-3, now 4-10)
-      this.color = colors[Math.floor(Math.random() * colors.length)];
+    // Pattern-specific properties
+    pattern: ParticlePattern;
+    theta: number;
+    centerX: number;
+    centerY: number;
+    breathePhase: number;
+    targetX: number;
+    targetY: number;
+    baseRadius: number;
+    isTraveler: boolean; // Particles that can extend into carousel zone
+
+
+    constructor(traveler: boolean = false) {
+      this.isTraveler = traveler;
+      // Randomly assign pattern (25% each)
+      const patterns: ParticlePattern[] = ['spiral', 'figure8', 'breathing', 'linear'];
+      this.pattern = patterns[Math.floor(Math.random() * 4)];
+
+      // Initialize center position OUTSIDE text zone (inverse)
+      const viewportHeight = canvas.height;
+
+      if (this.isTraveler) {
+        // Travelers: spawn in bottom 20-30% of hero (high enough to not hit canvas bottom with breathing pattern ~120px range)
+        const transitionStart = viewportHeight * 0.7;
+        const transitionEnd = viewportHeight * 0.85;
+
+        this.centerX = canvas.width * 0.15 + Math.random() * canvas.width * 0.7;
+        this.centerY = transitionStart + Math.random() * (transitionEnd - transitionStart);
+      } else {
+        // Regular particles: stay in Hero zone only
+        // Amplified distribution: strong top/bottom (70%), minimal sides (30%)
+        const rand = Math.random();
+        if (rand < 0.15) {
+          // Left margin (15%) - middle 60% of height only
+          this.centerX = Math.random() * textZone.x * 0.6;
+          this.centerY = viewportHeight * 0.2 + Math.random() * viewportHeight * 0.6;
+        } else if (rand < 0.3) {
+          // Right margin (15%) - middle 60% of height only
+          this.centerX = textZone.x + textZone.width + Math.random() * (canvas.width - textZone.x - textZone.width) * 0.6;
+          this.centerY = viewportHeight * 0.2 + Math.random() * viewportHeight * 0.6;
+        } else if (rand < 0.65) {
+          // Top margin (35%) - FULL top margin coverage, down to 1% from text
+          this.centerX = textZone.x * 0.2 + Math.random() * (canvas.width - textZone.x * 0.4);
+          this.centerY = Math.random() * textZone.y * 0.99;
+        } else {
+          // Bottom margin (35%) - wider spread, focus below buttons
+          const buttonAreaEnd = textZone.y + textZone.height * 0.7;
+          this.centerX = textZone.x * 0.2 + Math.random() * (canvas.width - textZone.x * 0.4);
+          this.centerY = buttonAreaEnd + Math.random() * (viewportHeight - buttonAreaEnd) * 0.9;
+        }
+      }
+      this.x = this.centerX;
+      this.y = this.centerY;
+
+      // Pattern-specific initialization
+      this.theta = Math.random() * Math.PI * 2;
+      this.breathePhase = Math.random() * Math.PI * 2;
+
+      // For breathing pattern - target position
+      const angle = Math.random() * Math.PI * 2;
+      const distance = 80 + Math.random() * 40;
+      this.targetX = this.centerX + Math.cos(angle) * distance;
+      this.targetY = this.centerY + Math.sin(angle) * distance;
+
+      // For linear pattern (reduced by 50% for relaxed movement)
+      this.vx = (Math.random() - 0.5) * 0.075;
+      this.vy = (Math.random() - 0.5) * 0.075;
+
+      // Appearance
+      this.baseRadius = Math.random() * 6 + 4;
+      this.radius = this.baseRadius;
+
+      // Travelers have lower opacity (0.4 vs 0.6) to be more subtle in carousel
+      const baseColor = colors[Math.floor(Math.random() * colors.length)];
+      this.color = this.isTraveler
+        ? baseColor.replace('0.6)', '0.4)')
+        : baseColor;
     }
 
     update() {
+      switch(this.pattern) {
+        case 'spiral':
+          this.updateSpiral();
+          break;
+        case 'figure8':
+          this.updateFigure8();
+          break;
+        case 'breathing':
+          this.updateBreathing();
+          break;
+        case 'linear':
+          this.updateLinear();
+          break;
+      }
+    }
+
+    // Easing function: easeInOutCubic for smooth acceleration/deceleration
+    easeInOutCubic(t: number): number {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    updateSpiral() {
+      this.theta += 0.005; // Reduced by 50% for relaxed movement
+      const maxRadius = Math.PI * 4 * 2.5; // Max radius before reset
+      const currentRadius = (this.theta % (Math.PI * 4)) * 2.5;
+
+      // Ease in/out: fade opacity as spiral completes
+      const cycleProgress = currentRadius / maxRadius;
+      const opacity = cycleProgress < 0.1 ? cycleProgress * 10 : (cycleProgress > 0.9 ? (1 - cycleProgress) * 10 : 1);
+      this.color = this.color.replace(/[\d.]+\)$/, `${opacity * 0.6})`); // Adjust opacity
+
+      this.x = this.centerX + currentRadius * Math.cos(this.theta);
+      this.y = this.centerY + currentRadius * Math.sin(this.theta);
+    }
+
+    updateFigure8() {
+      this.theta += 0.008; // Reduced by ~47% for relaxed movement
+      const scale = 80;
+
+      // Smooth looping with easing at cycle boundaries
+      const cycleProgress = (this.theta % (Math.PI * 2)) / (Math.PI * 2);
+      const easedProgress = this.easeInOutCubic(cycleProgress);
+
+      this.x = this.centerX + scale * Math.sin(this.theta);
+      this.y = this.centerY + (scale * Math.sin(this.theta * 2)) / 2;
+    }
+
+    updateBreathing() {
+      this.breathePhase += 0.004; // Reduced by 50% for relaxed movement
+
+      // Move away from center while growing (with easing)
+      if (this.breathePhase % (Math.PI * 2) < Math.PI) {
+        const progress = (this.breathePhase % Math.PI) / Math.PI;
+        const easedProgress = this.easeInOutCubic(progress);
+        this.x = this.centerX + (this.targetX - this.centerX) * easedProgress;
+        this.y = this.centerY + (this.targetY - this.centerY) * easedProgress;
+        this.radius = this.baseRadius + easedProgress * 6;
+      }
+      // Return to center while shrinking (with easing)
+      else {
+        const progress = ((this.breathePhase % (Math.PI * 2)) - Math.PI) / Math.PI;
+        const easedProgress = this.easeInOutCubic(progress);
+        this.x = this.targetX + (this.centerX - this.targetX) * easedProgress;
+        this.y = this.targetY + (this.centerY - this.targetY) * easedProgress;
+        this.radius = this.baseRadius + 6 - easedProgress * 6;
+      }
+    }
+
+    updateLinear() {
       this.x += this.vx;
       this.y += this.vy;
 
-      // Wrap around edges
+      // Wrap around canvas edges
       if (this.x < 0) this.x = canvas.width;
       if (this.x > canvas.width) this.x = 0;
       if (this.y < 0) this.y = canvas.height;
@@ -96,6 +256,18 @@ const { headlinePart1, headlinePart2, headlinePart3, subheadline, cta1Text, cta2
     }
 
     draw() {
+      // Draw halo/glow effect
+      const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 3);
+      gradient.addColorStop(0, this.color);
+      gradient.addColorStop(0.4, this.color.replace(/[\d.]+\)$/, '0.3)')); // 30% opacity at 40%
+      gradient.addColorStop(1, this.color.replace(/[\d.]+\)$/, '0)')); // Fully transparent at edge
+
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius * 3, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+
+      // Draw solid dot on top
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
       ctx.fillStyle = this.color;
@@ -105,14 +277,29 @@ const { headlinePart1, headlinePart2, headlinePart3, subheadline, cta1Text, cta2
 
   function resizeCanvas() {
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.height = window.innerHeight + 200; // Match container: 100vh + 200px (carousel height)
+
+    // Update text zone boundaries (account for actual content position)
+    // Navigation (70px) + py-20 (80px top) + centered offset ≈ 200px from top
+    const actualTextStart = 200; // Approximate actual headline position
+    textZone.x = canvas.width * 0.1;      // 10% margin left
+    textZone.y = actualTextStart;         // Actual text position, not percentage
+    textZone.width = canvas.width * 0.8;  // 80% width
+    textZone.height = canvas.height * 0.65; // 65% height from text start
   }
 
   function initParticles() {
     particles = [];
-    const particleCount = Math.min(100, Math.floor((canvas.width * canvas.height) / 10000));
+
+    // Regular particles (stay in Hero zone)
+    const particleCount = Math.min(30, Math.floor((canvas.width * canvas.height) / 30000));
     for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
+      particles.push(new Particle(false));
+    }
+
+    // Traveler particles (10 total, can extend into carousel)
+    for (let i = 0; i < 10; i++) {
+      particles.push(new Particle(true));
     }
   }
 

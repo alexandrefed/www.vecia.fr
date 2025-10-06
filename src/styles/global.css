@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
 @theme {
   /* Vecia Design Tokens - Colors */
   --color-primary: #5B8BFF;      /* Mid blue */
@@ -11,7 +14,8 @@
   --color-background: #FFFFFF;   /* White */
 
   /* Typography */
-  --font-heading: "Grotesk", sans-serif;
+  --font-heading: "Space Grotesk", sans-serif;
+  --font-display: "Space Grotesk", sans-serif;  /* For titles and nav links */
   --font-body: "Inter", sans-serif;
 
   /* Spacing Scale (if needed beyond Tailwind defaults) */
@@ -141,4 +145,16 @@ h1, h2, h3, h4, h5, h6 {
 ::-moz-selection {
   background-color: var(--color-primary);
   color: white;
+}
+
+/* Title Icon Square (■) - Blue with rounded corners */
+.title-icon {
+  display: inline-block;
+  width: 0.45em;
+  height: 0.45em;
+  background-color: var(--color-primary);
+  border-radius: 0.12em;
+  margin-right: 0.5em;
+  vertical-align: middle;
+  transform: translateY(-0.05em);
 }

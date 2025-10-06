@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductsCarousel from '../components/ProductsCarousel.astro';
+import Navigation from '../components/Navigation.astro';
+import { ui } from '../i18n/ui';
+
+const t = ui.fr;
+---
+
+<BaseLayout title="ProductsCarousel Test - Vecia" lang="fr">
+  <Navigation lang="fr" />
+
+  <!-- Spacer for fixed nav -->
+  <div class="h-20"></div>
+
+  <ProductsCarousel lang="fr" />
+
+  <!-- Test Content Below -->
+  <div class="min-h-screen bg-gray-50 py-20">
+    <div class="max-w-4xl mx-auto px-8">
+      <h2 class="text-4xl font-heading font-bold mb-6">ProductsCarousel Component Test</h2>
+
+      <div class="space-y-4 text-lg">
+        <p>✅ Manual navigation (prev/next arrows + dot indicators)</p>
+        <p>✅ Responsive grid: 1 card (mobile), 2 (tablet), 3 (desktop)</p>
+        <p>✅ Alpine.js state: currentSlide, itemsPerView, maxSlides</p>
+        <p>✅ 8 service cards with icons, titles, and features</p>
+        <p>✅ Smooth slide transitions</p>
+        <p>✅ Disabled arrows at boundaries</p>
+      </div>
+
+      <div class="mt-12 p-6 bg-white rounded-lg shadow-sm">
+        <h3 class="text-2xl font-heading font-bold mb-4">Technical Details:</h3>
+        <ul class="list-disc list-inside space-y-2">
+          <li>8 products: Analytics, Sales, Onboarding, Proposal, CRM, Invoice, Personalization, Database</li>
+          <li>Responsive layout with dynamic itemsPerView calculation</li>
+          <li>Transform translateX based on currentSlide and itemsPerView</li>
+          <li>Dot indicators adapt to show only valid positions</li>
+          <li>Arrows disabled at start (prev) and end (next)</li>
+          <li>Each card has gradient icon background matching color theme</li>
+        </ul>
+      </div>
+
+      <div class="mt-8 p-6 bg-accent3 rounded-lg">
+        <h3 class="text-2xl font-heading font-bold mb-4">Test Instructions:</h3>
+        <ol class="list-decimal list-inside space-y-2">
+          <li>Click next arrow to navigate through products</li>
+          <li>Click prev arrow to go back</li>
+          <li>Click dot indicators to jump to specific position</li>
+          <li>Resize window to see responsive layout (1, 2, or 3 cards)</li>
+          <li>Verify arrows disable at start and end positions</li>
+          <li>Check smooth transitions between slides</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

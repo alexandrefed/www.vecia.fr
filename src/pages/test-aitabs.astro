@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AITabs from '../components/AITabs.astro';
+import Navigation from '../components/Navigation.astro';
+import { ui } from '../i18n/ui';
+
+const t = ui.fr;
+---
+
+<BaseLayout title="AITabs Test - Vecia" lang="fr">
+  <Navigation lang="fr" />
+
+  <!-- Spacer for fixed nav -->
+  <div class="h-20"></div>
+
+  <AITabs lang="fr" />
+
+  <!-- Test Content Below -->
+  <div class="min-h-screen bg-gray-50 py-20">
+    <div class="max-w-4xl mx-auto px-8">
+      <h2 class="text-4xl font-heading font-bold mb-6">AITabs Component Test</h2>
+
+      <div class="space-y-4 text-lg">
+        <p>✅ 4-tab slider with Alpine.js state management</p>
+        <p>✅ Auto-rotation every 8s (pauses on hover)</p>
+        <p>✅ Progress bar animation (0-100% over 8s)</p>
+        <p>✅ Split layout: 40% text + 60% dashboard mockup</p>
+        <p>✅ Smooth transitions between tabs</p>
+        <p>✅ Responsive: stacks on mobile</p>
+      </div>
+
+      <div class="mt-12 p-6 bg-white rounded-lg shadow-sm">
+        <h3 class="text-2xl font-heading font-bold mb-4">Technical Details:</h3>
+        <ul class="list-disc list-inside space-y-2">
+          <li>Alpine.js for state management (activeTab, autoRotate, progress)</li>
+          <li>4 tabs: Data Flow, CRM Assistants, Marketing Analytics, Knowledge Base</li>
+          <li>Each tab has unique dashboard: metrics (tab 1,3) or chat (tab 2,4)</li>
+          <li>Progress bar resets on tab change or manual selection</li>
+          <li>Auto-rotation pauses on mouseenter, resumes on mouseleave</li>
+          <li>Gradient colors per tab: primary, secondary, accent1, accent2</li>
+        </ul>
+      </div>
+
+      <div class="mt-8 p-6 bg-accent3 rounded-lg">
+        <h3 class="text-2xl font-heading font-bold mb-4">Test Instructions:</h3>
+        <ol class="list-decimal list-inside space-y-2">
+          <li>Watch auto-rotation cycle through all 4 tabs (8s each)</li>
+          <li>Hover over component to pause auto-rotation</li>
+          <li>Click different tabs to manually switch</li>
+          <li>Observe progress bar animation</li>
+          <li>Check smooth transitions and content changes</li>
+          <li>Test mobile responsiveness (resize window)</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

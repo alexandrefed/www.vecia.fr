@@ -1,0 +1,93 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+
+// AI Technology Logos from public/images/logos/
+const logos = [
+  { name: 'OpenAI', src: '/images/logos/openai-logo.svg' },
+  { name: 'Claude', src: '/images/logos/claude-logo.svg' },
+  { name: 'Google AI', src: '/images/logos/google-ai-logo.svg' },
+  { name: 'Azure AI', src: '/images/logos/azure-ai-logo.svg' },
+  { name: 'Copilot', src: '/images/logos/copilot-logo-transparent.png' },
+  { name: 'LangChain', src: '/images/logos/langchain-logo_brandlogos.net_9zgaw-512x512.png' },
+  { name: 'Make', src: '/images/logos/make-logo-transparent.png' },
+  { name: 'n8n', src: '/images/logos/logo-n8n-transparent.png' },
+  { name: 'Notion', src: '/images/logos/notion-official.png' },
+  { name: 'Neo4j', src: '/images/logos/Neo4j-logo2024color.png' },
+  { name: 'PostgreSQL', src: '/images/logos/postgresql-logo-transparent.png' },
+  { name: 'Shopify', src: '/images/logos/Shopify_logo_2018.svg.png' },
+  { name: 'EBP', src: '/images/logos/Logo_ebp_2025.jpg' },
+];
+---
+
+<!-- Transparent background to allow Hero particles to show through -->
+<section class="logo-carousel-section relative py-16 overflow-visible">
+  <!-- Particle Container - starts 30vh above, extends 40vh total, smooth fade at bottom -->
+  <div class="particle-container absolute w-full pointer-events-none z-[1]" style="top: -30vh; height: calc(100% + 40vh); overflow: visible; mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 85%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 85%, transparent 100%);">
+    <canvas id="particleContainerCarousel" class="absolute inset-0 w-full h-full"></canvas>
+  </div>
+
+  <!-- Discrete Title Label (above particles) -->
+  <div class="relative z-10 max-w-6xl mx-auto px-8 mb-8">
+    <p class="text-sm uppercase tracking-wider text-gray-500 font-medium text-center">
+      {title}
+    </p>
+  </div>
+
+  <!-- Infinite Scrolling Carousel (above particles) -->
+  <!-- Alpine.js NOT needed - pure CSS animation -->
+  <!-- See docs/ALPINEJS-USAGE-GUIDE.md for when to use Alpine vs Tailwind -->
+  <div class="relative z-10 overflow-hidden">
+    <!-- Gradient fade edges -->
+    <div class="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"></div>
+    <div class="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"></div>
+
+    <!-- Scrolling track -->
+    <div class="logos-track flex items-center">
+      <!-- First set of logos -->
+      {logos.map((logo) => (
+        <div class="flex-shrink-0 mr-12 lg:mr-16">
+          <img
+            src={logo.src}
+            alt={logo.name}
+            class="h-8 lg:h-10 w-auto opacity-70 hover:opacity-100 transition-opacity duration-300"
+          />
+        </div>
+      ))}
+      <!-- Duplicate set for seamless loop -->
+      {logos.map((logo) => (
+        <div class="flex-shrink-0 mr-12 lg:mr-16">
+          <img
+            src={logo.src}
+            alt={logo.name}
+            class="h-8 lg:h-10 w-auto opacity-70 hover:opacity-100 transition-opacity duration-300"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Infinite scroll animation */
+  .logos-track {
+    animation: scroll 30s linear infinite;
+  }
+
+  /* Pause on hover */
+  .logos-track:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+</style>

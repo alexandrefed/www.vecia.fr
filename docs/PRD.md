@@ -431,9 +431,14 @@ The website will create a high-converting sales funnel that drives qualified lea
 - **Background**: #FFFFFF (White)
 
 #### Typography
-- **Headings**: Grotesk
-- **Body**: Inter
-- **Font Sizes**: Responsive scale from 16px base
+- **Display Font (Titles & Nav Links)**: Space Grotesk, Bold (700), 36px (text-4xl) for section titles
+- **Headings**: Space Grotesk (font-display or font-heading)
+- **Body**: Inter (font-body)
+- **Navigation Links**: Space Grotesk, Bold (700), uppercase, tracking-wide
+- **Font Sizes**:
+  - Section Titles (H2): 36px (text-4xl) with line-height 2.5rem
+  - Hero Headline (H1): Responsive 3rem-4rem (text-5xl to text-7xl)
+  - Body: 16px base (responsive 16-20px)
 - **CTA Buttons**: 18px bold with adequate padding
 
 #### Design Principles

@@ -1,0 +1,231 @@
+---
+import type { Language } from '../i18n/ui';
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+
+// Translation keys
+import { ui } from '../i18n/ui';
+const t = ui[lang];
+
+// Products data structure with icons
+const products = [
+  {
+    icon: '📊',
+    title: t['products.analytics.title'],
+    features: [
+      t['products.analytics.feature1'],
+      t['products.analytics.feature2'],
+      t['products.analytics.feature3'],
+    ],
+    color: 'primary',
+  },
+  {
+    icon: '🎯',
+    title: t['products.sales.title'],
+    features: [
+      t['products.sales.feature1'],
+      t['products.sales.feature2'],
+      t['products.sales.feature3'],
+    ],
+    color: 'secondary',
+  },
+  {
+    icon: '🚀',
+    title: t['products.onboarding.title'],
+    features: [
+      t['products.onboarding.feature1'],
+      t['products.onboarding.feature2'],
+      t['products.onboarding.feature3'],
+    ],
+    color: 'accent1',
+  },
+  {
+    icon: '📝',
+    title: t['products.proposal.title'],
+    features: [
+      t['products.proposal.feature1'],
+      t['products.proposal.feature2'],
+      t['products.proposal.feature3'],
+    ],
+    color: 'accent2',
+  },
+  {
+    icon: '👥',
+    title: t['products.crm.title'],
+    features: [
+      t['products.crm.feature1'],
+      t['products.crm.feature2'],
+      t['products.crm.feature3'],
+    ],
+    color: 'primary',
+  },
+  {
+    icon: '💳',
+    title: t['products.invoice.title'],
+    features: [
+      t['products.invoice.feature1'],
+      t['products.invoice.feature2'],
+      t['products.invoice.feature3'],
+    ],
+    color: 'secondary',
+  },
+  {
+    icon: '✨',
+    title: t['products.personalization.title'],
+    features: [
+      t['products.personalization.feature1'],
+      t['products.personalization.feature2'],
+      t['products.personalization.feature3'],
+    ],
+    color: 'accent1',
+  },
+  {
+    icon: '🗄️',
+    title: t['products.database.title'],
+    features: [
+      t['products.database.feature1'],
+      t['products.database.feature2'],
+      t['products.database.feature3'],
+    ],
+    color: 'accent2',
+  },
+];
+---
+
+<!-- Alpine.js is REQUIRED here for carousel navigation state -->
+<!-- See docs/ALPINEJS-USAGE-GUIDE.md for when to use Alpine vs Tailwind -->
+<section class="relative bg-background py-20">
+  <div class="max-w-7xl mx-auto px-8">
+
+    <!-- Section Title -->
+    <div class="mb-12 text-center">
+      <h2 class="font-display text-4xl font-bold text-gray-800 mb-4">
+        <span class="title-icon"></span>{t['products.title']}
+      </h2>
+      <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+        {t['products.subtitle']}
+      </p>
+    </div>
+
+    <!-- Carousel with Alpine.js -->
+    <div
+      x-data="{
+        currentSlide: 0,
+        totalSlides: 8,
+        itemsPerView: 1,
+        maxSlides: 7,
+
+        init() {
+          this.updateItemsPerView();
+          window.addEventListener('resize', () => this.updateItemsPerView());
+        },
+
+        updateItemsPerView() {
+          if (window.innerWidth >= 1024) {
+            this.itemsPerView = 3;
+            this.maxSlides = 5; // 8 items - 3 visible = 5 max index
+          } else if (window.innerWidth >= 640) {
+            this.itemsPerView = 2;
+            this.maxSlides = 6; // 8 items - 2 visible = 6 max index
+          } else {
+            this.itemsPerView = 1;
+            this.maxSlides = 7; // 8 items - 1 visible = 7 max index
+          }
+        },
+
+        prev() {
+          this.currentSlide = Math.max(0, this.currentSlide - 1);
+        },
+
+        next() {
+          this.currentSlide = Math.min(this.maxSlides, this.currentSlide + 1);
+        },
+
+        goTo(index) {
+          this.currentSlide = Math.min(Math.max(0, index), this.maxSlides);
+        }
+      }"
+      x-init="init()"
+      class="relative"
+    >
+
+      <!-- Carousel Track -->
+      <div class="overflow-hidden relative">
+        <div
+          :style="`transform: translateX(-${currentSlide * (100 / itemsPerView)}%); transition: transform 0.5s ease-in-out;`"
+          class="flex gap-6"
+        >
+          {products.map((product, index) => (
+            <div class="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0">
+              <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow h-full flex flex-col">
+
+                {/* Icon */}
+                <div class={`text-5xl mb-6 w-16 h-16 rounded-xl bg-gradient-to-br from-${product.color} to-${product.color}/60 flex items-center justify-center`}>
+                  {product.icon}
+                </div>
+
+                {/* Title */}
+                <h3 class="text-xl font-heading font-bold text-gray-800 mb-4">
+                  {product.title}
+                </h3>
+
+                {/* Features */}
+                <ul class="space-y-3 flex-grow">
+                  {product.features.map((feature) => (
+                    <li class="flex items-start gap-3">
+                      <svg class={`w-5 h-5 text-${product.color} mt-0.5 flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                      <span class="text-gray-700 text-sm leading-relaxed">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Navigation Arrows -->
+      <button
+        @click="prev()"
+        :disabled="currentSlide === 0"
+        :class="{ 'opacity-30 cursor-not-allowed': currentSlide === 0 }"
+        class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-800 hover:bg-gray-50 transition-all z-10"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </button>
+
+      <button
+        @click="next()"
+        :disabled="currentSlide === maxSlides"
+        :class="{ 'opacity-30 cursor-not-allowed': currentSlide === maxSlides }"
+        class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-800 hover:bg-gray-50 transition-all z-10"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </button>
+
+      <!-- Dot Indicators -->
+      <div class="flex justify-center gap-2 mt-8">
+        <template x-for="i in (totalSlides - itemsPerView + 1)" :key="i">
+          <button
+            @click="goTo(i - 1)"
+            :class="{ 'bg-primary w-8': currentSlide === i - 1, 'bg-gray-300 w-2': currentSlide !== i - 1 }"
+            class="h-2 rounded-full transition-all"
+          ></button>
+        </template>
+      </div>
+
+    </div>
+
+  </div>
+</section>

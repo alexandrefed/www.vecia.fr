@@ -30,7 +30,7 @@ export const ui = {
     'logos.title': 'Propulsé par les Technologies IA de Pointe',
 
     // AI Suite Section
-    'suite.title': '■ Plateforme IA Complète',
+    'suite.title': 'Plateforme IA Complète',
     'suite.subtitle': 'Suite d\'automatisation complète conçue pour l\'échelle entreprise et l\'intégration transparente',
 
     // Tab 1: Data Flow
@@ -95,7 +95,7 @@ export const ui = {
     'suite.tab4.chat.status': 'En ligne • Connecté à 12 bases de données',
 
     // Products Section
-    'products.title': '■ Outils IA Spécialisés',
+    'products.title': 'Outils IA Spécialisés',
     'products.subtitle': 'Solutions ciblées pour des défis et workflows métier spécifiques',
 
     // Product Cards
@@ -175,7 +175,7 @@ export const ui = {
     'logos.title': 'Powered by Cutting-Edge AI Technologies',
 
     // AI Suite Section
-    'suite.title': '■ Complete AI Platform',
+    'suite.title': 'Complete AI Platform',
     'suite.subtitle': 'Comprehensive automation suite designed for enterprise scale and seamless integration',
 
     // Tab 1: Data Flow
@@ -240,7 +240,7 @@ export const ui = {
     'suite.tab4.chat.status': 'Online • Connected to 12 databases',
 
     // Products Section
-    'products.title': '■ Specialized AI Tools',
+    'products.title': 'Specialized AI Tools',
     'products.subtitle': 'Targeted solutions for specific business challenges and workflows',
 
     // Product Cards

@@ -1,22 +1,14 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
 import Navigation from '../components/Navigation.astro';
 import Hero from '../components/Hero.astro';
+import LogosCarousel from '../components/LogosCarousel.astro';
 import { ui } from '../i18n/ui';
-import '../styles/global.css';
 
 const t = ui.fr;
 ---
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hero Test - Vecia</title>
-  <link rel="icon" type="image/png" href="/vecia_favicon.png">
-  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js" defer></script>
-</head>
-<body class="font-body text-text bg-background">
+<BaseLayout title="Hero Test - Vecia" lang="fr">
   <Navigation lang="fr" />
 
   <Hero
@@ -27,6 +19,8 @@ const t = ui.fr;
     cta1Text={t['hero.cta.audit']}
     cta2Text={t['hero.cta.cases']}
   />
+
+  <LogosCarousel title={t['logos.title']} />
 
   <!-- Test Content Below -->
   <div class="min-h-screen bg-gray-50 py-20">
@@ -64,5 +58,4 @@ const t = ui.fr;
       </div>
     </div>
   </div>
-</body>
-</html>
+</BaseLayout>

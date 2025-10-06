@@ -1,0 +1,65 @@
+---
+import LogosCarousel from '../components/LogosCarousel.astro';
+import Navigation from '../components/Navigation.astro';
+import { ui } from '../i18n/ui';
+import '../styles/global.css';
+
+const t = ui.fr;
+---
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LogosCarousel Test - Vecia</title>
+  <link rel="icon" type="image/png" href="/vecia_favicon.png">
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js" defer></script>
+</head>
+<body class="font-body text-text bg-background">
+  <Navigation lang="fr" />
+
+  <!-- Spacer for fixed nav -->
+  <div class="h-20"></div>
+
+  <LogosCarousel title={t['logos.title']} />
+
+  <!-- Test Content Below -->
+  <div class="min-h-screen bg-gray-50 py-20">
+    <div class="max-w-4xl mx-auto px-8">
+      <h2 class="text-4xl font-heading font-bold mb-6">LogosCarousel Component Test</h2>
+
+      <div class="space-y-4 text-lg">
+        <p>✅ Infinite horizontal scroll animation (30s loop)</p>
+        <p>✅ Hover to pause functionality</p>
+        <p>✅ Grayscale → Color on hover</p>
+        <p>✅ Scale animation on hover (110%)</p>
+        <p>✅ Gradient fade edges (left/right)</p>
+        <p>✅ White background (same as Hero for particle continuity)</p>
+      </div>
+
+      <div class="mt-12 p-6 bg-white rounded-lg shadow-sm">
+        <h3 class="text-2xl font-heading font-bold mb-4">Technical Details:</h3>
+        <ul class="list-disc list-inside space-y-2">
+          <li>Pure CSS animation (no Alpine.js needed)</li>
+          <li>Duplicate logo set for seamless loop</li>
+          <li>translateX(-50%) animation</li>
+          <li>animation-play-state: paused on hover</li>
+          <li>Responsive sizing (h-8 mobile, h-12 desktop)</li>
+        </ul>
+      </div>
+
+      <div class="mt-8 p-6 bg-accent3 rounded-lg">
+        <h3 class="text-2xl font-heading font-bold mb-4">Test Instructions:</h3>
+        <ol class="list-decimal list-inside space-y-2">
+          <li>Verify infinite scroll animation is smooth</li>
+          <li>Hover over logos to see color transition</li>
+          <li>Hover over track to pause animation</li>
+          <li>Check gradient fade edges are visible</li>
+          <li>Test mobile responsiveness (resize window)</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
