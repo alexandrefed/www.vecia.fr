@@ -11,6 +11,26 @@ const { lang } = Astro.props;
 import { ui } from '../i18n/ui';
 const t = ui[lang];
 
+// Color variant mapping (required for Tailwind v4 static analysis)
+const colorVariants = {
+  primary: {
+    gradient: 'bg-gradient-to-br from-primary to-primary/60',
+    icon: 'text-primary',
+  },
+  secondary: {
+    gradient: 'bg-gradient-to-br from-secondary to-secondary/60',
+    icon: 'text-secondary',
+  },
+  accent1: {
+    gradient: 'bg-gradient-to-br from-accent1 to-accent1/60',
+    icon: 'text-accent1',
+  },
+  accent2: {
+    gradient: 'bg-gradient-to-br from-accent2 to-accent2/60',
+    icon: 'text-accent2',
+  },
+} as const;
+
 // Products data structure with icons
 const products = [
   {
@@ -21,7 +41,7 @@ const products = [
       t['products.analytics.feature2'],
       t['products.analytics.feature3'],
     ],
-    color: 'primary',
+    color: 'primary' as const,
   },
   {
     icon: '🎯',
@@ -31,7 +51,7 @@ const products = [
       t['products.sales.feature2'],
       t['products.sales.feature3'],
     ],
-    color: 'secondary',
+    color: 'secondary' as const,
   },
   {
     icon: '🚀',
@@ -41,7 +61,7 @@ const products = [
       t['products.onboarding.feature2'],
       t['products.onboarding.feature3'],
     ],
-    color: 'accent1',
+    color: 'accent1' as const,
   },
   {
     icon: '📝',
@@ -51,7 +71,7 @@ const products = [
       t['products.proposal.feature2'],
       t['products.proposal.feature3'],
     ],
-    color: 'accent2',
+    color: 'accent2' as const,
   },
   {
     icon: '👥',
@@ -61,7 +81,7 @@ const products = [
       t['products.crm.feature2'],
       t['products.crm.feature3'],
     ],
-    color: 'primary',
+    color: 'primary' as const,
   },
   {
     icon: '💳',
@@ -71,7 +91,7 @@ const products = [
       t['products.invoice.feature2'],
       t['products.invoice.feature3'],
     ],
-    color: 'secondary',
+    color: 'secondary' as const,
   },
   {
     icon: '✨',
@@ -81,7 +101,7 @@ const products = [
       t['products.personalization.feature2'],
       t['products.personalization.feature3'],
     ],
-    color: 'accent1',
+    color: 'accent1' as const,
   },
   {
     icon: '🗄️',
@@ -91,7 +111,7 @@ const products = [
       t['products.database.feature2'],
       t['products.database.feature3'],
     ],
-    color: 'accent2',
+    color: 'accent2' as const,
   },
 ];
 ---
@@ -163,8 +183,8 @@ const products = [
             <div class="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0">
               <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow h-full flex flex-col">
 
-                {/* Icon */}
-                <div class={`text-5xl mb-6 w-16 h-16 rounded-xl bg-gradient-to-br from-${product.color} to-${product.color}/60 flex items-center justify-center`}>
+                {/* Icon with mapped gradient classes */}
+                <div class={`text-5xl mb-6 w-16 h-16 rounded-xl ${colorVariants[product.color].gradient} flex items-center justify-center`}>
                   {product.icon}
                 </div>
 
@@ -173,11 +193,11 @@ const products = [
                   {product.title}
                 </h3>
 
-                {/* Features */}
+                {/* Features with mapped icon color */}
                 <ul class="space-y-3 flex-grow">
                   {product.features.map((feature) => (
                     <li class="flex items-start gap-3">
-                      <svg class={`w-5 h-5 text-${product.color} mt-0.5 flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg class={`w-5 h-5 ${colorVariants[product.color].icon} mt-0.5 flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                       </svg>
                       <span class="text-gray-700 text-sm leading-relaxed">{feature}</span>
