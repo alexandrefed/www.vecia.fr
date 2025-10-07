@@ -98,49 +98,33 @@ const cases = [
     <div
       x-data="{
         activeTab: 0,
-        slideOpacities: [1, 0.3, 0.3, 0.3],
+        enteringSlide: null,
 
         selectTab(index) {
           this.activeTab = index;
-          // Smooth scroll to the selected panel
-          const container = this.$refs.scrollContainer;
+          // Smooth scroll page to bring the selected panel into view
           const targetPanel = this.$refs['panel' + index];
-          const targetScroll = targetPanel.offsetTop - container.offsetTop;
-          container.scrollTo({
-            top: targetScroll,
-            behavior: 'smooth'
+          targetPanel.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
           });
         },
 
-        handleScroll() {
-          const container = this.$refs.scrollContainer;
-          const scrollTop = container.scrollTop;
-          const containerHeight = container.clientHeight;
+        setEntering(index) {
+          this.enteringSlide = index;
+        },
 
-          // Calculate opacity for each slide based on scroll position
-          this.slideOpacities = this.slideOpacities.map((_, index) => {
-            const panel = this.$refs['panel' + index];
-            if (!panel) return 0.3;
+        setActive(index) {
+          this.activeTab = index;
+          this.enteringSlide = null;
+        },
 
-            const panelTop = panel.offsetTop - container.offsetTop;
-            const panelCenter = panelTop + (panel.offsetHeight / 2);
-            const viewportCenter = scrollTop + (containerHeight / 2);
-            const distance = Math.abs(panelCenter - viewportCenter);
-            const maxDistance = containerHeight;
-
-            // Calculate opacity: 1 when centered, fades to 0.3 as it moves away
-            const opacity = Math.max(0.3, 1 - (distance / maxDistance) * 0.7);
-
-            // Update activeTab when slide is most centered
-            if (opacity > 0.8 && this.activeTab !== index) {
-              this.activeTab = index;
-            }
-
-            return opacity;
-          });
+        setExiting(index) {
+          if (this.activeTab === index) {
+            this.enteringSlide = null;
+          }
         }
       }"
-      x-init="handleScroll()"
       class="max-w-6xl mx-auto"
     >
 
@@ -157,19 +141,22 @@ const cases = [
         ))}
       </div>
 
-      <!-- Vertical Scroll Container -->
-      <div
-        x-ref="scrollContainer"
-        @scroll.throttle.100ms="handleScroll()"
-        class="h-[600px] overflow-y-scroll no-scrollbar scroll-smooth py-4"
-      >
+      <!-- Sticky Container for Stacked Cards Effect -->
+      <div class="relative" style="height: calc(700px * 4);">
 
-        <!-- Content Panels -->
+        <!-- Content Panels - Stacked at Same Position -->
         {cases.map((caseStudy, index) => (
           <div
             x-ref={'panel' + index}
-            class="min-h-[450px] flex items-center justify-center transition-opacity duration-300 mb-6 last:mb-0"
-            :style={`'opacity: ' + slideOpacities[${index}]`}
+            x-intersect.threshold.10={`setEntering(${index})`}
+            x-intersect.threshold.70={`setActive(${index})`}
+            x-intersect:leave={`setExiting(${index})`}
+            class="sticky top-20 h-[700px] flex items-center justify-center transition-all duration-[800ms]"
+            :class={`{
+              'opacity-40 scale-95': enteringSlide === ${index} && activeTab !== ${index},
+              'opacity-100 scale-100': activeTab === ${index},
+              'opacity-20 scale-95': activeTab !== ${index} && enteringSlide !== ${index}
+            }`}
           >
 
             <!-- Panel Content -->

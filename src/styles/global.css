@@ -53,6 +53,10 @@
 }
 
 .snap-mandatory {
+  scroll-snap-type: y mandatory;
+}
+
+.snap-stop-always {
   scroll-snap-stop: always;
 }
 
