@@ -161,14 +161,14 @@ const cases = [
       <div
         x-ref="scrollContainer"
         @scroll.throttle.100ms="handleScroll()"
-        class="h-[600px] overflow-y-scroll no-scrollbar scroll-smooth py-8"
+        class="h-[600px] overflow-y-scroll no-scrollbar scroll-smooth py-4"
       >
 
         <!-- Content Panels -->
         {cases.map((caseStudy, index) => (
           <div
             x-ref={'panel' + index}
-            class="min-h-[600px] flex items-center justify-center transition-opacity duration-300 mb-8 last:mb-0"
+            class="min-h-[450px] flex items-center justify-center transition-opacity duration-300 mb-6 last:mb-0"
             :style={`'opacity: ' + slideOpacities[${index}]`}
           >
 
@@ -176,7 +176,7 @@ const cases = [
             <div class={`bg-white rounded-2xl shadow-2xl shadow-secondary/30 border-2 border-gray-100 w-full max-w-5xl mx-auto grid grid-cols-1 ${index % 2 === 1 ? (caseStudy.gridClass === 'md:grid-cols-[35%_65%]' ? 'md:grid-cols-[65%_35%]' : 'md:grid-cols-[60%_40%]') : caseStudy.gridClass} overflow-hidden`}>
 
               <!-- Image Column -->
-              <div class={`relative h-[300px] md:h-full bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center p-8 ${index % 2 === 1 ? 'md:order-2' : ''}`}>
+              <div class={`relative h-[250px] md:h-auto bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center p-6 ${index % 2 === 1 ? 'md:order-2' : ''}`}>
                 <img
                   src={caseStudy.image}
                   alt={`${caseStudy.industry} automation case study`}
@@ -186,7 +186,7 @@ const cases = [
               </div>
 
               <!-- Content Column -->
-              <div class={`p-6 md:p-8 lg:p-12 ${index % 2 === 1 ? 'md:order-1' : ''}`}>
+              <div class={`p-6 md:p-6 lg:p-8 ${index % 2 === 1 ? 'md:order-1' : ''}`}>
 
               <!-- Industry Badge -->
               <div class="inline-block mb-4">
@@ -201,7 +201,7 @@ const cases = [
               </div>
 
               <!-- Headline -->
-              <h3 class="font-display text-2xl md:text-3xl font-bold text-gray-800 mb-6">
+              <h3 class="font-display text-xl md:text-2xl font-bold text-gray-800 mb-4">
                 {caseStudy.headline}{' '}
                 <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   {caseStudy.headlineHighlight}
@@ -209,7 +209,7 @@ const cases = [
               </h3>
 
               <!-- Challenge / Solution / Result Grid -->
-              <div class="grid md:grid-cols-3 gap-4 mb-8">
+              <div class="grid md:grid-cols-3 gap-3 mb-6">
 
                 <!-- Challenge -->
                 <div class="bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg p-4">
@@ -246,14 +246,14 @@ const cases = [
               </div>
 
               <!-- Metric Highlight -->
-              <div class="text-center py-6 bg-gradient-to-br from-secondary/10 to-primary/5 rounded-xl">
-                <div class="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
+              <div class="text-center py-4 bg-gradient-to-br from-secondary/10 to-primary/5 rounded-xl">
+                <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-1">
                   {caseStudy.metric}
                 </div>
-                <p class="text-lg font-semibold text-gray-800 mb-1">
+                <p class="text-base font-semibold text-gray-800 mb-1">
                   {caseStudy.metricLabel}
                 </p>
-                <p class="text-sm text-gray-600">
+                <p class="text-xs text-gray-600">
                   {caseStudy.impact}
                 </p>
               </div>
