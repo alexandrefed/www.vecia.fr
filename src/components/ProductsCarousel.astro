@@ -11,114 +11,87 @@ const { lang } = Astro.props;
 import { ui } from '../i18n/ui';
 const t = ui[lang];
 
-// Color variant mapping (required for Tailwind v4 static analysis)
-const colorVariants = {
-  primary: {
-    gradient: 'bg-gradient-to-br from-primary to-primary/60',
-    icon: 'text-primary',
-  },
-  secondary: {
-    gradient: 'bg-gradient-to-br from-secondary to-secondary/60',
-    icon: 'text-secondary',
-  },
-  accent1: {
-    gradient: 'bg-gradient-to-br from-accent1 to-accent1/60',
-    icon: 'text-accent1',
-  },
-  accent2: {
-    gradient: 'bg-gradient-to-br from-accent2 to-accent2/60',
-    icon: 'text-accent2',
-  },
-} as const;
-
-// Products data structure with icons
+// Products data structure with Hugeicons
 const products = [
   {
-    icon: '📊',
+    icon: 'hgi-analytics-up',
     title: t['products.analytics.title'],
     features: [
       t['products.analytics.feature1'],
       t['products.analytics.feature2'],
       t['products.analytics.feature3'],
     ],
-    color: 'primary' as const,
   },
   {
-    icon: '🎯',
+    icon: 'hgi-target-01',
     title: t['products.sales.title'],
     features: [
       t['products.sales.feature1'],
       t['products.sales.feature2'],
       t['products.sales.feature3'],
     ],
-    color: 'secondary' as const,
   },
   {
-    icon: '🚀',
+    icon: 'hgi-rocket-01',
     title: t['products.onboarding.title'],
     features: [
       t['products.onboarding.feature1'],
       t['products.onboarding.feature2'],
       t['products.onboarding.feature3'],
     ],
-    color: 'accent1' as const,
   },
   {
-    icon: '📝',
+    icon: 'hgi-contracts',
     title: t['products.proposal.title'],
     features: [
       t['products.proposal.feature1'],
       t['products.proposal.feature2'],
       t['products.proposal.feature3'],
     ],
-    color: 'accent2' as const,
   },
   {
-    icon: '👥',
+    icon: 'hgi-user-multiple-02',
     title: t['products.crm.title'],
     features: [
       t['products.crm.feature1'],
       t['products.crm.feature2'],
       t['products.crm.feature3'],
     ],
-    color: 'primary' as const,
   },
   {
-    icon: '💳',
+    icon: 'hgi-invoice-01',
     title: t['products.invoice.title'],
     features: [
       t['products.invoice.feature1'],
       t['products.invoice.feature2'],
       t['products.invoice.feature3'],
     ],
-    color: 'secondary' as const,
   },
   {
-    icon: '✨',
+    icon: 'hgi-magic-wand-01',
     title: t['products.personalization.title'],
     features: [
       t['products.personalization.feature1'],
       t['products.personalization.feature2'],
       t['products.personalization.feature3'],
     ],
-    color: 'accent1' as const,
   },
   {
-    icon: '🗄️',
+    icon: 'hgi-database-01',
     title: t['products.database.title'],
     features: [
       t['products.database.feature1'],
       t['products.database.feature2'],
       t['products.database.feature3'],
     ],
-    color: 'accent2' as const,
   },
 ];
 ---
 
-<!-- Alpine.js is REQUIRED here for carousel navigation state -->
-<!-- See docs/ALPINEJS-USAGE-GUIDE.md for when to use Alpine vs Tailwind -->
-<section class="relative bg-background py-20">
+<link rel="stylesheet" href="/src/styles/carousel-3d.css">
+
+<!-- Alpine.js is REQUIRED for 3D carousel state management -->
+<section class="relative bg-background py-20 overflow-x-hidden">
   <div class="max-w-7xl mx-auto px-8">
 
     <!-- Section Title -->
@@ -131,121 +104,185 @@ const products = [
       </p>
     </div>
 
-    <!-- Carousel with Alpine.js -->
+    <!-- 3D Carousel Container -->
     <div
       x-data="{
-        currentSlide: 0,
-        totalSlides: 8,
-        itemsPerView: 1,
-        maxSlides: 7,
+        currentIndex: 0,
+        totalProducts: 8,
+        isAnimating: false,
+        touchStartX: 0,
+        touchEndX: 0,
 
         init() {
-          this.updateItemsPerView();
-          window.addEventListener('resize', () => this.updateItemsPerView());
+          // Keyboard navigation
+          this.$el.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+              e.preventDefault();
+              this.prev();
+            } else if (e.key === 'ArrowRight') {
+              e.preventDefault();
+              this.next();
+            }
+          });
+
+          // Touch events for mobile swipe
+          this.$el.addEventListener('touchstart', (e) => {
+            this.touchStartX = e.changedTouches[0].screenX;
+          });
+
+          this.$el.addEventListener('touchend', (e) => {
+            this.touchEndX = e.changedTouches[0].screenX;
+            this.handleSwipe();
+          });
         },
 
-        updateItemsPerView() {
-          if (window.innerWidth >= 1024) {
-            this.itemsPerView = 3;
-            this.maxSlides = 5; // 8 items - 3 visible = 5 max index
-          } else if (window.innerWidth >= 640) {
-            this.itemsPerView = 2;
-            this.maxSlides = 6; // 8 items - 2 visible = 6 max index
-          } else {
-            this.itemsPerView = 1;
-            this.maxSlides = 7; // 8 items - 1 visible = 7 max index
+        getPosition(index) {
+          const diff = index - this.currentIndex;
+          const total = this.totalProducts;
+
+          // Normalize difference to handle circular array
+          let normalizedDiff = diff;
+          if (Math.abs(diff) > total / 2) {
+            normalizedDiff = diff > 0 ? diff - total : diff + total;
           }
+
+          if (normalizedDiff === 0) return 'center';
+          if (normalizedDiff === -1) return 'left-near';
+          if (normalizedDiff === 1) return 'right-near';
+          if (normalizedDiff === -2) return 'left-far';
+          if (normalizedDiff === 2) return 'right-far';
+          return 'hidden';
         },
 
         prev() {
-          this.currentSlide = Math.max(0, this.currentSlide - 1);
+          if (this.isAnimating) return;
+          this.isAnimating = true;
+          this.currentIndex = (this.currentIndex - 1 + this.totalProducts) % this.totalProducts;
+          setTimeout(() => { this.isAnimating = false; }, 500);
         },
 
         next() {
-          this.currentSlide = Math.min(this.maxSlides, this.currentSlide + 1);
+          if (this.isAnimating) return;
+          this.isAnimating = true;
+          this.currentIndex = (this.currentIndex + 1) % this.totalProducts;
+          setTimeout(() => { this.isAnimating = false; }, 500);
         },
 
         goTo(index) {
-          this.currentSlide = Math.min(Math.max(0, index), this.maxSlides);
+          if (this.isAnimating || index === this.currentIndex) return;
+          this.isAnimating = true;
+          this.currentIndex = index;
+          setTimeout(() => { this.isAnimating = false; }, 500);
+        },
+
+        handleSwipe() {
+          const swipeThreshold = 50;
+          const diff = this.touchStartX - this.touchEndX;
+
+          if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+              this.next();
+            } else {
+              this.prev();
+            }
+          }
         }
       }"
       x-init="init()"
-      class="relative"
+      class="carousel-3d-container"
+      tabindex="0"
+      role="region"
+      aria-label="Product carousel"
+      aria-live="polite"
     >
 
-      <!-- Carousel Track -->
-      <div class="overflow-hidden relative">
-        <div
-          :style="`transform: translateX(-${currentSlide * (100 / itemsPerView)}%); transition: transform 0.5s ease-in-out;`"
-          class="flex gap-6"
-        >
-          {products.map((product, index) => (
-            <div class="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0">
-              <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow h-full flex flex-col">
+      <!-- 3D Card Track -->
+      <div class="carousel-3d-track" role="list">
+        {products.map((product, index) => (
+          <article
+            class="product-card-3d"
+            x-data={`{ cardIndex: ${index} }`}
+            :data-position="getPosition(cardIndex)"
+            @click="goTo(cardIndex)"
+            role="listitem"
+            tabindex={index === 0 ? '0' : '-1'}
+            :tabindex="getPosition(cardIndex) === 'center' ? '0' : '-1'"
+            aria-label={`Product ${index + 1} of ${products.length}: ${product.title}`}
+            :aria-current="getPosition(cardIndex) === 'center' ? 'true' : 'false'"
+          >
 
-                {/* Icon with mapped gradient classes */}
-                <div class={`text-5xl mb-6 w-16 h-16 rounded-xl ${colorVariants[product.color].gradient} flex items-center justify-center`}>
-                  {product.icon}
-                </div>
-
-                {/* Title */}
-                <h3 class="text-xl font-heading font-bold text-gray-800 mb-4">
-                  {product.title}
-                </h3>
-
-                {/* Features with mapped icon color */}
-                <ul class="space-y-3 flex-grow">
-                  {product.features.map((feature) => (
-                    <li class="flex items-start gap-3">
-                      <svg class={`w-5 h-5 ${colorVariants[product.color].icon} mt-0.5 flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                      <span class="text-gray-700 text-sm leading-relaxed">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-              </div>
+            <!-- Icon Container -->
+            <div class="product-card-icon" aria-hidden="true">
+              <i class={`hgi-stroke ${product.icon}`}></i>
             </div>
-          ))}
-        </div>
+
+            <!-- Product Title -->
+            <h3 class="product-card-title">
+              {product.title}
+            </h3>
+
+            <!-- Features List -->
+            <ul class="product-card-features">
+              {product.features.map((feature) => (
+                <li>{feature}</li>
+              ))}
+            </ul>
+
+          </article>
+        ))}
       </div>
 
       <!-- Navigation Arrows -->
-      <button
-        @click="prev()"
-        :disabled="currentSlide === 0"
-        :class="{ 'opacity-30 cursor-not-allowed': currentSlide === 0 }"
-        class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-800 hover:bg-gray-50 transition-all z-10"
-      >
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-        </svg>
-      </button>
+      <nav class="carousel-nav-3d left" aria-label="Previous product">
+        <button
+          @click="prev()"
+          class="carousel-nav-btn"
+          aria-label="View previous product"
+          type="button"
+        >
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+      </nav>
 
-      <button
-        @click="next()"
-        :disabled="currentSlide === maxSlides"
-        :class="{ 'opacity-30 cursor-not-allowed': currentSlide === maxSlides }"
-        class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-800 hover:bg-gray-50 transition-all z-10"
-      >
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-        </svg>
-      </button>
+      <nav class="carousel-nav-3d right" aria-label="Next product">
+        <button
+          @click="next()"
+          class="carousel-nav-btn"
+          aria-label="View next product"
+          type="button"
+        >
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+      </nav>
 
       <!-- Dot Indicators -->
-      <div class="flex justify-center gap-2 mt-8">
-        <template x-for="i in (totalSlides - itemsPerView + 1)" :key="i">
+      <div class="carousel-dots-3d" role="tablist" aria-label="Product selection">
+        {products.map((_, index) => (
           <button
-            @click="goTo(i - 1)"
-            :class="{ 'bg-primary w-8': currentSlide === i - 1, 'bg-gray-300 w-2': currentSlide !== i - 1 }"
-            class="h-2 rounded-full transition-all"
+            x-data={`{ dotIndex: ${index} }`}
+            @click="goTo(dotIndex)"
+            :class="{ 'active': currentIndex === dotIndex }"
+            class="carousel-dot"
+            role="tab"
+            :aria-selected="currentIndex === dotIndex ? 'true' : 'false'"
+            aria-label={`Go to product ${index + 1}`}
+            type="button"
           ></button>
-        </template>
+        ))}
       </div>
 
     </div>
 
   </div>
 </section>
+
+<style>
+  /* Additional component-specific styles if needed */
+  :root {
+    --transition-smooth: 500ms;
+  }
+</style>
