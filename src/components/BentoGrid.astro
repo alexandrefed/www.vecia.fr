@@ -1,0 +1,439 @@
+---
+import type { Language } from '../i18n/ui';
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+
+// Translation keys
+import { ui } from '../i18n/ui';
+const t = ui[lang];
+---
+
+<!-- Alpine.js is REQUIRED for counter animations -->
+<section class="relative bg-background py-20">
+  <div class="max-w-7xl mx-auto px-8">
+
+    <!-- Section Title -->
+    <div class="mb-12 text-center">
+      <h2 class="font-display text-4xl font-bold text-gray-800 mb-4">
+        <span class="title-icon"></span>{t['journey.sectionTitle']}
+      </h2>
+    </div>
+
+    <!-- 3-Row Bento Grid -->
+    <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+
+      <!-- ============================================ -->
+      <!-- ROW 1: Understanding + Roadmap -->
+      <!-- ============================================ -->
+
+      <!-- Row 1 - Left: Understanding (1/3) -->
+      <div class="md:col-span-1 bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-100 hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+        <!-- Icon -->
+        <div class="w-14 h-14 bg-gradient-to-r from-primary/20 to-secondary/15 rounded-xl flex items-center justify-center mb-4">
+          <i class="hgi-stroke hgi-target-03 text-3xl text-primary"></i>
+        </div>
+
+        <!-- Title -->
+        <h3 class="font-display text-xl md:text-2xl font-bold text-gray-800 mb-3">
+          {t['journey.understanding.title']}
+        </h3>
+
+        <!-- Content -->
+        <p class="text-gray-600 mb-4">
+          {t['journey.understanding.content']}
+        </p>
+
+        <!-- Bullets -->
+        <ul class="space-y-2">
+          <li class="flex items-start gap-2">
+            <i class="hgi-stroke hgi-checkmark-circle-02 text-primary mt-1"></i>
+            <span class="text-gray-700">{t['journey.understanding.bullet1']}</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i class="hgi-stroke hgi-checkmark-circle-02 text-primary mt-1"></i>
+            <span class="text-gray-700">{t['journey.understanding.bullet2']}</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Row 1 - Right: Roadmap with 4-Step Flow (2/3) -->
+      <div class="md:col-span-2 bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-100 hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+        <!-- Title -->
+        <h3 class="font-display text-xl md:text-2xl font-bold text-gray-800 mb-2">
+          {t['journey.roadmap.title']}
+        </h3>
+        <p class="text-gray-600 mb-6">
+          {t['journey.roadmap.subtitle']}
+        </p>
+
+        <!-- 4-Step Horizontal Flow UI -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-4">
+
+          <!-- Step 1: Strategic Workshop -->
+          <div class="flex flex-col items-center text-center">
+            <div class="relative mb-4">
+              <!-- Numbered Gradient Circle with Icon -->
+              <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg">
+                <i class="hgi-stroke hgi-presentation-bar-chart-01 text-2xl text-white"></i>
+              </div>
+              <!-- Step Number Badge -->
+              <div class="absolute -top-1 -right-1 w-6 h-6 bg-white rounded-full border-2 border-primary flex items-center justify-center">
+                <span class="text-xs font-bold text-primary">1</span>
+              </div>
+              <!-- Connector Line (hidden on mobile) -->
+              <div class="hidden md:block absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-primary/30 to-transparent -translate-y-1/2"></div>
+            </div>
+            <h4 class="font-display font-bold text-gray-800 mb-2">{t['journey.roadmap.step1Title']}</h4>
+            <p class="text-sm text-gray-600 mb-2">{t['journey.roadmap.step1Desc']}</p>
+            <span id="workshopPrice" class="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              {t['journey.pricing.tier1.price']}
+            </span>
+          </div>
+
+          <!-- Step 2: Actionable Report -->
+          <div class="flex flex-col items-center text-center">
+            <div class="relative mb-4">
+              <div class="w-16 h-16 rounded-full bg-gradient-to-br from-secondary to-accent1 flex items-center justify-center shadow-lg">
+                <i class="hgi-stroke hgi-document-validation text-2xl text-white"></i>
+              </div>
+              <div class="absolute -top-1 -right-1 w-6 h-6 bg-white rounded-full border-2 border-secondary flex items-center justify-center">
+                <span class="text-xs font-bold text-secondary">2</span>
+              </div>
+              <div class="hidden md:block absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-secondary/30 to-transparent -translate-y-1/2"></div>
+            </div>
+            <h4 class="font-display font-bold text-gray-800 mb-2">{t['journey.roadmap.step2Title']}</h4>
+            <p class="text-sm text-gray-600">{t['journey.roadmap.step2Desc']}</p>
+          </div>
+
+          <!-- Step 3: Implementation Plan -->
+          <div class="flex flex-col items-center text-center">
+            <div class="relative mb-4">
+              <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent1 to-accent2 flex items-center justify-center shadow-lg">
+                <i class="hgi-stroke hgi-calendar-03 text-2xl text-white"></i>
+              </div>
+              <div class="absolute -top-1 -right-1 w-6 h-6 bg-white rounded-full border-2 border-accent1 flex items-center justify-center">
+                <span class="text-xs font-bold text-accent1">3</span>
+              </div>
+              <div class="hidden md:block absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-accent1/30 to-transparent -translate-y-1/2"></div>
+            </div>
+            <h4 class="font-display font-bold text-gray-800 mb-2">{t['journey.roadmap.step3Title']}</h4>
+            <p class="text-sm text-gray-600">{t['journey.roadmap.step3Desc']}</p>
+          </div>
+
+          <!-- Step 4: Delivery & Support -->
+          <div class="flex flex-col items-center text-center">
+            <div class="relative mb-4">
+              <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent2 to-primary flex items-center justify-center shadow-lg">
+                <i class="hgi-stroke hgi-rocket-01 text-2xl text-white"></i>
+              </div>
+              <div class="absolute -top-1 -right-1 w-6 h-6 bg-white rounded-full border-2 border-accent2 flex items-center justify-center">
+                <span class="text-xs font-bold text-accent2">4</span>
+              </div>
+            </div>
+            <h4 class="font-display font-bold text-gray-800 mb-2">{t['journey.roadmap.step4Title']}</h4>
+            <p class="text-sm text-gray-600">{t['journey.roadmap.step4Desc']}</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ============================================ -->
+      <!-- ROW 2: Pricing Cards + Impact Metrics -->
+      <!-- ============================================ -->
+
+      <!-- Row 2 - Left: 3 Pricing Cards (2/3) -->
+      <div class="md:col-span-2 bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-100">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+
+          <!-- Pricing Card 1: Quick Wins -->
+          <div class="relative bg-gradient-to-br from-primary/15 to-secondary/10 border-2 border-primary/20 rounded-xl p-6 hover:-translate-y-2 hover:shadow-2xl hover:border-primary/40 transition-all duration-300">
+            <h4 class="font-display font-bold text-lg text-gray-800 mb-2">
+              {t['journey.pricing.tier1.name']}
+            </h4>
+            <div class="mb-4">
+              <span id="tier1Price" class="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                {t['journey.pricing.tier1.price']}
+              </span>
+            </div>
+            <ul class="space-y-2">
+              <li class="flex items-start gap-2 text-sm">
+                <i class="hgi-stroke hgi-checkmark-circle-02 text-primary mt-0.5 flex-shrink-0"></i>
+                <span class="text-gray-700">{t['journey.pricing.tier1.feature1']}</span>
+              </li>
+              <li class="flex items-start gap-2 text-sm">
+                <i class="hgi-stroke hgi-checkmark-circle-02 text-primary mt-0.5 flex-shrink-0"></i>
+                <span class="text-gray-700">{t['journey.pricing.tier1.feature2']}</span>
+              </li>
+              <li class="flex items-start gap-2 text-sm">
+                <i class="hgi-stroke hgi-checkmark-circle-02 text-primary mt-0.5 flex-shrink-0"></i>
+                <span class="text-gray-700">{t['journey.pricing.tier1.feature3']}</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Pricing Card 2: Transformation (MOST POPULAR) -->
+          <div class="relative bg-gradient-to-br from-secondary/20 to-accent1/15 border-2 border-secondary shadow-lg shadow-secondary/20 rounded-xl p-6 hover:-translate-y-2 hover:shadow-2xl hover:shadow-secondary/30 transition-all duration-300">
+            <!-- Most Popular Badge -->
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+              <span class="px-3 py-1 bg-gradient-to-r from-secondary to-accent1 text-white text-xs font-bold rounded-full shadow-lg">
+                {t['journey.pricing.tier2.badge']}
+              </span>
+            </div>
+            <h4 class="font-display font-bold text-lg text-gray-800 mb-2 mt-2">
+              {t['journey.pricing.tier2.name']}
+            </h4>
+            <div class="mb-4">
+              <span id="tier2Price" class="text-3xl font-bold bg-gradient-to-r from-secondary to-accent1 bg-clip-text text-transparent">
+                {t['journey.pricing.tier2.price']}
+              </span>
+            </div>
+            <ul class="space-y-2">
+              <li class="flex items-start gap-2 text-sm">
+                <i class="hgi-stroke hgi-checkmark-circle-02 text-secondary mt-0.5 flex-shrink-0"></i>
+                <span class="text-gray-700">{t['journey.pricing.tier2.feature1']}</span>
+              </li>
+              <li class="flex items-start gap-2 text-sm">
+                <i class="hgi-stroke hgi-checkmark-circle-02 text-secondary mt-0.5 flex-shrink-0"></i>
+                <span class="text-gray-700">{t['journey.pricing.tier2.feature2']}</span>
+              </li>
+              <li class="flex items-start gap-2 text-sm">
+                <i class="hgi-stroke hgi-checkmark-circle-02 text-secondary mt-0.5 flex-shrink-0"></i>
+                <span class="text-gray-700">{t['journey.pricing.tier2.feature3']}</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Pricing Card 3: Enterprise Acceleration -->
+          <div class="relative bg-gradient-to-br from-accent1/15 to-accent2/10 border-2 border-accent1/20 rounded-xl p-6 hover:-translate-y-2 hover:shadow-2xl hover:border-accent1/40 transition-all duration-300">
+            <h4 class="font-display font-bold text-lg text-gray-800 mb-2">
+              {t['journey.pricing.tier3.name']}
+            </h4>
+            <div class="mb-4">
+              <span id="tier3Price" class="text-3xl font-bold bg-gradient-to-r from-accent1 to-accent2 bg-clip-text text-transparent">
+                {t['journey.pricing.tier3.price']}
+              </span>
+            </div>
+            <ul class="space-y-2">
+              <li class="flex items-start gap-2 text-sm">
+                <i class="hgi-stroke hgi-checkmark-circle-02 text-accent1 mt-0.5 flex-shrink-0"></i>
+                <span class="text-gray-700">{t['journey.pricing.tier3.feature1']}</span>
+              </li>
+              <li class="flex items-start gap-2 text-sm">
+                <i class="hgi-stroke hgi-checkmark-circle-02 text-accent1 mt-0.5 flex-shrink-0"></i>
+                <span class="text-gray-700">{t['journey.pricing.tier3.feature2']}</span>
+              </li>
+              <li class="flex items-start gap-2 text-sm">
+                <i class="hgi-stroke hgi-checkmark-circle-02 text-accent1 mt-0.5 flex-shrink-0"></i>
+                <span class="text-gray-700">{t['journey.pricing.tier3.feature3']}</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Row 2 - Right: Impact Metrics (1/3) -->
+      <div
+        class="md:col-span-1 bg-gradient-to-br from-secondary/20 to-accent1/15 rounded-xl p-6 md:p-8 shadow-lg shadow-secondary/10 border border-secondary/20"
+        x-data="{
+          costReduction: 0,
+          hoursSaved: 0,
+          productivityIncrease: 0,
+          hasAnimated: false,
+
+          animateCounters() {
+            if (this.hasAnimated) return;
+            this.hasAnimated = true;
+
+            // Animate cost reduction to 40
+            const costInterval = setInterval(() => {
+              if (this.costReduction >= 40) {
+                this.costReduction = 40;
+                clearInterval(costInterval);
+              } else {
+                this.costReduction += 2;
+              }
+            }, 50);
+
+            // Animate hours saved to 20
+            const hoursInterval = setInterval(() => {
+              if (this.hoursSaved >= 20) {
+                this.hoursSaved = 20;
+                clearInterval(hoursInterval);
+              } else {
+                this.hoursSaved += 1;
+              }
+            }, 100);
+
+            // Animate productivity to 300
+            const prodInterval = setInterval(() => {
+              if (this.productivityIncrease >= 300) {
+                this.productivityIncrease = 300;
+                clearInterval(prodInterval);
+              } else {
+                this.productivityIncrease += 15;
+              }
+            }, 50);
+          }
+        }"
+        x-init="
+          new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+              animateCounters();
+            }
+          }, { threshold: 0.5 }).observe($el);
+        "
+      >
+        <h4 class="font-display font-bold text-xl text-gray-800 mb-6 text-center">
+          {t['journey.impact.title']}
+        </h4>
+
+        <!-- Metric 1: Cost Reduction -->
+        <div class="mb-6 text-center">
+          <div class="w-12 h-12 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-3">
+            <i class="hgi-stroke hgi-arrow-down-01 text-xl text-white"></i>
+          </div>
+          <div>
+            <span x-text="costReduction" class="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">0</span>
+            <span class="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">%</span>
+          </div>
+          <p class="text-sm text-gray-600 mt-1">{t['journey.impact.metric1Label']}</p>
+        </div>
+
+        <!-- Metric 2: Hours Saved -->
+        <div class="mb-6 text-center">
+          <div class="w-12 h-12 bg-gradient-to-r from-secondary to-accent1 rounded-full flex items-center justify-center mx-auto mb-3">
+            <i class="hgi-stroke hgi-clock-02 text-xl text-white"></i>
+          </div>
+          <div>
+            <span x-text="hoursSaved" class="text-4xl font-bold bg-gradient-to-r from-secondary to-accent1 bg-clip-text text-transparent">0</span>
+            <span class="text-4xl font-bold bg-gradient-to-r from-secondary to-accent1 bg-clip-text text-transparent">+</span>
+          </div>
+          <p class="text-sm text-gray-600 mt-1">{t['journey.impact.metric2Label']}</p>
+        </div>
+
+        <!-- Metric 3: Productivity Increase -->
+        <div class="text-center">
+          <div class="w-12 h-12 bg-gradient-to-r from-accent1 to-accent2 rounded-full flex items-center justify-center mx-auto mb-3">
+            <i class="hgi-stroke hgi-arrow-up-01 text-xl text-white"></i>
+          </div>
+          <div>
+            <span x-text="productivityIncrease" class="text-4xl font-bold bg-gradient-to-r from-accent1 to-accent2 bg-clip-text text-transparent">0</span>
+            <span class="text-4xl font-bold bg-gradient-to-r from-accent1 to-accent2 bg-clip-text text-transparent">%</span>
+          </div>
+          <p class="text-sm text-gray-600 mt-1">{t['journey.impact.metric3Label']}</p>
+        </div>
+      </div>
+
+      <!-- ============================================ -->
+      <!-- ROW 3: Trust Badges + Future-Proofing -->
+      <!-- ============================================ -->
+
+      <!-- Row 3 - Left: Trust Badges (1/3) -->
+      <div class="md:col-span-1 bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-100">
+        <h4 class="font-display font-bold text-lg text-gray-800 mb-6 text-center">
+          {t['journey.trust.title']}
+        </h4>
+
+        <div class="space-y-4">
+          <!-- GDPR Badge -->
+          <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-primary/15 to-primary/20 rounded-lg border border-primary/30">
+            <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center flex-shrink-0">
+              <i class="hgi-stroke hgi-shield-01 text-white text-xl"></i>
+            </div>
+            <span class="font-semibold text-gray-800 text-sm">{t['journey.trust.gdprLabel']}</span>
+          </div>
+
+          <!-- SOC2 Badge -->
+          <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-secondary/15 to-secondary/20 rounded-lg border border-secondary/30">
+            <div class="w-10 h-10 bg-gradient-to-br from-secondary to-accent1 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i class="hgi-stroke hgi-shield-01 text-white text-xl"></i>
+            </div>
+            <span class="font-semibold text-gray-800 text-sm">{t['journey.trust.soc2Label']}</span>
+          </div>
+
+          <!-- ISO 27001 Badge -->
+          <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-accent1/15 to-accent1/20 rounded-lg border border-accent1/30">
+            <div class="w-10 h-10 bg-gradient-to-br from-accent1 to-accent2 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i class="hgi-stroke hgi-shield-01 text-white text-xl"></i>
+            </div>
+            <span class="font-semibold text-gray-800 text-sm">{t['journey.trust.isoLabel']}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3 - Right: Future-Proofing Grid (2/3) -->
+      <div class="md:col-span-2 bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-100">
+        <h4 class="font-display font-bold text-xl text-gray-800 mb-2">
+          {t['journey.futureProof.title']}
+        </h4>
+        <p class="text-gray-600 mb-6">
+          {t['journey.futureProof.subtitle']}
+        </p>
+
+        <!-- 2x2 Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          <!-- Feature 1: AI-Ready Infrastructure -->
+          <div class="p-4 bg-gradient-to-br from-primary/15 to-primary/20 rounded-lg border border-primary/30 hover:-translate-y-1 hover:shadow-lg hover:border-primary/50 transition-all duration-300">
+            <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center mb-3">
+              <i class="hgi-stroke hgi-server-stack-01 text-white text-lg"></i>
+            </div>
+            <h5 class="font-display font-bold text-gray-800 mb-2">
+              {t['journey.futureProof.feature1Title']}
+            </h5>
+            <p class="text-sm text-gray-600">
+              {t['journey.futureProof.feature1Desc']}
+            </p>
+          </div>
+
+          <!-- Feature 2: Competitive Intelligence -->
+          <div class="p-4 bg-gradient-to-br from-secondary/15 to-secondary/20 rounded-lg border border-secondary/30 hover:-translate-y-1 hover:shadow-lg hover:border-secondary/50 transition-all duration-300">
+            <div class="w-10 h-10 bg-gradient-to-br from-secondary to-accent1 rounded-lg flex items-center justify-center mb-3">
+              <i class="hgi-stroke hgi-target-01 text-white text-lg"></i>
+            </div>
+            <h5 class="font-display font-bold text-gray-800 mb-2">
+              {t['journey.futureProof.feature2Title']}
+            </h5>
+            <p class="text-sm text-gray-600">
+              {t['journey.futureProof.feature2Desc']}
+            </p>
+          </div>
+
+          <!-- Feature 3: Scalable Solutions -->
+          <div class="p-4 bg-gradient-to-br from-accent1/15 to-accent1/20 rounded-lg border border-accent1/30 hover:-translate-y-1 hover:shadow-lg hover:border-accent1/50 transition-all duration-300">
+            <div class="w-10 h-10 bg-gradient-to-br from-accent1 to-accent2 rounded-lg flex items-center justify-center mb-3">
+              <i class="hgi-stroke hgi-arrow-up-right-01 text-white text-lg"></i>
+            </div>
+            <h5 class="font-display font-bold text-gray-800 mb-2">
+              {t['journey.futureProof.feature3Title']}
+            </h5>
+            <p class="text-sm text-gray-600">
+              {t['journey.futureProof.feature3Desc']}
+            </p>
+          </div>
+
+          <!-- Feature 4: Industry Partnerships -->
+          <div class="p-4 bg-gradient-to-br from-accent2/15 to-accent2/20 rounded-lg border border-accent2/30 hover:-translate-y-1 hover:shadow-lg hover:border-accent2/50 transition-all duration-300">
+            <div class="w-10 h-10 bg-gradient-to-br from-accent2 to-primary rounded-lg flex items-center justify-center mb-3">
+              <i class="hgi-stroke hgi-agreement-01 text-white text-lg"></i>
+            </div>
+            <h5 class="font-display font-bold text-gray-800 mb-2">
+              {t['journey.futureProof.feature4Title']}
+            </h5>
+            <p class="text-sm text-gray-600">
+              {t['journey.futureProof.feature4Desc']}
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>

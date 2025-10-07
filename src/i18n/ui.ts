@@ -139,6 +139,74 @@ export const ui = {
     'products.database.feature2': 'Nettoyage et déduplication automatisés',
     'products.database.feature3': 'Optimisation et indexation intelligentes',
 
+    // Journey / Bento Grid
+    'journey.sectionTitle': 'Comment nous Procédons',
+
+    // Row 1: Understanding
+    'journey.understanding.title': 'Comprendre Votre Défi',
+    'journey.understanding.content': 'Consultation initiale et évaluation des besoins',
+    'journey.understanding.bullet1': 'Identification du défi',
+    'journey.understanding.bullet2': 'Alignement des objectifs',
+
+    // Row 1: Roadmap
+    'journey.roadmap.title': 'Votre Feuille de Route Transformation IA',
+    'journey.roadmap.subtitle': 'Une approche structurée pour implémenter l\'IA avec des résultats mesurables',
+    'journey.roadmap.step1Title': 'Atelier Stratégique',
+    'journey.roadmap.step1Desc': 'Consultation et analyse approfondie',
+    'journey.roadmap.step2Title': 'Rapport Actionnable',
+    'journey.roadmap.step2Desc': 'Insights détaillés et prochaines étapes',
+    'journey.roadmap.step3Title': 'Plan d\'Implémentation',
+    'journey.roadmap.step3Desc': 'Calendrier et configuration de l\'accord',
+    'journey.roadmap.step4Title': 'Livraison & Support',
+    'journey.roadmap.step4Desc': 'Lancement et optimisation continue',
+
+    // Row 2: Pricing
+    'journey.pricing.tier1.name': 'Victoires Rapides',
+    'journey.pricing.tier1.price': '€1,900',
+    'journey.pricing.tier1.feature1': '1 automatisation principale',
+    'journey.pricing.tier1.feature2': 'Implémentation 2 semaines',
+    'journey.pricing.tier1.feature3': 'Support 30 jours',
+
+    'journey.pricing.tier2.name': 'Transformation',
+    'journey.pricing.tier2.badge': 'LE PLUS POPULAIRE',
+    'journey.pricing.tier2.price': '€4,500',
+    'journey.pricing.tier2.feature1': '2-3 automatisations intégrées',
+    'journey.pricing.tier2.feature2': 'Implémentation 4 semaines',
+    'journey.pricing.tier2.feature3': 'Optimisation 90 jours',
+
+    'journey.pricing.tier3.name': 'Accélération Entreprise',
+    'journey.pricing.tier3.price': '€9,000',
+    'journey.pricing.tier3.feature1': 'Suite d\'automatisation complète',
+    'journey.pricing.tier3.feature2': 'Implémentation 6-8 semaines',
+    'journey.pricing.tier3.feature3': 'Partenariat 6 mois',
+
+    // Row 2: Impact
+    'journey.impact.title': 'Impact Business',
+    'journey.impact.metric1Value': '40',
+    'journey.impact.metric1Label': 'Réduction des Coûts',
+    'journey.impact.metric2Value': '20+',
+    'journey.impact.metric2Label': 'Heures Économisées par Semaine',
+    'journey.impact.metric3Value': '300',
+    'journey.impact.metric3Label': 'Augmentation de Productivité',
+
+    // Row 3: Trust
+    'journey.trust.title': 'Rejoignez les Implémenteurs IA à Succès',
+    'journey.trust.gdprLabel': 'GDPR Compliant',
+    'journey.trust.soc2Label': 'SOC2 (In Progress)',
+    'journey.trust.isoLabel': 'ISO 27001 Principles',
+
+    // Row 3: Future-Proof
+    'journey.futureProof.title': 'Pérennisez Votre Entreprise',
+    'journey.futureProof.subtitle': 'Gardez une longueur d\'avance avec des solutions IA évolutives',
+    'journey.futureProof.feature1Title': 'Infrastructure Prête pour l\'IA',
+    'journey.futureProof.feature1Desc': 'Architecture moderne et scalable',
+    'journey.futureProof.feature2Title': 'Intelligence Concurrentielle',
+    'journey.futureProof.feature2Desc': 'Analyse de marché en temps réel',
+    'journey.futureProof.feature3Title': 'Solutions Évolutives',
+    'journey.futureProof.feature3Desc': 'Croissance sans limites techniques',
+    'journey.futureProof.feature4Title': 'Partenariats Industriels',
+    'journey.futureProof.feature4Desc': 'Réseau de partenaires technologiques',
+
     // Common
     'common.currency': 'EUR',
     'common.loading': 'Chargement...',
@@ -283,6 +351,74 @@ export const ui = {
     'products.database.feature1': 'Data synchronization and migration',
     'products.database.feature2': 'Automated cleaning and deduplication',
     'products.database.feature3': 'Intelligent optimization and indexing',
+
+    // Journey / Bento Grid
+    'journey.sectionTitle': 'How We Proceed',
+
+    // Row 1: Understanding
+    'journey.understanding.title': 'Understanding Your Challenge',
+    'journey.understanding.content': 'Initial consultation and needs assessment',
+    'journey.understanding.bullet1': 'Challenge identification',
+    'journey.understanding.bullet2': 'Goal alignment',
+
+    // Row 1: Roadmap
+    'journey.roadmap.title': 'Your AI Transformation Roadmap',
+    'journey.roadmap.subtitle': 'A structured approach to implementing AI with measurable results',
+    'journey.roadmap.step1Title': 'Strategic Workshop',
+    'journey.roadmap.step1Desc': 'Consultation and in-depth analysis',
+    'journey.roadmap.step2Title': 'Actionable Report',
+    'journey.roadmap.step2Desc': 'Detailed insights and next steps',
+    'journey.roadmap.step3Title': 'Implementation Plan',
+    'journey.roadmap.step3Desc': 'Timeline and agreement configuration',
+    'journey.roadmap.step4Title': 'Delivery & Support',
+    'journey.roadmap.step4Desc': 'Launch and continuous optimization',
+
+    // Row 2: Pricing
+    'journey.pricing.tier1.name': 'Quick Wins',
+    'journey.pricing.tier1.price': '$2,100',
+    'journey.pricing.tier1.feature1': '1 main automation',
+    'journey.pricing.tier1.feature2': '2-week implementation',
+    'journey.pricing.tier1.feature3': '30-day support',
+
+    'journey.pricing.tier2.name': 'Transformation',
+    'journey.pricing.tier2.badge': 'MOST POPULAR',
+    'journey.pricing.tier2.price': '$4,900',
+    'journey.pricing.tier2.feature1': '2-3 integrated automations',
+    'journey.pricing.tier2.feature2': '4-week implementation',
+    'journey.pricing.tier2.feature3': '90-day optimization',
+
+    'journey.pricing.tier3.name': 'Enterprise Acceleration',
+    'journey.pricing.tier3.price': '$9,900',
+    'journey.pricing.tier3.feature1': 'Full automation suite',
+    'journey.pricing.tier3.feature2': '6-8 week implementation',
+    'journey.pricing.tier3.feature3': '6-month partnership',
+
+    // Row 2: Impact
+    'journey.impact.title': 'Business Impact',
+    'journey.impact.metric1Value': '40',
+    'journey.impact.metric1Label': 'Cost Reduction',
+    'journey.impact.metric2Value': '20+',
+    'journey.impact.metric2Label': 'Hours Saved Per Week',
+    'journey.impact.metric3Value': '300',
+    'journey.impact.metric3Label': 'Productivity Increase',
+
+    // Row 3: Trust
+    'journey.trust.title': 'Join Successful AI Implementers',
+    'journey.trust.gdprLabel': 'GDPR Compliant',
+    'journey.trust.soc2Label': 'SOC2 (In Progress)',
+    'journey.trust.isoLabel': 'ISO 27001 Principles',
+
+    // Row 3: Future-Proof
+    'journey.futureProof.title': 'Future-Proof Your Business',
+    'journey.futureProof.subtitle': 'Stay ahead with scalable AI solutions',
+    'journey.futureProof.feature1Title': 'AI-Ready Infrastructure',
+    'journey.futureProof.feature1Desc': 'Modern and scalable architecture',
+    'journey.futureProof.feature2Title': 'Competitive Intelligence',
+    'journey.futureProof.feature2Desc': 'Real-time market analysis',
+    'journey.futureProof.feature3Title': 'Scalable Solutions',
+    'journey.futureProof.feature3Desc': 'Growth without technical limits',
+    'journey.futureProof.feature4Title': 'Industry Partnerships',
+    'journey.futureProof.feature4Desc': 'Network of technology partners',
 
     // Common
     'common.currency': 'USD',
