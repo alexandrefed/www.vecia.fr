@@ -211,8 +211,8 @@ export const ui = {
     'journey.futureProof.feature4Desc': 'Réseau de partenaires technologiques',
 
     // Business Cases
-    'cases.sectionTitle': 'Résultats Réels de',
-    'cases.sectionTitleHighlight': 'Vraies Entreprises',
+    'cases.sectionTitle': 'Résultats Concrets',
+    'cases.sectionTitleHighlight': 'd\'Entreprises Accompagnées',
     'cases.sectionSubtitle': 'Découvrez comment les entreprises de tous secteurs économisent du temps, augmentent leurs revenus et améliorent leur efficacité avec nos solutions d\'automatisation IA.',
 
     // Case 1: E-commerce
@@ -228,8 +228,8 @@ export const ui = {
 
     // Case 2: Education
     'cases.case2.industry': 'Éducation',
-    'cases.case2.headline': 'Les Publicités Intelligentes Génèrent',
-    'cases.case2.headlineHighlight': 'la Croissance des Cours',
+    'cases.case2.headline': 'Les Publicités Intelligentes',
+    'cases.case2.headlineHighlight': 'Augmentent les Inscriptions',
     'cases.case2.challenge': 'Création manuelle de publicités, ciblage approximatif et gestion chronophage des campagnes',
     'cases.case2.solution': 'Automatisation des publicités Meta propulsée par IA avec optimisation dynamique d\'audience et tests A/B',
     'cases.case2.result': 'Augmentation significative des inscriptions aux cours grâce au ciblage optimisé',
@@ -245,19 +245,19 @@ export const ui = {
     'cases.case3.solution': 'Assistant IA gérant la boîte de réception, planification, résumés de réunions et suivis automatisés',
     'cases.case3.result': 'Amélioration spectaculaire des temps de réponse client et de l\'efficacité de communication',
     'cases.case3.metric': '3x',
-    'cases.case3.metricLabel': 'de réponse plus rapide',
+    'cases.case3.metricLabel': 'plus rapide',
     'cases.case3.impact': 'De plus de 24h à 8h en moyenne',
 
     // Case 4: Logistics
     'cases.case4.industry': 'Logistique',
-    'cases.case4.headline': 'Communication Proactive',
-    'cases.case4.headlineHighlight': 'Fidélise les Clients',
+    'cases.case4.headline': 'Une Communication Proactive',
+    'cases.case4.headlineHighlight': 'Satisfait les Clients',
     'cases.case4.challenge': 'Clients frustrés par le manque de visibilité sur les retards fournisseurs et mises à jour de livraison',
     'cases.case4.solution': 'Système de notification automatisé suivant les expéditions et alertant proactivement les clients des changements',
-    'cases.case4.result': 'Amélioration significative de la fidélisation client grâce à une communication transparente',
-    'cases.case4.metric': '+22%',
-    'cases.case4.metricLabel': 'd\'augmentation de la fidélisation',
-    'cases.case4.impact': 'De 78% à 95% de taux de fidélisation',
+    'cases.case4.result': 'Amélioration significative de la satisfaction client grâce à une communication transparente',
+    'cases.case4.metric': '4.2/5',
+    'cases.case4.metricLabel': 'score de satisfaction client',
+    'cases.case4.impact': 'Passant de 3.1/5 à 4.2/5 en moyenne',
 
     // Common
     'common.currency': 'EUR',

@@ -8,6 +8,14 @@ interface Props {
 const { lang = 'fr' } = Astro.props;
 const t = ui[lang];
 
+// Image paths for each case study
+const imageMap = [
+  '/images/case-ecommerce.png',
+  '/images/case-education.png',
+  '/images/case-services.png',
+  '/images/case-logistics.png',
+];
+
 // Build case studies array from translations
 const cases = [
   {
@@ -20,6 +28,9 @@ const cases = [
     metric: t['cases.case1.metric'],
     metricLabel: t['cases.case1.metricLabel'],
     impact: t['cases.case1.impact'],
+    image: imageMap[0],
+    aspectRatio: '3/2', // Landscape
+    gridClass: 'md:grid-cols-[40%_60%]',
   },
   {
     industry: t['cases.case2.industry'],
@@ -31,6 +42,9 @@ const cases = [
     metric: t['cases.case2.metric'],
     metricLabel: t['cases.case2.metricLabel'],
     impact: t['cases.case2.impact'],
+    image: imageMap[1],
+    aspectRatio: '1/1', // Square
+    gridClass: 'md:grid-cols-[40%_60%]',
   },
   {
     industry: t['cases.case3.industry'],
@@ -42,6 +56,9 @@ const cases = [
     metric: t['cases.case3.metric'],
     metricLabel: t['cases.case3.metricLabel'],
     impact: t['cases.case3.impact'],
+    image: imageMap[2],
+    aspectRatio: '2/3', // Portrait
+    gridClass: 'md:grid-cols-[35%_65%]',
   },
   {
     industry: t['cases.case4.industry'],
@@ -53,6 +70,9 @@ const cases = [
     metric: t['cases.case4.metric'],
     metricLabel: t['cases.case4.metricLabel'],
     impact: t['cases.case4.impact'],
+    image: imageMap[3],
+    aspectRatio: '3/2', // Landscape
+    gridClass: 'md:grid-cols-[40%_60%]',
   },
 ];
 ---
@@ -64,8 +84,7 @@ const cases = [
     <!-- Section Header -->
     <div class="text-center mb-12">
       <h2 class="font-display text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-        <span class="inline-block mr-2">■</span>
-        {t['cases.sectionTitle']}
+        <span class="title-icon"></span>{t['cases.sectionTitle']}
         <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
           {t['cases.sectionTitleHighlight']}
         </span>
@@ -79,16 +98,49 @@ const cases = [
     <div
       x-data="{
         activeTab: 0,
+        slideOpacities: [1, 0.3, 0.3, 0.3],
 
         selectTab(index) {
           this.activeTab = index;
           // Smooth scroll to the selected panel
-          this.$refs['panel' + index].scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
+          const container = this.$refs.scrollContainer;
+          const targetPanel = this.$refs['panel' + index];
+          const targetScroll = targetPanel.offsetTop - container.offsetTop;
+          container.scrollTo({
+            top: targetScroll,
+            behavior: 'smooth'
+          });
+        },
+
+        handleScroll() {
+          const container = this.$refs.scrollContainer;
+          const scrollTop = container.scrollTop;
+          const containerHeight = container.clientHeight;
+
+          // Calculate opacity for each slide based on scroll position
+          this.slideOpacities = this.slideOpacities.map((_, index) => {
+            const panel = this.$refs['panel' + index];
+            if (!panel) return 0.3;
+
+            const panelTop = panel.offsetTop - container.offsetTop;
+            const panelCenter = panelTop + (panel.offsetHeight / 2);
+            const viewportCenter = scrollTop + (containerHeight / 2);
+            const distance = Math.abs(panelCenter - viewportCenter);
+            const maxDistance = containerHeight;
+
+            // Calculate opacity: 1 when centered, fades to 0.3 as it moves away
+            const opacity = Math.max(0.3, 1 - (distance / maxDistance) * 0.7);
+
+            // Update activeTab when slide is most centered
+            if (opacity > 0.8 && this.activeTab !== index) {
+              this.activeTab = index;
+            }
+
+            return opacity;
           });
         }
       }"
+      x-init="handleScroll()"
       class="max-w-6xl mx-auto"
     >
 
@@ -106,19 +158,35 @@ const cases = [
       </div>
 
       <!-- Vertical Scroll Container -->
-      <div class="snap-y snap-mandatory h-[600px] overflow-y-scroll no-scrollbar">
+      <div
+        x-ref="scrollContainer"
+        @scroll.throttle.100ms="handleScroll()"
+        class="h-[600px] overflow-y-scroll no-scrollbar scroll-smooth py-8"
+      >
 
         <!-- Content Panels -->
         {cases.map((caseStudy, index) => (
           <div
-            x-ref={`panel${index}`}
-            x-intersect.threshold.50={`activeTab = ${index}`}
-            class="snap-start h-full opacity-0 transition-opacity duration-500 flex items-center"
-            :class={`activeTab === ${index} ? 'opacity-100' : 'opacity-30'`}
+            x-ref={'panel' + index}
+            class="min-h-[600px] flex items-center justify-center transition-opacity duration-300 mb-8 last:mb-0"
+            :style={`'opacity: ' + slideOpacities[${index}]`}
           >
 
             <!-- Panel Content -->
-            <div class="bg-white rounded-2xl p-8 md:p-12 shadow-xl shadow-secondary/20 border border-white/30 w-full max-w-4xl mx-auto">
+            <div class={`bg-white rounded-2xl shadow-2xl shadow-secondary/30 border-2 border-gray-100 w-full max-w-5xl mx-auto grid grid-cols-1 ${index % 2 === 1 ? (caseStudy.gridClass === 'md:grid-cols-[35%_65%]' ? 'md:grid-cols-[65%_35%]' : 'md:grid-cols-[60%_40%]') : caseStudy.gridClass} overflow-hidden`}>
+
+              <!-- Image Column -->
+              <div class={`relative h-[300px] md:h-full bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center p-8 ${index % 2 === 1 ? 'md:order-2' : ''}`}>
+                <img
+                  src={caseStudy.image}
+                  alt={`${caseStudy.industry} automation case study`}
+                  class="max-w-full max-h-full object-contain rounded-xl"
+                  style={`aspect-ratio: ${caseStudy.aspectRatio}`}
+                />
+              </div>
+
+              <!-- Content Column -->
+              <div class={`p-6 md:p-8 lg:p-12 ${index % 2 === 1 ? 'md:order-1' : ''}`}>
 
               <!-- Industry Badge -->
               <div class="inline-block mb-4">
@@ -147,7 +215,7 @@ const cases = [
                 <div class="bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg p-4">
                   <h4 class="font-bold text-sm text-primary mb-2 flex items-center gap-2">
                     <i class="hgi-stroke hgi-alert-circle text-lg"></i>
-                    Challenge
+                    {lang === 'fr' ? 'Défi' : 'Challenge'}
                   </h4>
                   <p class="text-sm text-gray-700 leading-relaxed">
                     {caseStudy.challenge}
@@ -169,7 +237,7 @@ const cases = [
                 <div class="bg-gradient-to-br from-accent1/10 to-accent1/5 rounded-lg p-4">
                   <h4 class="font-bold text-sm text-accent1 mb-2 flex items-center gap-2">
                     <i class="hgi-stroke hgi-checkmark-circle-02 text-lg"></i>
-                    Result
+                    {lang === 'fr' ? 'Résultat' : 'Result'}
                   </h4>
                   <p class="text-sm text-gray-700 leading-relaxed">
                     {caseStudy.result}
@@ -189,6 +257,8 @@ const cases = [
                   {caseStudy.impact}
                 </p>
               </div>
+
+              </div> <!-- End Content Column -->
 
             </div>
           </div>
