@@ -13,15 +13,18 @@ const t = ui[lang];
 ---
 
 <!-- Alpine.js is REQUIRED for counter animations -->
-<section class="relative bg-background py-20">
-  <div class="max-w-7xl mx-auto px-8">
+<section class="relative py-20 px-8">
+  <div class="max-w-7xl mx-auto">
 
-    <!-- Section Title -->
-    <div class="mb-12 text-center">
+    <!-- Section Title (Outside Purple Background) -->
+    <div class="mb-8 text-center">
       <h2 class="font-display text-4xl font-bold text-gray-800 mb-4">
         <span class="title-icon"></span>{t['journey.sectionTitle']}
       </h2>
     </div>
+
+    <!-- Purple Bento Background Container -->
+    <div class="bg-gradient-to-br from-secondary to-primary rounded-3xl p-8 md:p-12 shadow-2xl">
 
     <!-- 3-Row Bento Grid -->
     <div class="grid md:grid-cols-3 gap-6 md:gap-8">
@@ -31,16 +34,16 @@ const t = ui[lang];
       <!-- ============================================ -->
 
       <!-- Row 1 - Left: Understanding (1/3) -->
-      <div class="md:col-span-1 bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-100 hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
-        <!-- Icon -->
-        <div class="w-14 h-14 bg-gradient-to-r from-primary/20 to-secondary/15 rounded-xl flex items-center justify-center mb-4">
-          <i class="hgi-stroke hgi-target-03 text-3xl text-primary"></i>
+      <div class="md:col-span-1 bg-white rounded-xl p-6 md:p-8 shadow-xl shadow-secondary/20 border border-white/30 hover:shadow-2xl hover:shadow-secondary/30 hover:scale-[1.02] hover:bg-white/95 transition-all duration-300">
+        <!-- Icon + Title -->
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-14 h-14 bg-primary rounded-xl flex items-center justify-center flex-shrink-0">
+            <i class="hgi-stroke hgi-target-03 text-3xl text-white"></i>
+          </div>
+          <h3 class="font-display text-xl md:text-2xl font-bold text-gray-800">
+            {t['journey.understanding.title']}
+          </h3>
         </div>
-
-        <!-- Title -->
-        <h3 class="font-display text-xl md:text-2xl font-bold text-gray-800 mb-3">
-          {t['journey.understanding.title']}
-        </h3>
 
         <!-- Content -->
         <p class="text-gray-600 mb-4">
@@ -48,7 +51,7 @@ const t = ui[lang];
         </p>
 
         <!-- Bullets -->
-        <ul class="space-y-2">
+        <ul class="space-y-2 mb-6">
           <li class="flex items-start gap-2">
             <i class="hgi-stroke hgi-checkmark-circle-02 text-primary mt-1"></i>
             <span class="text-gray-700">{t['journey.understanding.bullet1']}</span>
@@ -58,10 +61,23 @@ const t = ui[lang];
             <span class="text-gray-700">{t['journey.understanding.bullet2']}</span>
           </li>
         </ul>
+
+        <!-- CTA Button -->
+        <div class="space-y-3">
+          <a
+            href="#contact"
+            class="block w-full bg-gradient-to-r from-primary to-secondary text-white font-bold py-3 px-6 rounded-lg text-center hover:shadow-lg hover:shadow-primary/30 hover:scale-[1.02] transition-all duration-300"
+          >
+            {t['journey.understanding.ctaText']}
+          </a>
+          <p class="text-xs text-center text-gray-500 font-medium">
+            {t['journey.understanding.freeLabel']}
+          </p>
+        </div>
       </div>
 
       <!-- Row 1 - Right: Roadmap with 4-Step Flow (2/3) -->
-      <div class="md:col-span-2 bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-100 hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+      <div class="md:col-span-2 bg-white rounded-xl p-6 md:p-8 shadow-xl shadow-secondary/20 border border-white/30 hover:shadow-2xl hover:shadow-secondary/30 hover:scale-[1.02] hover:bg-white/95 transition-all duration-300">
         <!-- Title -->
         <h3 class="font-display text-xl md:text-2xl font-bold text-gray-800 mb-2">
           {t['journey.roadmap.title']}
@@ -146,11 +162,16 @@ const t = ui[lang];
       <!-- ============================================ -->
 
       <!-- Row 2 - Left: 3 Pricing Cards (2/3) -->
-      <div class="md:col-span-2 bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-100">
+      <div class="md:col-span-2 bg-white rounded-xl p-6 md:p-8 shadow-xl shadow-secondary/20 border border-white/30 hover:shadow-2xl hover:shadow-secondary/30 hover:scale-[1.02] hover:bg-white/95 transition-all duration-300">
+        <!-- Section Title -->
+        <h3 class="font-display text-2xl font-bold text-gray-800 mb-6">
+          {t['journey.pricing.sectionTitle']}
+        </h3>
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
 
           <!-- Pricing Card 1: Quick Wins -->
-          <div class="relative bg-gradient-to-br from-primary/15 to-secondary/10 border-2 border-primary/20 rounded-xl p-6 hover:-translate-y-2 hover:shadow-2xl hover:border-primary/40 transition-all duration-300">
+          <div class="relative bg-gradient-to-br from-primary/25 to-secondary/20 border-2 border-primary/30 rounded-xl p-6 hover:-translate-y-2 hover:shadow-2xl hover:border-primary/50 transition-all duration-300">
             <h4 class="font-display font-bold text-lg text-gray-800 mb-2">
               {t['journey.pricing.tier1.name']}
             </h4>
@@ -176,10 +197,10 @@ const t = ui[lang];
           </div>
 
           <!-- Pricing Card 2: Transformation (MOST POPULAR) -->
-          <div class="relative bg-gradient-to-br from-secondary/20 to-accent1/15 border-2 border-secondary shadow-lg shadow-secondary/20 rounded-xl p-6 hover:-translate-y-2 hover:shadow-2xl hover:shadow-secondary/30 transition-all duration-300">
+          <div class="relative bg-gradient-to-br from-secondary/30 to-accent1/25 border-2 border-secondary shadow-lg shadow-secondary/20 rounded-xl p-6 hover:-translate-y-2 hover:shadow-2xl hover:shadow-secondary/30 transition-all duration-300">
             <!-- Most Popular Badge -->
-            <div class="absolute -top-3 left-1/2 -translate-x-1/2">
-              <span class="px-3 py-1 bg-gradient-to-r from-secondary to-accent1 text-white text-xs font-bold rounded-full shadow-lg">
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap">
+              <span class="px-4 py-1 bg-gradient-to-r from-secondary to-accent1 text-white text-[10px] font-bold rounded-full shadow-lg uppercase tracking-wide">
                 {t['journey.pricing.tier2.badge']}
               </span>
             </div>
@@ -208,7 +229,7 @@ const t = ui[lang];
           </div>
 
           <!-- Pricing Card 3: Enterprise Acceleration -->
-          <div class="relative bg-gradient-to-br from-accent1/15 to-accent2/10 border-2 border-accent1/20 rounded-xl p-6 hover:-translate-y-2 hover:shadow-2xl hover:border-accent1/40 transition-all duration-300">
+          <div class="relative bg-gradient-to-br from-accent1/25 to-accent2/20 border-2 border-accent1/30 rounded-xl p-6 hover:-translate-y-2 hover:shadow-2xl hover:border-accent1/50 transition-all duration-300">
             <h4 class="font-display font-bold text-lg text-gray-800 mb-2">
               {t['journey.pricing.tier3.name']}
             </h4>
@@ -238,44 +259,44 @@ const t = ui[lang];
 
       <!-- Row 2 - Right: Impact Metrics (1/3) -->
       <div
-        class="md:col-span-1 bg-gradient-to-br from-secondary/20 to-accent1/15 rounded-xl p-6 md:p-8 shadow-lg shadow-secondary/10 border border-secondary/20"
+        class="md:col-span-1 bg-white rounded-xl p-5 md:p-6 shadow-xl shadow-secondary/20 border border-white/30 hover:shadow-2xl hover:shadow-secondary/30 hover:scale-[1.02] hover:bg-white/95 transition-all duration-300"
         x-data="{
           costReduction: 0,
-          hoursSaved: 0,
-          productivityIncrease: 0,
+          timeSaved: 0,
+          salesGrowth: 0,
           hasAnimated: false,
 
           animateCounters() {
             if (this.hasAnimated) return;
             this.hasAnimated = true;
 
-            // Animate cost reduction to 40
+            // Animate cost reduction to 30
             const costInterval = setInterval(() => {
-              if (this.costReduction >= 40) {
-                this.costReduction = 40;
+              if (this.costReduction >= 30) {
+                this.costReduction = 30;
                 clearInterval(costInterval);
               } else {
                 this.costReduction += 2;
               }
             }, 50);
 
-            // Animate hours saved to 20
-            const hoursInterval = setInterval(() => {
-              if (this.hoursSaved >= 20) {
-                this.hoursSaved = 20;
-                clearInterval(hoursInterval);
+            // Animate time saved to 15
+            const timeInterval = setInterval(() => {
+              if (this.timeSaved >= 15) {
+                this.timeSaved = 15;
+                clearInterval(timeInterval);
               } else {
-                this.hoursSaved += 1;
+                this.timeSaved += 1;
               }
             }, 100);
 
-            // Animate productivity to 300
-            const prodInterval = setInterval(() => {
-              if (this.productivityIncrease >= 300) {
-                this.productivityIncrease = 300;
-                clearInterval(prodInterval);
+            // Animate sales growth to 35
+            const salesInterval = setInterval(() => {
+              if (this.salesGrowth >= 35) {
+                this.salesGrowth = 35;
+                clearInterval(salesInterval);
               } else {
-                this.productivityIncrease += 15;
+                this.salesGrowth += 2;
               }
             }, 50);
           }
@@ -288,42 +309,43 @@ const t = ui[lang];
           }, { threshold: 0.5 }).observe($el);
         "
       >
-        <h4 class="font-display font-bold text-xl text-gray-800 mb-6 text-center">
+        <h4 class="font-display font-bold text-xl text-gray-800 mb-5 text-center">
           {t['journey.impact.title']}
         </h4>
 
         <!-- Metric 1: Cost Reduction -->
-        <div class="mb-6 text-center">
-          <div class="w-12 h-12 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-3">
-            <i class="hgi-stroke hgi-arrow-down-01 text-xl text-white"></i>
+        <div class="mb-4 text-center">
+          <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-2">
+            <i class="hgi-stroke hgi-money-remove-02 text-lg text-white"></i>
           </div>
           <div>
-            <span x-text="costReduction" class="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">0</span>
-            <span class="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">%</span>
+            <span x-text="costReduction" class="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">0</span>
+            <span class="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">%</span>
           </div>
           <p class="text-sm text-gray-600 mt-1">{t['journey.impact.metric1Label']}</p>
         </div>
 
-        <!-- Metric 2: Hours Saved -->
-        <div class="mb-6 text-center">
-          <div class="w-12 h-12 bg-gradient-to-r from-secondary to-accent1 rounded-full flex items-center justify-center mx-auto mb-3">
-            <i class="hgi-stroke hgi-clock-02 text-xl text-white"></i>
+        <!-- Metric 2: Time Saved -->
+        <div class="mb-4 text-center">
+          <div class="w-10 h-10 bg-gradient-to-r from-secondary to-accent1 rounded-full flex items-center justify-center mx-auto mb-2">
+            <i class="hgi-stroke hgi-clock-02 text-lg text-white"></i>
           </div>
           <div>
-            <span x-text="hoursSaved" class="text-4xl font-bold bg-gradient-to-r from-secondary to-accent1 bg-clip-text text-transparent">0</span>
-            <span class="text-4xl font-bold bg-gradient-to-r from-secondary to-accent1 bg-clip-text text-transparent">+</span>
+            <span x-text="timeSaved" class="text-3xl font-bold bg-gradient-to-r from-secondary to-accent1 bg-clip-text text-transparent">0</span>
+            <span class="text-3xl font-bold bg-gradient-to-r from-secondary to-accent1 bg-clip-text text-transparent">h</span>
           </div>
           <p class="text-sm text-gray-600 mt-1">{t['journey.impact.metric2Label']}</p>
         </div>
 
-        <!-- Metric 3: Productivity Increase -->
+        <!-- Metric 3: Sales Growth -->
         <div class="text-center">
-          <div class="w-12 h-12 bg-gradient-to-r from-accent1 to-accent2 rounded-full flex items-center justify-center mx-auto mb-3">
-            <i class="hgi-stroke hgi-arrow-up-01 text-xl text-white"></i>
+          <div class="w-10 h-10 bg-gradient-to-r from-accent1 to-accent2 rounded-full flex items-center justify-center mx-auto mb-2">
+            <i class="hgi-stroke hgi-chart-up text-lg text-white"></i>
           </div>
           <div>
-            <span x-text="productivityIncrease" class="text-4xl font-bold bg-gradient-to-r from-accent1 to-accent2 bg-clip-text text-transparent">0</span>
-            <span class="text-4xl font-bold bg-gradient-to-r from-accent1 to-accent2 bg-clip-text text-transparent">%</span>
+            <span class="text-3xl font-bold bg-gradient-to-r from-accent1 to-accent2 bg-clip-text text-transparent">+</span>
+            <span x-text="salesGrowth" class="text-3xl font-bold bg-gradient-to-r from-accent1 to-accent2 bg-clip-text text-transparent">0</span>
+            <span class="text-3xl font-bold bg-gradient-to-r from-accent1 to-accent2 bg-clip-text text-transparent">%</span>
           </div>
           <p class="text-sm text-gray-600 mt-1">{t['journey.impact.metric3Label']}</p>
         </div>
@@ -334,14 +356,14 @@ const t = ui[lang];
       <!-- ============================================ -->
 
       <!-- Row 3 - Left: Trust Badges (1/3) -->
-      <div class="md:col-span-1 bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-100">
+      <div class="md:col-span-1 bg-white rounded-xl p-6 md:p-8 shadow-xl shadow-secondary/20 border border-white/30 hover:shadow-2xl hover:shadow-secondary/30 hover:scale-[1.02] hover:bg-white/95 transition-all duration-300">
         <h4 class="font-display font-bold text-lg text-gray-800 mb-6 text-center">
           {t['journey.trust.title']}
         </h4>
 
         <div class="space-y-4">
           <!-- GDPR Badge -->
-          <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-primary/15 to-primary/20 rounded-lg border border-primary/30">
+          <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-primary/40 to-primary/50 rounded-lg border-2 border-primary/60">
             <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center flex-shrink-0">
               <i class="hgi-stroke hgi-shield-01 text-white text-xl"></i>
             </div>
@@ -349,7 +371,7 @@ const t = ui[lang];
           </div>
 
           <!-- SOC2 Badge -->
-          <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-secondary/15 to-secondary/20 rounded-lg border border-secondary/30">
+          <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-secondary/40 to-secondary/50 rounded-lg border-2 border-secondary/60">
             <div class="w-10 h-10 bg-gradient-to-br from-secondary to-accent1 rounded-lg flex items-center justify-center flex-shrink-0">
               <i class="hgi-stroke hgi-shield-01 text-white text-xl"></i>
             </div>
@@ -357,7 +379,7 @@ const t = ui[lang];
           </div>
 
           <!-- ISO 27001 Badge -->
-          <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-accent1/15 to-accent1/20 rounded-lg border border-accent1/30">
+          <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-accent1/40 to-accent1/50 rounded-lg border-2 border-accent1/60">
             <div class="w-10 h-10 bg-gradient-to-br from-accent1 to-accent2 rounded-lg flex items-center justify-center flex-shrink-0">
               <i class="hgi-stroke hgi-shield-01 text-white text-xl"></i>
             </div>
@@ -367,7 +389,7 @@ const t = ui[lang];
       </div>
 
       <!-- Row 3 - Right: Future-Proofing Grid (2/3) -->
-      <div class="md:col-span-2 bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-100">
+      <div class="md:col-span-2 bg-white rounded-xl p-6 md:p-8 shadow-xl shadow-secondary/20 border border-white/30 hover:shadow-2xl hover:shadow-secondary/30 hover:scale-[1.02] hover:bg-white/95 transition-all duration-300">
         <h4 class="font-display font-bold text-xl text-gray-800 mb-2">
           {t['journey.futureProof.title']}
         </h4>
@@ -379,7 +401,7 @@ const t = ui[lang];
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
           <!-- Feature 1: AI-Ready Infrastructure -->
-          <div class="p-4 bg-gradient-to-br from-primary/15 to-primary/20 rounded-lg border border-primary/30 hover:-translate-y-1 hover:shadow-lg hover:border-primary/50 transition-all duration-300">
+          <div class="p-4 bg-gradient-to-br from-primary/40 to-primary/50 rounded-lg border-2 border-primary/60 hover:-translate-y-1 hover:shadow-lg hover:border-primary/70 transition-all duration-300">
             <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center mb-3">
               <i class="hgi-stroke hgi-server-stack-01 text-white text-lg"></i>
             </div>
@@ -392,7 +414,7 @@ const t = ui[lang];
           </div>
 
           <!-- Feature 2: Competitive Intelligence -->
-          <div class="p-4 bg-gradient-to-br from-secondary/15 to-secondary/20 rounded-lg border border-secondary/30 hover:-translate-y-1 hover:shadow-lg hover:border-secondary/50 transition-all duration-300">
+          <div class="p-4 bg-gradient-to-br from-secondary/40 to-secondary/50 rounded-lg border-2 border-secondary/60 hover:-translate-y-1 hover:shadow-lg hover:border-secondary/70 transition-all duration-300">
             <div class="w-10 h-10 bg-gradient-to-br from-secondary to-accent1 rounded-lg flex items-center justify-center mb-3">
               <i class="hgi-stroke hgi-target-01 text-white text-lg"></i>
             </div>
@@ -405,7 +427,7 @@ const t = ui[lang];
           </div>
 
           <!-- Feature 3: Scalable Solutions -->
-          <div class="p-4 bg-gradient-to-br from-accent1/15 to-accent1/20 rounded-lg border border-accent1/30 hover:-translate-y-1 hover:shadow-lg hover:border-accent1/50 transition-all duration-300">
+          <div class="p-4 bg-gradient-to-br from-accent1/40 to-accent1/50 rounded-lg border-2 border-accent1/60 hover:-translate-y-1 hover:shadow-lg hover:border-accent1/70 transition-all duration-300">
             <div class="w-10 h-10 bg-gradient-to-br from-accent1 to-accent2 rounded-lg flex items-center justify-center mb-3">
               <i class="hgi-stroke hgi-arrow-up-right-01 text-white text-lg"></i>
             </div>
@@ -418,7 +440,7 @@ const t = ui[lang];
           </div>
 
           <!-- Feature 4: Industry Partnerships -->
-          <div class="p-4 bg-gradient-to-br from-accent2/15 to-accent2/20 rounded-lg border border-accent2/30 hover:-translate-y-1 hover:shadow-lg hover:border-accent2/50 transition-all duration-300">
+          <div class="p-4 bg-gradient-to-br from-accent2/40 to-accent2/50 rounded-lg border-2 border-accent2/60 hover:-translate-y-1 hover:shadow-lg hover:border-accent2/70 transition-all duration-300">
             <div class="w-10 h-10 bg-gradient-to-br from-accent2 to-primary rounded-lg flex items-center justify-center mb-3">
               <i class="hgi-stroke hgi-agreement-01 text-white text-lg"></i>
             </div>
@@ -435,5 +457,6 @@ const t = ui[lang];
 
     </div>
 
+    </div>
   </div>
 </section>

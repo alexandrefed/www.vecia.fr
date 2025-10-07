@@ -147,6 +147,8 @@ export const ui = {
     'journey.understanding.content': 'Consultation initiale et évaluation des besoins',
     'journey.understanding.bullet1': 'Identification du défi',
     'journey.understanding.bullet2': 'Alignement des objectifs',
+    'journey.understanding.ctaText': 'Consultation Gratuite',
+    'journey.understanding.freeLabel': '100% Gratuit - Sans Engagement',
 
     // Row 1: Roadmap
     'journey.roadmap.title': 'Votre Feuille de Route Transformation IA',
@@ -160,34 +162,35 @@ export const ui = {
     'journey.roadmap.step4Title': 'Livraison & Support',
     'journey.roadmap.step4Desc': 'Lancement et optimisation continue',
 
-    // Row 2: Pricing
+    // Row 2: Pricing (will be replaced by dynamic pricing script)
+    'journey.pricing.sectionTitle': 'Plans d\'Investissement',
     'journey.pricing.tier1.name': 'Victoires Rapides',
     'journey.pricing.tier1.price': '€1,900',
     'journey.pricing.tier1.feature1': '1 automatisation principale',
-    'journey.pricing.tier1.feature2': 'Implémentation 2 semaines',
-    'journey.pricing.tier1.feature3': 'Support 30 jours',
+    'journey.pricing.tier1.feature2': '2 semaines d\'implémentation',
+    'journey.pricing.tier1.feature3': '30 jours de maintenance inclus',
 
     'journey.pricing.tier2.name': 'Transformation',
     'journey.pricing.tier2.badge': 'LE PLUS POPULAIRE',
     'journey.pricing.tier2.price': '€4,500',
     'journey.pricing.tier2.feature1': '2-3 automatisations intégrées',
-    'journey.pricing.tier2.feature2': 'Implémentation 4 semaines',
-    'journey.pricing.tier2.feature3': 'Optimisation 90 jours',
+    'journey.pricing.tier2.feature2': '4 semaines d\'implémentation',
+    'journey.pricing.tier2.feature3': '90 jours de suivi et d\'optimisation',
 
     'journey.pricing.tier3.name': 'Accélération Entreprise',
     'journey.pricing.tier3.price': '€9,000',
-    'journey.pricing.tier3.feature1': 'Suite d\'automatisation complète',
-    'journey.pricing.tier3.feature2': 'Implémentation 6-8 semaines',
-    'journey.pricing.tier3.feature3': 'Partenariat 6 mois',
+    'journey.pricing.tier3.feature1': 'Suite complète d\'automatisation',
+    'journey.pricing.tier3.feature2': '6-8 semaines d\'implémentation',
+    'journey.pricing.tier3.feature3': '6 mois de partenariat',
 
     // Row 2: Impact
     'journey.impact.title': 'Impact Business',
-    'journey.impact.metric1Value': '40',
+    'journey.impact.metric1Value': '30',
     'journey.impact.metric1Label': 'Réduction des Coûts',
-    'journey.impact.metric2Value': '20+',
-    'journey.impact.metric2Label': 'Heures Économisées par Semaine',
-    'journey.impact.metric3Value': '300',
-    'journey.impact.metric3Label': 'Augmentation de Productivité',
+    'journey.impact.metric2Value': '15h',
+    'journey.impact.metric2Label': 'Temps Économisé',
+    'journey.impact.metric3Value': '+35',
+    'journey.impact.metric3Label': 'Croissance des Ventes',
 
     // Row 3: Trust
     'journey.trust.title': 'Rejoignez les Implémenteurs IA à Succès',
@@ -360,6 +363,8 @@ export const ui = {
     'journey.understanding.content': 'Initial consultation and needs assessment',
     'journey.understanding.bullet1': 'Challenge identification',
     'journey.understanding.bullet2': 'Goal alignment',
+    'journey.understanding.ctaText': 'Free Consultation',
+    'journey.understanding.freeLabel': '100% Free - No Commitment',
 
     // Row 1: Roadmap
     'journey.roadmap.title': 'Your AI Transformation Roadmap',
@@ -373,7 +378,8 @@ export const ui = {
     'journey.roadmap.step4Title': 'Delivery & Support',
     'journey.roadmap.step4Desc': 'Launch and continuous optimization',
 
-    // Row 2: Pricing
+    // Row 2: Pricing (will be replaced by dynamic pricing script)
+    'journey.pricing.sectionTitle': 'Investment Plans',
     'journey.pricing.tier1.name': 'Quick Wins',
     'journey.pricing.tier1.price': '$2,100',
     'journey.pricing.tier1.feature1': '1 main automation',
@@ -395,12 +401,12 @@ export const ui = {
 
     // Row 2: Impact
     'journey.impact.title': 'Business Impact',
-    'journey.impact.metric1Value': '40',
+    'journey.impact.metric1Value': '30',
     'journey.impact.metric1Label': 'Cost Reduction',
-    'journey.impact.metric2Value': '20+',
-    'journey.impact.metric2Label': 'Hours Saved Per Week',
-    'journey.impact.metric3Value': '300',
-    'journey.impact.metric3Label': 'Productivity Increase',
+    'journey.impact.metric2Value': '15h',
+    'journey.impact.metric2Label': 'Time Saved',
+    'journey.impact.metric3Value': '+35',
+    'journey.impact.metric3Label': 'Sales Growth',
 
     // Row 3: Trust
     'journey.trust.title': 'Join Successful AI Implementers',

@@ -34,21 +34,37 @@ export type CurrencyCode = keyof typeof currencyConfig;
 // Pricing based on currency (simplified - adjust to your actual pricing)
 export const pricing = {
   EUR: {
+    workshop: 249,
+    tier1: 1900,
+    tier2: 4500,
+    tier3: 9000,
     starter: 997,
     professional: 1997,
     enterprise: 4997,
   },
   CHF: {
+    workshop: 249,
+    tier1: 2090,
+    tier2: 4950,
+    tier3: 9900,
     starter: 1097,
     professional: 2197,
     enterprise: 5497,
   },
   AED: {
+    workshop: 990,
+    tier1: 7700,
+    tier2: 18200,
+    tier3: 36400,
     starter: 3997,
     professional: 7997,
     enterprise: 19997,
   },
   USD: {
+    workshop: 249,
+    tier1: 2100,
+    tier2: 4900,
+    tier3: 9900,
     starter: 1097,
     professional: 2197,
     enterprise: 5497,
