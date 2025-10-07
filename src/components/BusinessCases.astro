@@ -1,0 +1,202 @@
+---
+import { ui } from '../i18n/ui';
+
+interface Props {
+  lang?: 'fr' | 'en';
+}
+
+const { lang = 'fr' } = Astro.props;
+const t = ui[lang];
+
+// Build case studies array from translations
+const cases = [
+  {
+    industry: t['cases.case1.industry'],
+    headline: t['cases.case1.headline'],
+    headlineHighlight: t['cases.case1.headlineHighlight'],
+    challenge: t['cases.case1.challenge'],
+    solution: t['cases.case1.solution'],
+    result: t['cases.case1.result'],
+    metric: t['cases.case1.metric'],
+    metricLabel: t['cases.case1.metricLabel'],
+    impact: t['cases.case1.impact'],
+  },
+  {
+    industry: t['cases.case2.industry'],
+    headline: t['cases.case2.headline'],
+    headlineHighlight: t['cases.case2.headlineHighlight'],
+    challenge: t['cases.case2.challenge'],
+    solution: t['cases.case2.solution'],
+    result: t['cases.case2.result'],
+    metric: t['cases.case2.metric'],
+    metricLabel: t['cases.case2.metricLabel'],
+    impact: t['cases.case2.impact'],
+  },
+  {
+    industry: t['cases.case3.industry'],
+    headline: t['cases.case3.headline'],
+    headlineHighlight: t['cases.case3.headlineHighlight'],
+    challenge: t['cases.case3.challenge'],
+    solution: t['cases.case3.solution'],
+    result: t['cases.case3.result'],
+    metric: t['cases.case3.metric'],
+    metricLabel: t['cases.case3.metricLabel'],
+    impact: t['cases.case3.impact'],
+  },
+  {
+    industry: t['cases.case4.industry'],
+    headline: t['cases.case4.headline'],
+    headlineHighlight: t['cases.case4.headlineHighlight'],
+    challenge: t['cases.case4.challenge'],
+    solution: t['cases.case4.solution'],
+    result: t['cases.case4.result'],
+    metric: t['cases.case4.metric'],
+    metricLabel: t['cases.case4.metricLabel'],
+    impact: t['cases.case4.impact'],
+  },
+];
+---
+
+<!-- Business Cases Carousel Section -->
+<section class="relative bg-background py-20 px-8">
+  <div class="max-w-7xl mx-auto">
+
+    <!-- Section Header -->
+    <div class="text-center mb-12">
+      <h2 class="font-display text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+        <span class="inline-block mr-2">■</span>
+        {t['cases.sectionTitle']}
+        <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          {t['cases.sectionTitleHighlight']}
+        </span>
+      </h2>
+      <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+        {t['cases.sectionSubtitle']}
+      </p>
+    </div>
+
+    <!-- Tab Navigation System with Alpine.js -->
+    <div
+      x-data="{
+        activeTab: 0,
+
+        selectTab(index) {
+          this.activeTab = index;
+          // Smooth scroll to the selected panel
+          this.$refs['panel' + index].scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }"
+      class="max-w-6xl mx-auto"
+    >
+
+      <!-- Tab Bar -->
+      <div class="flex gap-3 justify-center mb-8 flex-wrap">
+        {cases.map((caseStudy, index) => (
+          <button
+            @click={`selectTab(${index})`}
+            :class={`activeTab === ${index} ? 'bg-gradient-to-r from-secondary to-primary text-white shadow-lg' : 'bg-transparent text-gray-600 hover:bg-gray-100'`}
+            class="px-4 py-2 rounded-lg font-semibold text-sm whitespace-nowrap transition-all duration-300 hover:scale-105"
+          >
+            {caseStudy.industry}
+          </button>
+        ))}
+      </div>
+
+      <!-- Vertical Scroll Container -->
+      <div class="snap-y snap-mandatory h-[600px] overflow-y-scroll no-scrollbar">
+
+        <!-- Content Panels -->
+        {cases.map((caseStudy, index) => (
+          <div
+            x-ref={`panel${index}`}
+            x-intersect.threshold.50={`activeTab = ${index}`}
+            class="snap-start h-full opacity-0 transition-opacity duration-500 flex items-center"
+            :class={`activeTab === ${index} ? 'opacity-100' : 'opacity-30'`}
+          >
+
+            <!-- Panel Content -->
+            <div class="bg-white rounded-2xl p-8 md:p-12 shadow-xl shadow-secondary/20 border border-white/30 w-full max-w-4xl mx-auto">
+
+              <!-- Industry Badge -->
+              <div class="inline-block mb-4">
+                <span class={`px-4 py-1 rounded-full text-sm font-bold text-white ${
+                  index === 0 ? 'bg-gradient-to-r from-primary to-secondary' :
+                  index === 1 ? 'bg-gradient-to-r from-secondary to-accent1' :
+                  index === 2 ? 'bg-gradient-to-r from-accent1 to-accent2' :
+                  'bg-gradient-to-r from-accent2 to-primary'
+                }`}>
+                  {caseStudy.industry}
+                </span>
+              </div>
+
+              <!-- Headline -->
+              <h3 class="font-display text-2xl md:text-3xl font-bold text-gray-800 mb-6">
+                {caseStudy.headline}{' '}
+                <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                  {caseStudy.headlineHighlight}
+                </span>
+              </h3>
+
+              <!-- Challenge / Solution / Result Grid -->
+              <div class="grid md:grid-cols-3 gap-4 mb-8">
+
+                <!-- Challenge -->
+                <div class="bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg p-4">
+                  <h4 class="font-bold text-sm text-primary mb-2 flex items-center gap-2">
+                    <i class="hgi-stroke hgi-alert-circle text-lg"></i>
+                    Challenge
+                  </h4>
+                  <p class="text-sm text-gray-700 leading-relaxed">
+                    {caseStudy.challenge}
+                  </p>
+                </div>
+
+                <!-- Solution -->
+                <div class="bg-gradient-to-br from-secondary/10 to-secondary/5 rounded-lg p-4">
+                  <h4 class="font-bold text-sm text-secondary mb-2 flex items-center gap-2">
+                    <i class="hgi-stroke hgi-settings-02 text-lg"></i>
+                    Solution
+                  </h4>
+                  <p class="text-sm text-gray-700 leading-relaxed">
+                    {caseStudy.solution}
+                  </p>
+                </div>
+
+                <!-- Result -->
+                <div class="bg-gradient-to-br from-accent1/10 to-accent1/5 rounded-lg p-4">
+                  <h4 class="font-bold text-sm text-accent1 mb-2 flex items-center gap-2">
+                    <i class="hgi-stroke hgi-checkmark-circle-02 text-lg"></i>
+                    Result
+                  </h4>
+                  <p class="text-sm text-gray-700 leading-relaxed">
+                    {caseStudy.result}
+                  </p>
+                </div>
+              </div>
+
+              <!-- Metric Highlight -->
+              <div class="text-center py-6 bg-gradient-to-br from-secondary/10 to-primary/5 rounded-xl">
+                <div class="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
+                  {caseStudy.metric}
+                </div>
+                <p class="text-lg font-semibold text-gray-800 mb-1">
+                  {caseStudy.metricLabel}
+                </p>
+                <p class="text-sm text-gray-600">
+                  {caseStudy.impact}
+                </p>
+              </div>
+
+            </div>
+          </div>
+        ))}
+
+      </div> <!-- End Vertical Scroll Container -->
+
+    </div>
+
+  </div>
+</section>

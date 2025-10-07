@@ -210,6 +210,55 @@ export const ui = {
     'journey.futureProof.feature4Title': 'Partenariats Industriels',
     'journey.futureProof.feature4Desc': 'Réseau de partenaires technologiques',
 
+    // Business Cases
+    'cases.sectionTitle': 'Résultats Réels de',
+    'cases.sectionTitleHighlight': 'Vraies Entreprises',
+    'cases.sectionSubtitle': 'Découvrez comment les entreprises de tous secteurs économisent du temps, augmentent leurs revenus et améliorent leur efficacité avec nos solutions d\'automatisation IA.',
+
+    // Case 1: E-commerce
+    'cases.case1.industry': 'E-commerce',
+    'cases.case1.headline': 'De Rapports Manuels à',
+    'cases.case1.headlineHighlight': 'Insights Automatisés',
+    'cases.case1.challenge': '4 boutiques Shopify nécessitant 8 heures mensuelles de rapports manuels et suivi d\'inventaire',
+    'cases.case1.solution': 'Tableau de bord automatisé connectant Shopify → n8n → Google Analytics avec synchronisation en temps réel',
+    'cases.case1.result': 'Automatisation complète des processus de reporting',
+    'cases.case1.metric': '8h',
+    'cases.case1.metricLabel': 'économisées par mois',
+    'cases.case1.impact': '96 heures/an × 50€/heure = 4 800€ économisés',
+
+    // Case 2: Education
+    'cases.case2.industry': 'Éducation',
+    'cases.case2.headline': 'Les Publicités Intelligentes Génèrent',
+    'cases.case2.headlineHighlight': 'la Croissance des Cours',
+    'cases.case2.challenge': 'Création manuelle de publicités, ciblage approximatif et gestion chronophage des campagnes',
+    'cases.case2.solution': 'Automatisation des publicités Meta propulsée par IA avec optimisation dynamique d\'audience et tests A/B',
+    'cases.case2.result': 'Augmentation significative des inscriptions aux cours grâce au ciblage optimisé',
+    'cases.case2.metric': '+47%',
+    'cases.case2.metricLabel': 'd\'augmentation des inscriptions',
+    'cases.case2.impact': 'De 100 à 147 inscriptions/mois',
+
+    // Case 3: Professional Services
+    'cases.case3.industry': 'Services Professionnels',
+    'cases.case3.headline': 'L\'Assistant IA Offre',
+    'cases.case3.headlineHighlight': 'Rapidité & Précision',
+    'cases.case3.challenge': 'Submergé par les emails, suivis manqués et points d\'action de réunions oubliés',
+    'cases.case3.solution': 'Assistant IA gérant la boîte de réception, planification, résumés de réunions et suivis automatisés',
+    'cases.case3.result': 'Amélioration spectaculaire des temps de réponse client et de l\'efficacité de communication',
+    'cases.case3.metric': '3x',
+    'cases.case3.metricLabel': 'de réponse plus rapide',
+    'cases.case3.impact': 'De plus de 24h à 8h en moyenne',
+
+    // Case 4: Logistics
+    'cases.case4.industry': 'Logistique',
+    'cases.case4.headline': 'Communication Proactive',
+    'cases.case4.headlineHighlight': 'Fidélise les Clients',
+    'cases.case4.challenge': 'Clients frustrés par le manque de visibilité sur les retards fournisseurs et mises à jour de livraison',
+    'cases.case4.solution': 'Système de notification automatisé suivant les expéditions et alertant proactivement les clients des changements',
+    'cases.case4.result': 'Amélioration significative de la fidélisation client grâce à une communication transparente',
+    'cases.case4.metric': '+22%',
+    'cases.case4.metricLabel': 'd\'augmentation de la fidélisation',
+    'cases.case4.impact': 'De 78% à 95% de taux de fidélisation',
+
     // Common
     'common.currency': 'EUR',
     'common.loading': 'Chargement...',
@@ -425,6 +474,55 @@ export const ui = {
     'journey.futureProof.feature3Desc': 'Growth without technical limits',
     'journey.futureProof.feature4Title': 'Industry Partnerships',
     'journey.futureProof.feature4Desc': 'Network of technology partners',
+
+    // Business Cases
+    'cases.sectionTitle': 'Real Results from',
+    'cases.sectionTitleHighlight': 'Real Businesses',
+    'cases.sectionSubtitle': 'Discover how businesses across all sectors save time, increase revenue, and improve efficiency with our AI automation solutions.',
+
+    // Case 1: E-commerce
+    'cases.case1.industry': 'E-commerce',
+    'cases.case1.headline': 'From Manual Reports to',
+    'cases.case1.headlineHighlight': 'Automated Insights',
+    'cases.case1.challenge': '4 Shopify stores requiring 8 hours monthly for manual reports and inventory tracking',
+    'cases.case1.solution': 'Automated dashboard connecting Shopify → n8n → Google Analytics with real-time sync',
+    'cases.case1.result': 'Complete automation of reporting processes',
+    'cases.case1.metric': '8h',
+    'cases.case1.metricLabel': 'saved per month',
+    'cases.case1.impact': '96 hours/year × $50/hour = $4,800 saved',
+
+    // Case 2: Education
+    'cases.case2.industry': 'Education',
+    'cases.case2.headline': 'Smart Ads Drive',
+    'cases.case2.headlineHighlight': 'Course Growth',
+    'cases.case2.challenge': 'Manual ad creation, imprecise targeting, and time-consuming campaign management',
+    'cases.case2.solution': 'AI-powered Meta ad automation with dynamic audience optimization and A/B testing',
+    'cases.case2.result': 'Significant increase in course enrollments through optimized targeting',
+    'cases.case2.metric': '+47%',
+    'cases.case2.metricLabel': 'increase in enrollments',
+    'cases.case2.impact': 'From 100 to 147 enrollments/month',
+
+    // Case 3: Professional Services
+    'cases.case3.industry': 'Professional Services',
+    'cases.case3.headline': 'AI Assistant Delivers',
+    'cases.case3.headlineHighlight': 'Speed & Precision',
+    'cases.case3.challenge': 'Overwhelmed by emails, missed follow-ups, and forgotten meeting action items',
+    'cases.case3.solution': 'AI assistant managing inbox, scheduling, meeting summaries, and automated follow-ups',
+    'cases.case3.result': 'Dramatic improvement in client response times and communication efficiency',
+    'cases.case3.metric': '3x',
+    'cases.case3.metricLabel': 'faster response',
+    'cases.case3.impact': 'From 24h+ to 8h average',
+
+    // Case 4: Logistics
+    'cases.case4.industry': 'Logistics',
+    'cases.case4.headline': 'Proactive Communication',
+    'cases.case4.headlineHighlight': 'Builds Client Loyalty',
+    'cases.case4.challenge': 'Clients frustrated by lack of visibility on supplier delays and delivery updates',
+    'cases.case4.solution': 'Automated notification system tracking shipments and proactively alerting clients of changes',
+    'cases.case4.result': 'Significant improvement in customer retention through transparent communication',
+    'cases.case4.metric': '+22%',
+    'cases.case4.metricLabel': 'increase in retention',
+    'cases.case4.impact': 'From 78% to 95% retention rate',
 
     // Common
     'common.currency': 'USD',
