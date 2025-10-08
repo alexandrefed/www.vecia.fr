@@ -636,6 +636,73 @@ const { headline, highlight, subheadline, body, cta1Text, cta2Text } = Astro.pro
 
 ---
 
+### **Phase 6.1: Mobile Responsiveness Fixes** ⏳ IN PROGRESS (1 hour)
+**Goal**: Fix mobile rendering issues while preserving desktop layout
+
+**Critical Principle**: ZERO changes to desktop version - all fixes use mobile-only media queries or responsive Tailwind classes.
+
+#### Issues Identified:
+
+1. **Hero Text Cut-Off + Zoom Issue**
+   - Text overflows on mobile viewport
+   - User can zoom out (should be locked)
+   - Fixes:
+     - Update viewport meta: add `maximum-scale=1.0, user-scalable=no`
+     - Responsive text sizing: `text-3xl sm:text-4xl md:text-5xl lg:text-7xl`
+     - Remove `whitespace-nowrap` on gradient text
+     - Add responsive padding: `px-4 sm:px-8`
+
+2. **ProductsCarousel - Touch-Hold Pause**
+   - Carousel should pause when user holds finger on card
+   - Implement touch timer in Alpine.js
+   - Add visual feedback on hold
+
+3. **ProductsCarousel - Card Overlap**
+   - Cards visible through each other on mobile
+   - Fix Z-axis spacing in `carousel-3d.css` with mobile-only media query
+   - Increase `translateZ` differences between card positions
+
+4. **BusinessCases - Slides Not Fully Visible**
+   - Sticky container too tall for mobile screens
+   - Fixes:
+     - Responsive container heights: `h-auto md:h-[700px]`
+     - Smaller images: `h-[200px] sm:h-[250px]`
+     - Reduced padding on mobile
+     - Smaller metric text: `text-3xl md:text-4xl`
+
+5. **FinalCTA - Text Overflow**
+   - "Prêt à automatiser" text going off-screen
+   - Remove `whitespace-nowrap` from headline
+   - Add `max-w-2xl` constraint
+   - Ensure responsive padding
+
+6. **Footer - Rows Not Centered**
+   - Mobile layout not centered
+   - Add `items-center` to flex containers
+   - Center navigation and social sections
+
+#### Files Modified:
+- `src/layouts/BaseLayout.astro` - viewport fix
+- `src/components/Hero.astro` - responsive text
+- `src/components/ProductsCarousel.astro` - touch-hold logic
+- `src/styles/carousel-3d.css` - mobile Z-spacing
+- `src/components/BusinessCases.astro` - responsive heights
+- `src/components/FinalCTA.astro` - text wrapping
+- `src/components/Footer.astro` - mobile centering
+
+#### Testing Checklist:
+- [ ] Test on 375px viewport (iPhone SE)
+- [ ] Test on 414px viewport (iPhone Pro Max)
+- [ ] Test on 768px viewport (iPad)
+- [ ] Verify no horizontal scroll
+- [ ] Verify zoom disabled
+- [ ] Verify desktop unchanged
+- [ ] Test touch interactions (carousel hold)
+
+**Status**: Components pending implementation
+
+---
+
 ### **Phase 7: Dynamic Currency Pricing** (1 hour)
 **Goal**: Client-side IP detection with free API
 
