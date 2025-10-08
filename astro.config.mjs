@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://vecia.com',  // Production URL for canonical links and sitemap
   i18n: {
     locales: ['fr', 'en'],
     defaultLocale: 'fr',

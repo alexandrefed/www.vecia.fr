@@ -1,39 +1,128 @@
 ---
+/**
+ * BaseLayout - Production-Ready SEO Layout
+ *
+ * 2025 Best Practices Implementation:
+ * - Comprehensive Open Graph + Twitter Card meta tags
+ * - hreflang for multilingual SEO (FR/EN)
+ * - JSON-LD structured data (Organization schema)
+ * - Performance optimizations (preconnect, dns-prefetch)
+ * - Mobile-first viewport configuration
+ * - Canonical URLs for SEO
+ */
+
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
 interface Props {
   title: string;
-  description?: string;
-  lang?: 'fr' | 'en';
+  description: string;
+  lang: 'fr' | 'en';
 }
 
-const { title, description = 'Vecia - AI Automation Agency', lang = 'fr' } = Astro.props;
+const { title, description, lang } = Astro.props;
+
+// SEO: Canonical URL setup
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://vecia.com');
+
+// SEO: Language alternates
+const frURL = new URL('/', Astro.site || 'https://vecia.com');
+const enURL = new URL('/en/', Astro.site || 'https://vecia.com');
+
+// SEO: Open Graph image (using logo)
+const ogImage = new URL('/vecia_logo_long_contour.png', Astro.site || 'https://vecia.com');
+
+// JSON-LD Structured Data (Organization Schema)
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Vecia",
+  "url": String(Astro.site || 'https://vecia.com'),
+  "logo": String(ogImage),
+  "description": description,
+  "sameAs": [
+    "https://www.linkedin.com/company/vecia"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "sales",
+    "email": "contact@vecia.com"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "FR"
+  }
+};
 ---
 
 <!DOCTYPE html>
 <html lang={lang}>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content={description}>
-  <meta name="generator" content={Astro.generator}>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content={Astro.generator}>
 
-  <title>{title}</title>
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="description" content={description}>
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="/vecia_favicon.png">
+    <!-- Canonical & hreflang (Multilingual SEO) -->
+    <link rel="canonical" href={canonicalURL}>
+    <link rel="alternate" hreflang="fr" href={frURL}>
+    <link rel="alternate" hreflang="en" href={enURL}>
+    <link rel="alternate" hreflang="x-default" href={frURL}>
 
-  <!-- Global Styles (Tailwind v4 + Self-hosted Fonts) -->
-  <link rel="stylesheet" href="/src/styles/global.css">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content={canonicalURL}>
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content={description}>
+    <meta property="og:image" content={ogImage}>
+    <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_US'}>
+    <meta property="og:locale:alternate" content={lang === 'fr' ? 'en_US' : 'fr_FR'}>
+    <meta property="og:site_name" content="Vecia">
 
-  <!-- Hugeicons Icon Font -->
-  <link rel="stylesheet" href="https://use.hugeicons.com/font/icons.css">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content={canonicalURL}>
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content={description}>
+    <meta name="twitter:image" content={ogImage}>
 
-  <!-- Alpine.js for interactive components (bundled via npm) -->
-  <script src="/src/scripts/alpine.ts"></script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/vecia_favicon.png">
 
-  <!-- Dynamic Pricing Script (IP-based currency detection) -->
-  <script src="/src/scripts/pricing.ts"></script>
-</head>
-<body class="font-body text-text bg-background">
-  <slot />
-</body>
+    <!-- Performance: Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+
+    <!-- Global Styles (Tailwind v4 + Self-hosted Fonts) -->
+    <link rel="stylesheet" href="/src/styles/global.css">
+
+    <!-- Hugeicons Icon Font -->
+    <link rel="stylesheet" href="https://use.hugeicons.com/font/icons.css">
+
+    <!-- Alpine.js for interactive components (bundled via npm) -->
+    <script src="/src/scripts/alpine.ts"></script>
+
+    <!-- Dynamic Pricing Script (IP-based currency detection) -->
+    <script src="/src/scripts/pricing.ts"></script>
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  </head>
+
+  <body class="font-body text-text bg-background">
+    <!-- Navigation with language switcher -->
+    <Navigation lang={lang} />
+
+    <!-- Main content area -->
+    <main>
+      <slot />
+    </main>
+
+    <!-- Footer with legal links and social -->
+    <Footer lang={lang} />
+  </body>
 </html>

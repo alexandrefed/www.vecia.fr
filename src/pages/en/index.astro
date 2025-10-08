@@ -1,6 +1,6 @@
 ---
 /**
- * French Homepage (/)
+ * English Homepage (/en/)
  *
  * Vecia V5 - AI Automation Agency
  * Complete landing page with all sections:
@@ -14,24 +14,24 @@
  * 8. Final CTA
  */
 
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
-import LogosCarousel from '../components/LogosCarousel.astro';
-import AITabs from '../components/AITabs.astro';
-import ProductsCarousel from '../components/ProductsCarousel.astro';
-import BentoGrid from '../components/BentoGrid.astro';
-import BusinessCases from '../components/BusinessCases.astro';
-import LeadCaptureForm from '../components/LeadCaptureForm.astro';
-import FinalCTA from '../components/FinalCTA.astro';
-import { useTranslations } from '../i18n/utils';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import LogosCarousel from '../../components/LogosCarousel.astro';
+import AITabs from '../../components/AITabs.astro';
+import ProductsCarousel from '../../components/ProductsCarousel.astro';
+import BentoGrid from '../../components/BentoGrid.astro';
+import BusinessCases from '../../components/BusinessCases.astro';
+import LeadCaptureForm from '../../components/LeadCaptureForm.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+import { useTranslations } from '../../i18n/utils';
 
-const t = useTranslations('fr');
+const t = useTranslations('en');
 ---
 
 <BaseLayout
   title={t('meta.title')}
   description={t('meta.description')}
-  lang="fr"
+  lang="en"
 >
   <!-- Hero Section with Particle Animation -->
   <Hero
@@ -44,23 +44,23 @@ const t = useTranslations('fr');
   />
 
   <!-- AI Technology Logos Carousel -->
-  <LogosCarousel lang="fr" />
+  <LogosCarousel lang="en" />
 
   <!-- AI Suite: 4 Interactive Tabs -->
-  <AITabs lang="fr" />
+  <AITabs lang="en" />
 
   <!-- Specialized Products Carousel -->
-  <ProductsCarousel lang="fr" />
+  <ProductsCarousel lang="en" />
 
   <!-- Customer Journey Bento Grid -->
-  <BentoGrid lang="fr" />
+  <BentoGrid lang="en" />
 
   <!-- Business Cases with Stacked Cards -->
-  <BusinessCases lang="fr" />
+  <BusinessCases lang="en" />
 
   <!-- Lead Capture Form -->
-  <LeadCaptureForm lang="fr" />
+  <LeadCaptureForm lang="en" />
 
   <!-- Final CTA Section -->
-  <FinalCTA lang="fr" />
+  <FinalCTA lang="en" />
 </BaseLayout>
