@@ -1,0 +1,104 @@
+---
+/**
+ * Test Page: Final CTA Section (English)
+ *
+ * URL: http://localhost:4321/en/test-final-cta
+ */
+
+import FinalCTA from '../../components/FinalCTA.astro';
+import '../../styles/global.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test: Final CTA - Vecia</title>
+</head>
+
+<body class="font-body text-text bg-background">
+  <!-- Test Header -->
+  <div class="bg-gradient-to-r from-primary to-secondary text-white py-4">
+    <div class="container mx-auto px-6">
+      <h1 class="text-2xl font-heading font-bold">🧪 Test: Final CTA Section</h1>
+      <p class="text-sm opacity-90 mt-1">Component test page - English version</p>
+    </div>
+  </div>
+
+  <!-- Component Under Test -->
+  <FinalCTA lang="en" />
+
+  <!-- Test Instructions -->
+  <div class="container mx-auto px-6 py-12 max-w-4xl">
+    <div class="bg-gray-50 rounded-xl p-8 border-2 border-gray-200">
+      <h2 class="text-2xl font-heading font-bold mb-6">📋 English Translation Test</h2>
+
+      <div class="space-y-4">
+        <div>
+          <h3 class="font-bold mb-2">Expected Translations:</h3>
+          <ul class="space-y-2 text-sm pl-6 list-disc">
+            <li>Headline: "Ready to Automate and Scale?"</li>
+            <li>Body: "Join 100+ businesses saving 20+ hours per week with our AI automation solutions. Get your free audit today."</li>
+            <li>Primary Button: "Book a Free Call"</li>
+            <li>Secondary Button: "See Our Blog"</li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-bold mb-2">Visual Design Checklist:</h3>
+          <ul class="space-y-2 text-sm pl-6 list-disc">
+            <li>✅ Purple-to-cyan gradient background visible</li>
+            <li>✅ White text with good contrast</li>
+            <li>✅ Blue square icon before headline</li>
+            <li>✅ Two CTA buttons centered</li>
+            <li>✅ Primary button: white background, blue text</li>
+            <li>✅ Secondary button: white outline, white text</li>
+            <li>✅ Buttons scale on hover (1.02x)</li>
+            <li>✅ Mobile responsive (stacked buttons on mobile)</li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-bold mb-2">Interactivity Checklist:</h3>
+          <ul class="space-y-2 text-sm pl-6 list-disc">
+            <li>✅ Primary button links to Cal.com (opens in new tab)</li>
+            <li>✅ Secondary button links to /en/blog</li>
+            <li>✅ Hover effects work (scale + shadow)</li>
+            <li>✅ Touch targets large enough (240px min width)</li>
+          </ul>
+        </div>
+
+        <div class="p-6 bg-blue-50 border-2 border-blue-200 rounded-lg">
+          <h3 class="font-bold mb-3">🔧 Link Configuration</h3>
+          <div class="space-y-2 text-sm font-mono bg-white p-4 rounded border">
+            <p><strong>Primary:</strong> https://cal.com/vecia</p>
+            <p><strong>Secondary:</strong> /en/blog (English)</p>
+          </div>
+          <p class="text-xs text-blue-800 mt-3">
+            ⚠️ Note: Update Cal.com link when booking page is ready
+          </p>
+        </div>
+
+        <div class="text-center pt-6">
+          <a
+            href="/test-final-cta"
+            class="inline-block px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-full hover:shadow-lg transition-all"
+          >
+            ← View French Version
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Note -->
+  <div class="bg-gray-100 border-t border-gray-200 py-8">
+    <div class="container mx-auto px-6 text-center text-sm text-gray-600">
+      <p>
+        <strong>Component Status:</strong> Ready for integration into homepage
+      </p>
+    </div>
+  </div>
+</body>
+</html>

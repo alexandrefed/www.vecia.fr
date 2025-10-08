@@ -273,6 +273,12 @@ export const ui = {
     'leadCapture.successMessage': 'Merci ! Vérifiez votre email pour recevoir votre évaluation.',
     'leadCapture.errorMessage': 'Une erreur s\'est produite. Veuillez réessayer.',
 
+    // Final CTA Section
+    'finalCta.headline': 'Prêt à Automatiser et Développer ?',
+    'finalCta.body': 'Rejoignez plus de 100 entreprises économisant plus de 20h par semaine avec nos solutions d\'automatisation IA. Obtenez votre audit gratuit aujourd\'hui.',
+    'finalCta.button.primary': 'Réserver un Appel Gratuit',
+    'finalCta.button.secondary': 'Voir Notre Blog',
+
     // Common
     'common.currency': 'EUR',
     'common.loading': 'Chargement...',
@@ -551,6 +557,12 @@ export const ui = {
     'leadCapture.privacyText': '🔒 We respect your privacy. Unsubscribe anytime.',
     'leadCapture.successMessage': 'Thank you! Check your email to receive your assessment.',
     'leadCapture.errorMessage': 'An error occurred. Please try again.',
+
+    // Final CTA Section
+    'finalCta.headline': 'Ready to Automate and Scale?',
+    'finalCta.body': 'Join 100+ businesses saving 20+ hours per week with our AI automation solutions. Get your free audit today.',
+    'finalCta.button.primary': 'Book a Free Call',
+    'finalCta.button.secondary': 'See Our Blog',
 
     // Common
     'common.currency': 'USD',
