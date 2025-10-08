@@ -351,13 +351,27 @@ Build a high-performance, multilingual (FR/EN) Astro website with dynamic curren
 - Responsive: reflows to single column on mobile
 - Props: journey steps, pricing tiers, metrics
 
-**7. `BusinessCases.astro`** - 4 case study slides
-- Horizontal scroll/swipe navigation
+**7. `BusinessCases.astro`** - 4 case study slides ✅ COMPLETE
+- Vertical scroll-driven stacked cards animation
 - Each slide: Industry badge, challenge/solution/result
 - Metric highlight with gradient
+- Intersection-based transitions with Alpine.js
 - Props: cases array (industry, headline, challenge, solution, metric, impact)
 
-**8. `Footer.astro`** - Footer with links
+**8. `LeadCaptureForm.astro`** - Lead capture form ✅ COMPLETE
+- 3-field form (name, email, company size)
+- Alpine.js form handling with loading/success/error states
+- Google Sheets webhook integration
+- Privacy-first design with GDPR compliance
+- Props: `lang` for FR/EN translations
+
+**9. `FinalCTA.astro`** - Final call-to-action section (IN PROGRESS)
+- Two CTA buttons (primary + secondary)
+- Gradient purple-to-cyan background
+- Cal.com integration links
+- Props: headline, body, CTA texts from translations
+
+**10. `Footer.astro`** - Footer with links
 - Logo, navigation links, social icons
 - LinkedIn/Twitter with gradient hover effect
 - Copyright text

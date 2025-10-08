@@ -1,0 +1,159 @@
+---
+/**
+ * Lead Capture Form Component
+ *
+ * Implements 2025 best practices:
+ * - Minimal field count (3 fields for minimal friction)
+ * - Clear privacy messaging
+ * - Client-side validation
+ * - Success/error states
+ * - Mobile-responsive design
+ *
+ * Data flow: Form → Client-side script → Google Sheets webhook
+ */
+
+interface Props {
+  lang: 'fr' | 'en';
+}
+
+const { lang } = Astro.props;
+
+// Import translations
+import { useTranslations } from '../i18n/utils';
+const t = useTranslations(lang);
+---
+
+<section class="lead-capture py-20 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent1/5">
+  <div class="container mx-auto px-6 max-w-2xl">
+    <h2 class="text-3xl md:text-4xl font-heading font-bold text-center mb-4 text-text">
+      <span class="title-icon"></span>{t('leadCapture.headline')}
+    </h2>
+
+    <form
+      x-data="leadCaptureForm()"
+      @submit.prevent="submitForm"
+      class="bg-white rounded-2xl shadow-xl p-8 md:p-10 mt-8"
+    >
+      <!-- Form Fields -->
+      <div class="space-y-6">
+        <!-- Full Name -->
+        <div>
+          <label for="name" class="block text-sm font-medium text-text/80 mb-2">
+            {t('leadCapture.namePlaceholder')} <span class="text-secondary">*</span>
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            x-model="formData.name"
+            required
+            placeholder={t('leadCapture.namePlaceholder')}
+            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-gray-400"
+          />
+        </div>
+
+        <!-- Professional Email -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-text/80 mb-2">
+            {t('leadCapture.emailPlaceholder')} <span class="text-secondary">*</span>
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            x-model="formData.email"
+            required
+            placeholder={t('leadCapture.emailPlaceholder')}
+            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-gray-400"
+          />
+        </div>
+
+        <!-- Company Size -->
+        <div>
+          <label for="companySize" class="block text-sm font-medium text-text/80 mb-2">
+            {t('leadCapture.companySizeLabel')} <span class="text-secondary">*</span>
+          </label>
+          <select
+            id="companySize"
+            name="companySize"
+            x-model="formData.companySize"
+            required
+            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text bg-white cursor-pointer"
+          >
+            <option value="" disabled selected>{t('leadCapture.companySizeLabel')}</option>
+            <option value="1-10">{t('leadCapture.companySize.option1')}</option>
+            <option value="11-50">{t('leadCapture.companySize.option2')}</option>
+            <option value="51-200">{t('leadCapture.companySize.option3')}</option>
+            <option value="200+">{t('leadCapture.companySize.option4')}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        :disabled="loading"
+        class="w-full mt-8 px-6 py-4 bg-gradient-to-r from-primary to-secondary text-white font-bold text-lg rounded-full hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+      >
+        <span x-show="!loading">{t('leadCapture.ctaText')}</span>
+        <span x-show="loading" class="flex items-center justify-center gap-2">
+          <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span>{t('common.loading')}</span>
+        </span>
+      </button>
+
+      <!-- Privacy Notice -->
+      <p class="text-sm text-center text-text/60 mt-6">
+        {t('leadCapture.privacyText')}
+      </p>
+
+      <!-- Error Message -->
+      <div
+        x-show="error"
+        x-transition
+        class="mt-6 p-4 bg-red-50 border-2 border-red-200 rounded-lg"
+      >
+        <p class="text-red-600 text-center font-medium" x-text="errorMessage"></p>
+      </div>
+
+      <!-- Success Message -->
+      <div
+        x-show="success"
+        x-transition
+        class="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-lg"
+      >
+        <p class="text-green-600 text-center font-medium">
+          ✅ {t('leadCapture.successMessage')}
+        </p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- Note: Alpine.js component 'leadCaptureForm' is registered in /src/scripts/alpine.ts -->
+
+<style>
+  /* Prevent zoom on iOS when focusing inputs */
+  @media (max-width: 640px) {
+    input, select, textarea {
+      font-size: 16px;
+    }
+  }
+
+  /* Custom select arrow */
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%235B8BFF'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+  }
+
+  /* Remove default select arrow in IE */
+  select::-ms-expand {
+    display: none;
+  }
+</style>

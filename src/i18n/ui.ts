@@ -259,6 +259,20 @@ export const ui = {
     'cases.case4.metricLabel': 'score de satisfaction client',
     'cases.case4.impact': 'Passant de 3.1/5 à 4.2/5 en moyenne',
 
+    // Lead Capture Form
+    'leadCapture.headline': 'Pas Encore Prêt pour un Appel ? Commencez avec Notre Évaluation Gratuite',
+    'leadCapture.namePlaceholder': 'Prénom & Nom',
+    'leadCapture.emailPlaceholder': 'Email Professionnel',
+    'leadCapture.companySizeLabel': 'Taille de l\'entreprise',
+    'leadCapture.companySize.option1': '1-10 employés',
+    'leadCapture.companySize.option2': '11-50 employés',
+    'leadCapture.companySize.option3': '51-200 employés',
+    'leadCapture.companySize.option4': '200+ employés',
+    'leadCapture.ctaText': 'Obtenir Mon Évaluation Gratuite',
+    'leadCapture.privacyText': '🔒 Nous respectons votre vie privée. Désinscription à tout moment.',
+    'leadCapture.successMessage': 'Merci ! Vérifiez votre email pour recevoir votre évaluation.',
+    'leadCapture.errorMessage': 'Une erreur s\'est produite. Veuillez réessayer.',
+
     // Common
     'common.currency': 'EUR',
     'common.loading': 'Chargement...',
@@ -523,6 +537,20 @@ export const ui = {
     'cases.case4.metric': '+22%',
     'cases.case4.metricLabel': 'increase in retention',
     'cases.case4.impact': 'From 78% to 95% retention rate',
+
+    // Lead Capture Form
+    'leadCapture.headline': 'Not Ready for a Call? Start with Our Free Assessment',
+    'leadCapture.namePlaceholder': 'Full Name',
+    'leadCapture.emailPlaceholder': 'Professional Email',
+    'leadCapture.companySizeLabel': 'Company Size',
+    'leadCapture.companySize.option1': '1-10 employees',
+    'leadCapture.companySize.option2': '11-50 employees',
+    'leadCapture.companySize.option3': '51-200 employees',
+    'leadCapture.companySize.option4': '200+ employees',
+    'leadCapture.ctaText': 'Get My Free Assessment',
+    'leadCapture.privacyText': '🔒 We respect your privacy. Unsubscribe anytime.',
+    'leadCapture.successMessage': 'Thank you! Check your email to receive your assessment.',
+    'leadCapture.errorMessage': 'An error occurred. Please try again.',
 
     // Common
     'common.currency': 'USD',

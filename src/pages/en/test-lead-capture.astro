@@ -1,0 +1,76 @@
+---
+/**
+ * Test Page: Lead Capture Form (English)
+ *
+ * URL: http://localhost:4321/en/test-lead-capture
+ */
+
+import LeadCaptureForm from '../../components/LeadCaptureForm.astro';
+import '../../styles/global.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test: Lead Capture Form - Vecia</title>
+
+  <!-- Alpine.js (npm version) -->
+  <script src="/src/scripts/alpine.ts"></script>
+</head>
+
+<body class="font-body text-text bg-background">
+  <!-- Test Header -->
+  <div class="bg-gradient-to-r from-primary to-secondary text-white py-4">
+    <div class="container mx-auto px-6">
+      <h1 class="text-2xl font-heading font-bold">🧪 Test: Lead Capture Form</h1>
+      <p class="text-sm opacity-90 mt-1">Component test page - English version</p>
+    </div>
+  </div>
+
+  <!-- Component Under Test -->
+  <LeadCaptureForm lang="en" />
+
+  <!-- Test Instructions -->
+  <div class="container mx-auto px-6 py-12 max-w-4xl">
+    <div class="bg-gray-50 rounded-xl p-8 border-2 border-gray-200">
+      <h2 class="text-2xl font-heading font-bold mb-6">📋 English Translation Test</h2>
+
+      <div class="space-y-4">
+        <div>
+          <h3 class="font-bold mb-2">Expected Translations:</h3>
+          <ul class="space-y-2 text-sm pl-6 list-disc">
+            <li>Headline: "Not Ready for a Call? Start with Our Free Assessment"</li>
+            <li>Name field: "Full Name"</li>
+            <li>Email field: "Professional Email"</li>
+            <li>Company size: "Company Size"</li>
+            <li>Options: "1-10 employees", "11-50 employees", "51-200 employees", "200+ employees"</li>
+            <li>Button: "Get My Free Assessment"</li>
+            <li>Privacy: "🔒 We respect your privacy. Unsubscribe anytime."</li>
+            <li>Success: "Thank you! Check your email to receive your assessment."</li>
+          </ul>
+        </div>
+
+        <div class="p-6 bg-blue-50 border-2 border-blue-200 rounded-lg">
+          <h3 class="font-bold mb-3">🔧 Test Data</h3>
+          <div class="space-y-2 text-sm font-mono bg-white p-4 rounded border">
+            <p><strong>Name:</strong> John Smith</p>
+            <p><strong>Email:</strong> john.smith@example.com</p>
+            <p><strong>Company Size:</strong> 11-50 employees</p>
+          </div>
+        </div>
+
+        <div class="text-center pt-6">
+          <a
+            href="/test-lead-capture"
+            class="inline-block px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-full hover:shadow-lg transition-all"
+          >
+            ← View French Version
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
