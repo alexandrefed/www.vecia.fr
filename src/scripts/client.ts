@@ -12,7 +12,7 @@
 
 import Alpine from 'alpinejs';
 import intersect from '@alpinejs/intersect';
-import { detectCurrency, updatePriceElements } from './pricing-utils';
+import { detectCurrency, updatePriceElements } from './pricing';
 
 // Register Alpine.js plugins
 Alpine.plugin(intersect);
@@ -105,25 +105,12 @@ window.Alpine = Alpine;
 // Initialize Alpine.js
 Alpine.start();
 
-// Initialize dynamic pricing system
-async function initPricing() {
-  try {
-    const currency = await detectCurrency();
-    updatePriceElements(currency);
-  } catch (error) {
-    console.error('Failed to initialize pricing:', error);
-    // Fallback to EUR if everything fails
-    updatePriceElements('EUR');
-  }
-}
-
-// Run pricing initialization when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initPricing);
-} else {
-  // DOM already loaded
-  initPricing();
-}
+// Note: Dynamic pricing system is initialized in pricing.ts
+// It handles:
+// - localStorage-first currency detection
+// - IP geolocation API with retry logic
+// - Browser language fallback
+// - Manual currency switcher
 
 // Export for potential external access (optional)
-export { Alpine };
+export { Alpine, detectCurrency, updatePriceElements };
