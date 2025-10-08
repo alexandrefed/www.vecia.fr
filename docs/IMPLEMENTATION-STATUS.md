@@ -1,7 +1,7 @@
 # Vecia V5 - Implementation Status Report
 
-**Last Updated**: 2025-10-06
-**Current Phase**: ✅ Phase 4 In Progress - Component Development
+**Last Updated**: 2025-10-08
+**Current Phase**: ✅ Phase 4 Nearly Complete - Final Components
 
 ---
 
@@ -121,10 +121,45 @@ OpenAI, Claude, Google AI, Azure AI, Copilot, LangChain, Make, n8n, Notion, Neo4
 - All gradient classes use complete static strings
 - Type-safe with keyof typeof lookups
 
+#### ✅ BentoGrid.astro - Complete
+**Features:**
+- Asymmetric 3-row grid layout with varying card sizes
+- Customer journey progression: Awareness → Workshop → Implementation → Results
+- Gradient icons and checkmarks with vibrant color coding
+- Impact Business metrics card with real statistics
+- Responsive: reflows to single column on mobile
+- Dynamic pricing integration ready
+
+#### ✅ BusinessCases.astro - Complete
+**Features:**
+- Vertical scroll-driven stacked cards animation
+- 4 case studies with industry-specific examples
+- Alpine.js Intersect plugin for smooth transitions
+- Dynamic scaling and opacity based on scroll position
+- Industry badges, challenge/solution/result structure
+- Metric highlights with gradient emphasis
+- Responsive card sizing with proper spacing
+
+#### ✅ LeadCaptureForm.astro - Complete
+**Features:**
+- 3-field minimal friction form (name, email, company size)
+- Alpine.js form handling with state management
+- Google Sheets webhook integration configured
+- Loading/success/error states with smooth transitions
+- Privacy-first design with GDPR compliance messaging
+- FR/EN translations with type-safe i18n
+- Mobile-responsive with 48px+ touch targets
+- Custom select dropdown styling with blue arrow icon
+
+**Google Sheets Integration:**
+- Webhook URL configured in `src/scripts/alpine.ts`
+- Captures: name, email, company size, language, UTM params, referrer
+- Comprehensive setup guide in `docs/GOOGLE-SHEETS-WEBHOOK-SETUP.md`
+- Test pages: `/test-lead-capture` (FR) and `/en/test-lead-capture` (EN)
+
 #### 📋 Pending Components
-- BentoGrid.astro (customer journey)
-- BusinessCases.astro (case studies)
-- Footer.astro
+- FinalCTA.astro (final call-to-action section)
+- Footer.astro (links, social, copyright)
 
 ### 📁 Project Structure
 ```
@@ -141,16 +176,22 @@ src/
 │   ├── LogosCarousel.astro   ✅ Complete
 │   ├── ProductsCarousel.astro ✅ Complete
 │   ├── AITabs.astro          ✅ Complete
-│   ├── BentoGrid.astro       📋 Pending
-│   ├── BusinessCases.astro   📋 Pending
+│   ├── BentoGrid.astro       ✅ Complete
+│   ├── BusinessCases.astro   ✅ Complete
+│   ├── LeadCaptureForm.astro ✅ Complete
+│   ├── FinalCTA.astro        📋 Next
 │   └── Footer.astro          📋 Pending
 ├── layouts/
 │   └── BaseLayout.astro      ✅ Complete
 └── pages/
-    ├── test-hero.astro       ✅ Test page
-    ├── test-logos.astro      ✅ Test page
-    ├── test-products.astro   ✅ Test page
-    └── test-aitabs.astro     ✅ Test page
+    ├── test-hero.astro              ✅ Test page
+    ├── test-logos.astro             ✅ Test page
+    ├── test-products.astro          ✅ Test page
+    ├── test-aitabs.astro            ✅ Test page
+    ├── test-bentogrid.astro         ✅ Test page
+    ├── test-business-cases.astro    ✅ Test page
+    ├── test-lead-capture.astro      ✅ Test page (FR)
+    └── en/test-lead-capture.astro   ✅ Test page (EN)
 ```
 
 ---
