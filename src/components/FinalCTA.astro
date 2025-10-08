@@ -28,12 +28,12 @@ const t = useTranslations(lang);
 <section class="final-cta relative overflow-hidden py-20 bg-gradient-to-r from-secondary via-accent2 to-accent1">
   <div class="container mx-auto px-6 max-w-4xl text-center relative z-10">
     <!-- Headline -->
-    <h2 class="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
-      <span class="whitespace-nowrap">{t('finalCta.headline')}</span>
+    <h2 class="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-white mb-6">
+      {t('finalCta.headline')}
     </h2>
 
     <!-- Body Text -->
-    <p class="text-lg md:text-xl text-white max-w-3xl mx-auto mb-12">
+    <p class="text-base md:text-lg lg:text-xl text-white max-w-3xl mx-auto mb-12">
       {t('finalCta.body')}
     </p>
 
@@ -73,14 +73,5 @@ const t = useTranslations(lang);
     transform: translateY(0);
   }
 
-  /* Ensure text remains readable on gradient */
-  @media (max-width: 640px) {
-    .final-cta h2 {
-      font-size: 2rem; /* Slightly smaller on mobile */
-    }
-
-    .final-cta p {
-      font-size: 1rem;
-    }
-  }
+  /* Mobile text sizing handled by Tailwind responsive classes */
 </style>

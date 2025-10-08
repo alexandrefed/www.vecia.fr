@@ -544,9 +544,26 @@
   /* Simplify to 3 states on mobile */
   .product-card-3d[data-position="left-near"],
   .product-card-3d[data-position="right-near"] {
-    --spacing-near: 160px;
+    --spacing-near: 200px;
     opacity: 0.5;
     filter: blur(1.5px);
+  }
+
+  /* Increase Z-depth separation on mobile to prevent overlap */
+  .product-card-3d[data-position="left-near"] {
+    transform: translate(-50%, -50%)
+      translateX(var(--spacing-near, 200px))
+      scale(0.85)
+      translateZ(-60px)
+      rotateY(15deg);
+  }
+
+  .product-card-3d[data-position="right-near"] {
+    transform: translate(-50%, -50%)
+      translateX(var(--spacing-near, 200px))
+      scale(0.85)
+      translateZ(-60px)
+      rotateY(-15deg);
   }
 
   /* Hide far cards on mobile */

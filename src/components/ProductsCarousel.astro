@@ -114,8 +114,13 @@ const products = [
         isAnimating: false,
         touchStartX: 0,
         touchEndX: 0,
+        isPaused: false,
+        autoRotateInterval: null,
 
         init() {
+          // Start auto-rotation (every 4 seconds)
+          this.startAutoRotate();
+
           // Keyboard navigation
           this.$el.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') {
@@ -127,15 +132,46 @@ const products = [
             }
           });
 
-          // Touch events for mobile swipe
+          // Touch events for mobile swipe + hold-to-pause
           this.$el.addEventListener('touchstart', (e) => {
             this.touchStartX = e.changedTouches[0].screenX;
+            this.isPaused = true; // Pause on touch
+            this.stopAutoRotate();
           });
 
           this.$el.addEventListener('touchend', (e) => {
             this.touchEndX = e.changedTouches[0].screenX;
             this.handleSwipe();
+            this.isPaused = false; // Resume on release
+            this.startAutoRotate();
           });
+
+          // Pause on mouse hover (desktop)
+          this.$el.addEventListener('mouseenter', () => {
+            this.isPaused = true;
+            this.stopAutoRotate();
+          });
+
+          this.$el.addEventListener('mouseleave', () => {
+            this.isPaused = false;
+            this.startAutoRotate();
+          });
+        },
+
+        startAutoRotate() {
+          if (this.autoRotateInterval) return; // Already running
+          this.autoRotateInterval = setInterval(() => {
+            if (!this.isPaused && !this.isAnimating) {
+              this.next();
+            }
+          }, 4000);
+        },
+
+        stopAutoRotate() {
+          if (this.autoRotateInterval) {
+            clearInterval(this.autoRotateInterval);
+            this.autoRotateInterval = null;
+          }
         },
 
         getPosition(index) {
