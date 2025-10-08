@@ -4,7 +4,7 @@ import { currencyConfig, pricing, formatCurrency, getCurrencyByCountry, type Cur
  * Detect user's currency based on IP geolocation with fallback chain
  * Fallback order: localStorage → IP API → browser language → EUR default
  */
-async function detectCurrency(): Promise<CurrencyCode> {
+export async function detectCurrency(): Promise<CurrencyCode> {
   try {
     // 1. Check localStorage for saved preference
     const saved = localStorage.getItem('vecia_currency');
@@ -49,7 +49,7 @@ async function detectCurrency(): Promise<CurrencyCode> {
 /**
  * Update all price elements on the page with detected currency
  */
-function updatePriceElements(currency: CurrencyCode) {
+export function updatePriceElements(currency: CurrencyCode) {
   console.log('Updating prices to currency:', currency);
 
   // Workshop price (Atelier Stratégique)
@@ -79,27 +79,3 @@ function updatePriceElements(currency: CurrencyCode) {
   // Update data attribute for potential styling
   document.body.setAttribute('data-currency', currency);
 }
-
-/**
- * Initialize dynamic pricing on page load
- */
-async function initPricing() {
-  try {
-    const currency = await detectCurrency();
-    updatePriceElements(currency);
-  } catch (error) {
-    console.error('Failed to initialize pricing:', error);
-    // Fallback to EUR if everything fails
-    updatePriceElements('EUR');
-  }
-}
-
-// Run when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initPricing);
-} else {
-  initPricing();
-}
-
-// Export for potential manual currency switching
-export { detectCurrency, updatePriceElements };

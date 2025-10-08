@@ -100,14 +100,10 @@ const structuredData = {
     <!-- Hugeicons Icon Font -->
     <link rel="stylesheet" href="https://use.hugeicons.com/font/icons.css">
 
-    <!-- Alpine.js and Pricing scripts (client-side only, bundled by Vite) -->
-    <script type="module">
-      import Alpine from 'alpinejs';
-      window.Alpine = Alpine;
-      Alpine.start();
+    <!-- Client-side scripts (Alpine.js + Pricing) - Properly bundled by Astro -->
+    <script>
+      import '../scripts/client.ts';
     </script>
-
-    <script type="module" src="/src/scripts/pricing.ts"></script>
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />

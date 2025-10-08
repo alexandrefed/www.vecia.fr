@@ -1,10 +1,23 @@
+/**
+ * Client-side entry point for Vecia website
+ *
+ * This file bundles all client-side JavaScript including:
+ * - Alpine.js initialization and plugins
+ * - Dynamic pricing system
+ * - Alpine.js components (lead capture form, etc.)
+ *
+ * Astro will automatically bundle this file and all its dependencies
+ * into optimized production JavaScript in /_astro/*.js
+ */
+
 import Alpine from 'alpinejs';
 import intersect from '@alpinejs/intersect';
+import { detectCurrency, updatePriceElements } from './pricing-utils';
 
-// Register Intersect plugin
+// Register Alpine.js plugins
 Alpine.plugin(intersect);
 
-// Register Lead Capture Form component
+// Register Alpine.js Lead Capture Form component
 Alpine.data('leadCaptureForm', () => ({
   formData: {
     name: '',
@@ -41,7 +54,7 @@ Alpine.data('leadCaptureForm', () => ({
         page_url: window.location.href
       };
 
-      // TODO: Replace with actual Google Apps Script webhook URL
+      // Google Apps Script webhook URL
       const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby_23XSfxU0NBNgfbufOqhDa6ywjs34tjXp1-kEYLtNMauZiA2B64kzXUAKFKeRqB-VXA/exec';
 
       // Submit to webhook
@@ -86,6 +99,31 @@ Alpine.data('leadCaptureForm', () => ({
   }
 }));
 
-// Initialize Alpine.js
+// Make Alpine available globally (required for x-data, x-show, etc.)
 window.Alpine = Alpine;
+
+// Initialize Alpine.js
 Alpine.start();
+
+// Initialize dynamic pricing system
+async function initPricing() {
+  try {
+    const currency = await detectCurrency();
+    updatePriceElements(currency);
+  } catch (error) {
+    console.error('Failed to initialize pricing:', error);
+    // Fallback to EUR if everything fails
+    updatePriceElements('EUR');
+  }
+}
+
+// Run pricing initialization when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPricing);
+} else {
+  // DOM already loaded
+  initPricing();
+}
+
+// Export for potential external access (optional)
+export { Alpine };
