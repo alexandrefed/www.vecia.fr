@@ -1,6 +1,9 @@
 ---
 import type { Language } from '../i18n/ui';
 
+// Import carousel CSS for bundling
+import '../styles/carousel-3d.css';
+
 interface Props {
   lang: Language;
 }
@@ -88,9 +91,8 @@ const products = [
 ];
 ---
 
-<link rel="stylesheet" href="/src/styles/carousel-3d.css">
-
 <!-- Alpine.js is REQUIRED for 3D carousel state management -->
+<!-- Note: carousel-3d.css is imported in the frontmatter above -->
 <section class="relative bg-background py-20 overflow-x-hidden">
   <div class="max-w-7xl mx-auto px-8">
 

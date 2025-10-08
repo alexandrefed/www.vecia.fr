@@ -97,17 +97,17 @@ const structuredData = {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
 
-    <!-- Global Styles (Tailwind v4 + Self-hosted Fonts) -->
-    <link rel="stylesheet" href="/src/styles/global.css">
-
     <!-- Hugeicons Icon Font -->
     <link rel="stylesheet" href="https://use.hugeicons.com/font/icons.css">
 
-    <!-- Alpine.js for interactive components (bundled via npm) -->
-    <script src="/src/scripts/alpine.ts"></script>
+    <!-- Alpine.js and Pricing scripts (client-side only, bundled by Vite) -->
+    <script type="module">
+      import Alpine from 'alpinejs';
+      window.Alpine = Alpine;
+      Alpine.start();
+    </script>
 
-    <!-- Dynamic Pricing Script (IP-based currency detection) -->
-    <script src="/src/scripts/pricing.ts"></script>
+    <script type="module" src="/src/scripts/pricing.ts"></script>
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
