@@ -1,0 +1,323 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogHeader from '../../components/blog/BlogHeader.astro';
+import ShareButtons from '../../components/blog/ShareButtons.astro';
+import ArticleFooter from '../../components/blog/ArticleFooter.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import config from '../../config';
+
+const lang = 'fr' as const;
+const t = useTranslations(lang);
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ id }) => {
+    return id.startsWith('fr/');
+  });
+
+  return posts.map(post => ({
+    params: { slug: post.id.replace('fr/', '').replace('.md', '') },
+    props: { post },
+  }));
+}
+
+type Props = {
+  post: CollectionEntry<'blog'>;
+};
+
+const { post } = Astro.props;
+// Astro 5.x: Use render() function from 'astro:content'
+const { Content } = await render(post);
+
+// Get related articles (same category, excluding current)
+const relatedPosts = (await getCollection('blog', ({ id, data }) => {
+  return id.startsWith('fr/') &&
+         data.category === post.data.category &&
+         id !== post.id;
+}))
+  .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())
+  .slice(0, 3);
+
+// Calculate reading time (200 words/min - 2025 standard)
+const wordsPerMinute = 200;
+const wordCount = post.body.split(/\s+/).length;
+const readingTime = Math.ceil(wordCount / wordsPerMinute);
+
+// Canonical URL
+const canonicalURL = new URL(`/blog/${post.id.replace('fr/', '').replace('.md', '')}`, config.siteUrl).toString();
+
+// Open Graph image
+const ogImage = post.data.image || '/images/og/blog-article-default.jpg';
+
+// Structured data (Article schema) for SEO
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": post.data.title,
+  "description": post.data.description,
+  "image": ogImage.startsWith('http') ? ogImage : new URL(ogImage, config.siteUrl).toString(),
+  "author": {
+    "@type": "Organization",
+    "name": post.data.author || config.siteName
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": config.siteName,
+    "logo": {
+      "@type": "ImageObject",
+      "url": new URL("/images/logo.svg", config.siteUrl).toString()
+    }
+  },
+  "datePublished": post.data.publishDate.toISOString(),
+  "dateModified": post.data.updatedDate?.toISOString() || post.data.publishDate.toISOString(),
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": canonicalURL
+  }
+};
+---
+
+<BaseLayout
+  title={`${post.data.title} | ${config.siteName}`}
+  description={post.data.description}
+  keywords={post.data.tags?.join(', ')}
+  lang={lang}
+  ogImage={ogImage}
+>
+  <!-- Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+  <!-- Reading Progress Bar with 2025 Performance Optimization -->
+  <div
+    x-data="{
+      scrollProgress: 0,
+      updateProgress() {
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight - windowHeight;
+        const scrolled = window.scrollY;
+        this.scrollProgress = Math.min((scrolled / documentHeight) * 100, 100);
+      }
+    }"
+    x-init="
+      updateProgress();
+      window.addEventListener('scroll', () => updateProgress(), { passive: true });
+    "
+    class="fixed top-0 left-0 right-0 z-50 h-1 bg-neutral-200 dark:bg-neutral-800"
+  >
+    <div
+      class="h-full bg-gradient-to-r from-primary via-secondary to-accent transition-all duration-150"
+      :style="`width: ${scrollProgress}%`"
+    ></div>
+  </div>
+
+  <!-- Article Content -->
+  <article class="pt-24 md:pt-32">
+    <!-- Article Header -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+      <BlogHeader
+        title={post.data.title}
+        author={post.data.author}
+        publishDate={post.data.publishDate}
+        category={post.data.category}
+        tags={post.data.tags}
+        readingTime={readingTime}
+        lang={lang}
+      />
+    </div>
+
+    <!-- Featured Image (if exists) -->
+    {post.data.image && (
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <div class="aspect-[21/9] rounded-2xl overflow-hidden shadow-2xl">
+          <img
+            src={post.data.image}
+            alt={post.data.title}
+            class="w-full h-full object-cover"
+            loading="eager"
+          />
+        </div>
+      </div>
+    )}
+
+    <!-- Article Body with Enhanced 2025 Tailwind Typography -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="prose prose-lg lg:prose-xl prose-neutral dark:prose-invert max-w-none
+        prose-headings:font-bold prose-headings:text-neutral-900 dark:prose-headings:text-white prose-headings:scroll-mt-24
+        prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6
+        prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
+        prose-p:text-neutral-700 dark:prose-p:text-neutral-300 prose-p:leading-relaxed prose-p:mb-6
+        prose-a:text-primary prose-a:no-underline prose-a:font-medium hover:prose-a:underline prose-a:transition-all
+        prose-strong:text-neutral-900 dark:prose-strong:text-white prose-strong:font-semibold
+        prose-code:text-primary prose-code:bg-primary/10 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:font-mono
+        prose-code:before:content-[''] prose-code:after:content-['']
+        prose-pre:bg-neutral-900 prose-pre:text-neutral-100 prose-pre:rounded-xl prose-pre:shadow-lg prose-pre:border prose-pre:border-neutral-800
+        prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-6 prose-ul:space-y-2
+        prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-6 prose-ol:space-y-2
+        prose-li:text-neutral-700 dark:prose-li:text-neutral-300 prose-li:mb-2 prose-li:leading-relaxed
+        prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:pl-6 prose-blockquote:py-2 prose-blockquote:italic prose-blockquote:text-neutral-700 dark:prose-blockquote:text-neutral-400 prose-blockquote:bg-neutral-50 dark:prose-blockquote:bg-neutral-900/50 prose-blockquote:rounded-r-lg
+        prose-img:rounded-xl prose-img:shadow-lg prose-img:my-8
+        prose-hr:border-neutral-300 dark:prose-hr:border-neutral-700 prose-hr:my-12
+        prose-table:border-collapse prose-table:w-full prose-table:my-8
+        prose-th:bg-neutral-100 dark:prose-th:bg-neutral-800 prose-th:px-4 prose-th:py-3 prose-th:text-left prose-th:font-semibold prose-th:border prose-th:border-neutral-300 dark:prose-th:border-neutral-700
+        prose-td:border prose-td:border-neutral-300 dark:prose-td:border-neutral-700 prose-td:px-4 prose-td:py-3
+        prose-figure:my-8
+        prose-figcaption:text-center prose-figcaption:text-sm prose-figcaption:text-neutral-600 dark:prose-figcaption:text-neutral-400 prose-figcaption:mt-2
+      ">
+        <Content />
+      </div>
+    </div>
+
+    <!-- Share Buttons (Floating Sidebar + Mobile Bottom Bar) -->
+    <ShareButtons
+      url={canonicalURL}
+      title={post.data.title}
+      lang={lang}
+    />
+
+    <!-- Article Footer -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+      <ArticleFooter
+        author={post.data.author}
+        category={post.data.category}
+        relatedPosts={relatedPosts}
+        lang={lang}
+      />
+    </div>
+  </article>
+
+  <!-- Back to Blog Button -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 mb-16">
+    <a
+      href="/blog"
+      class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-all font-medium group"
+    >
+      <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      Retour au blog
+    </a>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Enhance code blocks */
+  :global(.prose pre) {
+    padding: 1.5rem;
+    overflow-x: auto;
+  }
+
+  :global(.prose pre code) {
+    background: transparent;
+    padding: 0;
+    color: inherit;
+    font-size: 0.875rem;
+    line-height: 1.7;
+  }
+
+  /* Improve table styling */
+  :global(.prose table) {
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+
+  /* Smooth scroll behavior */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Ensure images are responsive */
+  :global(.prose img) {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Focus styles for accessibility */
+  :global(.prose a:focus) {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+
+  /* Copy button container */
+  :global(.code-block-wrapper) {
+    position: relative;
+  }
+
+  /* Improve heading anchor links */
+  :global(.prose h2:hover .heading-anchor),
+  :global(.prose h3:hover .heading-anchor) {
+    opacity: 1;
+  }
+</style>
+
+<!-- Alpine.js for interactive features with 2025 performance optimizations -->
+<script>
+  // Smooth scroll to anchor links
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId && targetId !== '#') {
+          const target = document.querySelector(targetId);
+          if (target) {
+            const offset = 100; // Account for fixed header
+            const targetPosition = target.getBoundingClientRect().top + window.scrollY - offset;
+            window.scrollTo({
+              top: targetPosition,
+              behavior: 'smooth'
+            });
+          }
+        }
+      });
+    });
+
+    // Add copy button to code blocks
+    document.querySelectorAll('pre').forEach((pre) => {
+      const button = document.createElement('button');
+      button.className = 'absolute top-3 right-3 px-3 py-1.5 text-xs bg-white/10 hover:bg-white/20 text-white rounded-md transition-colors backdrop-blur-sm font-medium';
+      button.textContent = 'Copier';
+      button.setAttribute('aria-label', 'Copier le code');
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper relative';
+
+      if (pre.parentNode) {
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+        wrapper.appendChild(button);
+      }
+
+      button.addEventListener('click', async () => {
+        const code = pre.querySelector('code')?.textContent || '';
+        try {
+          await navigator.clipboard.writeText(code);
+          button.textContent = 'Copié !';
+          button.classList.add('bg-green-500/20');
+          setTimeout(() => {
+            button.textContent = 'Copier';
+            button.classList.remove('bg-green-500/20');
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy code:', err);
+          button.textContent = 'Erreur';
+          setTimeout(() => {
+            button.textContent = 'Copier';
+          }, 2000);
+        }
+      });
+    });
+
+    // Add heading anchor links (optional - for better UX)
+    document.querySelectorAll('.prose h2, .prose h3').forEach((heading) => {
+      if (heading.id) {
+        const anchor = document.createElement('a');
+        anchor.className = 'heading-anchor opacity-0 transition-opacity ml-2 text-primary no-underline';
+        anchor.href = `#${heading.id}`;
+        anchor.textContent = '#';
+        anchor.setAttribute('aria-label', `Lien vers ${heading.textContent}`);
+        heading.appendChild(anchor);
+      }
+    });
+  });
+</script>

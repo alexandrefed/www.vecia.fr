@@ -1,0 +1,241 @@
+---
+/**
+ * ArticleFooter Component
+ *
+ * Displays at the end of blog articles:
+ * - Author bio with photo and LinkedIn link
+ * - "Ready to Automate?" CTA box
+ * - Related articles (3-4 from same category)
+ *
+ * Props:
+ * - author: Author name
+ * - category: Article category for finding related articles
+ * - currentSlug: Current article slug (to exclude from related)
+ * - lang: Language code ('fr' | 'en')
+ * - relatedArticles: Array of related articles
+ */
+
+import type { Language } from '../../i18n/ui';
+import { config } from '../../config';
+
+interface Props {
+  author: string;
+  category: string;
+  currentSlug: string;
+  lang: Language;
+  relatedArticles?: Array<{
+    title: string;
+    description: string;
+    slug: string;
+    publishDate: Date;
+    category: string;
+  }>;
+}
+
+const { author, category, currentSlug, lang, relatedArticles = [] } = Astro.props;
+
+// Author data (can be expanded to support multiple authors)
+const authorData = {
+  'Équipe Vecia': {
+    name: 'Équipe Vecia',
+    nameEn: 'Vecia Team',
+    bio: {
+      fr: 'L\'équipe Vecia est composée d\'experts en automatisation IA, passionnés par l\'optimisation des processus métier et l\'innovation technologique.',
+      en: 'The Vecia team consists of AI automation experts, passionate about business process optimization and technological innovation.'
+    },
+    photo: '/images/team/vecia-team.jpg', // Placeholder
+    linkedin: config.social.linkedin
+  },
+  'Alexandre Fedotov': {
+    name: 'Alexandre Fedotov',
+    nameEn: 'Alexandre Fedotov',
+    bio: {
+      fr: 'Co-fondateur de Vecia, passionné par la construction de systèmes intelligents avec l\'IA. Expert en automatisation et transformation digitale.',
+      en: 'Co-founder of Vecia, passionate about building intelligent systems with AI. Expert in automation and digital transformation.'
+    },
+    photo: '/images/team/alexandre_fedotov_square.jpg',
+    linkedin: 'https://linkedin.com/in/alexandre-fedotov'
+  },
+  'Tanguy Dray': {
+    name: 'Tanguy Dray',
+    nameEn: 'Tanguy Dray',
+    bio: {
+      fr: 'Co-fondateur de Vecia, Lead Dev Data IA avec une expertise approfondie en développement d\'agents intelligents et en architecture de systèmes distribués.',
+      en: 'Co-founder of Vecia, Lead AI Data Developer with deep expertise in intelligent agent development and distributed systems architecture.'
+    },
+    photo: '/images/team/tanguy_dray_square.jpg',
+    linkedin: 'https://linkedin.com/in/tanguy-dray'
+  }
+};
+
+const currentAuthor = authorData[author] || authorData['Équipe Vecia'];
+
+// Translations
+const t = {
+  fr: {
+    aboutAuthor: 'À propos de l\'auteur',
+    followOn: 'Suivre sur LinkedIn',
+    cta: {
+      title: 'Prêt à Automatiser Vos Processus ?',
+      description: 'Découvrez comment l\'IA peut transformer votre entreprise. Obtenez votre audit gratuit et économisez 20+ heures par semaine.',
+      button: 'Réserver un Appel Gratuit'
+    },
+    related: {
+      title: 'Articles Similaires',
+      readMore: 'Lire l\'article',
+      noArticles: 'Aucun article similaire trouvé.'
+    }
+  },
+  en: {
+    aboutAuthor: 'About the Author',
+    followOn: 'Follow on LinkedIn',
+    cta: {
+      title: 'Ready to Automate Your Processes?',
+      description: 'Discover how AI can transform your business. Get your free audit and save 20+ hours per week.',
+      button: 'Book a Free Call'
+    },
+    related: {
+      title: 'Related Articles',
+      readMore: 'Read article',
+      noArticles: 'No related articles found.'
+    }
+  }
+};
+
+const translations = t[lang];
+const blogBasePath = lang === 'fr' ? '/blog/' : '/en/blog/';
+---
+
+<footer class="mt-16 space-y-12">
+  <!-- Divider -->
+  <div class="border-t border-gray-200"></div>
+
+  <!-- Author Bio -->
+  <div class="bg-gradient-to-br from-accent3 to-white p-8 rounded-2xl border border-gray-200">
+    <h3 class="text-lg font-heading font-bold text-text mb-4">
+      {translations.aboutAuthor}
+    </h3>
+
+    <div class="flex flex-col md:flex-row gap-6">
+      <!-- Author Photo -->
+      <div class="flex-shrink-0">
+        <img
+          src={currentAuthor.photo}
+          alt={lang === 'fr' ? currentAuthor.name : currentAuthor.nameEn}
+          class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
+          loading="lazy"
+        />
+      </div>
+
+      <!-- Author Info -->
+      <div class="flex-1">
+        <h4 class="text-xl font-heading font-bold text-text mb-2">
+          {lang === 'fr' ? currentAuthor.name : currentAuthor.nameEn}
+        </h4>
+
+        <p class="text-text/80 leading-relaxed mb-4">
+          {currentAuthor.bio[lang]}
+        </p>
+
+        <!-- LinkedIn Link -->
+        <a
+          href={currentAuthor.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center text-[#0A66C2] hover:text-[#004182] font-semibold transition-colors group"
+        >
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+          {translations.followOn}
+          <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Box -->
+  <div class="bg-gradient-to-br from-primary via-secondary to-accent1 p-8 md:p-12 rounded-2xl text-white shadow-2xl">
+    <div class="max-w-2xl mx-auto text-center">
+      <h3 class="text-3xl md:text-4xl font-heading font-bold mb-4">
+        {translations.cta.title}
+      </h3>
+
+      <p class="text-lg text-white/90 mb-8 leading-relaxed">
+        {translations.cta.description}
+      </p>
+
+      <a
+        href={config.calcom.bookingUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center justify-center px-8 py-4 bg-white text-primary font-bold rounded-lg hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-lg group"
+      >
+        {translations.cta.button}
+        <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Related Articles -->
+  {relatedArticles.length > 0 && (
+    <div>
+      <h3 class="text-2xl font-heading font-bold text-text mb-6">
+        {translations.related.title}
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {relatedArticles.slice(0, 3).map((article) => (
+          <a
+            href={blogBasePath + article.slug}
+            class="group block p-6 bg-white rounded-xl border border-gray-200 hover:border-primary hover:shadow-xl transition-all duration-200"
+          >
+            <h4 class="text-lg font-heading font-bold text-text group-hover:text-primary transition-colors mb-2 line-clamp-2">
+              {article.title}
+            </h4>
+
+            <p class="text-sm text-text/70 mb-4 line-clamp-2">
+              {article.description}
+            </p>
+
+            <div class="flex items-center justify-between text-sm">
+              <time class="text-text/60">
+                {article.publishDate.toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric'
+                })}
+              </time>
+
+              <span class="text-primary font-semibold group-hover:underline flex items-center">
+                {translations.related.readMore}
+                <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {relatedArticles.length === 0 && (
+    <div class="text-center py-8 text-text/60">
+      <p>{translations.related.noArticles}</p>
+    </div>
+  )}
+</footer>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

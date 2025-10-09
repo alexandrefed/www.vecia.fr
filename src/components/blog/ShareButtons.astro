@@ -1,0 +1,206 @@
+---
+/**
+ * ShareButtons Component
+ *
+ * Social sharing buttons for blog articles:
+ * - LinkedIn share
+ * - X (Twitter) share
+ * - Copy link button (Clipboard API)
+ *
+ * Layout:
+ * - Floating sidebar on desktop (sticky, left side)
+ * - Fixed bottom bar on mobile
+ *
+ * Props:
+ * - url: Article URL (full URL including domain)
+ * - title: Article title
+ * - lang: Language code ('fr' | 'en')
+ */
+
+import type { Language } from '../../i18n/ui';
+
+interface Props {
+  url: string;
+  title: string;
+  lang: Language;
+}
+
+const { url, title, lang } = Astro.props;
+
+// Encode for URL sharing
+const encodedUrl = encodeURIComponent(url);
+const encodedTitle = encodeURIComponent(title);
+
+// Share URLs
+const linkedinShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+const twitterShareUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`;
+
+// Translations
+const t = {
+  fr: {
+    share: 'Partager',
+    linkedin: 'Partager sur LinkedIn',
+    twitter: 'Partager sur X',
+    copy: 'Copier le lien',
+    copied: 'Copié !'
+  },
+  en: {
+    share: 'Share',
+    linkedin: 'Share on LinkedIn',
+    twitter: 'Share on X',
+    copy: 'Copy link',
+    copied: 'Copied!'
+  }
+};
+
+const translations = t[lang];
+---
+
+<!-- Share Buttons Container -->
+<div
+  x-data="{
+    copied: false,
+    copyLink() {
+      navigator.clipboard.writeText('{url}').then(() => {
+        this.copied = true;
+        setTimeout(() => { this.copied = false; }, 2000);
+      });
+    }
+  }"
+  class="share-buttons"
+>
+  <!-- Desktop: Floating Sidebar (Sticky Left) -->
+  <div class="hidden lg:block fixed left-4 top-1/2 -translate-y-1/2 z-40">
+    <div class="flex flex-col space-y-3 bg-white rounded-2xl shadow-xl p-3 border border-gray-200">
+      <!-- Label -->
+      <div class="text-xs font-semibold text-text/60 text-center pb-2 border-b border-gray-200">
+        {translations.share}
+      </div>
+
+      <!-- LinkedIn -->
+      <a
+        href={linkedinShareUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={translations.linkedin}
+        class="flex items-center justify-center w-12 h-12 rounded-lg bg-[#0A66C2] text-white hover:bg-[#004182] transition-all duration-200 hover:scale-110 shadow-md"
+      >
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+      </a>
+
+      <!-- X (Twitter) -->
+      <a
+        href={twitterShareUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={translations.twitter}
+        class="flex items-center justify-center w-12 h-12 rounded-lg bg-black text-white hover:bg-gray-800 transition-all duration-200 hover:scale-110 shadow-md"
+      >
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+      </a>
+
+      <!-- Copy Link -->
+      <button
+        @click="copyLink()"
+        type="button"
+        aria-label={translations.copy}
+        class="flex items-center justify-center w-12 h-12 rounded-lg bg-gray-100 text-text hover:bg-gray-200 transition-all duration-200 hover:scale-110 shadow-md relative"
+      >
+        <svg x-show="!copied" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+        <svg x-show="copied" x-cloak class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+
+        <!-- Tooltip -->
+        <div
+          x-show="copied"
+          x-cloak
+          class="absolute -right-20 top-1/2 -translate-y-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap"
+        >
+          {translations.copied}
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile: Fixed Bottom Bar -->
+  <div class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-2xl">
+    <div class="container mx-auto px-4 py-3">
+      <div class="flex items-center justify-around gap-2">
+        <!-- Label -->
+        <span class="text-sm font-semibold text-text/60 whitespace-nowrap">
+          {translations.share}
+        </span>
+
+        <!-- LinkedIn -->
+        <a
+          href={linkedinShareUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={translations.linkedin}
+          class="flex items-center justify-center w-12 h-12 rounded-lg bg-[#0A66C2] text-white hover:bg-[#004182] transition-all duration-200 active:scale-95"
+        >
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+        </a>
+
+        <!-- X (Twitter) -->
+        <a
+          href={twitterShareUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={translations.twitter}
+          class="flex items-center justify-center w-12 h-12 rounded-lg bg-black text-white hover:bg-gray-800 transition-all duration-200 active:scale-95"
+        >
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </a>
+
+        <!-- Copy Link -->
+        <button
+          @click="copyLink()"
+          type="button"
+          aria-label={translations.copy}
+          class="flex items-center justify-center w-12 h-12 rounded-lg bg-gray-100 text-text hover:bg-gray-200 transition-all duration-200 active:scale-95 relative"
+        >
+          <svg x-show="!copied" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+          <svg x-show="copied" x-cloak class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+          </svg>
+
+          <!-- Mobile Tooltip -->
+          <div
+            x-show="copied"
+            x-cloak
+            class="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1 rounded whitespace-nowrap"
+          >
+            {translations.copied}
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  [x-cloak] {
+    display: none !important;
+  }
+
+  /* Add padding to content on mobile to account for fixed bottom bar */
+  @media (max-width: 1023px) {
+    body {
+      padding-bottom: 68px;
+    }
+  }
+</style>

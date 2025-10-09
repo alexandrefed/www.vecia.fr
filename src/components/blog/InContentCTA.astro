@@ -1,0 +1,145 @@
+---
+/**
+ * InContentCTA Component
+ *
+ * Reusable call-to-action block that can be inserted into blog articles.
+ * Designed to be placed at strategic points in long-form content.
+ *
+ * Props:
+ * - lang: Language code ('fr' | 'en')
+ * - variant: CTA style ('audit' | 'consultation' | 'newsletter')
+ */
+
+import type { Language } from '../../i18n/ui';
+import { config } from '../../config';
+
+interface Props {
+  lang: Language;
+  variant?: 'audit' | 'consultation' | 'newsletter';
+}
+
+const { lang, variant = 'audit' } = Astro.props;
+
+// CTA content variations
+const ctaContent = {
+  audit: {
+    fr: {
+      title: '🚀 Prêt à Passer à l\'Action ?',
+      description: 'Obtenez votre audit IA gratuit et découvrez comment économiser 20+ heures par semaine avec l\'automatisation.',
+      buttonText: 'Obtenir Mon Audit Gratuit',
+      buttonUrl: config.calcom.bookingUrl,
+      note: '30 minutes • 100% gratuit • Sans engagement'
+    },
+    en: {
+      title: '🚀 Ready to Take Action?',
+      description: 'Get your free AI audit and discover how to save 20+ hours per week with automation.',
+      buttonText: 'Get My Free Audit',
+      buttonUrl: config.calcom.bookingUrl,
+      note: '30 minutes • 100% free • No commitment'
+    }
+  },
+  consultation: {
+    fr: {
+      title: '💡 Besoin d\'Aide Personnalisée ?',
+      description: 'Réservez une consultation gratuite pour discuter de vos défis spécifiques et découvrir les meilleures solutions d\'automatisation pour votre entreprise.',
+      buttonText: 'Réserver une Consultation',
+      buttonUrl: config.calcom.bookingUrl,
+      note: '30 minutes • Expert dédié • Solutions sur mesure'
+    },
+    en: {
+      title: '💡 Need Personalized Help?',
+      description: 'Book a free consultation to discuss your specific challenges and discover the best automation solutions for your business.',
+      buttonText: 'Book a Consultation',
+      buttonUrl: config.calcom.bookingUrl,
+      note: '30 minutes • Dedicated expert • Custom solutions'
+    }
+  },
+  newsletter: {
+    fr: {
+      title: '📬 Restez Informé',
+      description: 'Recevez nos derniers articles et conseils d\'automatisation IA directement dans votre boîte mail. Un email par semaine, aucun spam.',
+      buttonText: 'S\'inscrire à la Newsletter',
+      buttonUrl: '#newsletter-form', // Scroll to footer form
+      note: 'Désinscription en 1 clic • Contenu exclusif'
+    },
+    en: {
+      title: '📬 Stay Informed',
+      description: 'Receive our latest articles and AI automation tips directly in your inbox. One email per week, no spam.',
+      buttonText: 'Subscribe to Newsletter',
+      buttonUrl: '#newsletter-form', // Scroll to footer form
+      note: 'Unsubscribe in 1 click • Exclusive content'
+    }
+  }
+};
+
+const content = ctaContent[variant][lang];
+---
+
+<!-- In-Content CTA Block -->
+<aside class="my-12 -mx-4 md:mx-0">
+  <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-secondary/20 to-accent1/20 p-8 md:p-10 border-2 border-primary/30 shadow-xl">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+      <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+            <path d="M0 32V0h32" fill="none" stroke="currentColor" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid)"/>
+      </svg>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 text-center max-w-2xl mx-auto">
+      <!-- Title -->
+      <h3 class="text-2xl md:text-3xl font-heading font-bold text-text mb-4">
+        {content.title}
+      </h3>
+
+      <!-- Description -->
+      <p class="text-lg text-text/80 leading-relaxed mb-6">
+        {content.description}
+      </p>
+
+      <!-- CTA Button -->
+      <a
+        href={content.buttonUrl}
+        target={variant !== 'newsletter' ? '_blank' : undefined}
+        rel={variant !== 'newsletter' ? 'noopener noreferrer' : undefined}
+        class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-200 group"
+      >
+        {content.buttonText}
+        <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+
+      <!-- Note -->
+      <p class="text-sm text-text/60 mt-4">
+        {content.note}
+      </p>
+    </div>
+  </div>
+</aside>
+
+<!-- Usage Instructions (Comment - not rendered) -->
+<!--
+  To use this component in your markdown articles:
+
+  1. Import in article template:
+     import InContentCTA from '../../components/blog/InContentCTA.astro';
+
+  2. Insert between sections in your article:
+     <InContentCTA lang="fr" variant="audit" />
+
+  Variants available:
+  - "audit" (default): Free AI audit CTA
+  - "consultation": Personalized consultation CTA
+  - "newsletter": Newsletter signup CTA
+
+  Best placement:
+  - After problem description (use "audit")
+  - Mid-article, after solution explanation (use "consultation")
+  - End of article, before footer (use "newsletter")
+-->
