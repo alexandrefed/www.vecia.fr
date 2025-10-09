@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { ui } from '../../i18n/ui';
+
+const lang = 'en';
+const t = ui[lang];
+---
+
+<BaseLayout
+  title={t['privacy.meta.title']}
+  description={t['privacy.meta.description']}
+  lang={lang}
+>
+  <!-- Hero Section -->
+  <section class="relative py-20 bg-gradient-to-br from-primary/5 to-secondary/5">
+    <div class="container mx-auto px-6">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-heading font-bold mb-4">
+          {t['privacy.hero.title']}
+        </h1>
+        <p class="text-lg text-gray-600">
+          {t['privacy.hero.subtitle']}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content Section -->
+  <section class="py-20">
+    <div class="container mx-auto px-6">
+      <div class="max-w-4xl mx-auto prose prose-lg">
+        <p class="lead text-xl text-gray-700 mb-12">
+          {t['privacy.intro.text']}
+        </p>
+
+        <!-- Section 1 -->
+        <h2 class="text-3xl font-heading font-bold mt-12 mb-6">{t['privacy.section1.title']}</h2>
+        <p>{t['privacy.section1.p1']}</p>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>{t['privacy.section1.li1']}</li>
+          <li>{t['privacy.section1.li2']}</li>
+          <li>{t['privacy.section1.li3']}</li>
+          <li>{t['privacy.section1.li4']}</li>
+        </ul>
+        <p>{t['privacy.section1.p2']}</p>
+
+        <!-- Section 2 -->
+        <h2 class="text-3xl font-heading font-bold mt-12 mb-6">{t['privacy.section2.title']}</h2>
+        <p>{t['privacy.section2.intro']}</p>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>{t['privacy.section2.li1']}</li>
+          <li>{t['privacy.section2.li2']}</li>
+          <li>{t['privacy.section2.li3']}</li>
+          <li>{t['privacy.section2.li4']}</li>
+          <li>{t['privacy.section2.li5']}</li>
+        </ul>
+
+        <!-- Section 3 -->
+        <h2 class="text-3xl font-heading font-bold mt-12 mb-6">{t['privacy.section3.title']}</h2>
+        <p>{t['privacy.section3.p1']}</p>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>{t['privacy.section3.li1']}</li>
+          <li>{t['privacy.section3.li2']}</li>
+        </ul>
+        <p>{t['privacy.section3.p2']}</p>
+
+        <!-- Section 4 -->
+        <h2 class="text-3xl font-heading font-bold mt-12 mb-6">{t['privacy.section4.title']}</h2>
+        <p>{t['privacy.section4.p1']}</p>
+        <p>{t['privacy.section4.p2']}</p>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>{t['privacy.section4.li1']}</li>
+          <li>{t['privacy.section4.li2']}</li>
+          <li>{t['privacy.section4.li3']}</li>
+          <li>{t['privacy.section4.li4']}</li>
+        </ul>
+
+        <!-- Section 5 -->
+        <h2 class="text-3xl font-heading font-bold mt-12 mb-6">{t['privacy.section5.title']}</h2>
+        <p>{t['privacy.section5.intro']}</p>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>{t['privacy.section5.li1']}</li>
+          <li>{t['privacy.section5.li2']}</li>
+          <li>{t['privacy.section5.li3']}</li>
+          <li>{t['privacy.section5.li4']}</li>
+          <li>{t['privacy.section5.li5']}</li>
+          <li>{t['privacy.section5.li6']}</li>
+        </ul>
+        <p>{t['privacy.section5.p1']}</p>
+
+        <!-- Section 6 -->
+        <h2 class="text-3xl font-heading font-bold mt-12 mb-6">{t['privacy.section6.title']}</h2>
+        <p>{t['privacy.section6.p1']}</p>
+
+        <!-- Section 7 -->
+        <h2 class="text-3xl font-heading font-bold mt-12 mb-6">{t['privacy.section7.title']}</h2>
+        <p>{t['privacy.section7.p1']}</p>
+
+        <!-- Section 8 -->
+        <h2 class="text-3xl font-heading font-bold mt-12 mb-6">{t['privacy.section8.title']}</h2>
+        <p>{t['privacy.section8.p1']}</p>
+
+        <!-- Section 9: Contact -->
+        <h2 class="text-3xl font-heading font-bold mt-12 mb-6">{t['privacy.section9.title']}</h2>
+        <p>{t['privacy.section9.p1']}</p>
+        <div class="bg-gray-50 p-6 rounded-lg mt-4">
+          <p class="mb-2"><strong>{t['privacy.contact.email']}</strong></p>
+          <p class="mb-2"><strong>{t['privacy.contact.address']}</strong></p>
+          <p><strong>{t['privacy.contact.phone']}</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  @import "tailwindcss";
+
+  .prose {
+    max-width: 100%;
+  }
+  .prose p {
+    @apply text-gray-700 leading-relaxed mb-4;
+  }
+  .prose ul {
+    @apply mb-6;
+  }
+  .prose li {
+    @apply text-gray-700;
+  }
+</style>

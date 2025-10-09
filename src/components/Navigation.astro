@@ -1,5 +1,6 @@
 ---
 import type { Language } from '../i18n/ui';
+import { config } from '../config';
 
 interface Props {
   lang: Language;
@@ -20,7 +21,7 @@ const altLangUrl = lang === 'fr' ? '/en/' : '/';
 const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.language.code.en'];
 ---
 
-<nav class="fixed top-0 left-0 right-0 z-50 bg-background/0 backdrop-blur-md border-b border-gray-200/20 h-[70px]">
+<nav class="fixed top-0 left-0 right-0 z-50 bg-background/0 backdrop-blur-md border-b border-gray-200/20 h-[70px]" x-data="{ mobileOpen: false }">
   <div class="w-full h-full px-8">
     <div class="flex items-center justify-between h-full">
 
@@ -103,8 +104,11 @@ const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.langu
         <!-- CTA Buttons -->
         <!-- Primary Button (Outlined) -->
         <a
-          href="https://cal.com/vecia/consultation"
+          href={config.calcom.bookingUrl}
           target="_blank"
+          rel="noopener noreferrer"
+          data-track="book-call"
+          data-location="navigation-desktop"
           class="px-5 py-2.5 text-base font-semibold border-2 border-primary/30 rounded-lg text-primary bg-white/10 hover:bg-primary hover:text-white hover:border-primary transition-all capitalize"
         >
           {t['nav.cta.book'].toLowerCase()}
@@ -122,58 +126,86 @@ const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.langu
       <!-- Alpine.js is REQUIRED here for mobile menu toggle state -->
       <!-- See docs/ALPINEJS-USAGE-GUIDE.md for when to use Alpine vs Tailwind -->
       <button
-        x-data="{ mobileOpen: false }"
         @click="mobileOpen = !mobileOpen"
-        class="lg:hidden p-2.5 text-gray-700 hover:text-primary transition-colors"
+        class="lg:hidden p-2.5 text-gray-700 hover:text-primary transition-colors relative"
+        aria-label="Toggle menu"
       >
-        <svg class="w-7 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <!-- Hamburger Icon -->
+        <svg
+          x-show="!mobileOpen"
+          x-transition:enter="transition ease-out duration-200"
+          x-transition:enter-start="opacity-0 rotate-90"
+          x-transition:enter-end="opacity-100 rotate-0"
+          class="w-7 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+        <!-- X Icon -->
+        <svg
+          x-show="mobileOpen"
+          x-transition:enter="transition ease-out duration-200"
+          x-transition:enter-start="opacity-0 rotate-90"
+          x-transition:enter-end="opacity-100 rotate-0"
+          class="w-7 h-6 absolute top-2.5 left-2.5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
         </svg>
       </button>
     </div>
 
     <!-- Mobile Menu -->
     <div
-      x-data="{ mobileOpen: false }"
       x-show="mobileOpen"
       @click.outside="mobileOpen = false"
-      x-transition:enter="transition ease-out duration-200"
+      x-transition:enter="transition ease-out duration-300"
       x-transition:enter-start="opacity-0 transform -translate-y-4"
       x-transition:enter-end="opacity-100 transform translate-y-0"
-      class="lg:hidden mt-4 pb-4 border-t border-gray-200/20 pt-4"
+      x-transition:leave="transition ease-in duration-200"
+      x-transition:leave-start="opacity-100 transform translate-y-0"
+      x-transition:leave-end="opacity-0 transform -translate-y-4"
+      class="lg:hidden mt-6 py-8 px-6 bg-white shadow-2xl rounded-b-2xl"
       style="display: none;"
     >
-      <div class="flex flex-col gap-4">
-        <a href={aboutUrl} class="text-base font-display font-bold uppercase tracking-wide text-gray-700 hover:text-primary transition-colors">
+      <div class="flex flex-col gap-6 items-center">
+        <a href={aboutUrl} class="text-lg font-display font-bold uppercase tracking-wide text-gray-700 hover:text-primary transition-all hover:scale-105 text-center py-2">
           {t['nav.about']}
         </a>
-        <a href={blogUrl} class="text-base font-display font-bold uppercase tracking-wide text-gray-700 hover:text-primary transition-colors">
+        <a href={blogUrl} class="text-lg font-display font-bold uppercase tracking-wide text-gray-700 hover:text-primary transition-all hover:scale-105 text-center py-2">
           {t['nav.blog']}
         </a>
-        <a href={contactUrl} class="text-base font-display font-bold uppercase tracking-wide text-gray-700 hover:text-primary transition-colors">
+        <a href={contactUrl} class="text-lg font-display font-bold uppercase tracking-wide text-gray-700 hover:text-primary transition-all hover:scale-105 text-center py-2">
           {t['nav.contact']}
         </a>
 
         <!-- Mobile Language Links -->
-        <div class="flex gap-4 pt-2 border-t border-gray-200/20">
-          <a href="/" class="text-sm text-gray-700 hover:text-primary transition-colors">
+        <div class="flex gap-6 pt-4 mt-4 border-t border-gray-100 text-center w-full justify-center">
+          <a href="/" class="text-base text-gray-600 hover:text-primary transition-colors font-medium">
             {t['nav.language.fr']}
           </a>
-          <a href="/en/" class="text-sm text-gray-700 hover:text-primary transition-colors">
+          <a href="/en/" class="text-base text-gray-600 hover:text-primary transition-colors font-medium">
             {t['nav.language.en']}
           </a>
         </div>
 
         <a
-          href="https://cal.com/vecia/consultation"
+          href={config.calcom.bookingUrl}
           target="_blank"
-          class="w-full px-5 py-2.5 text-base font-semibold border-2 border-primary/30 rounded-lg text-primary bg-white/10 hover:bg-primary hover:text-white hover:border-primary transition-all text-center capitalize"
+          rel="noopener noreferrer"
+          data-track="book-call"
+          data-location="navigation-mobile"
+          class="w-full px-6 py-4 text-lg font-semibold border-2 border-primary/30 rounded-xl text-primary bg-white hover:bg-primary hover:text-white hover:border-primary transition-all text-center capitalize hover:scale-[1.02] active:scale-[0.98] mt-2"
         >
           {t['nav.cta.book'].toLowerCase()}
         </a>
         <a
           href={lang === 'fr' ? '/commencer' : '/en/get-started'}
-          class="w-full px-6 py-2.5 text-base font-semibold rounded-lg text-white bg-gradient-to-r from-primary to-secondary hover:scale-105 hover:shadow-lg transition-all text-center capitalize"
+          class="w-full px-6 py-4 text-lg font-semibold rounded-xl text-white bg-gradient-to-r from-primary to-secondary hover:scale-[1.02] active:scale-[0.98] hover:shadow-xl transition-all text-center capitalize"
         >
           {t['nav.cta.start'].toLowerCase()}
         </a>

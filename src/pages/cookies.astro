@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { ui } from '../i18n/ui';
+
+const lang = 'fr';
+const t = ui[lang];
+---
+
+<BaseLayout
+  title={t['cookies.meta.title']}
+  description={t['cookies.meta.description']}
+  lang={lang}
+>
+  <!-- Hero Section -->
+  <section class="relative py-20 bg-gradient-to-br from-primary/5 to-secondary/5">
+    <div class="container mx-auto px-6">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-heading font-bold mb-4">
+          {t['cookies.hero.title']}
+        </h1>
+        <p class="text-lg text-gray-600">
+          {t['cookies.hero.subtitle']}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content Section -->
+  <section class="py-20">
+    <div class="container mx-auto px-6">
+      <div class="max-w-4xl mx-auto prose prose-lg">
+        <p class="lead text-xl text-gray-700 mb-12">
+          {t['cookies.intro.text']}
+        </p>
+
+        <!-- Section 1 -->
+        <h2 class="text-3xl font-heading font-bold mt-12 mb-6">{t['cookies.section1.title']}</h2>
+        <p>{t['cookies.section1.p1']}</p>
+
+        <!-- Section 2 -->
+        <h2 class="text-3xl font-heading font-bold mt-12 mb-6">{t['cookies.section2.title']}</h2>
+        <p>{t['cookies.section2.intro']}</p>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>{t['cookies.section2.li1']}</li>
+          <li>{t['cookies.section2.li2']}</li>
+          <li>{t['cookies.section2.li3']}</li>
+          <li>{t['cookies.section2.li4']}</li>
+        </ul>
+
+        <!-- Section 3 -->
+        <h2 class="text-3xl font-heading font-bold mt-12 mb-6">{t['cookies.section3.title']}</h2>
+
+        <div class="bg-white border-l-4 border-primary p-6 rounded-lg mb-6">
+          <h3 class="text-xl font-heading font-bold mb-2">{t['cookies.section3.essential.title']}</h3>
+          <p class="mb-2">{t['cookies.section3.essential.description']}</p>
+          <p class="text-sm text-gray-600">{t['cookies.section3.essential.examples']}</p>
+        </div>
+
+        <div class="bg-white border-l-4 border-secondary p-6 rounded-lg mb-6">
+          <h3 class="text-xl font-heading font-bold mb-2">{t['cookies.section3.analytics.title']}</h3>
+          <p class="mb-2">{t['cookies.section3.analytics.description']}</p>
+          <p class="text-sm text-gray-600">{t['cookies.section3.analytics.examples']}</p>
+        </div>
+
+        <div class="bg-white border-l-4 border-accent1 p-6 rounded-lg mb-6">
+          <h3 class="text-xl font-heading font-bold mb-2">{t['cookies.section3.functional.title']}</h3>
+          <p class="mb-2">{t['cookies.section3.functional.description']}</p>
+          <p class="text-sm text-gray-600">{t['cookies.section3.functional.examples']}</p>
+        </div>
+
+        <div class="bg-white border-l-4 border-accent2 p-6 rounded-lg mb-6">
+          <h3 class="text-xl font-heading font-bold mb-2">{t['cookies.section3.marketing.title']}</h3>
+          <p class="mb-2">{t['cookies.section3.marketing.description']}</p>
+          <p class="text-sm text-gray-600">{t['cookies.section3.marketing.examples']}</p>
+        </div>
+
+        <!-- Section 4 -->
+        <h2 class="text-3xl font-heading font-bold mt-12 mb-6">{t['cookies.section4.title']}</h2>
+        <p>{t['cookies.section4.p1']}</p>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>{t['cookies.section4.li1']}</li>
+          <li>{t['cookies.section4.li2']}</li>
+        </ul>
+        <p>{t['cookies.section4.p2']}</p>
+
+        <!-- Section 5 -->
+        <h2 class="text-3xl font-heading font-bold mt-12 mb-6">{t['cookies.section5.title']}</h2>
+        <p>{t['cookies.section5.p1']}</p>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>{t['cookies.section5.li1']}</li>
+          <li>{t['cookies.section5.li2']}</li>
+          <li>{t['cookies.section5.li3']}</li>
+        </ul>
+        <p>{t['cookies.section5.p2']}</p>
+
+        <!-- Section 6 -->
+        <h2 class="text-3xl font-heading font-bold mt-12 mb-6">{t['cookies.section6.title']}</h2>
+        <p>{t['cookies.section6.p1']}</p>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>{t['cookies.section6.li1']}</li>
+          <li>{t['cookies.section6.li2']}</li>
+        </ul>
+
+        <!-- Section 7 -->
+        <h2 class="text-3xl font-heading font-bold mt-12 mb-6">{t['cookies.section7.title']}</h2>
+        <p>{t['cookies.section7.p1']}</p>
+
+        <!-- Section 8: Contact -->
+        <h2 class="text-3xl font-heading font-bold mt-12 mb-6">{t['cookies.section8.title']}</h2>
+        <p>{t['cookies.section8.p1']}</p>
+        <div class="bg-gray-50 p-6 rounded-lg mt-4">
+          <p class="mb-2"><strong>{t['cookies.contact.email']}</strong></p>
+          <p><strong>{t['cookies.contact.address']}</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  @import "tailwindcss";
+
+  .prose {
+    max-width: 100%;
+  }
+  .prose p {
+    @apply text-gray-700 leading-relaxed mb-4;
+  }
+  .prose ul {
+    @apply mb-6;
+  }
+  .prose li {
+    @apply text-gray-700;
+  }
+</style>

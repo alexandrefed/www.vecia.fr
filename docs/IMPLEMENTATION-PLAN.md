@@ -873,124 +873,592 @@ const { headline, highlight, subheadline, body, cta1Text, cta2Text } = Astro.pro
 
 ---
 
-### **Phase 8: Interactive Features** (1.5 hours)
-**Goal**: Implement Alpine.js interactions
+### **Phase 8: Blog & Content Pages** (9.5 hours) ⏳ NEXT
+**Goal**: Build complete blog system, static pages, and LinkedIn integration
 
-#### Tasks:
-1. **Language Switcher** (Alpine.js dropdown):
-   ```astro
-   <div x-data="{ open: false }" class="relative">
-     <button @click="open = !open" class="flex items-center gap-2">
-       <span>🇫🇷 Français</span>
-       <svg><!-- Chevron --></svg>
-     </button>
+**Status**: Ready to start
+**Priority**: HIGH - Most complex remaining phase
+**Dependencies**: Phase 7 complete
 
-     <div x-show="open" @click.away="open = false" class="absolute">
-       <a href="/" class="block">🇫🇷 Français</a>
-       <a href="/en/" class="block">🇬🇧 English</a>
-     </div>
-   </div>
-   ```
-
-2. **Mobile Menu** (hamburger toggle):
-   ```astro
-   <div x-data="{ mobileMenuOpen: false }">
-     <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden">
-       <svg><!-- Hamburger icon --></svg>
-     </button>
-
-     <nav x-show="mobileMenuOpen" class="mobile-menu">
-       <!-- Navigation links -->
-     </nav>
-   </div>
-   ```
-
-3. **AI Tabs Auto-Rotation**:
-   ```astro
-   <div x-data="{
-     activeTab: 0,
-     totalTabs: 4,
-     interval: null,
-     startAutoRotate() {
-       this.interval = setInterval(() => {
-         this.activeTab = (this.activeTab + 1) % this.totalTabs;
-       }, 8000);
-     },
-     stopAutoRotate() {
-       clearInterval(this.interval);
-     }
-   }" x-init="startAutoRotate()" @mouseenter="stopAutoRotate()" @mouseleave="startAutoRotate()">
-     <!-- Tab buttons and content -->
-   </div>
-   ```
-
-4. **Metric Counter Animations** (scroll-triggered):
-   ```html
-   <span class="metric-counter" data-target="40">0</span>%
-
-   <script>
-     const counters = document.querySelectorAll('.metric-counter');
-     const observer = new IntersectionObserver((entries) => {
-       entries.forEach(entry => {
-         if (entry.isIntersecting) {
-           const target = parseInt(entry.target.dataset.target);
-           animateCounter(entry.target, target);
-           observer.unobserve(entry.target);
-         }
-       });
-     });
-
-     counters.forEach(counter => observer.observe(counter));
-
-     function animateCounter(el, target) {
-       let current = 0;
-       const increment = target / 50;
-       const timer = setInterval(() => {
-         current += increment;
-         if (current >= target) {
-           el.textContent = target;
-           clearInterval(timer);
-         } else {
-           el.textContent = Math.floor(current);
-         }
-       }, 30);
-     }
-   </script>
-   ```
-
-5. **Products Carousel Navigation**:
-   ```astro
-   <div x-data="{ currentSlide: 0, totalSlides: 7 }">
-     <button @click="currentSlide = Math.max(0, currentSlide - 1)">←</button>
-
-     <div class="carousel-track" :style="`transform: translateX(-${currentSlide * 100}%)`">
-       <!-- Product cards -->
-     </div>
-
-     <button @click="currentSlide = Math.min(totalSlides - 1, currentSlide + 1)">→</button>
-
-     <!-- Dot indicators -->
-     <div class="dots">
-       <template x-for="i in totalSlides" :key="i">
-         <button @click="currentSlide = i - 1" :class="{ 'active': currentSlide === i - 1 }"></button>
-       </template>
-     </div>
-   </div>
-   ```
+**📋 Research Required** (per PHASE-CHECKLIST.md):
+Before starting, search for 2025 best practices:
+- "Astro Content Collections 2025 best practices"
+- "Type-safe markdown frontmatter 2025"
+- "GDPR privacy policy template 2025 France Switzerland UAE"
+- "Astro blog architecture 2025"
+- "Blog sidebar conversion optimization 2025"
 
 ---
 
-### **Phase 9: SEO & Polish** (1 hour)
-**Goal**: Optimize for search engines
+#### **Phase 8.1: Configuration & Setup** (30 min)
+**Goal**: Configure site-wide settings and prepare for blog
 
-#### Tasks:
-1. **Meta Tags per Language** (already in `BaseLayout.astro`):
-   - Title, description, og:image
-   - hreflang alternates (fr, en, x-default)
-   - Canonical URLs
-   - og:locale based on language
+**Tasks**:
+1. **Create `src/config.ts`** - Site configuration file:
+   ```ts
+   export const config = {
+     site: {
+       title: 'Vecia - AI Automation Agency',
+       description: 'Implement AI, Save 20+ Hours per Week',
+       url: 'https://vecia.com', // Update with actual domain
+       author: 'Vecia Team',
+     },
+     calcom: {
+       bookingUrl: process.env.PUBLIC_CAL_COM_URL || 'https://cal.com/vecia/consultation',
+     },
+     social: {
+       linkedin: 'https://www.linkedin.com/company/vecia',
+       twitter: 'https://twitter.com/vecia',
+     },
+     contact: {
+       email: 'contact@vecia.com',
+     }
+   };
+   ```
 
-2. **Generate Sitemap**:
+2. **Create `.env` and `.env.example`**:
+   ```bash
+   # .env.example
+   PUBLIC_CAL_COM_URL=https://your-vps.com/cal/consultation
+   ```
+
+3. **Update components to use config**:
+   - Navigation.astro (CTA buttons)
+   - FinalCTA.astro (booking link)
+   - Footer.astro (social links)
+
+**2025 Best Practice**: Use environment variables for all external URLs (Cal.com will be on user's VPS)
+
+---
+
+#### **Phase 8.2: Content Collections Setup** (1 hour)
+**Goal**: Set up Astro Content Collections for type-safe blog
+
+**Tasks**:
+1. **Create `src/content/config.ts`**:
+   ```ts
+   import { defineCollection, z } from 'astro:content';
+
+   const blog = defineCollection({
+     type: 'content',
+     schema: z.object({
+       title: z.string(),
+       description: z.string(),
+       publishDate: z.date(),
+       author: z.string(),
+       category: z.enum([
+         'why-broken',
+         'success-stories',
+         'quick-wins',
+         'industry-deep-dives',
+         'tool-comparisons'
+       ]),
+       tags: z.array(z.string()),
+       featured: z.boolean().optional(),
+       image: z.string().optional(),
+       linkedin: z.object({
+         caption: z.string(),
+         hashtags: z.array(z.string())
+       }).optional()
+     })
+   });
+
+   export const collections = { blog };
+   ```
+
+2. **Create directory structure**:
+   ```
+   src/content/
+   └── blog/
+       ├── en/
+       │   └── sample-article-en.md
+       └── fr/
+           └── sample-article-fr.md
+   ```
+
+3. **Add 2-3 sample blog posts** for testing:
+   ```md
+   ---
+   title: "5 Signs Your Business Needs Automation"
+   description: "Discover if AI automation is right for your business"
+   publishDate: 2025-01-15
+   author: "Vecia Team"
+   category: "why-broken"
+   tags: ["automation", "AI", "business"]
+   featured: true
+   linkedin:
+     caption: |
+       🚀 Is your business ready for AI automation?
+       Here are 5 telltale signs...
+     hashtags: ["AI", "Automation", "Business"]
+   ---
+
+   # Article content here...
+   ```
+
+**2025 Best Practice**: Type-safe frontmatter with Zod validation prevents runtime errors
+
+---
+
+#### **Phase 8.3: Static Pages** (2 hours)
+**Goal**: Create About, Privacy, Terms, Cookies, and AI Ethics pages
+
+**Files to Create** (10 files total - FR + EN for each):
+
+1. **About Page** (`src/pages/about.astro` + `/en/about.astro`):
+   - Company mission and story
+   - Team section (can be placeholder for now)
+   - AI ethics commitment
+   - CTA to book consultation
+   - Add translations to `i18n/ui.ts`
+
+2. **Privacy Policy** (`src/pages/privacy.astro` + `/en/privacy.astro`):
+   - Data collection practices
+   - IP detection for currency (GDPR compliant)
+   - Google Sheets form storage
+   - Third-party services (Plausible, Clarity, LinkedIn)
+   - User rights under GDPR/CCPA
+   - Contact for data requests
+
+3. **Terms of Service** (`src/pages/terms.astro` + `/en/terms.astro`):
+   - Website usage terms
+   - Service disclaimers
+   - Intellectual property
+   - Limitation of liability
+
+4. **Cookie Policy** (`src/pages/cookies.astro` + `/en/cookies.astro`):
+   - localStorage usage (currency preference)
+   - No tracking cookies (Plausible is cookieless)
+   - How to clear localStorage
+   - Analytics tools explanation
+
+5. **AI Ethics** (`src/pages/ai-ethics.astro` + `/en/ai-ethics.astro`):
+   - Vecia's ethical AI principles
+   - Transparency commitments
+   - Data privacy approach
+   - Responsible automation philosophy
+
+**Layout**: All pages use `BaseLayout.astro` with proper SEO metadata
+
+**2025 Best Practice**: GDPR-compliant legal pages are mandatory for EU businesses (France/Switzerland)
+
+---
+
+#### **Phase 8.4: Blog System** (6 hours) - MOST COMPLEX
+**Goal**: Build complete blog with homepage, article template, sidebar, and LinkedIn integration
+
+##### **8.4.1: Blog Components** (2 hours)
+
+**Create blog-specific components**:
+
+1. **`src/components/blog/BlogSidebar.astro`** - Conversion-focused sidebar:
+   ```astro
+   ---
+   import type { Language } from '../../i18n/ui';
+
+   interface Props {
+     lang: Language;
+   }
+   ---
+
+   <aside class="space-y-6">
+     <!-- Lead Magnet Signup (TOP PRIORITY for conversion) -->
+     <div class="bg-gradient-to-br from-primary/10 to-secondary/10 p-6 rounded-lg">
+       <h3>Get Your Free AI Assessment</h3>
+       <p>Discover 10+ hours of time savings</p>
+       <form><!-- Email capture --></form>
+     </div>
+
+     <!-- Most Popular Articles -->
+     <div>
+       <h3>Most Popular</h3>
+       <!-- Static list for now, dynamic later -->
+     </div>
+
+     <!-- Quick Tips Box -->
+     <div class="bg-accent3 p-6 rounded-lg">
+       <h3>Quick Win</h3>
+       <p>Automation tip of the week</p>
+     </div>
+
+     <!-- Social Follow Buttons -->
+     <div>
+       <h3>Follow Us</h3>
+       <!-- LinkedIn, Twitter buttons -->
+     </div>
+   </aside>
+   ```
+
+2. **`src/components/blog/BlogHeader.astro`** - Article metadata:
+   - Title, author, date, reading time, category badge
+   - Breadcrumb navigation
+   - Social sharing buttons
+
+3. **`src/components/blog/ArticleFooter.astro`**:
+   - Author bio with photo
+   - "Ready to Automate?" CTA box
+   - Related articles (3-4 from same category)
+
+4. **`src/components/blog/ShareButtons.astro`** - Social sharing:
+   - LinkedIn, Twitter, Copy link buttons
+   - Floating sidebar on desktop
+   - Fixed bottom on mobile
+
+5. **`src/components/blog/InContentCTA.astro`** - Reusable CTA for articles:
+   ```astro
+   <div class="my-8 p-6 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-lg">
+     <h3>Ready to See Results?</h3>
+     <p>Book a free 30-minute consultation</p>
+     <a href={config.calcom.bookingUrl} class="btn-primary">Book Now</a>
+   </div>
+   ```
+
+##### **8.4.2: Blog Homepage** (2 hours)
+
+**File**: `src/pages/blog/index.astro` + `/en/blog/index.astro`
+
+**Features**:
+- Featured article (large card with image)
+- Article grid (3 columns desktop, 1 mobile)
+- Category filter pills (Alpine.js client-side filtering)
+- Search bar (client-side filter by title/description)
+- Pagination (Astro's `paginate()` helper)
+- BlogSidebar component (30% width on desktop)
+- Reading time calculation (`readingTime = Math.ceil(wordCount / 200)`)
+- Responsive layout with proper breakpoints
+
+**Example structure**:
+```astro
+---
+import { getCollection } from 'astro:content';
+import BlogSidebar from '../../components/blog/BlogSidebar.astro';
+
+const lang = 'fr';
+const allPosts = await getCollection('blog', ({ id }) => id.startsWith(`${lang}/`));
+const sortedPosts = allPosts.sort((a, b) =>
+  b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+);
+const featuredPost = sortedPosts.find(post => post.data.featured) || sortedPosts[0];
+const regularPosts = sortedPosts.filter(post => post !== featuredPost);
+---
+
+<Layout>
+  <div class="container mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Main content (70%) -->
+    <div class="lg:col-span-2">
+      <!-- Featured article -->
+      <FeaturedCard post={featuredPost} />
+
+      <!-- Category filters -->
+      <CategoryFilters />
+
+      <!-- Article grid -->
+      <ArticleGrid posts={regularPosts} />
+    </div>
+
+    <!-- Sidebar (30%) -->
+    <BlogSidebar lang={lang} />
+  </div>
+</Layout>
+```
+
+##### **8.4.3: Article Template** (1.5 hours)
+
+**File**: `src/pages/blog/[...slug].astro` + `/en/blog/[...slug].astro`
+
+**Dynamic routing with Content Collections**:
+```astro
+---
+import { getCollection } from 'astro:content';
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import ShareButtons from '../../components/blog/ShareButtons.astro';
+import ArticleFooter from '../../components/blog/ArticleFooter.astro';
+
+export async function getStaticPaths() {
+  const frPosts = await getCollection('blog', ({ id }) => id.startsWith('fr/'));
+  const enPosts = await getCollection('blog', ({ id }) => id.startsWith('en/'));
+
+  return [
+    ...frPosts.map(post => ({
+      params: { slug: post.slug.replace('fr/', '') },
+      props: { post, lang: 'fr' }
+    })),
+    ...enPosts.map(post => ({
+      params: { slug: post.slug.replace('en/', '') },
+      props: { post, lang: 'en' }
+    }))
+  ];
+}
+
+const { post, lang } = Astro.props;
+const { Content } = await post.render();
+---
+
+<BlogLayout title={post.data.title} description={post.data.description}>
+  <article>
+    <BlogHeader post={post} lang={lang} />
+
+    <ShareButtons url={Astro.url.href} title={post.data.title} />
+
+    <div class="prose prose-lg max-w-none">
+      <Content />
+    </div>
+
+    <ArticleFooter post={post} lang={lang} />
+  </article>
+</BlogLayout>
+```
+
+**Features**:
+- Reading progress bar (Alpine.js)
+- Social sharing sidebar (floating)
+- In-content CTA boxes (manually inserted in markdown)
+- Related articles (3 from same category)
+- Breadcrumb navigation
+- Author bio with photo
+- Comments section placeholder
+
+##### **8.4.4: LinkedIn Integration Script** (30 min)
+
+**File**: `scripts/linkedin-generator.js`
+
+**CLI tool** for generating LinkedIn posts from blog articles:
+
+```js
+#!/usr/bin/env node
+
+import fs from 'fs';
+import path from 'path';
+import matter from 'gray-matter';
+
+const articleSlug = process.argv[2];
+
+if (!articleSlug) {
+  console.error('Usage: npm run linkedin:generate <article-slug>');
+  process.exit(1);
+}
+
+// Find markdown file
+const frPath = path.join('src/content/blog/fr', `${articleSlug}.md`);
+const enPath = path.join('src/content/blog/en', `${articleSlug}.md`);
+
+const filePath = fs.existsSync(frPath) ? frPath : enPath;
+
+if (!fs.existsSync(filePath)) {
+  console.error(`Article not found: ${articleSlug}`);
+  process.exit(1);
+}
+
+// Parse frontmatter
+const fileContent = fs.readFileSync(filePath, 'utf-8');
+const { data } = matter(fileContent);
+
+// Generate LinkedIn post
+const articleUrl = `https://vecia.com/blog/${articleSlug}`;
+const hashtags = (data.linkedin?.hashtags || []).map(h => `#${h}`).join(' ');
+
+const linkedInPost = `
+📊 ${data.title}
+
+${data.linkedin?.caption || data.description}
+
+Read more: ${articleUrl}
+
+${hashtags}
+`.trim();
+
+console.log('\n------- LinkedIn Post (Copy & Paste) -------\n');
+console.log(linkedInPost);
+console.log('\n-------------------------------------------\n');
+```
+
+**Install dependency**:
+```bash
+npm install gray-matter
+```
+
+**Add script to `package.json`**:
+```json
+{
+  "scripts": {
+    "linkedin:generate": "node scripts/linkedin-generator.js"
+  }
+}
+```
+
+**Usage**:
+```bash
+npm run linkedin:generate sample-article-en
+```
+
+**2025 Best Practice**: Manual LinkedIn posting with template generator is MVP approach, API integration is Phase 2+
+
+---
+
+### **Phase 9: Conversion Tools - Analytics & Popups** (3 hours)
+**Goal**: Integrate analytics and build conversion popups
+
+**📋 Research Required**:
+- "Plausible Analytics Astro integration 2025"
+- "Microsoft Clarity privacy compliance 2025"
+- "Exit intent popups 2025 conversion optimization"
+- "Alpine.js modal components 2025 patterns"
+
+---
+
+#### **Phase 9.1: Analytics Integration** (1 hour)
+
+**Goal**: Implement privacy-first analytics
+
+**Tasks**:
+
+1. **Plausible Analytics** (30 min):
+   - Sign up at plausible.io
+   - Add script to `BaseLayout.astro` head:
+   ```astro
+   <script defer data-domain="vecia.com" src="https://plausible.io/js/script.js"></script>
+   ```
+   - Configure custom events:
+   ```js
+   window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
+
+   // Track CTA clicks
+   document.querySelectorAll('[data-track="book-call"]').forEach(el => {
+     el.addEventListener('click', () => {
+       plausible('Book Call', { props: { location: el.dataset.location } });
+     });
+   });
+   ```
+
+2. **Microsoft Clarity** (15 min):
+   - Create Clarity project at clarity.microsoft.com
+   - Add Clarity script to BaseLayout.astro
+   - Verify heatmap tracking
+
+3. **LinkedIn Insight Tag** (15 min):
+   - Get LinkedIn Partner ID
+   - Add pixel to BaseLayout.astro:
+   ```html
+   <script type="text/javascript">
+   _linkedin_partner_id = "YOUR_PARTNER_ID";
+   window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+   window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+   </script>
+   <script type="text/javascript">
+   (function(l) {
+   if (!l){window.lintrk = function(a,b){window.lintrk.q.push([a,b])};
+   window.lintrk.q=[]}
+   var s = document.getElementsByTagName("script")[0];
+   var b = document.createElement("script");
+   b.type = "text/javascript";b.async = true;
+   b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+   s.parentNode.insertBefore(b, s);})(window.lintrk);
+   </script>
+   ```
+
+**2025 Best Practice**: Plausible is cookieless (no GDPR banner needed), Clarity and LinkedIn are privacy-friendly
+
+---
+
+#### **Phase 9.2: Popup System** (2 hours)
+
+**Goal**: Build conversion popups with Alpine.js
+
+**Components to Create**:
+
+1. **`src/components/popups/ExitIntent.astro`** (30 min):
+   ```astro
+   <div x-data="exitIntentPopup()" x-show="show" x-cloak>
+     <div class="fixed inset-0 bg-black/50 z-50" @click="close()"></div>
+     <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
+       <div class="bg-white rounded-lg p-8 max-w-md">
+         <h2>Wait! Don't Leave Empty-Handed</h2>
+         <p>Get your free AI Automation Assessment</p>
+         <form @submit.prevent="submit">
+           <input type="email" placeholder="your@email.com" x-model="email">
+           <button type="submit">Send My Free Assessment</button>
+         </form>
+       </div>
+     </div>
+   </div>
+
+   <script>
+   function exitIntentPopup() {
+     return {
+       show: false,
+       email: '',
+       dismissed: false,
+
+       init() {
+         // Check if user has seen popup in last 30 days
+         if (localStorage.getItem('exit-intent-seen')) {
+           return;
+         }
+
+         // Detect exit intent (mouse leaving viewport)
+         document.addEventListener('mouseleave', (e) => {
+           if (e.clientY < 10 && !this.show && !this.dismissed) {
+             this.show = true;
+           }
+         });
+       },
+
+       close() {
+         this.show = false;
+         this.dismissed = true;
+         localStorage.setItem('exit-intent-seen', Date.now());
+       },
+
+       async submit() {
+         // Submit to Google Sheets (reuse existing webhook)
+         await submitLead(this.email, 'exit-intent');
+         this.close();
+       }
+     }
+   }
+   </script>
+   ```
+
+2. **`src/components/popups/ScrollTrigger.astro`** (30 min):
+   - Trigger at 50% scroll on blog articles
+   - Slide-up from bottom right
+   - Once per session (sessionStorage)
+
+3. **`src/components/popups/WelcomeMat.astro`** (30 min):
+   - Full-screen overlay on first visit
+   - localStorage check for returning visitors
+   - Gradient background matching brand
+
+4. **`src/components/popups/SmartBar.astro`** (30 min):
+   - Sticky top bar appearing after 10 seconds
+   - Dismissible with X button
+   - localStorage for 7-day dismissal
+
+5. **`src/components/popups/PopupManager.astro`**:
+   - Global component managing all popups
+   - Priority system (exit > scroll > welcome)
+   - Prevents multiple popups showing
+   - Include in BaseLayout.astro
+
+**2025 Best Practice**: Alpine.js for popups is lightweight (no external library), GDPR-friendly (localStorage only)
+
+---
+
+### **Phase 10: SEO & Performance** (3 hours)
+**Goal**: Maximize search visibility and optimize load time
+
+**📋 Research Required**:
+- "Astro SEO 2025 best practices"
+- "Structured data JSON-LD 2025"
+- "Core Web Vitals 2025 requirements"
+
+---
+
+#### **Phase 10.1: SEO Implementation** (2 hours)
+
+**Tasks**:
+
+1. **Sitemap Generation** (15 min):
    ```bash
    npx astro add sitemap
    ```
@@ -1000,289 +1468,472 @@ const { headline, highlight, subheadline, body, cta1Text, cta2Text } = Astro.pro
    import sitemap from '@astrojs/sitemap';
 
    export default defineConfig({
-     site: 'https://vecia.fr',
+     site: 'https://vecia.com',
      integrations: [sitemap()],
-     // ... i18n config
    });
    ```
 
-3. **Create `public/robots.txt`**:
+2. **Structured Data** (1 hour):
+
+   Create `src/components/seo/StructuredData.astro`:
+   ```astro
+   ---
+   interface Props {
+     type: 'organization' | 'website' | 'article';
+     data?: any;
+   }
+
+   const { type, data } = Astro.props;
+
+   const schemas = {
+     organization: {
+       "@context": "https://schema.org",
+       "@type": "Organization",
+       "name": "Vecia",
+       "url": "https://vecia.com",
+       "logo": "https://vecia.com/vecia_logo_long_contour.png",
+       "description": "AI Automation Agency - Save 20+ Hours per Week",
+       "sameAs": [
+         "https://www.linkedin.com/company/vecia",
+         "https://twitter.com/vecia"
+       ]
+     },
+     website: {
+       "@context": "https://schema.org",
+       "@type": "WebSite",
+       "name": "Vecia",
+       "url": "https://vecia.com",
+       "potentialAction": {
+         "@type": "SearchAction",
+         "target": "https://vecia.com/blog?q={search_term_string}",
+         "query-input": "required name=search_term_string"
+       }
+     },
+     article: data
+   };
+   ---
+
+   <script type="application/ld+json" set:html={JSON.stringify(schemas[type])} />
+   ```
+
+   Add to BaseLayout and BlogLayout
+
+3. **Social Media Tags** (30 min):
+
+   Add to BaseLayout.astro:
+   ```astro
+   <!-- Open Graph -->
+   <meta property="og:title" content={title} />
+   <meta property="og:description" content={description} />
+   <meta property="og:image" content={`${Astro.site}og-image.jpg`} />
+   <meta property="og:url" content={Astro.url.href} />
+   <meta property="og:type" content="website" />
+
+   <!-- Twitter Card -->
+   <meta name="twitter:card" content="summary_large_image" />
+   <meta name="twitter:title" content={title} />
+   <meta name="twitter:description" content={description} />
+   <meta name="twitter:image" content={`${Astro.site}og-image.jpg`} />
+   ```
+
+4. **robots.txt** (15 min):
+
+   Create `public/robots.txt`:
    ```
    User-agent: *
    Allow: /
+   Disallow: /test-*
 
-   Sitemap: https://vecia.fr/sitemap.xml
+   Sitemap: https://vecia.com/sitemap-index.xml
    ```
 
-4. **Structured Data (JSON-LD)** in `BaseLayout.astro`:
+---
+
+#### **Phase 10.2: Performance Optimization** (1 hour)
+
+**Tasks**:
+
+1. **Font Optimization** (15 min):
    ```astro
-   <script type="application/ld+json">
-   {
-     "@context": "https://schema.org",
-     "@type": "Organization",
-     "name": "Vecia",
-     "url": "https://vecia.fr",
-     "logo": "https://vecia.fr/logo.png",
-     "description": {description},
-     "sameAs": [
-       "https://www.linkedin.com/company/vecia",
-       "https://twitter.com/vecia"
-     ]
-   }
-   </script>
+   <link rel="preload" href="/fonts/SpaceGrotesk-Bold.woff2" as="font" type="font/woff2" crossorigin>
+   <link rel="preload" href="/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin>
    ```
 
-5. **Performance Optimization**:
-   - Lazy load images with `loading="lazy"`
-   - Optimize fonts with `font-display: swap`
-   - Minify CSS/JS in production
-   - Enable Astro compression
+2. **Image Optimization** (15 min):
+   - Convert all images to WebP
+   - Add lazy loading to below-fold images
+   - Implement responsive images with srcset
+
+3. **Critical CSS** (15 min):
+   - Inline critical CSS for above-fold content
+   - Defer non-critical CSS
+
+4. **Bundle Analysis** (15 min):
+   ```bash
+   npm run build
+   # Check dist/_astro/ sizes
+   ```
+
+   Install visualizer:
+   ```bash
+   npm install -D rollup-plugin-visualizer
+   ```
+
+**Target Metrics**:
+- Lighthouse Performance: 90+
+- First Contentful Paint: < 1.5s
+- Largest Contentful Paint: < 2.5s
+- Cumulative Layout Shift: < 0.1
 
 ---
 
-### **Phase 10: VPS Deployment Prep** (30 min)
-**Goal**: Prepare for VPS hosting
+### **Phase 11: Quality & Auditing** (2 hours)
+**Goal**: Clean code, security, accessibility, legal compliance
 
-#### Tasks:
-1. **Build for Production**:
+**📋 Research Required**:
+- "Website security headers 2025 OWASP"
+- "WCAG 2.1 AA compliance 2025"
+
+---
+
+#### **Phase 11.1: Code Quality Audit** (45 min)
+
+**Tasks**:
+
+1. **Dependency Audit** (15 min):
    ```bash
-   npm run build
+   npm ls
+   npx depcheck
+   npm audit fix
    ```
 
-   Output: `dist/` folder with static files
+2. **CSS Audit** (15 min):
+   - Verify Tailwind purging (check dist/ CSS size)
+   - Remove unused custom CSS
+   - Check for duplicate styles
 
-2. **Test Preview Locally**:
+3. **JavaScript Audit** (15 min):
+   - Remove unused Alpine.js components
+   - Verify all translation keys used
+   - Check bundle size (target < 500KB)
+
+**Tools to Install**:
+```bash
+npm install -D depcheck rollup-plugin-visualizer
+```
+
+---
+
+#### **Phase 11.2: Security Audit** (45 min)
+
+**Tasks**:
+
+1. **Dependency Security** (15 min):
    ```bash
-   npm run preview
+   npm audit
+   npm audit fix
    ```
 
-   Visit: http://localhost:4321
+2. **Input Validation** (15 min):
+   - Add client-side validation to forms
+   - Implement rate limiting (localStorage-based)
+   - Sanitize inputs before Google Sheets submission
 
-3. **VPS Deployment Steps**:
+3. **Security Headers** (15 min):
 
-   **Option A: Nginx Configuration**
+   Create `docs/NGINX-SECURITY-HEADERS.md`:
    ```nginx
-   server {
-       listen 80;
-       server_name vecia.fr www.vecia.fr;
-       root /var/www/vecia/dist;
-       index index.html;
-
-       # Redirect www to non-www
-       if ($host = www.vecia.fr) {
-           return 301 https://vecia.fr$request_uri;
-       }
-
-       # Handle i18n routing
-       location / {
-           try_files $uri $uri/ =404;
-       }
-
-       # HTTPS redirect (after Let's Encrypt setup)
-       return 301 https://$server_name$request_uri;
-   }
+   add_header X-Frame-Options "DENY" always;
+   add_header X-Content-Type-Options "nosniff" always;
+   add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+   add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+   add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline';" always;
+   add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
    ```
 
-   **Option B: Apache Configuration**
-   ```apache
-   <VirtualHost *:80>
-       ServerName vecia.fr
-       DocumentRoot /var/www/vecia/dist
+---
 
-       <Directory /var/www/vecia/dist>
-           Options -Indexes +FollowSymLinks
-           AllowOverride All
-           Require all granted
-       </Directory>
+#### **Phase 11.3: Accessibility Audit** (30 min)
 
-       RewriteEngine On
-       RewriteCond %{HTTPS} off
-       RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
-   </VirtualHost>
-   ```
+**Tasks**:
 
-4. **HTTPS Setup (Let's Encrypt)**:
+1. **Automated Testing** (15 min):
+   - Run Lighthouse accessibility audit (target 90+)
+   - Use axe DevTools extension
+   - Install and run Pa11y:
    ```bash
-   sudo certbot --nginx -d vecia.fr -d www.vecia.fr
-   # OR
-   sudo certbot --apache -d vecia.fr -d www.vecia.fr
+   npm install -D pa11y-ci
+   npx pa11y-ci https://localhost:4321
    ```
 
-5. **Cal.com Integration**:
-   - Update CTA button links to Cal.com booking URLs
-   - Test iframe/popup integration if using embedded calendar
-   - Example:
-     ```html
-     <a href="https://cal.com/vecia/consultation" target="_blank">
-       Réserver un Appel
-     </a>
-     ```
+2. **Manual Testing** (15 min):
+   - Keyboard navigation (Tab, Enter, Escape)
+   - Screen reader test (VoiceOver/NVDA)
+   - Color contrast check (WebAIM Contrast Checker)
+   - Focus indicators visible
+   - ARIA labels on interactive elements
 
-6. **Deploy Script** (optional):
-   ```bash
-   # deploy.sh
-   #!/bin/bash
-
-   echo "Building Vecia website..."
-   npm run build
-
-   echo "Uploading to VPS..."
-   rsync -avz --delete dist/ user@vecia-vps:/var/www/vecia/dist/
-
-   echo "Deployment complete!"
-   ```
+**Checklist**:
+- [ ] All buttons/links keyboard accessible
+- [ ] Form labels associated
+- [ ] Alt text on all images
+- [ ] Heading hierarchy correct (no skipped levels)
+- [ ] Focus trap in modals
+- [ ] Color contrast ratio 4.5:1+ (WCAG AA)
 
 ---
 
-## 📁 Final File Structure
+### **Phase 12: VPS Deployment** (2 hours)
+**Goal**: Deploy to production VPS with CI/CD
 
+**📋 Research Required**:
+- "GitHub Actions Astro deployment 2025"
+- "Nginx Astro configuration 2025"
+- "Let's Encrypt renewal automation 2025"
+
+---
+
+#### **Phase 12.1: Nginx Configuration** (1 hour)
+
+**File**: `/etc/nginx/sites-available/vecia.com`
+
+```nginx
+server {
+    listen 80;
+    listen [::]:80;
+    server_name vecia.com www.vecia.com;
+
+    # Redirect to HTTPS
+    return 301 https://vecia.com$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name www.vecia.com;
+
+    # SSL certificates (Let's Encrypt)
+    ssl_certificate /etc/letsencrypt/live/vecia.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/vecia.com/privkey.pem;
+
+    # Redirect www to non-www
+    return 301 https://vecia.com$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name vecia.com;
+
+    # SSL certificates
+    ssl_certificate /etc/letsencrypt/live/vecia.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/vecia.com/privkey.pem;
+
+    # Root directory
+    root /var/www/vecia/dist;
+    index index.html;
+
+    # Security headers (from Phase 11.2)
+    add_header X-Frame-Options "DENY" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
+    # Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_types text/plain text/css text/xml text/javascript application/json application/javascript application/xml+rss;
+
+    # Cache static assets (1 year)
+    location /_astro/ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # Cache images (1 week)
+    location ~* \.(jpg|jpeg|png|gif|ico|webp|svg)$ {
+        expires 7d;
+        add_header Cache-Control "public";
+    }
+
+    # No cache for HTML
+    location ~* \.html$ {
+        expires -1;
+        add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
+    }
+
+    # Handle i18n routing
+    location / {
+        try_files $uri $uri/ $uri.html =404;
+    }
+
+    # Error pages
+    error_page 404 /404.html;
+    error_page 500 502 503 504 /50x.html;
+}
 ```
-vecia-website-v5/
-├── public/
-│   ├── favicon.svg
-│   ├── robots.txt
-│   └── images/
-│       ├── logos/              # AI tech logos
-│       └── og-image.jpg
-├── src/
-│   ├── components/
-│   │   ├── Navigation.astro
-│   │   ├── Hero.astro
-│   │   ├── LogosCarousel.astro
-│   │   ├── AITabs.astro
-│   │   ├── ProductsCarousel.astro
-│   │   ├── BentoGrid.astro
-│   │   ├── BusinessCases.astro
-│   │   └── Footer.astro
-│   ├── layouts/
-│   │   └── BaseLayout.astro
-│   ├── pages/
-│   │   ├── index.astro          # French homepage (/)
-│   │   └── en/
-│   │       └── index.astro      # English homepage (/en/)
-│   ├── i18n/
-│   │   ├── ui.ts                # All translations (FR + EN)
-│   │   ├── pricing.ts           # Currency-based pricing data
-│   │   └── utils.ts             # Translation helpers
-│   ├── lib/
-│   │   └── particles/
-│   │       ├── init.ts          # Particle animation initialization
-│   │       └── patterns.ts      # 4 movement patterns
-│   ├── scripts/
-│   │   └── pricing.ts           # IP detection & pricing logic
-│   └── styles/
-│       └── global.css           # Global styles, animations
-├── astro.config.mjs             # Astro + i18n configuration
-├── tailwind.config.mjs          # Tailwind design tokens
-├── tsconfig.json
-├── package.json
-└── docs/
-    ├── IMPLEMENTATION-PLAN.md   # This file
-    ├── PRD.md
-    ├── TEXT-EXTRACTION-Homepage.md
-    └── graphic_chart.md
+
+**SSL Setup**:
+```bash
+sudo certbot --nginx -d vecia.com -d www.vecia.com
+sudo systemctl enable certbot.timer  # Auto-renewal
 ```
 
 ---
 
-## ✅ Success Criteria
+#### **Phase 12.2: CI/CD Pipeline** (1 hour)
 
-- [ ] **French at `/`, English at `/en/`** - Both languages fully functional
-- [ ] **Shared components** - Zero code duplication, single source of truth
-- [ ] **Dynamic pricing** - Automatic currency detection by IP/browser
-- [ ] **Lighthouse score 90+** - All metrics (Performance, Accessibility, Best Practices, SEO)
-- [ ] **Mobile responsive** - All breakpoints tested (320px - 1920px)
-- [ ] **Page load < 2s** - First Contentful Paint under 2 seconds
-- [ ] **Type-safe translations** - TypeScript errors if translations missing
-- [ ] **VPS deployment ready** - Build successful, Nginx/Apache configured
-- [ ] **Cal.com integration** - Booking links functional
-- [ ] **SEO optimized** - Meta tags, sitemap, structured data, hreflang
+**File**: `.github/workflows/deploy.yml`
+
+```yaml
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Astro site
+        run: npm run build
+        env:
+          PUBLIC_CAL_COM_URL: ${{ secrets.CAL_COM_URL }}
+
+      - name: Deploy to VPS
+        uses: easingthemes/ssh-deploy@v4
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          SOURCE: "dist/"
+          TARGET: "/var/www/vecia/dist/"
+          EXCLUDE: "/node_modules/, /.git/"
+
+      - name: Notify on success
+        if: success()
+        run: echo "✅ Deployment successful!"
+```
+
+**GitHub Secrets to Add**:
+- `SSH_PRIVATE_KEY`: Private SSH key for VPS access
+- `REMOTE_HOST`: VPS IP address
+- `REMOTE_USER`: SSH username
+- `CAL_COM_URL`: Custom Cal.com booking URL
+
+**VPS Setup**:
+```bash
+# Create deployment directory
+sudo mkdir -p /var/www/vecia/dist
+sudo chown $USER:$USER /var/www/vecia
+
+# Add deployment key
+mkdir -p ~/.ssh
+echo "SSH_PUBLIC_KEY" >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+```
+
+**Test Deployment**:
+```bash
+# Manual test first
+npm run build
+rsync -avz --delete dist/ user@vps-ip:/var/www/vecia/dist/
+
+# Then push to GitHub to trigger CI/CD
+git push origin main
+```
 
 ---
 
-## 📦 Dependencies
+## 📊 Updated Phase Timeline
+
+| Phase | Name | Duration | Status |
+|-------|------|----------|--------|
+| 1-7 | Foundation → Pricing | 6.5 hours | ✅ Complete |
+| **8** | **Blog & Content Pages** | **9.5 hours** | ⏳ Next |
+| **9** | **Analytics & Popups** | **3 hours** | 📋 Pending |
+| **10** | **SEO & Performance** | **3 hours** | 📋 Pending |
+| **11** | **Quality & Auditing** | **2 hours** | 📋 Pending |
+| **12** | **VPS Deployment** | **2 hours** | 📋 Pending |
+
+**Total Remaining**: ~19.5 hours
+**Overall Progress**: 6.5/26 hours (25% complete)
+
+---
+
+## ✅ Updated Success Criteria
+
+- [ ] **Blog System**: FR/EN blog with sidebar, categories, LinkedIn integration
+- [ ] **Static Pages**: About, Privacy, Terms, Cookies, AI Ethics (10 pages)
+- [ ] **Analytics**: Plausible, Clarity, LinkedIn Insight Tag configured
+- [ ] **Popups**: Exit intent, scroll, welcome mat, smart bar functional
+- [ ] **SEO**: Sitemap, structured data, social tags, robots.txt
+- [ ] **Performance**: Lighthouse 90+ all metrics, LCP < 2.5s
+- [ ] **Security**: Nginx headers, SSL, CSP, input validation
+- [ ] **Accessibility**: WCAG AA compliant, keyboard navigation
+- [ ] **CI/CD**: GitHub Actions deploying to VPS automatically
+- [ ] **Cal.com**: Custom booking URL configured
+
+---
+
+## 📦 Additional Dependencies to Install
 
 ```json
 {
-  "name": "vecia-website-v5",
-  "version": "1.0.0",
   "dependencies": {
-    "astro": "^5.14.1",
-    "alpinejs": "^3.14.1"
+    "gray-matter": "^4.0.3"
   },
   "devDependencies": {
-    "tailwindcss": "^4.0.0",
-    "@astrojs/tailwind": "^6.0.0",
-    "@astrojs/sitemap": "^4.0.0",
-    "typescript": "^5.6.3"
+    "depcheck": "^1.4.7",
+    "rollup-plugin-visualizer": "^5.12.0",
+    "pa11y-ci": "^3.1.0",
+    "@astrojs/sitemap": "^4.0.0"
   },
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "linkedin:generate": "node scripts/linkedin-generator.js"
   }
 }
 ```
 
 ---
 
-## 🚀 Implementation Summary
+## 🎯 Implementation Notes
 
-**Total Estimated Time**: ~10 hours
+### Phase Priority:
+1. **Phase 8** is CRITICAL - Blog and content pages are core business requirements
+2. **Phase 9** adds conversion tracking (can partially skip if time-constrained)
+3. **Phase 10** is MANDATORY - SEO is business-critical
+4. **Phase 11** ensures quality (can do iteratively post-launch)
+5. **Phase 12** deploys everything to production
 
-### Phase Breakdown:
-1. **Foundation** (30m) → Astro config + project structure
-2. **Design System** (45m) → Tailwind tokens + global CSS
-3. **Content/Translation** (1.5h) → Extract French + translate to English
-4. **Components** (2.5h) → 8 reusable Astro components
-5. **Layouts** (30m) → BaseLayout with meta tags
-6. **Pages** (1h) → French + English homepage assembly
-7. **Pricing** (1h) → IP detection + currency logic
-8. **Interactivity** (1.5h) → Alpine.js features (tabs, menu, animations)
-9. **SEO** (1h) → Meta tags, sitemap, structured data
-10. **VPS Prep** (30m) → Build, Nginx config, deployment guide
+### Time-Saving Strategies:
+- Use legal page templates (GDPR-compliant from trusted sources)
+- Start with 2-3 sample blog posts (content can be added later)
+- Popup system can be simplified (exit intent + scroll trigger only for MVP)
+- Analytics can be added incrementally (Plausible first, others later)
 
-### Key Benefits:
-- ✅ **One codebase, two languages** - Edit components once, both languages update
-- ✅ **Type-safe translations** - Catch missing translations at build time
-- ✅ **No vendor lock-in** - Works on any VPS, no Vercel dependencies
-- ✅ **Free tier IP detection** - 1,000 requests/day with ipapi.co
-- ✅ **Fast & accessible** - Astro's zero-JS default, optimized performance
-- ✅ **SEO-optimized** - Proper hreflang, meta tags, structured data
+### Critical Path:
+Phase 8 (Blog) → Phase 10 (SEO) → Phase 12 (Deployment)
+Phases 9 and 11 can be done post-launch if needed.
 
 ---
 
-## 📝 Notes & Considerations
-
-### Translation Workflow:
-- **Layout/Design Changes**: Edit `.astro` component → both FR/EN auto-update
-- **Text Content Changes**: Edit `i18n/ui.ts` → manual per-language updates
-- **Adding New Text**: Add to both `fr` and `en` objects, TypeScript will enforce consistency
-
-### IP Detection Fallback Chain:
-1. **localStorage** - Cached user preference (instant)
-2. **IP Geolocation API** - ipapi.co (1-2s latency)
-3. **Browser Language** - `navigator.language` (instant)
-4. **Default** - EUR (fallback)
-
-### Performance Tips:
-- Lazy load images below fold: `loading="lazy"`
-- Preload critical fonts: `<link rel="preload" as="font">`
-- Minimize Alpine.js usage: Only where interactivity needed
-- Use Astro's built-in image optimization: `<Image>` component
-- Enable compression in Nginx: `gzip on;`
-
-### Future Enhancements (Phase 2):
-- [ ] Blog section with i18n support
-- [ ] Contact form with email integration
-- [ ] Analytics (Plausible or Umami)
-- [ ] A/B testing for CTAs
-- [ ] More languages (ES, DE, etc.)
-- [ ] Self-hosted GeoIP (MaxMind GeoLite2) for privacy
-
----
-
-**Last Updated**: 2025-10-05
-**Status**: Implementation in progress
-**Next Step**: Phase 1 - Foundation Setup
+**Last Updated**: 2025-10-08
+**Next Action**: Start Phase 8.1 (Configuration & Setup) - 30 min
+**Blocker**: None - ready to proceed
