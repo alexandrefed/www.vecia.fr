@@ -43,7 +43,7 @@ const authorData = {
       fr: 'L\'équipe Vecia est composée d\'experts en automatisation IA, passionnés par l\'optimisation des processus métier et l\'innovation technologique.',
       en: 'The Vecia team consists of AI automation experts, passionate about business process optimization and technological innovation.'
     },
-    photo: '/images/team/vecia-team.jpg', // Placeholder
+    photo: '/vecia_favicon.png', // Temporary placeholder - replace with team photo later
     linkedin: config.social.linkedin
   },
   'Alexandre Fedotov': {
@@ -119,12 +119,14 @@ const blogBasePath = lang === 'fr' ? '/blog/' : '/en/blog/';
     <div class="flex flex-col md:flex-row gap-6">
       <!-- Author Photo -->
       <div class="flex-shrink-0">
-        <img
-          src={currentAuthor.photo}
-          alt={lang === 'fr' ? currentAuthor.name : currentAuthor.nameEn}
-          class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
-          loading="lazy"
-        />
+        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-primary/10 to-secondary/10 border-4 border-white shadow-lg flex items-center justify-center p-3">
+          <img
+            src={currentAuthor.photo}
+            alt={lang === 'fr' ? currentAuthor.name : currentAuthor.nameEn}
+            class="w-full h-full object-contain"
+            loading="lazy"
+          />
+        </div>
       </div>
 
       <!-- Author Info -->

@@ -11,33 +11,29 @@
  *
  * Props:
  * - title: Article title
- * - description: Article description (for meta)
+ * - description: Article description (optional)
  * - author: Author name
  * - publishDate: Publish date (Date object)
  * - category: Category slug
  * - tags: Array of tag strings
  * - lang: Language code ('fr' | 'en')
- * - content: Article content (for reading time calculation)
+ * - readingTime: Pre-calculated reading time in minutes
  */
 
 import type { Language } from '../../i18n/ui';
 
 interface Props {
   title: string;
-  description: string;
+  description?: string;
   author: string;
   publishDate: Date;
   category: 'why-broken' | 'success-stories' | 'quick-wins' | 'industry-deep-dives' | 'tool-comparisons';
   tags: string[];
   lang: Language;
-  content: string; // Raw markdown content for word count
+  readingTime: number; // Pre-calculated reading time
 }
 
-const { title, description, author, publishDate, category, tags, lang, content } = Astro.props;
-
-// Calculate reading time (200 words per minute - 2025 standard)
-const wordCount = content.split(/\s+/).length;
-const readingTime = Math.ceil(wordCount / 200);
+const { title, description, author, publishDate, category, tags, lang, readingTime } = Astro.props;
 
 // Category translations and colors
 const categoryConfig = {
@@ -80,6 +76,9 @@ const homePath = lang === 'fr' ? '/' : '/en/';
 
 // Reading time translation
 const readingTimeLabel = lang === 'fr' ? 'min de lecture' : 'min read';
+
+// Check if author is Vecia Team (use V logo instead of generic user icon)
+const isVeciaTeam = author === 'Vecia Team' || author === 'Équipe Vecia';
 ---
 
 <!-- Breadcrumb Navigation -->
@@ -136,9 +135,19 @@ const readingTimeLabel = lang === 'fr' ? 'min de lecture' : 'min read';
   <div class="flex flex-wrap items-center gap-4 text-sm text-text/60 mb-6">
     <!-- Author -->
     <div class="flex items-center">
-      <svg class="w-5 h-5 mr-2 text-text/40" fill="currentColor" viewBox="0 0 20 20">
-        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-      </svg>
+      {isVeciaTeam ? (
+        <img
+          src="/vecia_favicon.png"
+          alt="Vecia Team"
+          class="w-5 h-5 mr-2 rounded object-cover"
+          loading="eager"
+          onerror="this.style.display='none'"
+        />
+      ) : (
+        <svg class="w-5 h-5 mr-2 text-text/40" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+        </svg>
+      )}
       <span class="font-medium text-text/80">{author}</span>
     </div>
 

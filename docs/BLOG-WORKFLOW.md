@@ -9,6 +9,7 @@
 
 ## Table of Contents
 
+### Manual Workflow
 1. [Quick Start](#quick-start)
 2. [Blog System Architecture](#blog-system-architecture)
 3. [Creating a New Blog Post](#creating-a-new-blog-post)
@@ -20,6 +21,33 @@
 9. [LinkedIn Integration](#linkedin-integration)
 10. [Publishing Workflow](#publishing-workflow)
 11. [Troubleshooting](#troubleshooting)
+
+### Agent-Based Workflow (Recommended)
+12. [Agent Workflow Overview](#agent-workflow-overview)
+13. [Complete Agent Workflow](#complete-agent-workflow)
+14. [Agent Reference Guide](#agent-reference-guide)
+15. [Memory KB Integration](#memory-kb-integration)
+16. [Agent Workflow Examples](#agent-workflow-examples)
+
+---
+
+## ⚠️ TWO WORKFLOWS AVAILABLE
+
+This guide documents **TWO ways** to create blog posts:
+
+### Option 1: Manual Workflow (Sections 1-11)
+- **Best for**: Quick updates, minor edits, single-author teams
+- **Time**: 3-4 hours per article
+- **Pros**: Full control, flexible, simple
+- **Cons**: Manual repetition checking, no style enforcement, prone to duplication
+
+### Option 2: Agent-Based Workflow (Sections 12-16) ✨ **RECOMMENDED**
+- **Best for**: Consistent quality, multi-article production, style enforcement
+- **Time**: 2-3 hours per article (with better quality)
+- **Pros**: Automated style checking, Memory KB prevents repetition, scalable, maintains Vecia's aggressive tone
+- **Cons**: Initial setup required (one-time)
+
+**💡 TIP**: Use Agent Workflow for French articles (primary), then manual or agent translation for English versions.
 
 ---
 
@@ -1083,10 +1111,1430 @@ Month 1:
 
 ---
 
+## Agent Workflow Overview
+
+The **Agent-Based Workflow** uses 7 specialized Claude Code agents to create high-quality, style-consistent blog articles with automated repetition prevention via Memory KB.
+
+### Agent Pipeline Diagram
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                         AGENT WORKFLOW PIPELINE                        │
+└────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────┐
+│  USER REQUEST   │ Topic: "AI agents enterprise 2025"
+│  (Topic Input)  │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│ AGENT 1: blog-researcher (60-90 min)                                │
+│ Tools: Tavily, Brave Search, WebFetch, Context7, Memory KB         │
+│ Output: research-[topic]-2025.md                                    │
+│ • Gathers 2025 statistics from McKinsey, Gartner, PwC             │
+│ • Finds real case studies with metrics                             │
+│ • Queries Memory KB to avoid duplicate examples                    │
+└────────┬────────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│ AGENT 3: blog-outliner (30-45 min)                                  │
+│ Tools: Read, Write, Memory KB                                       │
+│ Input: research-[topic]-2025.md                                     │
+│ Output: outline-[topic].md                                          │
+│ • Creates 6-section structure                                       │
+│ • Suggests FRESH metaphors (checks Memory KB for DO-NOT-REUSE)     │
+│ • Plans hooks, CTAs that haven't been used                         │
+└────────┬────────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│ AGENT 4: vecia-french-writer (60-90 min)                            │
+│ Tools: Read, Write, Memory KB                                       │
+│ Input: outline-[topic].md, research-[topic]-2025.md                │
+│ Output: src/content/blog/fr/[slug].md                              │
+│ • Writes 1200-1500 word article in Vecia's aggressive tone         │
+│ • Uses fresh metaphors verified against Memory KB                  │
+│ • Maintains forbidden/allowed language rules                        │
+│ • Creates Astro-compatible Markdown with frontmatter               │
+└────────┬────────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│ AGENT 5: vecia-english-translator (45-60 min)                       │
+│ Tools: Read, Write, Memory KB                                       │
+│ Input: src/content/blog/fr/[slug].md                               │
+│ Output: src/content/blog/en/[slug].md                              │
+│ • Translates while maintaining aggressive tone                      │
+│ • Adapts metaphors culturally if needed                            │
+│ • Matches structure exactly (same H2 count, same lists)            │
+└────────┬────────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│ AGENT 6: blog-quality-checker (15-30 min)                           │
+│ Tools: Read, Grep, Memory KB                                        │
+│ Input: Both FR and EN articles                                      │
+│ Output: quality-review-[slug].md                                    │
+│ • Checks for forbidden words (putain, merde, crever)               │
+│ • Validates no repeated metaphors/hooks/CTAs                        │
+│ • Verifies frontmatter technical correctness                        │
+│ • Reports: READY TO PUBLISH / NEEDS REVISION / MINOR TWEAKS        │
+└────────┬────────────────────────────────────────────────────────────┘
+         │
+         ▼ (IF PASSED)
+┌─────────────────────────────────────────────────────────────────────┐
+│ MANUAL: Review, commit, publish                                     │
+│ git add src/content/blog/                                           │
+│ git commit -m "feat: Add blog post - [Title]"                      │
+│ git push                                                            │
+└────────┬────────────────────────────────────────────────────────────┘
+         │
+         ▼ (AFTER PUBLICATION)
+┌─────────────────────────────────────────────────────────────────────┐
+│ AGENT 7: blog-memory-updater (20-30 min)                            │
+│ Tools: Read, Memory KB store/retrieve                               │
+│ Input: Published src/content/blog/fr/[slug].md                     │
+│ Output: Memory KB updated with 15-25 new entries                    │
+│ • Stores all metaphors with DO-NOT-REUSE tag                       │
+│ • Stores hook with DO-NOT-REUSE tag                                │
+│ • Stores CTA with DO-NOT-REUSE tag                                 │
+│ • Stores case studies, statistics, humor, confrontations           │
+│ • Prevents future repetition                                        │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### One-Time Setup Agent
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│ AGENT 2: vecia-style-analyzer (30-45 min, ONE-TIME ONLY)            │
+│ Tools: Read, Memory KB store                                        │
+│ Input: Published articles from old blog                             │
+│ Output: Memory KB populated with style patterns                     │
+│ • Extracts tone characteristics                                     │
+│ • Documents forbidden/allowed language                              │
+│ • Stores all used metaphors, hooks, CTAs from existing articles    │
+│ • Creates baseline Memory KB for consistency                        │
+│                                                                      │
+│ NOTE: Run ONCE after initial setup, or when analyzing new articles  │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Benefits of Agent Workflow
+
+**Consistency:**
+- ✅ All articles maintain Vecia's aggressive tone
+- ✅ Style rules enforced automatically (forbidden words blocked)
+- ✅ Fresh metaphors every time (Memory KB prevents repetition)
+- ✅ Bilingual quality parity (translator preserves tone)
+
+**Quality:**
+- ✅ 2025-current research (agents search latest sources)
+- ✅ Real case studies with metrics (verified via research)
+- ✅ SEO-optimized structure (consistent 6-section pattern)
+- ✅ Automated QA checking before publication
+
+**Efficiency:**
+- ✅ Faster creation (2-3 hours vs 3-4 hours manual)
+- ✅ Scalable (create multiple articles in parallel)
+- ✅ Less cognitive load (agents handle repetitive checks)
+- ✅ Memory KB tracks everything (no manual tracking needed)
+
+**Learning:**
+- ✅ Memory KB grows with each article
+- ✅ Style consistency improves over time
+- ✅ Duplicate prevention gets more robust
+- ✅ Research patterns become more efficient
+
+---
+
+## Complete Agent Workflow
+
+### Prerequisites (One-Time Setup)
+
+**1. Verify Memory KB is Working**
+
+```bash
+# Check Memory KB health
+# This happens via MCP - should show healthy status
+# If not working, consult docs/claude-code-agents.md
+```
+
+**2. Run vecia-style-analyzer (One-Time)**
+
+```bash
+# In Claude Code, run this agent ONCE:
+# "Run vecia-style-analyzer agent on published articles"
+#
+# This populates Memory KB with:
+# - Tone rules
+# - Forbidden/allowed language
+# - Used metaphors from old blog
+# - Used hooks, CTAs, case studies, statistics
+#
+# Output: ~35-40 baseline memories stored
+```
+
+**3. Verify Agent Files Exist**
+
+```bash
+ls -la .claude/agents/
+
+# Should show:
+# blog-researcher.md
+# vecia-style-analyzer.md (already run)
+# blog-outliner.md
+# vecia-french-writer.md
+# vecia-english-translator.md
+# blog-quality-checker.md
+# blog-memory-updater.md
+```
+
+---
+
+### Full Workflow: Creating a Blog Article
+
+**Example Topic:** "AI Agents in Enterprise: 5 Winning Strategies for 2025"
+
+---
+
+#### STEP 1: Research Phase (60-90 min)
+
+**Run Agent:**
+```
+Run blog-researcher agent on topic "AI agents enterprise strategies 2025"
+```
+
+**Agent Will:**
+1. Search Tavily, Brave Search, Context7 for 2025 data
+2. Find statistics from McKinsey, Gartner, PwC (2025 sources)
+3. Identify 3-5 real case studies with metrics
+4. Query Memory KB to check for duplicate examples
+5. Create `research-ai-agents-enterprise-strategies-2025.md`
+
+**Expected Output File:**
+```markdown
+# Research Report: AI Agents Enterprise Strategies 2025
+
+**Date**: 2025-01-15
+**Category**: industry-deep-dives
+
+## Key Statistics (2025)
+- 79% of enterprises adopted agentic AI (PwC 2025)
+- Only 17% integrated into core workflows (PwC)
+- 40% of projects will be cancelled by 2027 (Gartner)
+- [... 5-10 more statistics]
+
+## Real-World Case Studies
+### Case Study 1: UPS ORION
+- Industry: Logistics
+- Problem: Route optimization
+- Solution: AI agents + driver training
+- Results: $300M/year savings, 100M miles reduced
+- Source: UPS Annual Report 2024
+
+[... 3-4 more case studies]
+
+## Latest Trends (2025)
+1. Governance frameworks for AI agents
+2. Interoperability between agent platforms
+3. Human-in-the-loop design patterns
+
+[... more content]
+```
+
+**Review:** Scan the research file, approve or request revisions.
+
+---
+
+#### STEP 2: Outline Phase (30-45 min)
+
+**Run Agent:**
+```
+Run blog-outliner agent using research file "research-ai-agents-enterprise-strategies-2025.md"
+```
+
+**Agent Will:**
+1. Read research file
+2. Query Memory KB for used metaphors, hooks, CTAs
+3. Create 6-section outline
+4. Suggest FRESH metaphors (avoiding DO-NOT-REUSE entries)
+5. Propose hook and CTA that haven't been used
+6. Create `outline-ai-agents-enterprise-strategies.md`
+
+**Expected Output File:**
+```markdown
+# Article Outline: AI Agents Enterprise Strategies 2025
+
+## Metadata
+- **Slug**: ia-agentique-entreprise-strategies-2025
+- **Category**: industry-deep-dives
+- **Target Length**: 1500 words
+- **Primary Keyword**: "AI agents enterprise"
+
+## Hook (Opening)
+**Proposed**: "79% adoptent, 17% intègrent. Votre stratégie IA agentique va-t-elle rejoindre le cimetière des POCs abandonnés ?"
+
+**Tone Check**: ✅ Aggressive, ✅ Statistics-based, ✅ NOT USED (checked Memory KB)
+
+## Structure (6 Sections)
+
+### Section 1: Le Problème - Pourquoi 83% Échouent
+- Opening stat: 79% adoption, 17% integration (PwC)
+- Why gap exists: governance, interoperability, change management
+- Metaphor: [FRESH] "Form before weight" (gym: technique before adding load)
+  - Checked Memory KB: NOT in DO-NOT-REUSE ✅
+  - Maps to: Master governance BEFORE scaling agents
+
+### Section 2: Stratégie 1 - Gouvernance Avant Scale
+[... detailed outline]
+
+[... Sections 3-6 continue]
+
+## CTA (Closing)
+**Proposed**: "Vous voulez pas que votre projet IA rejoigne les 40% qui vont se crasher d'ici 2027 ? Parlons-en."
+
+**Tone Check**: ✅ Confrontational, ✅ Personal, ✅ NOT USED (checked Memory KB)
+```
+
+**Review:** Approve outline or request changes to structure/metaphors.
+
+---
+
+#### STEP 3: French Writing Phase (60-90 min)
+
+**Run Agent:**
+```
+Run vecia-french-writer agent using outline "outline-ai-agents-enterprise-strategies.md" and research file
+```
+
+**Agent Will:**
+1. Read outline and research
+2. Query Memory KB for style guidelines
+3. Write 1200-1500 word article in French
+4. Use approved metaphors from outline
+5. Maintain aggressive-but-professional tone
+6. Cite all statistics with 2025 sources
+7. Create Astro frontmatter
+8. Save to `src/content/blog/fr/ia-agentique-entreprise-strategies-2025.md`
+
+**Expected Output File:**
+```markdown
+---
+title: "L'IA Agentique en Entreprise : 5 Stratégies Gagnantes pour 2025"
+description: "79% adoptent, 17% intègrent. Découvrez les 5 stratégies pour réussir votre transformation IA agentique sans rejoindre le cimetière des POCs."
+publishDate: 2025-01-15
+author: "Alexandre Fedotov"
+category: "industry-deep-dives"
+tags: ["ia-agentique", "entreprise", "stratégies", "transformation-digitale", "gouvernance"]
+featured: true
+image: "/images/blog/ai-agents-enterprise-2025.jpg"
+
+linkedin:
+  caption: |
+    🚨 79% des entreprises ont adopté l'IA agentique en 2025.
+
+    Seules 17% l'ont vraiment intégrée.
+
+    Pourquoi cet échec massif ?
+
+    Dans notre analyse complète, nous révélons :
+    ✅ Les 5 stratégies des 17% qui réussissent
+    ✅ Les pièges qui tuent 83% des projets
+    ✅ Un framework de gouvernance éprouvé
+    ✅ 3 cas d'usage réels avec ROI mesurable
+
+    Ne rejoignez pas les 40% de projets qui vont se crasher d'ici 2027.
+
+    👉 Guide complet dans les commentaires (15 min de lecture)
+
+    #IAAgentique #TransformationDigitale #IA #Entreprise #Innovation
+  hashtags: ["IAAgentique", "TransformationDigitale", "IA", "Entreprise", "Innovation"]
+---
+
+# L'IA Agentique en Entreprise : 5 Stratégies Gagnantes pour 2025
+
+79% des entreprises ont adopté l'IA agentique en 2025. Seules 17% l'ont vraiment intégrée dans leurs workflows principaux.
+
+**Qu'est-ce qui sépare les gagnants des perdants ?**
+
+Ce n'est pas la technologie. Ce n'est pas le budget. C'est la stratégie.
+
+Dans ce guide, vous découvrirez les 5 stratégies que les 17% de succès ont en commun — et comment les appliquer sans claquer des millions pour rien.
+
+## Le Problème : Pourquoi 83% Échouent
+
+[... full article content follows ...]
+
+## Conclusion
+
+L'IA agentique n'est pas une question de technologie, c'est une question de stratégie.
+
+Commencez petit, maîtrisez la gouvernance, formez vos équipes. Ou rejoignez les 40% de projets qui vont se crasher d'ici 2027.
+
+Vous voulez pas que votre projet IA rejoigne les 40% qui vont se crasher d'ici 2027 ? Parlons-en.
+
+---
+
+**Pour aller plus loin :**
+- [Lien vers cas d'usage IA agentique]
+- [Lien vers guide gouvernance IA]
+```
+
+**Review:** Read the French article, check tone, verify statistics are cited.
+
+---
+
+#### STEP 4: English Translation Phase (45-60 min)
+
+**Run Agent:**
+```
+Run vecia-english-translator agent on "src/content/blog/fr/ia-agentique-entreprise-strategies-2025.md"
+```
+
+**Agent Will:**
+1. Read French article
+2. Query Memory KB for tone patterns
+3. Translate to English while maintaining aggressive tone
+4. Adapt metaphors culturally if needed
+5. Match structure exactly (same H2 count, same lists)
+6. Save to `src/content/blog/en/agentic-ai-enterprise-strategies-2025.md`
+
+**Expected Output File:**
+```markdown
+---
+title: "Agentic AI in Enterprise: 5 Winning Strategies for 2025"
+description: "79% adopt, 17% integrate. Discover the 5 strategies to succeed with agentic AI without joining the POC graveyard."
+publishDate: 2025-01-15
+author: "Alexandre Fedotov"
+category: "industry-deep-dives"
+tags: ["agentic-ai", "enterprise", "strategies", "digital-transformation", "governance"]
+featured: true
+image: "/images/blog/ai-agents-enterprise-2025.jpg"
+
+linkedin:
+  caption: |
+    🚨 79% of enterprises adopted agentic AI in 2025.
+
+    Only 17% truly integrated it.
+
+    Why this massive failure rate?
+
+    In our complete analysis, we reveal:
+    ✅ The 5 strategies of the 17% that succeed
+    ✅ The traps that kill 83% of projects
+    ✅ A proven governance framework
+    ✅ 3 real use cases with measurable ROI
+
+    Don't join the 40% of projects that will crash by 2027.
+
+    👉 Full guide in comments (15 min read)
+
+    #AgenticAI #DigitalTransformation #AI #Enterprise #Innovation
+  hashtags: ["AgenticAI", "DigitalTransformation", "AI", "Enterprise", "Innovation"]
+---
+
+# Agentic AI in Enterprise: 5 Winning Strategies for 2025
+
+79% of enterprises adopted agentic AI in 2025. Only 17% truly integrated it into their core workflows.
+
+**What separates the winners from the losers?**
+
+It's not the technology. It's not the budget. It's the strategy.
+
+In this guide, you'll discover the 5 strategies the 17% success stories have in common — and how to apply them without blowing millions for nothing.
+
+[... full translated content follows ...]
+```
+
+**Review:** Compare French and English versions for structural match and tone consistency.
+
+---
+
+#### STEP 5: Quality Check Phase (15-30 min)
+
+**Run Agent:**
+```
+Run blog-quality-checker agent on both "ia-agentique-entreprise-strategies-2025.md" (FR) and "agentic-ai-enterprise-strategies-2025.md" (EN)
+```
+
+**Agent Will:**
+1. Read both FR and EN articles
+2. Use Grep to search for forbidden words (putain, merde, crever)
+3. Query Memory KB to check for repeated metaphors, hooks, CTAs
+4. Validate frontmatter technical correctness
+5. Check word count (1200-1500 target)
+6. Verify bilingual consistency
+7. Create `quality-review-ia-agentique-entreprise-strategies-2025.md`
+
+**Expected Output File:**
+```markdown
+# Quality Review Report: ia-agentique-entreprise-strategies-2025
+
+**Date**: 2025-01-15
+**Reviewer**: blog-quality-checker agent
+**Files Reviewed**: FR + EN
+
+---
+
+## 🔴 Critical Issues (MUST FIX)
+
+None ✅
+
+---
+
+## 🟡 Warnings (SHOULD FIX)
+
+### Content Quality
+- ⚠️ Word count FR: 1612 words (target: 1200-1500, slightly over but acceptable)
+
+---
+
+## ✅ Passed Checks
+
+### Language Compliance
+- ✅ No forbidden words detected (checked: putain, merde, chier, foutre, crever)
+- ✅ Appropriate use of allowed crude language ("branlant" used once in context)
+
+### Repetition Prevention
+- ✅ All metaphors are fresh (checked 8 used metaphors in Memory KB)
+  - "Form before weight" gym metaphor → NOT in DO-NOT-REUSE ✅
+- ✅ Hook is unique (checked against 2 used hooks)
+- ✅ CTA is new approach (checked against 2 used CTAs)
+
+### Frontmatter
+- ✅ All required fields present
+- ✅ Category valid: industry-deep-dives
+- ✅ Date format correct: 2025-01-15
+- ✅ 5 tags provided (target: 4-6)
+
+### Content Quality
+- ✅ 5 statistics cited with sources (all 2025)
+- ✅ 3 case studies with metrics
+- ✅ CTA is personal and engaging (not generic)
+
+### Tone Compliance
+- ✅ Aggressive edge maintained
+- ✅ Personal voice present (first-person)
+- ✅ Direct confrontation included ("rejoindre le cimetière des POCs")
+- ✅ Self-deprecating humor present ("claquer des millions pour rien")
+
+### Markdown Quality
+- ✅ Pure Markdown (no HTML)
+- ✅ Heading hierarchy correct (H1 → H2 → H3)
+- ✅ Proper formatting throughout
+
+### Bilingual Consistency
+- ✅ Structure matches (FR ↔ EN): 6 H2 sections both
+- ✅ Metadata matches (date, category, featured)
+- ✅ Tone consistent across languages
+
+---
+
+## 📊 Statistics
+
+**French Article:**
+- Word count: 1612
+- H2 sections: 6
+- Statistics cited: 5 (all 2025 sources)
+- Case studies: 3
+- Metaphors: 2 (all fresh ✅)
+
+**English Article:**
+- Word count: 1589
+- H2 sections: 6
+- Statistics cited: 5
+- Tone match: Yes ✅
+
+---
+
+## 🎯 Final Verdict
+
+**Status**: READY TO PUBLISH ✅
+
+**Summary**: Excellent quality article. One minor warning (word count slightly over target) but acceptable for in-depth analysis piece. All critical checks passed.
+
+**Next Steps**:
+- Review and commit to git
+- Publish to production
+- THEN run blog-memory-updater to store new examples
+
+---
+
+**Review Complete**
+```
+
+**Decision:**
+- ✅ If **READY TO PUBLISH** → Proceed to Step 6
+- ❌ If **NEEDS REVISION** → Fix issues, re-run quality checker
+- ⚠️ If **MINOR TWEAKS** → Review warnings, optionally fix, then proceed
+
+---
+
+#### STEP 6: Manual Review & Publication (15-30 min)
+
+**You review the files:**
+
+```bash
+# Open articles in editor
+code src/content/blog/fr/ia-agentique-entreprise-strategies-2025.md
+code src/content/blog/en/agentic-ai-enterprise-strategies-2025.md
+
+# Test locally
+npm run dev
+open http://localhost:4321/blog
+
+# Verify:
+# - Article displays correctly
+# - Featured badge shows
+# - Category filter works
+# - Both FR/EN versions render
+```
+
+**If satisfied, commit and push:**
+
+```bash
+git add src/content/blog/fr/ia-agentique-entreprise-strategies-2025.md
+git add src/content/blog/en/agentic-ai-enterprise-strategies-2025.md
+git commit -m "feat: Add blog post - Agentic AI Enterprise Strategies 2025
+
+- French and English versions
+- Industry deep dive category
+- 5 winning strategies with real case studies
+- 2025 statistics from PwC, Gartner
+- Fresh gym metaphor (form before weight)
+- LinkedIn promotion metadata with engagement hook
+"
+git push origin main
+```
+
+**Wait for deployment to complete** (GitHub Actions → VPS)
+
+**Verify live:**
+```bash
+# Check live site
+open https://vecia.com/blog/ia-agentique-entreprise-strategies-2025
+open https://vecia.com/en/blog/agentic-ai-enterprise-strategies-2025
+```
+
+---
+
+#### STEP 7: Post-Publication Memory Update (20-30 min)
+
+**CRITICAL: Run AFTER publication only**
+
+**Run Agent:**
+```
+Run blog-memory-updater agent on published article "src/content/blog/fr/ia-agentique-entreprise-strategies-2025.md"
+```
+
+**Agent Will:**
+1. Read published French article
+2. Extract all metaphors used
+3. Extract hook, CTA
+4. Extract case studies, statistics
+5. Extract humor examples, confrontation phrases
+6. Store in Memory KB with appropriate tags:
+   - Metaphors → DO-NOT-REUSE
+   - Hooks → DO-NOT-REUSE
+   - CTAs → DO-NOT-REUSE
+   - Case studies → used-case-study (can reuse with different angle)
+   - Statistics → used-statistic (foundational can reuse)
+   - Humor → DO-NOT-REUSE
+   - Confrontations → REUSABLE-SPARINGLY
+7. Create memory update report
+
+**Expected Console Output:**
+```markdown
+## Memory KB Updated ✅
+
+**Article**: L'IA Agentique en Entreprise : 5 Stratégies Gagnantes pour 2025
+**Slug**: ia-agentique-entreprise-strategies-2025
+**Date**: 2025-01-15
+**Category**: industry-deep-dives
+
+---
+
+**Elements Stored:**
+
+### Metaphors (DO-NOT-REUSE)
+1. Form before weight (technique before adding load)
+2. Training split (separating AI agents by function like push/pull/legs)
+**Total**: 2 metaphors stored
+
+### Hooks (DO-NOT-REUSE)
+1. "79% adoptent, 17% intègrent. Votre stratégie IA agentique va-t-elle rejoindre le cimetière des POCs ?"
+**Total**: 1 hook stored
+
+### CTAs (DO-NOT-REUSE)
+1. "Vous voulez pas que votre projet IA rejoigne les 40% qui vont se crasher d'ici 2027 ? Parlons-en."
+**Total**: 1 CTA stored
+
+### Case Studies
+1. UPS ORION ($300M savings)
+2. South American bank (WhatsApp PIX)
+3. Manufacturing company (predictive maintenance)
+**Total**: 3 case studies stored
+
+### Statistics
+1. 79% adoption, 17% integration (PwC 2025)
+2. 40% projects cancelled by 2027 (Gartner)
+3. 70% failures from people/process not tech (McKinsey 2024)
+4. 53% cite security as challenge (Deloitte)
+5. 15% autonomous decisions by 2028 (Forrester)
+**Total**: 5 statistics stored
+
+### Humor Examples (DO-NOT-REUSE)
+1. "claquer des millions pour rien" (blow millions for nothing)
+**Total**: 1 humor example stored
+
+### Confrontation Phrases (REUSABLE-SPARINGLY)
+1. "rejoindre le cimetière des POCs abandonnés" (join POC graveyard)
+**Total**: 1 confrontation phrase stored
+
+### Explained Concepts (find-new-angle)
+1. AI agent governance - Used framework approach (policies, roles, accountability)
+2. Interoperability - Compared to training different muscle groups
+**Total**: 2 concepts stored
+
+### Article Metadata
+1. Published article metadata with topics (ia-agentique, entreprise, stratégies, gouvernance)
+
+---
+
+**Memory KB Status:**
+- Total new memories added: 16
+- All tagged appropriately for retrieval
+- Ready for next article creation
+
+**Next Article Will Avoid:**
+- 2 used metaphors ✅
+- 1 used hook ✅
+- 1 used CTA ✅
+- 1 exact duplicate humor ✅
+```
+
+**Verify Memory KB:**
+```
+# Test retrieval in Claude Code
+"Query Memory KB for 'used metaphor form before weight'"
+
+# Should return the newly stored metaphor entry
+```
+
+---
+
+## WORKFLOW COMPLETE ✅
+
+**Total Time:** 4-5 hours (Research → Publication → Memory Update)
+
+**Next Steps:**
+1. Promote on LinkedIn (copy `linkedin.caption` from frontmatter)
+2. Monitor engagement
+3. Plan next article (agents ready to go!)
+
+---
+
+## Agent Reference Guide
+
+Quick reference for each agent's purpose, tools, inputs, and outputs.
+
+### AGENT 1: blog-researcher
+
+**Purpose:** Research specialist for gathering 2025 data, statistics, case studies, and trends.
+
+**When to Use:**
+- Starting a new blog article
+- Need current data and examples
+- Topic requires industry research
+
+**Tools:**
+- mcp__tavily-mcp__tavily-search
+- mcp__brave-search__brave_web_search
+- mcp__fetch__fetch
+- mcp__context7__resolve-library-id
+- mcp__context7__get-library-docs
+- WebFetch
+- Write
+- mcp__mcp-kb-memory__retrieve_memory
+- mcp__mcp-kb-memory__store_memory
+
+**Input:**
+- Topic description (from user)
+- Optional: Target category, specific focus areas
+
+**Output:**
+- `research-[topic]-2025.md` file with:
+  - Key statistics (5-10 entries with sources)
+  - Real case studies (3-5 with metrics)
+  - Latest trends (2025 specific)
+  - Memory KB check results (duplicate prevention)
+
+**Example Command:**
+```
+Run blog-researcher agent on topic "workflow automation best practices 2025"
+```
+
+**Tips:**
+- Be specific with topic (helps agent focus research)
+- Mention target category if known (quick-wins, industry-deep-dives, etc.)
+- Agent will query Memory KB to avoid duplicate case studies
+
+---
+
+### AGENT 2: vecia-style-analyzer
+
+**Purpose:** One-time setup agent to extract writing style from existing published articles and populate Memory KB.
+
+**When to Use:**
+- Initial setup (run once)
+- After publishing new articles you want to analyze for patterns
+- When updating style guidelines
+
+**Tools:**
+- Read
+- mcp__mcp-kb-memory__store_memory
+- mcp__mcp-kb-memory__retrieve_memory
+
+**Input:**
+- Published articles from old blog (Markdown files)
+- `docs/Blog/BLOG_AGENTS_AND_ARTICLES_GUIDE.md` (legacy guide)
+
+**Output:**
+- Memory KB populated with:
+  - Core style rules (6 entries)
+  - Used metaphors (DO-NOT-REUSE tagged)
+  - Used hooks (DO-NOT-REUSE)
+  - Used CTAs (DO-NOT-REUSE)
+  - Allowed/forbidden language patterns
+  - Tone characteristics
+
+**Example Command:**
+```
+Run vecia-style-analyzer agent on articles in "docs/Blog/"
+```
+
+**Tips:**
+- **Run ONCE** during initial setup
+- Can re-run if you want to analyze additional published articles
+- Creates baseline Memory KB for all other agents
+
+---
+
+### AGENT 3: blog-outliner
+
+**Purpose:** Creates structured article outlines while querying Memory KB to avoid repetition.
+
+**When to Use:**
+- After research phase complete
+- Before writing phase
+- Need to plan article structure
+
+**Tools:**
+- Read
+- Write
+- mcp__mcp-kb-memory__retrieve_memory
+- mcp__mcp-kb-memory__search_by_tag
+
+**Input:**
+- `research-[topic]-2025.md` (from blog-researcher)
+
+**Output:**
+- `outline-[topic].md` file with:
+  - Article metadata (slug, category, length)
+  - Hook proposal (verified against Memory KB)
+  - 6-section structure with H2 titles
+  - Fresh metaphor suggestions (checked DO-NOT-REUSE)
+  - CTA proposal (verified not used)
+
+**Example Command:**
+```
+Run blog-outliner agent using research file "research-workflow-automation-2025.md"
+```
+
+**Tips:**
+- Review outline and approve before writing phase
+- Agent suggests metaphors but you can request alternatives
+- Checks Memory KB for DO-NOT-REUSE patterns automatically
+
+---
+
+### AGENT 4: vecia-french-writer
+
+**Purpose:** Core content writer creating French articles in Vecia's aggressive-but-professional tone.
+
+**When to Use:**
+- After outline approved
+- Writing French version (primary language)
+- Creating Astro-compatible Markdown
+
+**Tools:**
+- Read
+- Write
+- mcp__mcp-kb-memory__retrieve_memory
+- mcp__mcp-kb-memory__search_by_tag
+
+**Input:**
+- `outline-[topic].md` (from blog-outliner)
+- `research-[topic]-2025.md` (from blog-researcher)
+
+**Output:**
+- `src/content/blog/fr/[slug].md` file with:
+  - Complete Astro frontmatter (title, description, publishDate, category, tags, LinkedIn metadata)
+  - 1200-1500 word article in French
+  - Aggressive tone with fresh metaphors
+  - Statistics cited with 2025 sources
+  - Personal, engaging CTA
+
+**Example Command:**
+```
+Run vecia-french-writer agent using outline "outline-workflow-automation.md" and research file
+```
+
+**Tips:**
+- Agent queries Memory KB for style guidelines automatically
+- Uses forbidden/allowed language rules
+- Maintains first-person perspective ("je", "moi")
+- Creates Markdown (not HTML like old blog)
+
+---
+
+### AGENT 5: vecia-english-translator
+
+**Purpose:** Translates French articles to English while preserving aggressive tone and adapting metaphors culturally.
+
+**When to Use:**
+- After French article complete
+- Creating English version
+- Need bilingual content
+
+**Tools:**
+- Read
+- Write
+- mcp__mcp-kb-memory__retrieve_memory
+
+**Input:**
+- `src/content/blog/fr/[slug].md` (from vecia-french-writer)
+
+**Output:**
+- `src/content/blog/en/[slug].md` file with:
+  - Translated frontmatter (English title, description, tags, LinkedIn)
+  - Structurally matched content (same H2 count, same lists)
+  - Tone-preserved aggressive edge
+  - Culturally adapted metaphors if needed
+
+**Example Command:**
+```
+Run vecia-english-translator agent on "src/content/blog/fr/workflow-automation-2025.md"
+```
+
+**Tips:**
+- NOT literal translation (cultural adaptation)
+- Maintains aggressive tone ("your strategy will fail" not "may face challenges")
+- Fitness metaphors usually translate directly
+- Structure must match French version exactly
+
+---
+
+### AGENT 6: blog-quality-checker
+
+**Purpose:** Automated QA checking forbidden language, repetition, technical correctness, and bilingual consistency.
+
+**When to Use:**
+- After both French and English articles complete
+- Before publication
+- Quality assurance check
+
+**Tools:**
+- Read
+- Grep
+- mcp__mcp-kb-memory__retrieve_memory
+- mcp__mcp-kb-memory__search_by_tag
+
+**Input:**
+- `src/content/blog/fr/[slug].md` (French article)
+- `src/content/blog/en/[slug].md` (English article, optional)
+
+**Output:**
+- `quality-review-[slug].md` report with:
+  - 🔴 Critical issues (forbidden words, repeated content, frontmatter errors)
+  - 🟡 Warnings (word count, title length, tone suggestions)
+  - ✅ Passed checks
+  - Final verdict: READY TO PUBLISH / NEEDS REVISION / MINOR TWEAKS
+
+**Example Command:**
+```
+Run blog-quality-checker agent on both "workflow-automation-2025.md" (FR) and (EN)
+```
+
+**Tips:**
+- Uses Grep to search for forbidden words: putain, merde, crever
+- Queries Memory KB to check metaphor/hook/CTA repetition
+- Validates frontmatter against Zod schema requirements
+- If CRITICAL issues found, fix before publication
+
+---
+
+### AGENT 7: blog-memory-updater
+
+**Purpose:** Post-publication agent that stores new examples in Memory KB to prevent future repetition.
+
+**When to Use:**
+- **AFTER** article published (approved and live)
+- NEVER before publication (content might change)
+
+**Tools:**
+- Read
+- mcp__mcp-kb-memory__store_memory
+- mcp__mcp-kb-memory__retrieve_memory
+- mcp__mcp-kb-memory__search_by_tag
+
+**Input:**
+- `src/content/blog/fr/[slug].md` (PUBLISHED French article)
+
+**Output:**
+- Memory KB updated with 15-25 new entries:
+  - Used metaphors (DO-NOT-REUSE)
+  - Used hook (DO-NOT-REUSE)
+  - Used CTA (DO-NOT-REUSE)
+  - Used case studies (reusable with different angles)
+  - Used statistics (foundational can reuse)
+  - Humor examples (DO-NOT-REUSE)
+  - Confrontation phrases (REUSABLE-SPARINGLY)
+  - Explained concepts (find-new-angle)
+  - Article metadata for reference
+
+**Example Command:**
+```
+Run blog-memory-updater agent on published article "src/content/blog/fr/workflow-automation-2025.md"
+```
+
+**Tips:**
+- **CRITICAL: Run AFTER publication only**
+- Prevents future articles from repeating creative elements
+- French version is source (English is translation)
+- Verify Memory KB updated successfully after run
+
+---
+
+## Memory KB Integration
+
+The **Memory KB (MCP)** is the backbone of the agent workflow, enabling:
+- **Style consistency** via stored tone rules
+- **Repetition prevention** via DO-NOT-REUSE tracking
+- **Quality improvement** via learning from published articles
+
+### Memory KB Architecture
+
+**Backend:** sqlite-vec (vector database)
+**Embedding Model:** all-MiniLM-L6-v2
+**Storage Format:** Content + Metadata (with tags)
+**Location:** Managed by MCP server (persistent across sessions)
+
+**Example Memory Entry:**
+```json
+{
+  "content": "USED METAPHOR: Gym beginner loading 100kg on bench press day 1 to explain trying to implement full AI stack without preparation. Article: ai-implementation-mistakes, Date: 2025-01-10",
+  "metadata": {
+    "tags": ["used-metaphor", "fitness", "gym", "vecia-blog", "DO-NOT-REUSE"]
+  }
+}
+```
+
+### Tag System
+
+**Critical Tags:**
+- `DO-NOT-REUSE` → Never use this exact example again (metaphors, hooks, CTAs, humor)
+- `REUSABLE-SPARINGLY` → Can reuse occasionally (confrontation phrases, certain stats)
+- `find-new-angle` → Can explain concept again but from different perspective
+- `vecia-blog` → All blog-related memories (for filtering)
+
+**Category Tags:**
+- `used-metaphor`, `used-hook`, `used-cta`, `used-case-study`, `used-statistic`, `used-humor`, `used-confrontation`, `explained-concept`
+- `fitness`, `gym`, `nutrition`, `training` (metaphor subcategories)
+
+**Operational Tags:**
+- `published-article` (article metadata)
+- Specific company names (for case study tracking)
+- Source organizations (PwC, Gartner, McKinsey)
+
+### Common Memory KB Operations
+
+#### 1. Query for Used Metaphors
+
+**In Claude Code:**
+```
+"Query Memory KB for used fitness metaphors"
+```
+
+**What happens:**
+- Agent uses `retrieve_memory("used metaphor fitness")` or `search_by_tag(["used-metaphor", "fitness"])`
+- Returns all fitness metaphors tagged DO-NOT-REUSE
+- Agent proposes DIFFERENT metaphor
+
+**Use case:** blog-outliner and vecia-french-writer check this before suggesting/using metaphors
+
+---
+
+#### 2. Check for Duplicate Case Studies
+
+**In Claude Code:**
+```
+"Search Memory KB for UPS ORION case study"
+```
+
+**What happens:**
+- Agent uses `retrieve_memory("UPS ORION case study")`
+- Returns previous usage with what angle was covered
+- Agent decides: new angle OK, exact duplicate NOT OK
+
+**Use case:** blog-researcher checks this when gathering case studies
+
+---
+
+#### 3. Store New Article Elements (Post-Publication)
+
+**In Claude Code:**
+```
+"Run blog-memory-updater agent on published article"
+```
+
+**What happens:**
+- Agent reads published article
+- Extracts metaphors, hook, CTA, case studies, etc.
+- Stores each with appropriate tags:
+  ```
+  store_memory(
+    content: "USED METAPHOR: [description]. Article: [slug], Date: [date]",
+    metadata: {"tags": ["used-metaphor", "fitness", "DO-NOT-REUSE", "vecia-blog"]}
+  )
+  ```
+
+**Use case:** Prevents future articles from repeating creative elements
+
+---
+
+#### 4. Verify Style Guidelines
+
+**In Claude Code:**
+```
+"Query Memory KB for Vecia blog tone rules"
+```
+
+**What happens:**
+- Agent retrieves tone characteristics, allowed/forbidden language
+- Uses rules during writing
+
+**Use case:** vecia-french-writer queries this automatically
+
+---
+
+### Memory KB Maintenance
+
+**Check Health:**
+```
+"Check Memory KB health status"
+```
+
+**Expected Output:**
+- Total memories: 76+ (40 pre-existing + 36+ from blog setup)
+- Database size: ~1-2 MB
+- Status: Healthy
+- Backend: sqlite-vec with all-MiniLM-L6-v2
+
+**Cleanup Duplicates (if needed):**
+```
+"Run Memory KB cleanup duplicates"
+```
+
+**Delete Outdated Entries (if needed):**
+```
+"Delete Memory KB entries before date 2024-01-01 with tag 'temporary'"
+```
+
+**Backup (recommended monthly):**
+```
+"Create Memory KB backup"
+```
+
+---
+
+### Memory KB Best Practices
+
+**DO:**
+- ✅ Store metaphors immediately after publication (via blog-memory-updater)
+- ✅ Use descriptive content (include context: article, date, usage)
+- ✅ Tag appropriately (DO-NOT-REUSE vs REUSABLE-SPARINGLY)
+- ✅ Query before suggesting creative elements (outliner, writer)
+- ✅ Check duplicates during research phase
+
+**DON'T:**
+- ❌ Store before publication (content might change)
+- ❌ Use vague tags (be specific: "used-metaphor" not "metaphor")
+- ❌ Skip tagging with article slug (needed for tracking)
+- ❌ Assume case studies can't be reused (different angles OK)
+- ❌ Over-store (don't store every sentence, just key creative elements)
+
+---
+
+## Agent Workflow Examples
+
+### Example 1: Quick Win Article (3 hours)
+
+**Topic:** "Automate Your Email Responses in 30 Minutes"
+
+**Timeline:**
+- **0:00-1:00** (60 min): blog-researcher gathers no-code tools, quick setup guides, before/after metrics
+- **1:00-1:30** (30 min): blog-outliner creates 5-section structure with tutorial steps
+- **1:30-2:30** (60 min): vecia-french-writer writes 1000-word tutorial in aggressive tone
+- **2:30-3:00** (30 min): vecia-english-translator creates EN version
+- **3:00-3:15** (15 min): blog-quality-checker validates (READY TO PUBLISH)
+- **3:15-3:30** (15 min): Manual review, git commit, push
+- **AFTER LIVE**: blog-memory-updater stores examples (20 min)
+
+**Total:** 3 hours (research to publish) + 20 min post-publication
+
+---
+
+### Example 2: Industry Deep Dive (5 hours)
+
+**Topic:** "Healthcare Automation: Compliance & Best Practices 2025"
+
+**Timeline:**
+- **0:00-1:30** (90 min): blog-researcher gathers healthcare-specific regulations, HIPAA compliance, 5 case studies from hospitals
+- **1:30-2:15** (45 min): blog-outliner creates 7-section structure with compliance framework
+- **2:15-3:45** (90 min): vecia-french-writer writes 2000-word comprehensive guide
+- **3:45-4:45** (60 min): vecia-english-translator creates EN version with medical terminology checks
+- **4:45-5:15** (30 min): blog-quality-checker validates (MINOR TWEAKS: word count over target)
+- **5:15-5:30** (15 min): Review warnings, decide to keep length (in-depth article justifies it)
+- **5:30-5:45** (15 min): Manual review, git commit, push
+- **AFTER LIVE**: blog-memory-updater stores healthcare case studies, compliance frameworks (30 min)
+
+**Total:** 5 hours 45 min (research to publish) + 30 min post-publication
+
+---
+
+### Example 3: Tool Comparison (4 hours)
+
+**Topic:** "Zapier vs Make vs n8n: Which Automation Tool in 2025?"
+
+**Timeline:**
+- **0:00-1:15** (75 min): blog-researcher gathers 2025 pricing, feature comparisons, user reviews, ROI data
+- **1:15-2:00** (45 min): blog-outliner creates comparison table structure, use case scenarios
+- **2:00-3:15** (75 min): vecia-french-writer writes 1500-word comparison with verdict section
+- **3:15-4:00** (45 min): vecia-english-translator creates EN version
+- **4:00-4:20** (20 min): blog-quality-checker validates (READY TO PUBLISH)
+- **4:20-4:35** (15 min): Manual review, git commit, push
+- **AFTER LIVE**: blog-memory-updater stores tool comparison approach, pricing data (25 min)
+
+**Total:** 4 hours 35 min (research to publish) + 25 min post-publication
+
+---
+
+### Example 4: Fixing Quality Check Failures
+
+**Scenario:** blog-quality-checker reports CRITICAL ISSUES
+
+**Issue Found:**
+```markdown
+## 🔴 Critical Issues (MUST FIX)
+
+### Language Violations
+- ❌ Found forbidden word "merde" in section "Erreur #3"
+
+### Repeated Content
+- ❌ Metaphor "gym membership never used" already used in article automating-crm-mistakes (DO-NOT-REUSE tag)
+
+**Fix Required**: YES (cannot publish until resolved)
+```
+
+**Fix Workflow:**
+
+1. **Fix Forbidden Word:**
+   ```bash
+   # Open French article
+   code src/content/blog/fr/workflow-mistakes-2025.md
+
+   # Search for "merde" (Cmd+F)
+   # Replace with allowed crude alternative:
+   # "c'est de la merde" → "c'est branlant"
+   ```
+
+2. **Fix Repeated Metaphor:**
+   ```
+   # Query Memory KB for FRESH alternatives
+   "Query Memory KB for used gym metaphors, suggest fresh alternative"
+
+   # Agent suggests: "Rest days metaphor (recovery is growth) - NOT in DO-NOT-REUSE"
+
+   # Replace section with fresh metaphor:
+   # "C'est comme acheter un abonnement de gym qu'on n'utilise jamais"
+   # → "C'est comme zapper les jours de repos en pensant que plus c'est mieux"
+   ```
+
+3. **Update English Version:**
+   ```
+   # Manually update EN version to match
+   # OR re-run vecia-english-translator on updated FR version
+   ```
+
+4. **Re-run Quality Check:**
+   ```
+   Run blog-quality-checker agent on both updated FR and EN versions
+   ```
+
+5. **Expected Result:**
+   ```markdown
+   ## 🔴 Critical Issues (MUST FIX)
+
+   None ✅
+
+   ---
+
+   ## 🎯 Final Verdict
+
+   **Status**: READY TO PUBLISH ✅
+   ```
+
+6. **Proceed to publication**
+
+---
+
+### Example 5: Parallel Article Creation (Scalable)
+
+**Scenario:** Creating 3 articles simultaneously
+
+**Topics:**
+1. "5 CRM Automation Mistakes" (Quick Win)
+2. "AI Agents in Finance Sector" (Industry Deep Dive)
+3. "No-Code Tools Comparison 2025" (Tool Comparison)
+
+**Workflow:**
+
+**Phase 1: Research (Parallel - 90 min)**
+```
+Run blog-researcher agent on topic "CRM automation mistakes 2025"
+Run blog-researcher agent on topic "AI agents finance sector regulations 2025"
+Run blog-researcher agent on topic "no-code automation tools comparison 2025"
+
+# All 3 agents run concurrently
+# Wait for all research files to complete
+```
+
+**Phase 2: Outline (Parallel - 45 min)**
+```
+Run blog-outliner agent using research file "research-crm-automation-mistakes-2025.md"
+Run blog-outliner agent using research file "research-ai-agents-finance-2025.md"
+Run blog-outliner agent using research file "research-no-code-tools-2025.md"
+
+# All 3 agents run concurrently
+# Review and approve all outlines
+```
+
+**Phase 3: French Writing (Parallel - 90 min)**
+```
+Run vecia-french-writer agent using outline "outline-crm-automation-mistakes.md"
+Run vecia-french-writer agent using outline "outline-ai-agents-finance.md"
+Run vecia-french-writer agent using outline "outline-no-code-tools.md"
+
+# All 3 agents run concurrently
+# Wait for all FR articles complete
+```
+
+**Phase 4: English Translation (Parallel - 60 min)**
+```
+Run vecia-english-translator agent on "src/content/blog/fr/crm-automation-mistakes.md"
+Run vecia-english-translator agent on "src/content/blog/fr/ai-agents-finance.md"
+Run vecia-english-translator agent on "src/content/blog/fr/no-code-tools-comparison.md"
+
+# All 3 agents run concurrently
+```
+
+**Phase 5: Quality Check (Parallel - 30 min)**
+```
+Run blog-quality-checker agent on both FR and EN versions of "crm-automation-mistakes"
+Run blog-quality-checker agent on both FR and EN versions of "ai-agents-finance"
+Run blog-quality-checker agent on both FR and EN versions of "no-code-tools-comparison"
+
+# All 3 agents run concurrently
+# Review all quality reports
+```
+
+**Phase 6: Publication (Sequential - 45 min)**
+```bash
+# Article 1
+git add src/content/blog/fr/crm-automation-mistakes.md
+git add src/content/blog/en/crm-automation-mistakes.md
+git commit -m "feat: Add blog post - 5 CRM Automation Mistakes"
+git push
+
+# Article 2
+git add src/content/blog/fr/ai-agents-finance.md
+git add src/content/blog/en/ai-agents-finance.md
+git commit -m "feat: Add blog post - AI Agents in Finance Sector"
+git push
+
+# Article 3
+git add src/content/blog/fr/no-code-tools-comparison.md
+git add src/content/blog/en/no-code-tools-comparison.md
+git commit -m "feat: Add blog post - No-Code Tools Comparison 2025"
+git push
+```
+
+**Phase 7: Post-Publication Memory Update (Sequential - 60 min)**
+```
+# Wait for all 3 articles to be live
+
+Run blog-memory-updater agent on published article "src/content/blog/fr/crm-automation-mistakes.md"
+Run blog-memory-updater agent on published article "src/content/blog/fr/ai-agents-finance.md"
+Run blog-memory-updater agent on published article "src/content/blog/fr/no-code-tools-comparison.md"
+
+# Each runs sequentially to avoid Memory KB conflicts
+```
+
+**Total Time:**
+- **Parallel phases:** 90 + 45 + 90 + 60 + 30 = 315 min (5.25 hours)
+- **Sequential phases:** 45 + 60 = 105 min (1.75 hours)
+- **TOTAL:** ~7 hours to create **3 complete bilingual articles**
+
+**vs Manual Workflow:**
+- 3 articles × 4 hours each = **12 hours**
+- **Time saved:** 5 hours (42% faster)
+- **Quality improvement:** Automated repetition checking, style consistency
+
+---
+
+### Tips for Agent Workflow Success
+
+**Efficiency:**
+- Run agents in **parallel** when possible (research, outlining, writing, translation, QA)
+- Use **sequential** for Memory KB updates (prevents conflicts)
+- Batch similar tasks (e.g., research 3 topics at once)
+
+**Quality:**
+- Always review agent output before next phase
+- Don't skip quality checker (catches forbidden words, repetition)
+- Run blog-memory-updater AFTER publication (not before)
+
+**Maintenance:**
+- Check Memory KB health monthly
+- Backup Memory KB quarterly
+- Re-run vecia-style-analyzer when publishing exceptional articles
+
+**Troubleshooting:**
+- If agent produces low-quality output, check if Memory KB is healthy
+- If repetition detected, verify blog-memory-updater ran on previous articles
+- If tone inconsistent, re-run vecia-style-analyzer to reinforce patterns
+
+---
+
 ## Changelog
 
 | Date | Version | Changes |
 |------|---------|---------|
+| 2025-01-15 | 1.1.0 | Added Agent-Based Workflow sections 12-16: Agent pipeline, complete workflow, reference guide, Memory KB integration, examples |
 | 2025-01-15 | 1.0.0 | Initial creation - Complete workflow guide |
 
 ---
