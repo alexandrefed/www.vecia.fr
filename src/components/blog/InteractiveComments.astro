@@ -1,0 +1,449 @@
+---
+/**
+ * InteractiveComments Component
+ *
+ * Displays an interactive comment system with:
+ * - Threaded replies (nested comments)
+ * - Name generation
+ * - Team member badges (Alex/Tanguy)
+ * - Real-time submission
+ * - Profanity filtering
+ * - Spam prevention
+ *
+ * Props:
+ * - lang: Language code ('fr' | 'en')
+ * - articleSlug: Article identifier
+ */
+
+import type { Language } from '../../i18n/utils';
+
+interface Props {
+  lang: Language;
+  articleSlug: string;
+}
+
+const { lang, articleSlug } = Astro.props;
+
+// Translations
+const translations = {
+  fr: {
+    title: 'Commentaires',
+    noComments: 'Aucun commentaire pour le moment. Soyez le premier à commenter !',
+    loading: 'Chargement des commentaires...',
+    yourName: 'Votre nom',
+    generateName: 'Générer un nom',
+    yourComment: 'Votre commentaire',
+    submit: 'Publier',
+    submitting: 'Publication...',
+    reply: 'Répondre',
+    cancel: 'Annuler',
+    error: 'Une erreur est survenue. Veuillez réessayer.',
+    success: 'Commentaire publié avec succès !',
+    teamBadge: 'Équipe Vecia',
+    commentPlaceholder: 'Partagez votre avis...',
+    replyPlaceholder: 'Votre réponse...',
+    required: 'Ce champ est requis',
+    tooLong: 'Commentaire trop long (max 5000 caractères)',
+    profanity: 'Votre commentaire contient des mots inappropriés',
+  },
+  en: {
+    title: 'Comments',
+    noComments: 'No comments yet. Be the first to comment!',
+    loading: 'Loading comments...',
+    yourName: 'Your name',
+    generateName: 'Generate name',
+    yourComment: 'Your comment',
+    submit: 'Post',
+    submitting: 'Posting...',
+    reply: 'Reply',
+    cancel: 'Cancel',
+    error: 'An error occurred. Please try again.',
+    success: 'Comment posted successfully!',
+    teamBadge: 'Vecia Team',
+    commentPlaceholder: 'Share your thoughts...',
+    replyPlaceholder: 'Your reply...',
+    required: 'This field is required',
+    tooLong: 'Comment is too long (max 5000 characters)',
+    profanity: 'Your comment contains inappropriate words',
+  },
+};
+
+const t = translations[lang];
+---
+
+<section
+  class="mt-16 mb-8"
+  x-data={`{
+    comments: [],
+    loading: true,
+    error: '',
+    success: '',
+    replyingTo: null,
+    submitting: false,
+    lang: '${lang}',
+    t: ${JSON.stringify(t).replace(/</g, '\\u003c')},
+    init() {
+      this.loadComments();
+    },
+    async loadComments() {
+      try {
+        const response = await fetch('/api/comments/${articleSlug}.json');
+        const data = await response.json();
+        if (data.comments) {
+          this.comments = data.comments;
+        }
+      } catch (err) {
+        console.error('Failed to load comments:', err);
+        this.error = this.t.error;
+      } finally {
+        this.loading = false;
+      }
+    },
+    async submitComment(event) {
+      event.preventDefault();
+      this.submitting = true;
+      this.error = '';
+      this.success = '';
+
+      const formData = new FormData(event.target);
+      const authorName = formData.get('author_name') || '';
+      const commentText = formData.get('comment_text');
+      const parentId = formData.get('parent_comment_id');
+
+      if (!commentText || commentText.trim().length === 0) {
+        this.error = this.t.required;
+        this.submitting = false;
+        return;
+      }
+
+      if (commentText.length > 5000) {
+        this.error = this.t.tooLong;
+        this.submitting = false;
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/comments/submit.json', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            article_slug: '${articleSlug}',
+            author_name: authorName,
+            comment_text: commentText,
+            parent_comment_id: parentId || null,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          this.error = data.error || this.t.error;
+          this.submitting = false;
+          return;
+        }
+
+        // Success!
+        this.success = this.t.success;
+        event.target.reset();
+        this.replyingTo = null;
+
+        // Reload comments
+        await this.loadComments();
+
+        // Clear success message after 3 seconds
+        setTimeout(() => { this.success = ''; }, 3000);
+      } catch (err) {
+        console.error('Failed to submit comment:', err);
+        this.error = this.t.error;
+      } finally {
+        this.submitting = false;
+      }
+    },
+    generateRandomName(event) {
+      event.preventDefault();
+
+      // French celebrity parodies
+      const frenchNames = [
+        'Emmanuel Micron', 'Marine Latraîne', 'Napoléon Bonapetit',
+        'Victor Hugosse', 'Marcel Pignol', 'Simone de Bœufvoir',
+        'Jean-Paul Sardine', 'Albert Camouse', 'Édith Piaffe',
+        'Claude Monetaire', 'Fabrice Ébroué', 'Gérard Dépardonne',
+        'Marion Cottilard', 'Jean Dujardinière', 'Zinédine Zidame',
+        'Kylian Mbapple', 'Arsène Lutin', 'Thierry Henryson',
+        'Jean-Jacques Godmane', 'Johnny Hallidé'
+      ];
+
+      // English/international celebrity parodies
+      const englishNames = [
+        'Elon Tusk', 'Steve Jobless', 'Bill Grates', 'Mark Zuckerbird',
+        'Albert Einswine', 'Marie Currie', 'Isaac Newt', 'Nelson Mandrill',
+        'Mahatma Candy', 'Leonardo DiCabrio', 'Taylor Drift',
+        'Oprah Winfree', 'Will Smithereens', 'Morgan Freemango',
+        'William Shakespaw', 'Jane Awsten', 'Cristiano Ronaldough',
+        'Lionel Messy', 'Serena Williamson', 'Barack Obamba'
+      ];
+
+      // Select names based on language
+      const names = this.lang === 'fr' ? frenchNames : englishNames;
+      const randomName = names[Math.floor(Math.random() * names.length)];
+      event.target.form.author_name.value = randomName;
+    },
+    setReplyTo(commentId) {
+      this.replyingTo = commentId;
+      this.$nextTick(() => {
+        const replyForm = document.getElementById(\`reply-form-\${commentId}\`);
+        if (replyForm) {
+          replyForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          replyForm.querySelector('textarea')?.focus();
+        }
+      });
+    },
+    cancelReply() {
+      this.replyingTo = null;
+    },
+    getIndentLevel(comment) {
+      // Calculate nesting level for visual indentation
+      if (!comment.parent_comment_id) return 0;
+      const parent = this.comments.find(c => c.id === comment.parent_comment_id);
+      if (!parent) return 1;
+      if (!parent.parent_comment_id) return 1;
+      return 2; // Max 2 levels deep
+    },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffMs = now - date;
+      const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      const isFrench = ${lang === 'fr' ? 'true' : 'false'};
+
+      if (diffDays === 0) return isFrench ? "Aujourd'hui" : 'Today';
+      if (diffDays === 1) return isFrench ? 'Hier' : 'Yesterday';
+      if (diffDays < 7) return \`\${isFrench ? 'Il y a' : ''} \${diffDays} \${isFrench ? 'jours' : 'days ago'}\`;
+      if (diffDays < 30) {
+        const weeks = Math.floor(diffDays / 7);
+        return \`\${isFrench ? 'Il y a' : ''} \${weeks} \${isFrench ? 'semaine' : 'week'}\${weeks > 1 ? 's' : ''} \${isFrench ? '' : 'ago'}\`;
+      }
+      return date.toLocaleDateString(isFrench ? 'fr-FR' : 'en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+  }`}
+>
+  <!-- Section Header -->
+  <div class="border-t border-gray-200 dark:border-neutral-800 pt-8">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-2xl font-heading font-bold text-text">
+        {t.title}
+      </h2>
+      <span class="text-sm text-text/60 font-medium" x-show="!loading">
+        <span x-text="`${comments.length} ${this.lang === 'fr' ? 'commentaire' : 'comment'}${comments.length !== 1 ? 's' : ''}`"></span>
+      </span>
+    </div>
+
+    <!-- Loading State -->
+    <div x-show="loading" class="text-center py-8 text-text/60">
+      {t.loading}
+    </div>
+
+    <!-- Error Message -->
+    <div
+      x-show="error"
+      x-text="error"
+      class="mb-6 p-4 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 text-red-700 dark:text-red-300 rounded-xl"
+    ></div>
+
+    <!-- Success Message -->
+    <div
+      x-show="success"
+      x-text="success"
+      class="mb-6 p-4 bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700 text-green-700 dark:text-green-300 rounded-xl"
+    ></div>
+
+    <!-- Comment Form (Top Level) -->
+    <form @submit="submitComment" class="mb-8">
+      <!-- Honeypot (spam prevention) -->
+      <div class="hidden" aria-hidden="true">
+        <input type="text" name="website" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <div class="space-y-4">
+        <!-- Name Input with Generator Button -->
+        <div class="flex gap-2">
+          <input
+            type="text"
+            name="author_name"
+            :placeholder="t.yourName"
+            class="flex-1 px-4 py-3 rounded-xl border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-text focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-colors"
+            maxlength="100"
+          />
+          <button
+            type="button"
+            @click="generateRandomName"
+            class="px-4 py-3 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-text hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors font-medium whitespace-nowrap"
+          >
+            🎲 {t.generateName}
+          </button>
+        </div>
+
+        <!-- Comment Textarea -->
+        <textarea
+          name="comment_text"
+          :placeholder="t.commentPlaceholder"
+          rows="4"
+          required
+          class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-text focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-colors resize-y"
+          maxlength="5000"
+        ></textarea>
+
+        <!-- Submit Button -->
+        <div class="flex justify-end">
+          <button
+            type="submit"
+            :disabled="submitting"
+            class="px-6 py-3 rounded-xl bg-gradient-to-r from-primary via-secondary to-accent text-white font-semibold hover:shadow-lg transform hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+          >
+            <span x-show="!submitting">{t.submit}</span>
+            <span x-show="submitting">{t.submitting}</span>
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Comments List -->
+    <div x-show="!loading && comments.length === 0" class="text-center py-8 text-text/60">
+      {t.noComments}
+    </div>
+
+    <div x-show="!loading && comments.length > 0" class="space-y-6">
+      <template x-for="comment in comments" :key="comment.id">
+        <div
+          :class="{
+            'ml-0': getIndentLevel(comment) === 0,
+            'ml-8 md:ml-12': getIndentLevel(comment) === 1,
+            'ml-16 md:ml-24': getIndentLevel(comment) === 2
+          }"
+          class="transition-all duration-300"
+        >
+          <div
+            class="bg-gray-50 dark:bg-neutral-900/50 rounded-xl p-6 border border-gray-100 dark:border-neutral-800 hover:border-primary/30 transition-colors"
+            :class="{
+              'text-base': getIndentLevel(comment) === 0,
+              'text-sm': getIndentLevel(comment) > 0,
+              'border-l-4 border-l-primary/50': getIndentLevel(comment) > 0
+            }"
+          >
+            <div class="flex items-start gap-4">
+              <!-- Avatar -->
+              <div
+                class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-sm"
+                :class="{
+                  'bg-gradient-to-br from-primary to-secondary': comment.is_vecia_member,
+                  'bg-blue-500': !comment.is_vecia_member && comment.author_name.charCodeAt(0) % 3 === 0,
+                  'bg-purple-500': !comment.is_vecia_member && comment.author_name.charCodeAt(0) % 3 === 1,
+                  'bg-green-500': !comment.is_vecia_member && comment.author_name.charCodeAt(0) % 3 === 2
+                }"
+              >
+                <span x-text="comment.author_name.substring(0, 2).toUpperCase()"></span>
+              </div>
+
+              <!-- Comment Content -->
+              <div class="flex-1 min-w-0">
+                <!-- Name, Badge & Date -->
+                <div class="flex flex-wrap items-center gap-2 mb-2">
+                  <span class="font-semibold text-text" x-text="comment.author_name"></span>
+
+                  <!-- Vecia Team Badge -->
+                  <span
+                    x-show="comment.is_vecia_member"
+                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-gradient-to-r from-primary/20 to-secondary/20 text-primary border border-primary/30"
+                  >
+                    <img src="/vecia_favicon.png" alt="V" class="w-3 h-3 rounded" />
+                    {t.teamBadge}
+                  </span>
+
+                  <span class="text-xs text-text/50" x-text="formatDate(comment.created_at)"></span>
+                </div>
+
+                <!-- Comment Text -->
+                <p class="text-text/80 leading-relaxed mb-3 whitespace-pre-wrap" x-text="comment.comment_text"></p>
+
+                <!-- Reply Button -->
+                <button
+                  type="button"
+                  @click="setReplyTo(comment.id)"
+                  x-show="replyingTo !== comment.id && getIndentLevel(comment) < 2"
+                  class="text-sm text-primary hover:text-secondary font-medium transition-colors"
+                >
+                  💬 {t.reply}
+                </button>
+
+                <!-- Reply Form (Inline) -->
+                <div
+                  x-show="replyingTo === comment.id"
+                  :id="`reply-form-${comment.id}`"
+                  class="mt-4 p-4 bg-white dark:bg-neutral-800 rounded-lg border-2 border-primary/30"
+                  x-transition
+                >
+                  <form @submit="submitComment">
+                    <input type="hidden" name="parent_comment_id" :value="comment.id" />
+
+                    <div class="space-y-3">
+                      <!-- Name Input for Reply -->
+                      <div class="flex gap-2">
+                        <input
+                          type="text"
+                          name="author_name"
+                          :placeholder="t.yourName"
+                          class="flex-1 px-3 py-2 rounded-lg border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-text text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+                          maxlength="100"
+                        />
+                        <button
+                          type="button"
+                          @click="generateRandomName"
+                          class="px-3 py-2 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-text hover:bg-neutral-200 dark:hover:bg-neutral-700 text-sm"
+                        >
+                          🎲
+                        </button>
+                      </div>
+
+                      <!-- Reply Textarea -->
+                      <textarea
+                        name="comment_text"
+                        :placeholder="t.replyPlaceholder"
+                        rows="3"
+                        required
+                        class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-text text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-y"
+                        maxlength="5000"
+                      ></textarea>
+
+                      <!-- Reply Actions -->
+                      <div class="flex justify-end gap-2">
+                        <button
+                          type="button"
+                          @click="cancelReply"
+                          class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-neutral-700 text-text text-sm font-medium hover:bg-gray-300 dark:hover:bg-neutral-600 transition-colors"
+                        >
+                          {t.cancel}
+                        </button>
+                        <button
+                          type="submit"
+                          :disabled="submitting"
+                          class="px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-secondary text-white text-sm font-semibold hover:shadow-lg transition-all disabled:opacity-50"
+                        >
+                          <span x-show="!submitting">{t.submit}</span>
+                          <span x-show="submitting">{t.submitting}</span>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+</section>

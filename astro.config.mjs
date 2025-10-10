@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://vecia.com',  // Production URL for canonical links and sitemap
+  // output: 'static' is default in v5 and now supports selective SSR with prerender: false
   i18n: {
     locales: ['fr', 'en'],
     defaultLocale: 'fr',

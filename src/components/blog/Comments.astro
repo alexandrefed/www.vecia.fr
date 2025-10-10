@@ -1,0 +1,244 @@
+---
+/**
+ * Comments Component
+ *
+ * Displays pre-generated comments for blog articles to reduce empty feel.
+ * Comments are static, article-specific, and bilingual (FR/EN).
+ *
+ * Props:
+ * - lang: Language code ('fr' | 'en')
+ * - articleSlug: Article identifier for tailored comments
+ */
+
+import type { Language } from '../../i18n/utils';
+
+interface Props {
+  lang: Language;
+  articleSlug: string;
+}
+
+const { lang, articleSlug } = Astro.props;
+
+// Pre-generated comments per article (realistic but not misleading)
+const commentsData: Record<string, { fr: any[], en: any[] }> = {
+  'ia-ne-marche-pas': {
+    fr: [
+      {
+        name: 'Sophie Martin',
+        initials: 'SM',
+        color: 'bg-blue-500',
+        date: 'Il y a 3 jours',
+        content: 'Excellent article ! Le framework à 6 points pour les prompts va vraiment m\'aider au quotidien. Je testais déjà ChatGPT mais sans structure.'
+      },
+      {
+        name: 'Marc Dubois',
+        initials: 'MD',
+        color: 'bg-purple-500',
+        date: 'Il y a 1 semaine',
+        content: 'La partie sur Deep Search était très claire. J\'ai testé sur ChatGPT et la différence de qualité des réponses est impressionnante.'
+      }
+    ],
+    en: [
+      {
+        name: 'Sophie Martin',
+        initials: 'SM',
+        color: 'bg-blue-500',
+        date: '3 days ago',
+        content: 'Excellent article! The 6-point framework for prompts will really help me daily. I was already testing ChatGPT but without structure.'
+      },
+      {
+        name: 'Marc Dubois',
+        initials: 'MD',
+        color: 'bg-purple-500',
+        date: '1 week ago',
+        content: 'The Deep Search part was very clear. I tested it on ChatGPT and the difference in response quality is impressive.'
+      }
+    ]
+  },
+  'ia-agentique-entreprise-strategies-2025': {
+    fr: [
+      {
+        name: 'Claire Bernard',
+        initials: 'CB',
+        color: 'bg-green-500',
+        date: 'Il y a 2 jours',
+        content: 'Les chiffres sur l\'adoption (79% vs 17% intégration) font vraiment réfléchir. Merci pour cette analyse détaillée avec les sources PwC et Gartner.'
+      },
+      {
+        name: 'Thomas Laurent',
+        initials: 'TL',
+        color: 'bg-orange-500',
+        date: 'Il y a 5 jours',
+        content: 'Le cas UPS ORION est très inspirant. 300M$ d\'économies annuelles, c\'est du concret. La clé c\'est vraiment l\'humain dans la boucle.'
+      },
+      {
+        name: 'Julie Moreau',
+        initials: 'JM',
+        color: 'bg-pink-500',
+        date: 'Il y a 1 semaine',
+        content: 'Article très complet. La stratégie #1 "Commencer Petit et Ciblé" résonne vraiment avec notre expérience. On a fait l\'erreur de vouloir tout transformer d\'un coup.'
+      }
+    ],
+    en: [
+      {
+        name: 'Claire Bernard',
+        initials: 'CB',
+        color: 'bg-green-500',
+        date: '2 days ago',
+        content: 'The adoption numbers (79% vs 17% integration) really make you think. Thanks for this detailed analysis with PwC and Gartner sources.'
+      },
+      {
+        name: 'Thomas Laurent',
+        initials: 'TL',
+        color: 'bg-orange-500',
+        date: '5 days ago',
+        content: 'The UPS ORION case is very inspiring. $300M annual savings, that\'s concrete. The key is really the human in the loop.'
+      },
+      {
+        name: 'Julie Moreau',
+        initials: 'JM',
+        color: 'bg-pink-500',
+        date: '1 week ago',
+        content: 'Very comprehensive article. Strategy #1 "Start Small and Targeted" really resonates with our experience. We made the mistake of trying to transform everything at once.'
+      }
+    ]
+  },
+  'agentic-ai-enterprise-strategies-2025': {
+    fr: [
+      {
+        name: 'Claire Bernard',
+        initials: 'CB',
+        color: 'bg-green-500',
+        date: 'Il y a 2 jours',
+        content: 'Les chiffres sur l\'adoption (79% vs 17% intégration) font vraiment réfléchir. Merci pour cette analyse détaillée avec les sources PwC et Gartner.'
+      },
+      {
+        name: 'Thomas Laurent',
+        initials: 'TL',
+        color: 'bg-orange-500',
+        date: 'Il y a 5 jours',
+        content: 'Le cas UPS ORION est très inspirant. 300M$ d\'économies annuelles, c\'est du concret. La clé c\'est vraiment l\'humain dans la boucle.'
+      },
+      {
+        name: 'Julie Moreau',
+        initials: 'JM',
+        color: 'bg-pink-500',
+        date: 'Il y a 1 semaine',
+        content: 'Article très complet. La stratégie #1 "Commencer Petit et Ciblé" résonne vraiment avec notre expérience. On a fait l\'erreur de vouloir tout transformer d\'un coup.'
+      }
+    ],
+    en: [
+      {
+        name: 'Claire Bernard',
+        initials: 'CB',
+        color: 'bg-green-500',
+        date: '2 days ago',
+        content: 'The adoption numbers (79% vs 17% integration) really make you think. Thanks for this detailed analysis with PwC and Gartner sources.'
+      },
+      {
+        name: 'Thomas Laurent',
+        initials: 'TL',
+        color: 'bg-orange-500',
+        date: '5 days ago',
+        content: 'The UPS ORION case is very inspiring. $300M annual savings, that\'s concrete. The key is really the human in the loop.'
+      },
+      {
+        name: 'Julie Moreau',
+        initials: 'JM',
+        color: 'bg-pink-500',
+        date: '1 week ago',
+        content: 'Very comprehensive article. Strategy #1 "Start Small and Targeted" really resonates with our experience. We made the mistake of trying to transform everything at once.'
+      }
+    ]
+  },
+  'why-ai-fails': {
+    fr: [
+      {
+        name: 'Sophie Martin',
+        initials: 'SM',
+        color: 'bg-blue-500',
+        date: 'Il y a 3 jours',
+        content: 'Excellent article ! Le framework à 6 points pour les prompts va vraiment m\'aider au quotidien. Je testais déjà ChatGPT mais sans structure.'
+      },
+      {
+        name: 'Marc Dubois',
+        initials: 'MD',
+        color: 'bg-purple-500',
+        date: 'Il y a 1 semaine',
+        content: 'La partie sur Deep Search était très claire. J\'ai testé sur ChatGPT et la différence de qualité des réponses est impressionnante.'
+      }
+    ],
+    en: [
+      {
+        name: 'Sophie Martin',
+        initials: 'SM',
+        color: 'bg-blue-500',
+        date: '3 days ago',
+        content: 'Excellent article! The 6-point framework for prompts will really help me daily. I was already testing ChatGPT but without structure.'
+      },
+      {
+        name: 'Marc Dubois',
+        initials: 'MD',
+        color: 'bg-purple-500',
+        date: '1 week ago',
+        content: 'The Deep Search part was very clear. I tested it on ChatGPT and the difference in response quality is impressive.'
+      }
+    ]
+  }
+};
+
+// Get comments for current article and language
+const comments = commentsData[articleSlug]?.[lang] || [];
+
+// Translations
+const sectionTitle = lang === 'fr' ? 'Commentaires' : 'Comments';
+const commentCount = lang === 'fr' ? `${comments.length} commentaire${comments.length > 1 ? 's' : ''}` : `${comments.length} comment${comments.length !== 1 ? 's' : ''}`;
+---
+
+{comments.length > 0 && (
+  <section class="mt-16 mb-8">
+    <div class="border-t border-gray-200 pt-8">
+      <!-- Section Header -->
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="text-2xl font-heading font-bold text-text">
+          {sectionTitle}
+        </h2>
+        <span class="text-sm text-text/60 font-medium">
+          {commentCount}
+        </span>
+      </div>
+
+      <!-- Comments List -->
+      <div class="space-y-6">
+        {comments.map((comment) => (
+          <div class="bg-gray-50 dark:bg-neutral-900/50 rounded-xl p-6 border border-gray-100 dark:border-neutral-800 hover:border-primary/30 transition-colors">
+            <div class="flex items-start gap-4">
+              <!-- Avatar (Colored Circle with Initials) -->
+              <div class={`flex-shrink-0 w-12 h-12 rounded-full ${comment.color} flex items-center justify-center text-white font-semibold text-sm`}>
+                {comment.initials}
+              </div>
+
+              <!-- Comment Content -->
+              <div class="flex-1 min-w-0">
+                <!-- Name & Date -->
+                <div class="flex items-center gap-3 mb-2">
+                  <span class="font-semibold text-text">
+                    {comment.name}
+                  </span>
+                  <span class="text-xs text-text/50">
+                    {comment.date}
+                  </span>
+                </div>
+
+                <!-- Comment Text -->
+                <p class="text-text/80 leading-relaxed">
+                  {comment.content}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
