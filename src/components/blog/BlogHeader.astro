@@ -83,7 +83,7 @@ const isVeciaTeam = author === 'Vecia Team' || author === 'Équipe Vecia';
 
 <!-- Breadcrumb Navigation -->
 <nav class="mb-6" aria-label="Breadcrumb">
-  <ol class="flex items-center space-x-2 text-sm text-text/60">
+  <ol class="flex items-center space-x-2 text-sm text-muted">
     <li>
       <a href={homePath} class="hover:text-primary transition-colors">
         {homeLabel}
@@ -126,13 +126,13 @@ const isVeciaTeam = author === 'Vecia Team' || author === 'Équipe Vecia';
 
   <!-- Description -->
   {description && (
-    <p class="text-xl text-text/70 leading-relaxed mb-6 max-w-3xl">
+    <p class="text-xl text-text leading-relaxed mb-6 max-w-3xl">
       {description}
     </p>
   )}
 
   <!-- Metadata Row -->
-  <div class="flex flex-wrap items-center gap-4 text-sm text-text/60 mb-6">
+  <div class="flex flex-wrap items-center gap-4 text-sm text-muted mb-6">
     <!-- Author -->
     <div class="flex items-center">
       {isVeciaTeam ? (
@@ -144,19 +144,19 @@ const isVeciaTeam = author === 'Vecia Team' || author === 'Équipe Vecia';
           onerror="this.style.display='none'"
         />
       ) : (
-        <svg class="w-5 h-5 mr-2 text-text/40" fill="currentColor" viewBox="0 0 20 20">
+        <svg class="w-5 h-5 mr-2 text-subtle" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
         </svg>
       )}
-      <span class="font-medium text-text/80">{author}</span>
+      <span class="font-medium text-text">{author}</span>
     </div>
 
     <!-- Divider -->
-    <span class="text-text/30">•</span>
+    <span class="text-subtle">•</span>
 
     <!-- Publish Date -->
     <div class="flex items-center">
-      <svg class="w-5 h-5 mr-2 text-text/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-5 h-5 mr-2 text-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
       </svg>
       <time datetime={publishDate.toISOString()}>
@@ -165,11 +165,11 @@ const isVeciaTeam = author === 'Vecia Team' || author === 'Équipe Vecia';
     </div>
 
     <!-- Divider -->
-    <span class="text-text/30">•</span>
+    <span class="text-subtle">•</span>
 
     <!-- Reading Time -->
     <div class="flex items-center">
-      <svg class="w-5 h-5 mr-2 text-text/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-5 h-5 mr-2 text-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
       <span>{readingTime} {readingTimeLabel}</span>
@@ -180,7 +180,7 @@ const isVeciaTeam = author === 'Vecia Team' || author === 'Équipe Vecia';
   {tags.length > 0 && (
     <div class="flex flex-wrap gap-2">
       {tags.map((tag) => (
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200 transition-colors">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-muted border border-gray-200 hover:bg-gray-200 transition-colors">
           <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
           </svg>

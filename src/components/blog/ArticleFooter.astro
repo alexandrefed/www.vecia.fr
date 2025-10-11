@@ -135,7 +135,7 @@ const blogBasePath = lang === 'fr' ? '/blog/' : '/en/blog/';
           {lang === 'fr' ? currentAuthor.name : currentAuthor.nameEn}
         </h4>
 
-        <p class="text-text/80 leading-relaxed mb-4">
+        <p class="text-text leading-relaxed mb-4">
           {currentAuthor.bio[lang]}
         </p>
 
@@ -200,12 +200,12 @@ const blogBasePath = lang === 'fr' ? '/blog/' : '/en/blog/';
               {article.title}
             </h4>
 
-            <p class="text-sm text-text/70 mb-4 line-clamp-2">
+            <p class="text-sm text-text mb-4 line-clamp-2">
               {article.description}
             </p>
 
             <div class="flex items-center justify-between text-sm">
-              <time class="text-text/60">
+              <time class="text-muted">
                 {article.publishDate.toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-US', {
                   year: 'numeric',
                   month: 'short',
@@ -227,7 +227,7 @@ const blogBasePath = lang === 'fr' ? '/blog/' : '/en/blog/';
   )}
 
   {relatedArticles.length === 0 && (
-    <div class="text-center py-8 text-text/60">
+    <div class="text-center py-8 text-muted">
       <p>{translations.related.noArticles}</p>
     </div>
   )}

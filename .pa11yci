@@ -3,23 +3,43 @@
     "standard": "WCAG2AA",
     "level": "error",
     "timeout": 30000,
-    "wait": 1000,
+    "wait": 2000,
     "chromeLaunchConfig": {
       "args": ["--no-sandbox", "--disable-setuid-sandbox"]
     },
     "runners": ["axe", "htmlcs"],
-    "hideElements": ".cookie-banner"
+    "hideElements": ".cookie-banner",
+    "threshold": 0,
+    "ignore": []
   },
   "urls": [
-    "http://localhost:4321/",
-    "http://localhost:4321/en/",
     {
-      "url": "http://localhost:4321/blog/",
-      "screenCapture": "./pa11y-reports/blog-homepage.png"
+      "url": "http://localhost:4322/",
+      "screenCapture": "./pa11y-reports/homepage-fr.png",
+      "actions": [
+        "wait for element body to be visible"
+      ]
     },
     {
-      "url": "http://localhost:4321/en/blog/",
-      "screenCapture": "./pa11y-reports/blog-homepage-en.png"
+      "url": "http://localhost:4322/en/",
+      "screenCapture": "./pa11y-reports/homepage-en.png",
+      "actions": [
+        "wait for element body to be visible"
+      ]
+    },
+    {
+      "url": "http://localhost:4322/blog/",
+      "screenCapture": "./pa11y-reports/blog-homepage.png",
+      "actions": [
+        "wait for element body to be visible"
+      ]
+    },
+    {
+      "url": "http://localhost:4322/en/blog/",
+      "screenCapture": "./pa11y-reports/blog-homepage-en.png",
+      "actions": [
+        "wait for element body to be visible"
+      ]
     }
   ]
 }

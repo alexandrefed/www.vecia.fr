@@ -103,9 +103,9 @@
       history = history.filter(timestamp => timestamp > hourAgo);
 
       if (history.length >= 3) {
-        const oldestSubmission = Math.min(...history);
+        const oldestSubmission = Math.min.apply(null, history);
         const minutesUntilReset = Math.ceil((oldestSubmission + (60 * 60 * 1000) - now) / (60 * 1000));
-        alert(`Limite atteinte. Réessayez dans ${minutesUntilReset} minute(s).`);
+        alert('Limite atteinte. Réessayez dans ' + minutesUntilReset + ' minute(s).');
         return;
       }
 
@@ -115,7 +115,6 @@
       // 🔒 Security: Input sanitization
       const sanitizedEmail = this.email
         .trim()
-        .replace(/[<>'"]/g, '')
         .slice(0, 255);
 
       // Track newsletter signup attempt
@@ -165,7 +164,7 @@
     <!-- Close Button -->
     <button
       @click="close()"
-      class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors z-10"
+      class="absolute top-4 right-4 text-subtle hover:text-muted dark:hover:text-gray-200 transition-colors z-10"
       aria-label="Fermer"
     >
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -185,10 +184,10 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
           </svg>
         </div>
-        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+        <h3 class="text-2xl font-bold text-text dark:text-white mb-2">
           Merci ! 🎉
         </h3>
-        <p class="text-gray-600 dark:text-gray-300">
+        <p class="text-muted dark:text-gray-300">
           Vérifiez votre boîte mail pour confirmer votre inscription.
         </p>
       </div>
@@ -203,12 +202,12 @@
         </div>
 
         <!-- Title -->
-        <h2 class="text-2xl font-bold text-center text-gray-900 dark:text-white mb-3">
+        <h2 class="text-2xl font-bold text-center text-text dark:text-white mb-3">
           📬 Automatisez Votre Entreprise
         </h2>
 
         <!-- Description -->
-        <p class="text-center text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+        <p class="text-center text-muted dark:text-gray-300 mb-6 leading-relaxed">
           Recevez nos meilleurs conseils <strong>IA et automatisation</strong> directement dans votre boîte mail.
           <br />
           <span class="text-sm">1 email/semaine, 0 spam.</span>
@@ -236,7 +235,7 @@
 
         <!-- Trust Badge -->
         <div class="mt-6 text-center">
-          <div class="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+          <div class="flex items-center justify-center gap-2 text-sm text-subtle dark:text-subtle">
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
             </svg>
@@ -246,7 +245,7 @@
 
         <!-- Social Proof (Optional - can be updated with real numbers) -->
         <div class="mt-4 text-center">
-          <p class="text-xs text-gray-400 dark:text-gray-500">
+          <p class="text-xs text-subtle dark:text-subtle">
             Rejoignez 500+ entrepreneurs qui automatisent leur business
           </p>
         </div>

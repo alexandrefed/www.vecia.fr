@@ -12,13 +12,27 @@
 @import '@fontsource/inter/700.css';
 
 @theme {
-  /* Vecia Design Tokens - Colors */
-  --color-primary: #5B8BFF;      /* Mid blue */
-  --color-secondary: #C755FF;    /* Bright purple */
-  --color-accent1: #3BB4FF;      /* Light blue */
-  --color-accent2: #7B6FDE;      /* Purple-blue blend */
-  --color-accent3: #E8F4FF;      /* Very light blue tint */
-  --color-text: #1A1A2E;         /* Deep navy */
+  /* Vecia Design Tokens - Colors (WCAG 2.1 AA Compliant) */
+
+  /* Primary Colors - WCAG AA Compliant (4.5:1+ on white) */
+  --color-primary: #3366CC;      /* Darker blue (5.37:1 ratio) - USE FOR TEXT */
+  --color-primary-light: #5B8BFF; /* Original light blue - USE FOR BACKGROUNDS/LARGE TEXT ONLY */
+
+  --color-secondary: #7B2CBF;    /* Darker purple (7.11:1 ratio) - USE FOR TEXT */
+  --color-secondary-light: #C755FF; /* Original bright purple - USE FOR BACKGROUNDS/LARGE TEXT ONLY */
+
+  --color-accent1: #0077CC;      /* Darker light blue (4.66:1 ratio) - USE FOR TEXT */
+  --color-accent1-light: #3BB4FF; /* Original - USE FOR BACKGROUNDS ONLY */
+
+  --color-accent2: #5B4A99;      /* Darker purple-blue (5.1:1 ratio) - WCAG COMPLIANT */
+  --color-accent2-light: #7B6FDE; /* Original - USE FOR BACKGROUNDS/LARGE TEXT ONLY */
+
+  --color-accent3: #E8F4FF;      /* Very light blue tint - BACKGROUND ONLY, NEVER TEXT */
+
+  --color-text: #1A1A2E;         /* Deep navy (17.06:1) - EXCELLENT */
+  --color-text-muted: #4b5563;   /* gray-600 (7.56:1) - for secondary text */
+  --color-text-subtle: #6b7280;  /* gray-500 (4.83:1) - for tertiary text */
+
   --color-background: #FFFFFF;   /* White */
 
   /* Typography */
@@ -208,6 +222,26 @@ h1, h2, h3, h4, h5, h6 {
   margin-right: 0.5em;
   vertical-align: middle;
   transform: translateY(-0.05em);
+}
+
+/* WCAG 2.1 AA Compliant Text Color Utilities */
+/* These classes provide semantic, accessible text colors */
+
+.text-muted {
+  color: var(--color-text-muted); /* gray-600: 7.56:1 contrast ratio */
+}
+
+.text-subtle {
+  color: var(--color-text-subtle); /* gray-500: 4.83:1 contrast ratio */
+}
+
+/* Hover utilities for accessible colors */
+.hover\:text-muted:hover {
+  color: var(--color-text-muted);
+}
+
+.hover\:text-subtle:hover {
+  color: var(--color-text-subtle);
 }
 
 /* Respect user motion preferences */

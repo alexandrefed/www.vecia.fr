@@ -203,7 +203,7 @@ const commentCount = lang === 'fr' ? `${comments.length} commentaire${comments.l
         <h2 class="text-2xl font-heading font-bold text-text">
           {sectionTitle}
         </h2>
-        <span class="text-sm text-text/60 font-medium">
+        <span class="text-sm text-muted font-medium">
           {commentCount}
         </span>
       </div>
@@ -225,13 +225,13 @@ const commentCount = lang === 'fr' ? `${comments.length} commentaire${comments.l
                   <span class="font-semibold text-text">
                     {comment.name}
                   </span>
-                  <span class="text-xs text-text/50">
+                  <span class="text-xs text-subtle">
                     {comment.date}
                   </span>
                 </div>
 
                 <!-- Comment Text -->
-                <p class="text-text/80 leading-relaxed">
+                <p class="text-text leading-relaxed">
                   {comment.content}
                 </p>
               </div>

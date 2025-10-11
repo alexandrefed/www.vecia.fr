@@ -38,7 +38,7 @@ const t = useTranslations(lang);
       <div class="space-y-6">
         <!-- Full Name -->
         <div>
-          <label for="name" class="block text-sm font-medium text-text/80 mb-2">
+          <label for="name" class="block text-sm font-medium text-text mb-2">
             {t('leadCapture.namePlaceholder')} <span class="text-secondary">*</span>
           </label>
           <input
@@ -48,13 +48,13 @@ const t = useTranslations(lang);
             x-model="formData.name"
             required
             placeholder={t('leadCapture.namePlaceholder')}
-            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-gray-400"
+            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle"
           />
         </div>
 
         <!-- Professional Email -->
         <div>
-          <label for="email" class="block text-sm font-medium text-text/80 mb-2">
+          <label for="email" class="block text-sm font-medium text-text mb-2">
             {t('leadCapture.emailPlaceholder')} <span class="text-secondary">*</span>
           </label>
           <input
@@ -64,13 +64,13 @@ const t = useTranslations(lang);
             x-model="formData.email"
             required
             placeholder={t('leadCapture.emailPlaceholder')}
-            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-gray-400"
+            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle"
           />
         </div>
 
         <!-- Company Size -->
         <div>
-          <label for="companySize" class="block text-sm font-medium text-text/80 mb-2">
+          <label for="companySize" class="block text-sm font-medium text-text mb-2">
             {t('leadCapture.companySizeLabel')} <span class="text-secondary">*</span>
           </label>
           <select
@@ -106,7 +106,7 @@ const t = useTranslations(lang);
       </button>
 
       <!-- Privacy Notice -->
-      <p class="text-sm text-center text-text/60 mt-6">
+      <p class="text-sm text-center text-muted mt-6">
         {t('leadCapture.privacyText')}
       </p>
 

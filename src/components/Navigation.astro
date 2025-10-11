@@ -43,13 +43,13 @@ const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.langu
 
       <!-- Desktop Navigation -->
       <div class="hidden lg:flex items-center gap-7">
-        <a href={aboutUrl} class="text-base font-display font-bold uppercase tracking-wide text-gray-700 hover:text-primary transition-colors">
+        <a href={aboutUrl} class="text-base font-display font-bold uppercase tracking-wide text-muted hover:text-primary transition-colors">
           {t['nav.about']}
         </a>
-        <a href={blogUrl} class="text-base font-display font-bold uppercase tracking-wide text-gray-700 hover:text-primary transition-colors">
+        <a href={blogUrl} class="text-base font-display font-bold uppercase tracking-wide text-muted hover:text-primary transition-colors">
           {t['nav.blog']}
         </a>
-        <a href={contactUrl} class="text-base font-display font-bold uppercase tracking-wide text-gray-700 hover:text-primary transition-colors">
+        <a href={contactUrl} class="text-base font-display font-bold uppercase tracking-wide text-muted hover:text-primary transition-colors">
           {t['nav.contact']}
         </a>
 
@@ -59,7 +59,7 @@ const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.langu
         <div x-data="{ open: false }" class="relative">
           <button
             @click="open = !open"
-            class="flex items-center gap-2 text-sm font-medium px-3 py-1 rounded-md text-gray-700 hover:text-primary transition-colors lowercase"
+            class="flex items-center gap-2 text-sm font-medium px-3 py-1 rounded-md text-muted hover:text-primary transition-colors lowercase"
           >
             <span>{currentLangCode}</span>
             <svg
@@ -88,13 +88,13 @@ const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.langu
           >
             <a
               href={lang === 'fr' ? '/' : altLangUrl}
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+              class="block px-4 py-2 text-sm text-muted hover:bg-gray-100 transition-colors"
             >
               {t['nav.language.fr']}
             </a>
             <a
               href={lang === 'en' ? '/' : altLangUrl}
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+              class="block px-4 py-2 text-sm text-muted hover:bg-gray-100 transition-colors"
             >
               {t['nav.language.en']}
             </a>
@@ -127,7 +127,7 @@ const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.langu
       <!-- See docs/ALPINEJS-USAGE-GUIDE.md for when to use Alpine vs Tailwind -->
       <button
         @click="mobileOpen = !mobileOpen"
-        class="lg:hidden p-2.5 text-gray-700 hover:text-primary transition-colors relative"
+        class="lg:hidden p-2.5 text-muted hover:text-primary transition-colors relative"
         aria-label="Toggle menu"
       >
         <!-- Hamburger Icon -->
@@ -173,22 +173,22 @@ const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.langu
       style="display: none;"
     >
       <div class="flex flex-col gap-6 items-center">
-        <a href={aboutUrl} class="text-lg font-display font-bold uppercase tracking-wide text-gray-700 hover:text-primary transition-all hover:scale-105 text-center py-2">
+        <a href={aboutUrl} class="text-lg font-display font-bold uppercase tracking-wide text-muted hover:text-primary transition-all hover:scale-105 text-center py-2">
           {t['nav.about']}
         </a>
-        <a href={blogUrl} class="text-lg font-display font-bold uppercase tracking-wide text-gray-700 hover:text-primary transition-all hover:scale-105 text-center py-2">
+        <a href={blogUrl} class="text-lg font-display font-bold uppercase tracking-wide text-muted hover:text-primary transition-all hover:scale-105 text-center py-2">
           {t['nav.blog']}
         </a>
-        <a href={contactUrl} class="text-lg font-display font-bold uppercase tracking-wide text-gray-700 hover:text-primary transition-all hover:scale-105 text-center py-2">
+        <a href={contactUrl} class="text-lg font-display font-bold uppercase tracking-wide text-muted hover:text-primary transition-all hover:scale-105 text-center py-2">
           {t['nav.contact']}
         </a>
 
         <!-- Mobile Language Links -->
         <div class="flex gap-6 pt-4 mt-4 border-t border-gray-100 text-center w-full justify-center">
-          <a href="/" class="text-base text-gray-600 hover:text-primary transition-colors font-medium">
+          <a href="/" class="text-base text-muted hover:text-primary transition-colors font-medium">
             {t['nav.language.fr']}
           </a>
-          <a href="/en/" class="text-base text-gray-600 hover:text-primary transition-colors font-medium">
+          <a href="/en/" class="text-base text-muted hover:text-primary transition-colors font-medium">
             {t['nav.language.en']}
           </a>
         </div>

@@ -83,13 +83,13 @@ const cases = [
 
     <!-- Section Header -->
     <div class="text-center mb-12 px-8">
-      <h2 class="font-display text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+      <h2 class="font-display text-4xl md:text-5xl font-bold text-text mb-4">
         <span class="title-icon"></span>{t['cases.sectionTitle']}
         <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
           {t['cases.sectionTitleHighlight']}
         </span>
       </h2>
-      <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+      <p class="text-lg text-muted max-w-3xl mx-auto">
         {t['cases.sectionSubtitle']}
       </p>
     </div>
@@ -156,7 +156,7 @@ const cases = [
         {cases.map((caseStudy, index) => (
           <button
             @click={`selectTab(${index})`}
-            :class={`activeTab === ${index} ? 'bg-gradient-to-r from-secondary to-primary text-white shadow-lg' : 'bg-transparent text-gray-600 hover:bg-gray-100'`}
+            :class={`activeTab === ${index} ? 'bg-gradient-to-r from-secondary to-primary text-white shadow-lg' : 'bg-transparent text-muted hover:bg-gray-100'`}
             class="px-4 py-2 rounded-lg font-semibold text-sm whitespace-nowrap transition-all duration-300 hover:scale-105"
           >
             {caseStudy.industry}
@@ -203,7 +203,7 @@ const cases = [
               </div>
 
               <!-- Headline -->
-              <h3 class="font-display text-lg font-bold text-gray-800">
+              <h3 class="font-display text-lg font-bold text-text">
                 {caseStudy.headline}{' '}
                 <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   {caseStudy.headlineHighlight}
@@ -219,7 +219,7 @@ const cases = [
                     <i class="hgi-stroke hgi-alert-circle text-base"></i>
                     {lang === 'fr' ? 'Défi' : 'Challenge'}
                   </h4>
-                  <p class="text-sm text-gray-700 leading-relaxed">
+                  <p class="text-sm text-muted leading-relaxed">
                     {caseStudy.challenge}
                   </p>
                 </div>
@@ -230,7 +230,7 @@ const cases = [
                     <i class="hgi-stroke hgi-settings-02 text-base"></i>
                     Solution
                   </h4>
-                  <p class="text-sm text-gray-700 leading-relaxed">
+                  <p class="text-sm text-muted leading-relaxed">
                     {caseStudy.solution}
                   </p>
                 </div>
@@ -241,7 +241,7 @@ const cases = [
                     <i class="hgi-stroke hgi-checkmark-circle-02 text-base"></i>
                     {lang === 'fr' ? 'Résultat' : 'Result'}
                   </h4>
-                  <p class="text-sm text-gray-700 leading-relaxed">
+                  <p class="text-sm text-muted leading-relaxed">
                     {caseStudy.result}
                   </p>
                 </div>
@@ -252,10 +252,10 @@ const cases = [
                 <div class="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-1">
                   {caseStudy.metric}
                 </div>
-                <p class="text-sm font-semibold text-gray-800 mb-1">
+                <p class="text-sm font-semibold text-text mb-1">
                   {caseStudy.metricLabel}
                 </p>
-                <p class="text-xs text-gray-600">
+                <p class="text-xs text-muted">
                   {caseStudy.impact}
                 </p>
               </div>
@@ -327,7 +327,7 @@ const cases = [
               </div>
 
               <!-- Headline -->
-              <h3 class="font-display text-xl md:text-2xl font-bold text-gray-800 mb-4">
+              <h3 class="font-display text-xl md:text-2xl font-bold text-text mb-4">
                 {caseStudy.headline}{' '}
                 <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   {caseStudy.headlineHighlight}
@@ -343,7 +343,7 @@ const cases = [
                     <i class="hgi-stroke hgi-alert-circle text-lg"></i>
                     {lang === 'fr' ? 'Défi' : 'Challenge'}
                   </h4>
-                  <p class="text-sm text-gray-700 leading-relaxed">
+                  <p class="text-sm text-muted leading-relaxed">
                     {caseStudy.challenge}
                   </p>
                 </div>
@@ -354,7 +354,7 @@ const cases = [
                     <i class="hgi-stroke hgi-settings-02 text-lg"></i>
                     Solution
                   </h4>
-                  <p class="text-sm text-gray-700 leading-relaxed">
+                  <p class="text-sm text-muted leading-relaxed">
                     {caseStudy.solution}
                   </p>
                 </div>
@@ -365,7 +365,7 @@ const cases = [
                     <i class="hgi-stroke hgi-checkmark-circle-02 text-lg"></i>
                     {lang === 'fr' ? 'Résultat' : 'Result'}
                   </h4>
-                  <p class="text-sm text-gray-700 leading-relaxed">
+                  <p class="text-sm text-muted leading-relaxed">
                     {caseStudy.result}
                   </p>
                 </div>
@@ -376,10 +376,10 @@ const cases = [
                 <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-1">
                   {caseStudy.metric}
                 </div>
-                <p class="text-base font-semibold text-gray-800 mb-1">
+                <p class="text-base font-semibold text-text mb-1">
                   {caseStudy.metricLabel}
                 </p>
-                <p class="text-xs text-gray-600">
+                <p class="text-xs text-muted">
                   {caseStudy.impact}
                 </p>
               </div>

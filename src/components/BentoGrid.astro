@@ -18,7 +18,7 @@ const t = ui[lang];
 
     <!-- Section Title (Outside Purple Background) -->
     <div class="mb-8 text-center">
-      <h2 class="font-display text-4xl font-bold text-gray-800 mb-4">
+      <h2 class="font-display text-4xl font-bold text-text mb-4">
         <span class="title-icon"></span>{t['journey.sectionTitle']}
       </h2>
     </div>
@@ -40,13 +40,13 @@ const t = ui[lang];
           <div class="w-14 h-14 bg-primary rounded-xl flex items-center justify-center flex-shrink-0">
             <i class="hgi-stroke hgi-target-03 text-3xl text-white"></i>
           </div>
-          <h3 class="font-display text-xl md:text-2xl font-bold text-gray-800">
+          <h3 class="font-display text-xl md:text-2xl font-bold text-text">
             {t['journey.understanding.title']}
           </h3>
         </div>
 
         <!-- Content -->
-        <p class="text-gray-600 mb-4">
+        <p class="text-muted mb-4">
           {t['journey.understanding.content']}
         </p>
 
@@ -54,11 +54,11 @@ const t = ui[lang];
         <ul class="space-y-2 mb-6">
           <li class="flex items-start gap-2">
             <i class="hgi-stroke hgi-checkmark-circle-02 text-primary mt-1"></i>
-            <span class="text-gray-700">{t['journey.understanding.bullet1']}</span>
+            <span class="text-muted">{t['journey.understanding.bullet1']}</span>
           </li>
           <li class="flex items-start gap-2">
             <i class="hgi-stroke hgi-checkmark-circle-02 text-primary mt-1"></i>
-            <span class="text-gray-700">{t['journey.understanding.bullet2']}</span>
+            <span class="text-muted">{t['journey.understanding.bullet2']}</span>
           </li>
         </ul>
 
@@ -70,7 +70,7 @@ const t = ui[lang];
           >
             {t['journey.understanding.ctaText']}
           </a>
-          <p class="text-xs text-center text-gray-500 font-medium">
+          <p class="text-xs text-center text-subtle font-medium">
             {t['journey.understanding.freeLabel']}
           </p>
         </div>
@@ -79,10 +79,10 @@ const t = ui[lang];
       <!-- Row 1 - Right: Roadmap with 4-Step Flow (2/3) -->
       <div class="md:col-span-2 bg-white rounded-xl p-6 md:p-8 shadow-xl shadow-secondary/20 border border-white/30 hover:shadow-2xl hover:shadow-secondary/30 hover:scale-[1.02] hover:bg-white/95 transition-all duration-300">
         <!-- Title -->
-        <h3 class="font-display text-xl md:text-2xl font-bold text-gray-800 mb-2">
+        <h3 class="font-display text-xl md:text-2xl font-bold text-text mb-2">
           {t['journey.roadmap.title']}
         </h3>
-        <p class="text-gray-600 mb-6">
+        <p class="text-muted mb-6">
           {t['journey.roadmap.subtitle']}
         </p>
 
@@ -103,8 +103,8 @@ const t = ui[lang];
               <!-- Connector Line (hidden on mobile) -->
               <div class="hidden md:block absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-primary/30 to-transparent -translate-y-1/2"></div>
             </div>
-            <h4 class="font-display font-bold text-gray-800 mb-2">{t['journey.roadmap.step1Title']}</h4>
-            <p class="text-sm text-gray-600 mb-2">{t['journey.roadmap.step1Desc']}</p>
+            <h4 class="font-display font-bold text-text mb-2">{t['journey.roadmap.step1Title']}</h4>
+            <p class="text-sm text-muted mb-2">{t['journey.roadmap.step1Desc']}</p>
             <span id="workshopPrice" class="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               {t['journey.pricing.tier1.price']}
             </span>
@@ -121,8 +121,8 @@ const t = ui[lang];
               </div>
               <div class="hidden md:block absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-secondary/30 to-transparent -translate-y-1/2"></div>
             </div>
-            <h4 class="font-display font-bold text-gray-800 mb-2">{t['journey.roadmap.step2Title']}</h4>
-            <p class="text-sm text-gray-600">{t['journey.roadmap.step2Desc']}</p>
+            <h4 class="font-display font-bold text-text mb-2">{t['journey.roadmap.step2Title']}</h4>
+            <p class="text-sm text-muted">{t['journey.roadmap.step2Desc']}</p>
           </div>
 
           <!-- Step 3: Implementation Plan -->
@@ -136,8 +136,8 @@ const t = ui[lang];
               </div>
               <div class="hidden md:block absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-accent1/30 to-transparent -translate-y-1/2"></div>
             </div>
-            <h4 class="font-display font-bold text-gray-800 mb-2">{t['journey.roadmap.step3Title']}</h4>
-            <p class="text-sm text-gray-600">{t['journey.roadmap.step3Desc']}</p>
+            <h4 class="font-display font-bold text-text mb-2">{t['journey.roadmap.step3Title']}</h4>
+            <p class="text-sm text-muted">{t['journey.roadmap.step3Desc']}</p>
           </div>
 
           <!-- Step 4: Delivery & Support -->
@@ -150,8 +150,8 @@ const t = ui[lang];
                 <span class="text-xs font-bold text-accent2">4</span>
               </div>
             </div>
-            <h4 class="font-display font-bold text-gray-800 mb-2">{t['journey.roadmap.step4Title']}</h4>
-            <p class="text-sm text-gray-600">{t['journey.roadmap.step4Desc']}</p>
+            <h4 class="font-display font-bold text-text mb-2">{t['journey.roadmap.step4Title']}</h4>
+            <p class="text-sm text-muted">{t['journey.roadmap.step4Desc']}</p>
           </div>
 
         </div>
@@ -165,18 +165,18 @@ const t = ui[lang];
       <div class="md:col-span-2 bg-white rounded-xl p-6 md:p-8 shadow-xl shadow-secondary/20 border border-white/30 hover:shadow-2xl hover:shadow-secondary/30 hover:scale-[1.02] hover:bg-white/95 transition-all duration-300">
         <!-- Section Title + Currency Switcher -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-          <h3 class="font-display text-2xl font-bold text-gray-800">
+          <h3 class="font-display text-2xl font-bold text-text">
             {t['journey.pricing.sectionTitle']}
           </h3>
 
           <!-- Currency Switcher (GDPR-friendly: user control) -->
           <div class="flex items-center gap-2">
-            <label for="currency-switcher" class="text-sm text-gray-600 font-medium">
+            <label for="currency-switcher" class="text-sm text-muted font-medium">
               {lang === 'fr' ? 'Devise:' : 'Currency:'}
             </label>
             <select
               id="currency-switcher"
-              class="px-3 py-2 bg-gradient-to-r from-primary/10 to-secondary/10 border-2 border-primary/30 rounded-lg text-sm font-semibold text-gray-800 cursor-pointer hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-200"
+              class="px-3 py-2 bg-gradient-to-r from-primary/10 to-secondary/10 border-2 border-primary/30 rounded-lg text-sm font-semibold text-text cursor-pointer hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-200"
             >
               <option value="EUR">🇪🇺 EUR (€)</option>
               <option value="CHF">🇨🇭 CHF</option>
@@ -190,7 +190,7 @@ const t = ui[lang];
 
           <!-- Pricing Card 1: Quick Wins -->
           <div class="relative bg-gradient-to-br from-primary/25 to-secondary/20 border-2 border-primary/30 rounded-xl p-6 hover:-translate-y-2 hover:shadow-2xl hover:border-primary/50 transition-all duration-300">
-            <h4 class="font-display font-bold text-lg text-gray-800 mb-2">
+            <h4 class="font-display font-bold text-lg text-text mb-2">
               {t['journey.pricing.tier1.name']}
             </h4>
             <div class="mb-4">
@@ -201,15 +201,15 @@ const t = ui[lang];
             <ul class="space-y-2">
               <li class="flex items-start gap-2 text-sm">
                 <i class="hgi-stroke hgi-checkmark-circle-02 text-primary mt-0.5 flex-shrink-0"></i>
-                <span class="text-gray-700">{t['journey.pricing.tier1.feature1']}</span>
+                <span class="text-muted">{t['journey.pricing.tier1.feature1']}</span>
               </li>
               <li class="flex items-start gap-2 text-sm">
                 <i class="hgi-stroke hgi-checkmark-circle-02 text-primary mt-0.5 flex-shrink-0"></i>
-                <span class="text-gray-700">{t['journey.pricing.tier1.feature2']}</span>
+                <span class="text-muted">{t['journey.pricing.tier1.feature2']}</span>
               </li>
               <li class="flex items-start gap-2 text-sm">
                 <i class="hgi-stroke hgi-checkmark-circle-02 text-primary mt-0.5 flex-shrink-0"></i>
-                <span class="text-gray-700">{t['journey.pricing.tier1.feature3']}</span>
+                <span class="text-muted">{t['journey.pricing.tier1.feature3']}</span>
               </li>
             </ul>
           </div>
@@ -222,7 +222,7 @@ const t = ui[lang];
                 {t['journey.pricing.tier2.badge']}
               </span>
             </div>
-            <h4 class="font-display font-bold text-lg text-gray-800 mb-2 mt-2">
+            <h4 class="font-display font-bold text-lg text-text mb-2 mt-2">
               {t['journey.pricing.tier2.name']}
             </h4>
             <div class="mb-4">
@@ -233,22 +233,22 @@ const t = ui[lang];
             <ul class="space-y-2">
               <li class="flex items-start gap-2 text-sm">
                 <i class="hgi-stroke hgi-checkmark-circle-02 text-secondary mt-0.5 flex-shrink-0"></i>
-                <span class="text-gray-700">{t['journey.pricing.tier2.feature1']}</span>
+                <span class="text-muted">{t['journey.pricing.tier2.feature1']}</span>
               </li>
               <li class="flex items-start gap-2 text-sm">
                 <i class="hgi-stroke hgi-checkmark-circle-02 text-secondary mt-0.5 flex-shrink-0"></i>
-                <span class="text-gray-700">{t['journey.pricing.tier2.feature2']}</span>
+                <span class="text-muted">{t['journey.pricing.tier2.feature2']}</span>
               </li>
               <li class="flex items-start gap-2 text-sm">
                 <i class="hgi-stroke hgi-checkmark-circle-02 text-secondary mt-0.5 flex-shrink-0"></i>
-                <span class="text-gray-700">{t['journey.pricing.tier2.feature3']}</span>
+                <span class="text-muted">{t['journey.pricing.tier2.feature3']}</span>
               </li>
             </ul>
           </div>
 
           <!-- Pricing Card 3: Enterprise Acceleration -->
           <div class="relative bg-gradient-to-br from-accent1/25 to-accent2/20 border-2 border-accent1/30 rounded-xl p-6 hover:-translate-y-2 hover:shadow-2xl hover:border-accent1/50 transition-all duration-300">
-            <h4 class="font-display font-bold text-lg text-gray-800 mb-2">
+            <h4 class="font-display font-bold text-lg text-text mb-2">
               {t['journey.pricing.tier3.name']}
             </h4>
             <div class="mb-4">
@@ -259,15 +259,15 @@ const t = ui[lang];
             <ul class="space-y-2">
               <li class="flex items-start gap-2 text-sm">
                 <i class="hgi-stroke hgi-checkmark-circle-02 text-accent1 mt-0.5 flex-shrink-0"></i>
-                <span class="text-gray-700">{t['journey.pricing.tier3.feature1']}</span>
+                <span class="text-muted">{t['journey.pricing.tier3.feature1']}</span>
               </li>
               <li class="flex items-start gap-2 text-sm">
                 <i class="hgi-stroke hgi-checkmark-circle-02 text-accent1 mt-0.5 flex-shrink-0"></i>
-                <span class="text-gray-700">{t['journey.pricing.tier3.feature2']}</span>
+                <span class="text-muted">{t['journey.pricing.tier3.feature2']}</span>
               </li>
               <li class="flex items-start gap-2 text-sm">
                 <i class="hgi-stroke hgi-checkmark-circle-02 text-accent1 mt-0.5 flex-shrink-0"></i>
-                <span class="text-gray-700">{t['journey.pricing.tier3.feature3']}</span>
+                <span class="text-muted">{t['journey.pricing.tier3.feature3']}</span>
               </li>
             </ul>
           </div>
@@ -327,7 +327,7 @@ const t = ui[lang];
           }, { threshold: 0.5 }).observe($el);
         "
       >
-        <h4 class="font-display font-bold text-xl text-gray-800 mb-5 text-center">
+        <h4 class="font-display font-bold text-xl text-text mb-5 text-center">
           {t['journey.impact.title']}
         </h4>
 
@@ -340,7 +340,7 @@ const t = ui[lang];
             <span x-text="costReduction" class="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">0</span>
             <span class="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">%</span>
           </div>
-          <p class="text-sm text-gray-600 mt-1">{t['journey.impact.metric1Label']}</p>
+          <p class="text-sm text-muted mt-1">{t['journey.impact.metric1Label']}</p>
         </div>
 
         <!-- Metric 2: Time Saved -->
@@ -352,7 +352,7 @@ const t = ui[lang];
             <span x-text="timeSaved" class="text-3xl font-bold bg-gradient-to-r from-secondary to-accent1 bg-clip-text text-transparent">0</span>
             <span class="text-3xl font-bold bg-gradient-to-r from-secondary to-accent1 bg-clip-text text-transparent">h</span>
           </div>
-          <p class="text-sm text-gray-600 mt-1">{t['journey.impact.metric2Label']}</p>
+          <p class="text-sm text-muted mt-1">{t['journey.impact.metric2Label']}</p>
         </div>
 
         <!-- Metric 3: Sales Growth -->
@@ -365,7 +365,7 @@ const t = ui[lang];
             <span x-text="salesGrowth" class="text-3xl font-bold bg-gradient-to-r from-accent1 to-accent2 bg-clip-text text-transparent">0</span>
             <span class="text-3xl font-bold bg-gradient-to-r from-accent1 to-accent2 bg-clip-text text-transparent">%</span>
           </div>
-          <p class="text-sm text-gray-600 mt-1">{t['journey.impact.metric3Label']}</p>
+          <p class="text-sm text-muted mt-1">{t['journey.impact.metric3Label']}</p>
         </div>
       </div>
 
@@ -375,7 +375,7 @@ const t = ui[lang];
 
       <!-- Row 3 - Left: Trust Badges (1/3) -->
       <div class="md:col-span-1 bg-white rounded-xl p-6 md:p-8 shadow-xl shadow-secondary/20 border border-white/30 hover:shadow-2xl hover:shadow-secondary/30 hover:scale-[1.02] hover:bg-white/95 transition-all duration-300">
-        <h4 class="font-display font-bold text-lg text-gray-800 mb-6 text-center">
+        <h4 class="font-display font-bold text-lg text-text mb-6 text-center">
           {t['journey.trust.title']}
         </h4>
 
@@ -385,7 +385,7 @@ const t = ui[lang];
             <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center flex-shrink-0">
               <i class="hgi-stroke hgi-shield-01 text-white text-xl"></i>
             </div>
-            <span class="font-semibold text-gray-800 text-sm">{t['journey.trust.gdprLabel']}</span>
+            <span class="font-semibold text-text text-sm">{t['journey.trust.gdprLabel']}</span>
           </div>
 
           <!-- SOC2 Badge -->
@@ -393,7 +393,7 @@ const t = ui[lang];
             <div class="w-10 h-10 bg-gradient-to-br from-secondary to-accent1 rounded-lg flex items-center justify-center flex-shrink-0">
               <i class="hgi-stroke hgi-shield-01 text-white text-xl"></i>
             </div>
-            <span class="font-semibold text-gray-800 text-sm">{t['journey.trust.soc2Label']}</span>
+            <span class="font-semibold text-text text-sm">{t['journey.trust.soc2Label']}</span>
           </div>
 
           <!-- ISO 27001 Badge -->
@@ -401,17 +401,17 @@ const t = ui[lang];
             <div class="w-10 h-10 bg-gradient-to-br from-accent1 to-accent2 rounded-lg flex items-center justify-center flex-shrink-0">
               <i class="hgi-stroke hgi-shield-01 text-white text-xl"></i>
             </div>
-            <span class="font-semibold text-gray-800 text-sm">{t['journey.trust.isoLabel']}</span>
+            <span class="font-semibold text-text text-sm">{t['journey.trust.isoLabel']}</span>
           </div>
         </div>
       </div>
 
       <!-- Row 3 - Right: Future-Proofing Grid (2/3) -->
       <div class="md:col-span-2 bg-white rounded-xl p-6 md:p-8 shadow-xl shadow-secondary/20 border border-white/30 hover:shadow-2xl hover:shadow-secondary/30 hover:scale-[1.02] hover:bg-white/95 transition-all duration-300">
-        <h4 class="font-display font-bold text-xl text-gray-800 mb-2">
+        <h4 class="font-display font-bold text-xl text-text mb-2">
           {t['journey.futureProof.title']}
         </h4>
-        <p class="text-gray-600 mb-6">
+        <p class="text-muted mb-6">
           {t['journey.futureProof.subtitle']}
         </p>
 
@@ -423,10 +423,10 @@ const t = ui[lang];
             <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center mb-3">
               <i class="hgi-stroke hgi-server-stack-01 text-white text-lg"></i>
             </div>
-            <h5 class="font-display font-bold text-gray-800 mb-2">
+            <h5 class="font-display font-bold text-text mb-2">
               {t['journey.futureProof.feature1Title']}
             </h5>
-            <p class="text-sm text-gray-600">
+            <p class="text-sm text-muted">
               {t['journey.futureProof.feature1Desc']}
             </p>
           </div>
@@ -436,10 +436,10 @@ const t = ui[lang];
             <div class="w-10 h-10 bg-gradient-to-br from-secondary to-accent1 rounded-lg flex items-center justify-center mb-3">
               <i class="hgi-stroke hgi-target-01 text-white text-lg"></i>
             </div>
-            <h5 class="font-display font-bold text-gray-800 mb-2">
+            <h5 class="font-display font-bold text-text mb-2">
               {t['journey.futureProof.feature2Title']}
             </h5>
-            <p class="text-sm text-gray-600">
+            <p class="text-sm text-muted">
               {t['journey.futureProof.feature2Desc']}
             </p>
           </div>
@@ -449,10 +449,10 @@ const t = ui[lang];
             <div class="w-10 h-10 bg-gradient-to-br from-accent1 to-accent2 rounded-lg flex items-center justify-center mb-3">
               <i class="hgi-stroke hgi-arrow-up-right-01 text-white text-lg"></i>
             </div>
-            <h5 class="font-display font-bold text-gray-800 mb-2">
+            <h5 class="font-display font-bold text-text mb-2">
               {t['journey.futureProof.feature3Title']}
             </h5>
-            <p class="text-sm text-gray-600">
+            <p class="text-sm text-muted">
               {t['journey.futureProof.feature3Desc']}
             </p>
           </div>
@@ -462,10 +462,10 @@ const t = ui[lang];
             <div class="w-10 h-10 bg-gradient-to-br from-accent2 to-primary rounded-lg flex items-center justify-center mb-3">
               <i class="hgi-stroke hgi-agreement-01 text-white text-lg"></i>
             </div>
-            <h5 class="font-display font-bold text-gray-800 mb-2">
+            <h5 class="font-display font-bold text-text mb-2">
               {t['journey.futureProof.feature4Title']}
             </h5>
-            <p class="text-sm text-gray-600">
+            <p class="text-sm text-muted">
               {t['journey.futureProof.feature4Desc']}
             </p>
           </div>

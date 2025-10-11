@@ -18,7 +18,7 @@ const t = ui[lang];
         <h1 class="text-4xl md:text-5xl font-heading font-bold mb-4">
           {t['terms.hero.title']}
         </h1>
-        <p class="text-lg text-gray-600">
+        <p class="text-lg text-muted">
           {t['terms.hero.subtitle']}
         </p>
       </div>
@@ -29,7 +29,7 @@ const t = ui[lang];
   <section class="py-20">
     <div class="container mx-auto px-6">
       <div class="max-w-4xl mx-auto prose prose-lg">
-        <p class="lead text-xl text-gray-700 mb-12">
+        <p class="lead text-xl text-muted mb-12">
           {t['terms.intro.text']}
         </p>
 
@@ -121,12 +121,12 @@ const t = ui[lang];
     max-width: 100%;
   }
   .prose p {
-    @apply text-gray-700 leading-relaxed mb-4;
+    @apply text-muted leading-relaxed mb-4;
   }
   .prose ul {
     @apply mb-6;
   }
   .prose li {
-    @apply text-gray-700;
+    @apply text-muted;
   }
 </style>
