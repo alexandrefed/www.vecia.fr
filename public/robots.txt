@@ -1,0 +1,12 @@
+# Vecia Website - robots.txt
+# Last updated: 2025-01-15
+
+User-agent: *
+Allow: /
+
+# Disallow test pages and internal tools
+Disallow: /test-*
+Disallow: /.playwright-mcp/
+
+# Sitemap
+Sitemap: https://vecia.com/sitemap-index.xml

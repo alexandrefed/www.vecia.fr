@@ -1,0 +1,25 @@
+{
+  "defaults": {
+    "standard": "WCAG2AA",
+    "level": "error",
+    "timeout": 30000,
+    "wait": 1000,
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+    },
+    "runners": ["axe", "htmlcs"],
+    "hideElements": ".cookie-banner"
+  },
+  "urls": [
+    "http://localhost:4321/",
+    "http://localhost:4321/en/",
+    {
+      "url": "http://localhost:4321/blog/",
+      "screenCapture": "./pa11y-reports/blog-homepage.png"
+    },
+    {
+      "url": "http://localhost:4321/en/blog/",
+      "screenCapture": "./pa11y-reports/blog-homepage-en.png"
+    }
+  ]
+}

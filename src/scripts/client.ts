@@ -17,6 +17,50 @@ import { detectCurrency, updatePriceElements } from './pricing';
 // Register Alpine.js plugins
 Alpine.plugin(intersect);
 
+// Input sanitization helper
+const sanitizeInput = (input: string): string => {
+  return input
+    .trim()
+    .replace(/[<>]/g, '') // Remove HTML brackets
+    .replace(/['"]/g, '') // Remove quotes
+    .slice(0, 255); // Max length 255 chars
+};
+
+// Email validation (RFC 5322 simplified)
+const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(email) && email.length <= 255;
+};
+
+// Rate limiting helper (max 3 submissions per hour)
+const checkRateLimit = (key: string): { allowed: boolean; message: string } => {
+  const now = Date.now();
+  const hourAgo = now - (60 * 60 * 1000);
+
+  // Get submission history
+  const historyJson = localStorage.getItem(key);
+  let history: number[] = historyJson ? JSON.parse(historyJson) : [];
+
+  // Filter out submissions older than 1 hour
+  history = history.filter(timestamp => timestamp > hourAgo);
+
+  // Check if limit exceeded
+  if (history.length >= 3) {
+    const oldestSubmission = Math.min(...history);
+    const minutesUntilReset = Math.ceil((oldestSubmission + (60 * 60 * 1000) - now) / (60 * 1000));
+    return {
+      allowed: false,
+      message: `Rate limit exceeded. Please try again in ${minutesUntilReset} minute${minutesUntilReset > 1 ? 's' : ''}.`
+    };
+  }
+
+  // Add current submission to history
+  history.push(now);
+  localStorage.setItem(key, JSON.stringify(history));
+
+  return { allowed: true, message: '' };
+};
+
 // Register Alpine.js Lead Capture Form component
 Alpine.data('leadCaptureForm', () => ({
   formData: {
@@ -40,11 +84,46 @@ Alpine.data('leadCaptureForm', () => ({
       // Get language from current page
       const lang = window.location.pathname.startsWith('/en') ? 'en' : 'fr';
 
-      // Prepare data for submission
+      // 🔒 Security: Rate limiting check
+      const rateLimit = checkRateLimit('vecia-lead-submissions');
+      if (!rateLimit.allowed) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? `Limite atteinte. Réessayez dans ${rateLimit.message.match(/\d+/)?.[0]} minute(s).`
+          : rateLimit.message;
+        this.loading = false;
+        return;
+      }
+
+      // 🔒 Security: Input sanitization
+      const sanitizedName = sanitizeInput(this.formData.name);
+      const sanitizedEmail = sanitizeInput(this.formData.email);
+
+      // 🔒 Security: Email validation
+      if (!isValidEmail(sanitizedEmail)) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? 'Veuillez saisir une adresse email valide.'
+          : 'Please enter a valid email address.';
+        this.loading = false;
+        return;
+      }
+
+      // 🔒 Security: Name length validation
+      if (sanitizedName.length < 2 || sanitizedName.length > 100) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? 'Le nom doit contenir entre 2 et 100 caractères.'
+          : 'Name must be between 2 and 100 characters.';
+        this.loading = false;
+        return;
+      }
+
+      // Prepare data for submission (using sanitized inputs)
       const submissionData = {
         timestamp: new Date().toISOString(),
-        name: this.formData.name,
-        email: this.formData.email,
+        name: sanitizedName, // 🔒 Sanitized
+        email: sanitizedEmail, // 🔒 Sanitized
         companySize: this.formData.companySize,
         language: lang,
         source: document.referrer || 'Direct',

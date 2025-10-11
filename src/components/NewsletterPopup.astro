@@ -87,6 +87,37 @@
     handleSubmit() {
       if (!this.email) return;
 
+      // 🔒 Security: Email validation (RFC 5322 simplified)
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(this.email) || this.email.length > 255) {
+        alert('Veuillez saisir une adresse email valide.');
+        return;
+      }
+
+      // 🔒 Security: Rate limiting (max 3 submissions per hour)
+      const now = Date.now();
+      const hourAgo = now - (60 * 60 * 1000);
+      const historyJson = localStorage.getItem('vecia-newsletter-submissions');
+      let history = historyJson ? JSON.parse(historyJson) : [];
+
+      history = history.filter(timestamp => timestamp > hourAgo);
+
+      if (history.length >= 3) {
+        const oldestSubmission = Math.min(...history);
+        const minutesUntilReset = Math.ceil((oldestSubmission + (60 * 60 * 1000) - now) / (60 * 1000));
+        alert(`Limite atteinte. Réessayez dans ${minutesUntilReset} minute(s).`);
+        return;
+      }
+
+      history.push(now);
+      localStorage.setItem('vecia-newsletter-submissions', JSON.stringify(history));
+
+      // 🔒 Security: Input sanitization
+      const sanitizedEmail = this.email
+        .trim()
+        .replace(/[<>'"]/g, '')
+        .slice(0, 255);
+
       // Track newsletter signup attempt
       if (typeof window.gtag !== 'undefined') {
         window.gtag('event', 'newsletter_signup_attempt', {
@@ -97,7 +128,7 @@
       }
 
       // TODO: Integrate with your email service (Mailchimp, ConvertKit, etc.)
-      console.log('[Newsletter] Signup:', this.email);
+      console.log('[Newsletter] Signup:', sanitizedEmail);
 
       // Show success state
       this.submitted = true;

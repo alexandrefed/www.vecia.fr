@@ -1,9 +1,14 @@
 #!/usr/bin/env node
 
 /**
- * LinkedIn Post Generator
+ * LinkedIn Post Generator for Vecia Blog
  *
  * Generates LinkedIn-ready posts from blog article metadata
+ * Following 2025 best practices:
+ * - Well-spaced text with visual breaks
+ * - 3-5 targeted hashtags (optimal for LinkedIn algorithm)
+ * - Manual posting recommended (authenticity > automation)
+ * - Engagement tips for maximum reach
  *
  * Usage:
  *   npm run linkedin:generate <article-slug>
@@ -11,7 +16,7 @@
  *
  * Reads frontmatter fields:
  *   - linkedin.caption: Main post text
- *   - linkedin.hashtags: Array of hashtags
+ *   - linkedin.hashtags: Array of hashtags (max 5 recommended)
  *   - title: Article title
  *   - description: Article description
  *
@@ -171,16 +176,18 @@ function generateLinkedInPost(frontmatter, articleUrl) {
   // 2. Add call-to-action
   post += `\n\n👉 Lire l'article complet : ${articleUrl}`;
 
-  // 3. Add hashtags
+  // 3. Add hashtags (max 5 for 2025 LinkedIn best practices)
   if (linkedin && linkedin.hashtags && linkedin.hashtags.length > 0) {
     post += `\n\n`;
-    const hashtags = linkedin.hashtags
+    // Limit to 5 hashtags (2025 best practice)
+    const hashtagsToUse = linkedin.hashtags.slice(0, 5);
+    const hashtags = hashtagsToUse
       .map(tag => tag.startsWith('#') ? tag : `#${tag}`)
       .join(' ');
     post += hashtags;
   } else {
-    // Default hashtags
-    post += `\n\n#Automatisation #NoCode #ProductivitéEntreprise`;
+    // Default hashtags (3-5 is optimal for LinkedIn algorithm)
+    post += `\n\n#Automatisation #IA #ProductivitéEntreprise`;
   }
 
   return post;
@@ -245,8 +252,18 @@ function main() {
   console.log(linkedInPost);
   console.log(`${colors.cyan}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${colors.reset}\n`);
 
-  console.log(`${colors.bright}📋 Copy the text above and paste it to LinkedIn${colors.reset}`);
-  console.log(`${colors.yellow}💡 Tip: You can also customize the linkedin.caption and linkedin.hashtags fields in the article frontmatter${colors.reset}\n`);
+  console.log(`${colors.bright}📋 Copy the text above and paste it to LinkedIn${colors.reset}\n`);
+
+  // 2025 LinkedIn Best Practices
+  console.log(`${colors.bright}${colors.blue}🚀 2025 LinkedIn Best Practices:${colors.reset}`);
+  console.log(`${colors.blue}  • First hour is critical${colors.reset} - Post when your audience is most active`);
+  console.log(`${colors.blue}  • Respond to comments within 60 minutes${colors.reset} - Signals active engagement to algorithm`);
+  console.log(`${colors.blue}  • Ask a question${colors.reset} - Invite responses to boost interaction`);
+  console.log(`${colors.blue}  • Tag relevant people strategically${colors.reset} - Not spammy, adds value`);
+  console.log(`${colors.blue}  • 3-5 hashtags is optimal${colors.reset} - More hurts discoverability\n`);
+
+  console.log(`${colors.yellow}💡 Customization Tip:${colors.reset}`);
+  console.log(`${colors.yellow}  Edit linkedin.caption and linkedin.hashtags in the article frontmatter for tailored posts${colors.reset}\n`);
 
   // Optionally write to clipboard (requires 'clipboardy' package)
   // For now, just print to console

@@ -1,0 +1,85 @@
+---
+/**
+ * StructuredData.astro - Reusable JSON-LD Structured Data Component
+ *
+ * 2025 Best Practices:
+ * - JSON-LD format (Google's recommended approach)
+ * - Only add schema for content visible on the page
+ * - Use specific schema types (Organization, WebSite, Article, BreadcrumbList)
+ * - Validates against schema.org standards
+ *
+ * Usage:
+ * <StructuredData type="website" data={websiteData} />
+ * <StructuredData type="article" data={articleData} />
+ */
+
+interface Props {
+  type: 'website' | 'article' | 'breadcrumb' | 'custom';
+  data?: any;  // Flexible data object for custom schemas
+}
+
+const { type, data } = Astro.props;
+
+// Schema templates based on type
+const schemas: Record<string, any> = {
+  website: {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": data?.name || "Vecia",
+    "url": data?.url || "https://vecia.com",
+    "description": data?.description || "AI Automation Agency - Save 20+ Hours per Week",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": data?.searchUrl || "https://vecia.com/blog?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  },
+
+  article: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": data?.headline,
+    "description": data?.description,
+    "image": data?.image || "https://vecia.com/vecia_logo_long_contour.png",
+    "datePublished": data?.datePublished,
+    "dateModified": data?.dateModified || data?.datePublished,
+    "author": {
+      "@type": "Person",
+      "name": data?.author || "Vecia Team",
+      "url": "https://vecia.com/about"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Vecia",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://vecia.com/vecia_logo_long_contour.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": data?.url
+    }
+  },
+
+  breadcrumb: {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": data?.items?.map((item: any, index: number) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": item.name,
+      "item": item.url
+    })) || []
+  },
+
+  custom: data  // Allow custom schema objects
+};
+
+const schemaObject = schemas[type];
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schemaObject)} />

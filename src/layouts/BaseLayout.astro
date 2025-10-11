@@ -13,6 +13,10 @@
 
 import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
+import GoogleAnalytics from '../components/GoogleAnalytics.astro';
+import CookieConsent from '../components/CookieConsent.astro';
+import NewsletterPopup from '../components/NewsletterPopup.astro';
+import StructuredData from '../components/seo/StructuredData.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -73,6 +77,9 @@ const structuredData = {
     <link rel="alternate" hreflang="en" href={enURL}>
     <link rel="alternate" hreflang="x-default" href={frURL}>
 
+    <!-- Sitemap (2025 SEO Best Practice) -->
+    <link rel="sitemap" href="/sitemap-index.xml">
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content={canonicalURL}>
@@ -105,8 +112,22 @@ const structuredData = {
       import '../scripts/client.ts';
     </script>
 
-    <!-- JSON-LD Structured Data -->
+    <!-- JSON-LD Structured Data: Organization -->
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+    <!-- JSON-LD Structured Data: WebSite with SearchAction -->
+    <StructuredData
+      type="website"
+      data={{
+        name: "Vecia",
+        url: String(Astro.site || 'https://vecia.com'),
+        description: description,
+        searchUrl: "https://vecia.com/blog?q={search_term_string}"
+      }}
+    />
+
+    <!-- Google Analytics 4 with Consent Mode V2 -->
+    <GoogleAnalytics />
   </head>
 
   <body class="font-body text-text bg-background">
@@ -120,5 +141,13 @@ const structuredData = {
 
     <!-- Footer with legal links and social -->
     <Footer lang={lang} />
+
+    <!-- Cookie Consent Banner (GDPR Compliance) -->
+    <CookieConsent />
+
+    <!-- Newsletter Popup (Skip on contact page) -->
+    {Astro.url.pathname !== '/contact' && Astro.url.pathname !== '/en/contact' && (
+      <NewsletterPopup />
+    )}
   </body>
 </html>
