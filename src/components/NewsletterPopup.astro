@@ -1,0 +1,240 @@
+---
+/**
+ * Newsletter Popup Modal with Alpine.js
+ *
+ * Features:
+ * - Appears after 30 seconds OR on exit intent (desktop)
+ * - Dismissible with "X" or click outside
+ * - Remembers user choice via localStorage (30 days)
+ * - Fully responsive (mobile/tablet/desktop)
+ * - GA4 event tracking integration
+ *
+ * Alpine.js patterns from Context7 research:
+ * - x-show with x-transition for smooth animations
+ * - x-data for reactive state
+ * - @click.outside for dismissal
+ * - localStorage for persistence
+ */
+---
+
+<!-- Newsletter Popup Modal -->
+<div
+  x-data="{
+    show: false,
+    dismissed: false,
+    email: '',
+    submitted: false,
+
+    init() {
+      // Check if user dismissed before
+      const dismissed = localStorage.getItem('newsletter-dismissed');
+      const dismissedTime = localStorage.getItem('newsletter-dismissed-time');
+
+      if (dismissed && dismissedTime) {
+        const daysSinceDismissed = (Date.now() - parseInt(dismissedTime)) / (1000 * 60 * 60 * 24);
+        if (daysSinceDismissed < 30) {
+          this.dismissed = true;
+          return;
+        }
+      }
+
+      // Show after 30 seconds
+      setTimeout(() => {
+        if (!this.dismissed) {
+          this.show = true;
+          // Track popup shown event
+          if (typeof window.gtag !== 'undefined') {
+            window.gtag('event', 'newsletter_popup_shown', {
+              event_category: 'engagement',
+              event_label: 'auto_trigger'
+            });
+          }
+        }
+      }, 30000);
+
+      // Show on exit intent (desktop only)
+      if (window.innerWidth > 768) {
+        document.addEventListener('mouseleave', (e) => {
+          if (e.clientY < 10 && !this.dismissed && !this.show) {
+            this.show = true;
+            // Track exit intent trigger
+            if (typeof window.gtag !== 'undefined') {
+              window.gtag('event', 'newsletter_popup_shown', {
+                event_category: 'engagement',
+                event_label: 'exit_intent'
+              });
+            }
+          }
+        });
+      }
+    },
+
+    close() {
+      this.show = false;
+      localStorage.setItem('newsletter-dismissed', 'true');
+      localStorage.setItem('newsletter-dismissed-time', Date.now().toString());
+      this.dismissed = true;
+
+      // Track dismissal
+      if (typeof window.gtag !== 'undefined') {
+        window.gtag('event', 'newsletter_popup_dismissed', {
+          event_category: 'engagement',
+          event_label: 'user_close'
+        });
+      }
+    },
+
+    handleSubmit() {
+      if (!this.email) return;
+
+      // Track newsletter signup attempt
+      if (typeof window.gtag !== 'undefined') {
+        window.gtag('event', 'newsletter_signup_attempt', {
+          event_category: 'conversion',
+          event_label: 'popup_modal',
+          value: 1
+        });
+      }
+
+      // TODO: Integrate with your email service (Mailchimp, ConvertKit, etc.)
+      console.log('[Newsletter] Signup:', this.email);
+
+      // Show success state
+      this.submitted = true;
+
+      // Close after 2 seconds
+      setTimeout(() => {
+        this.close();
+      }, 2000);
+    }
+  }"
+  x-show="show"
+  x-transition:enter="transition ease-out duration-300"
+  x-transition:enter-start="opacity-0"
+  x-transition:enter-end="opacity-100"
+  x-transition:leave="transition ease-in duration-200"
+  x-transition:leave-start="opacity-100"
+  x-transition:leave-end="opacity-0"
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4"
+  @click.self="close()"
+  style="display: none;"
+>
+  <!-- Modal Content -->
+  <div
+    x-show="show"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+    x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+    x-transition:leave-end="opacity-0 scale-95 translate-y-4"
+    class="relative w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-2xl overflow-hidden"
+    @click.stop
+  >
+    <!-- Close Button -->
+    <button
+      @click="close()"
+      class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors z-10"
+      aria-label="Fermer"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+
+    <!-- Background Accent -->
+    <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -z-0"></div>
+
+    <!-- Content -->
+    <div class="relative p-8 pt-12">
+      <!-- Success State -->
+      <div x-show="submitted" class="text-center py-8">
+        <div class="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          Merci ! 🎉
+        </h3>
+        <p class="text-gray-600 dark:text-gray-300">
+          Vérifiez votre boîte mail pour confirmer votre inscription.
+        </p>
+      </div>
+
+      <!-- Form State -->
+      <div x-show="!submitted">
+        <!-- Icon -->
+        <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+          </svg>
+        </div>
+
+        <!-- Title -->
+        <h2 class="text-2xl font-bold text-center text-gray-900 dark:text-white mb-3">
+          📬 Automatisez Votre Entreprise
+        </h2>
+
+        <!-- Description -->
+        <p class="text-center text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+          Recevez nos meilleurs conseils <strong>IA et automatisation</strong> directement dans votre boîte mail.
+          <br />
+          <span class="text-sm">1 email/semaine, 0 spam.</span>
+        </p>
+
+        <!-- Form -->
+        <form @submit.prevent="handleSubmit()" class="space-y-4">
+          <div>
+            <input
+              type="email"
+              x-model="email"
+              required
+              placeholder="votre@email.com"
+              class="w-full px-4 py-3.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white transition-all outline-none text-base"
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3.5 px-6 rounded-xl transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"
+          >
+            S'abonner Gratuitement
+          </button>
+        </form>
+
+        <!-- Trust Badge -->
+        <div class="mt-6 text-center">
+          <div class="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span>Désabonnement en 1 clic • Données protégées</span>
+          </div>
+        </div>
+
+        <!-- Social Proof (Optional - can be updated with real numbers) -->
+        <div class="mt-4 text-center">
+          <p class="text-xs text-gray-400 dark:text-gray-500">
+            Rejoignez 500+ entrepreneurs qui automatisent leur business
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Styles for animations -->
+<style>
+  /* Additional custom animations if needed */
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(1rem);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+</style>

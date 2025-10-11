@@ -1,0 +1,160 @@
+---
+/**
+ * FREE Cookie Consent Banner
+ *
+ * 100% FREE solution for GDPR/ePrivacy compliance
+ * Google Consent Mode V2 native support (mandatory since March 2024)
+ * Custom implementation - no external dependencies
+ *
+ * Based on 2025 best practices for cookie consent
+ */
+---
+
+<!-- Cookie Consent Banner (Custom FREE Solution) -->
+<div
+  id="cookie-consent-banner"
+  class="fixed bottom-0 left-0 right-0 bg-slate-900 text-white shadow-2xl z-50 hidden"
+  style="display: none;"
+>
+  <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+      <!-- Message -->
+      <div class="flex-1">
+        <h3 class="text-lg font-semibold mb-2">🍪 Nous utilisons des cookies</h3>
+        <p class="text-sm text-gray-300">
+          Nous utilisons des cookies pour analyser le trafic de notre site et améliorer votre
+          expérience. Vos données sont anonymisées et ne sont jamais vendues.
+          <a href="/privacy" class="underline hover:text-blue-400">En savoir plus</a>
+        </p>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex gap-3 flex-shrink-0">
+        <button
+          id="cookie-reject"
+          class="px-6 py-2.5 bg-slate-700 hover:bg-slate-600 rounded-lg font-semibold transition-colors"
+        >
+          Refuser
+        </button>
+        <button
+          id="cookie-accept"
+          class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors"
+        >
+          Accepter
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  // Cookie Consent Logic
+  (function () {
+    const CONSENT_COOKIE_NAME = 'vecia_cookie_consent';
+    const CONSENT_EXPIRY_DAYS = 365;
+
+    // Check if user has already made a choice
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+      return null;
+    }
+
+    function setCookie(name, value, days) {
+      const d = new Date();
+      d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+      const expires = 'expires=' + d.toUTCString();
+      document.cookie = name + '=' + value + ';' + expires + ';path=/;SameSite=Lax';
+    }
+
+    function updateConsent(analytics_granted) {
+      // Update Google Consent Mode
+      if (typeof window.gtag !== 'undefined') {
+        window.gtag('consent', 'update', {
+          analytics_storage: analytics_granted ? 'granted' : 'denied',
+          ad_storage: 'denied', // We don't use ads
+        });
+
+        // Track consent event if analytics granted
+        if (analytics_granted) {
+          window.gtag('event', 'cookie_consent_granted', {
+            event_category: 'engagement',
+            event_label: 'analytics_accepted',
+          });
+        }
+      }
+
+      // Save choice
+      setCookie(CONSENT_COOKIE_NAME, analytics_granted ? 'granted' : 'denied', CONSENT_EXPIRY_DAYS);
+
+      // Hide banner
+      const banner = document.getElementById('cookie-consent-banner');
+      if (banner) {
+        banner.style.display = 'none';
+      }
+    }
+
+    // Check existing consent
+    const existingConsent = getCookie(CONSENT_COOKIE_NAME);
+
+    if (!existingConsent) {
+      // Show banner if no consent yet
+      const banner = document.getElementById('cookie-consent-banner');
+      if (banner) {
+        banner.style.display = 'block';
+        banner.classList.remove('hidden');
+      }
+
+      // Add event listeners
+      const acceptBtn = document.getElementById('cookie-accept');
+      const rejectBtn = document.getElementById('cookie-reject');
+
+      if (acceptBtn) {
+        acceptBtn.addEventListener('click', function () {
+          updateConsent(true);
+        });
+      }
+
+      if (rejectBtn) {
+        rejectBtn.addEventListener('click', function () {
+          updateConsent(false);
+        });
+      }
+    } else {
+      // User has already made a choice, update consent mode
+      if (typeof window.gtag !== 'undefined') {
+        window.gtag('consent', 'update', {
+          analytics_storage: existingConsent === 'granted' ? 'granted' : 'denied',
+          ad_storage: 'denied',
+        });
+      }
+    }
+  })();
+</script>
+
+<!-- Styles -->
+<style is:global>
+  #cookie-consent-banner {
+    animation: slideUp 0.4s ease-out;
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    #cookie-consent-banner {
+      background-color: #0f172a;
+      border-top: 1px solid #334155;
+    }
+  }
+</style>
