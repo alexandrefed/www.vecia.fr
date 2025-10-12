@@ -6,8 +6,8 @@
  */
 
 import type { APIRoute } from 'astro';
-import { supabase } from '../../../lib/supabase';
-import type { Comment } from '../../../lib/supabase';
+import { supabaseServer as supabase } from '../../../lib/supabase-server';
+import type { Comment } from '../../../lib/supabase-server';
 
 // Disable prerendering for dynamic API route
 export const prerender = false;

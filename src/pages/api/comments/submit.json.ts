@@ -12,7 +12,7 @@
  */
 
 import type { APIRoute } from 'astro';
-import { supabase } from '../../../lib/supabase';
+import { supabaseServer as supabase } from '../../../lib/supabase-server';
 import { profanity } from '@2toad/profanity';
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
 
