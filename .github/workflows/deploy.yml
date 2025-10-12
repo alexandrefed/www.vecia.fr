@@ -39,6 +39,9 @@ jobs:
           PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
           PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
 
+      - name: Install production dependencies
+        run: npm ci --omit=dev
+
       - name: Deploy to VPS via SSH
         uses: appleboy/ssh-action@v1
         with:
@@ -58,7 +61,7 @@ jobs:
             sudo chown -R ${{ secrets.VPS_USERNAME }}:www-data ${{ secrets.VPS_TARGET_DIR }}
             echo "✅ Directory prepared"
 
-      - name: Transfer files to VPS
+      - name: Transfer dist files to VPS
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -70,6 +73,28 @@ jobs:
           strip_components: 1
           overwrite: true
 
+      - name: Transfer node_modules to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          source: "node_modules/"
+          target: ${{ secrets.VPS_TARGET_DIR }}
+          overwrite: true
+
+      - name: Transfer package files to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          source: "package.json,package-lock.json"
+          target: ${{ secrets.VPS_TARGET_DIR }}
+          overwrite: true
+
       - name: Setup and start Node.js server
         uses: appleboy/ssh-action@v1
         with:
@@ -77,14 +102,26 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
+          envs: VPS_TARGET_DIR,PUBLIC_SUPABASE_URL,PUBLIC_SUPABASE_ANON_KEY
           script: |
+            # Export environment variables (passed via envs parameter)
+            export VPS_TARGET_DIR="${{ secrets.VPS_TARGET_DIR }}"
+            export PUBLIC_SUPABASE_URL="${{ secrets.PUBLIC_SUPABASE_URL }}"
+            export PUBLIC_SUPABASE_ANON_KEY="${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}"
+
+            # Verify directory exists
+            if [ ! -d "$VPS_TARGET_DIR" ]; then
+              echo "❌ Error: VPS_TARGET_DIR does not exist: $VPS_TARGET_DIR"
+              exit 1
+            fi
+
             # Set proper permissions
-            sudo chown -R www-data:www-data ${{ secrets.VPS_TARGET_DIR }}
-            sudo find ${{ secrets.VPS_TARGET_DIR }} -type d -exec chmod 755 {} \;
-            sudo find ${{ secrets.VPS_TARGET_DIR }} -type f -exec chmod 644 {} \;
+            sudo chown -R www-data:www-data "$VPS_TARGET_DIR"
+            sudo find "$VPS_TARGET_DIR" -type d -exec chmod 755 {} \;
+            sudo find "$VPS_TARGET_DIR" -type f -exec chmod 644 {} \;
 
             # Make server entry point executable
-            sudo chmod +x ${{ secrets.VPS_TARGET_DIR }}/server/entry.mjs
+            sudo chmod +x "$VPS_TARGET_DIR/server/entry.mjs"
 
             # Install PM2 if not already installed
             if ! command -v pm2 &> /dev/null; then
@@ -92,43 +129,123 @@ jobs:
               echo "✅ PM2 installed"
             fi
 
-            # Create ecosystem config for PM2
-            cat > ${{ secrets.VPS_TARGET_DIR }}/ecosystem.config.cjs << 'EOF'
-            module.exports = {
-              apps: [{
-                name: 'vecia-website',
-                script: './server/entry.mjs',
-                cwd: '${{ secrets.VPS_TARGET_DIR }}',
-                instances: 1,
-                exec_mode: 'cluster',
-                env: {
-                  HOST: '127.0.0.1',
-                  PORT: 4321,
-                  NODE_ENV: 'production',
-                  PUBLIC_SUPABASE_URL: '${{ secrets.PUBLIC_SUPABASE_URL }}',
-                  PUBLIC_SUPABASE_ANON_KEY: '${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}'
-                }
-              }]
-            };
-            EOF
+            # Navigate to deployment directory
+            cd "$VPS_TARGET_DIR"
 
-            # Restart the Node.js application with PM2
-            cd ${{ secrets.VPS_TARGET_DIR }}
+            # Verify server entry point exists
+            if [ ! -f "./server/entry.mjs" ]; then
+              echo "❌ Error: server/entry.mjs not found in $VPS_TARGET_DIR"
+              exit 1
+            fi
+
+            # Create ecosystem config with actual environment variables
+            cat > ecosystem.config.cjs << EOF
+module.exports = {
+  apps: [{
+    name: 'vecia-website',
+    script: './server/entry.mjs',
+    cwd: '${VPS_TARGET_DIR}',
+    instances: 1,
+    exec_mode: 'cluster',
+    env: {
+      HOST: '127.0.0.1',
+      PORT: 4321,
+      NODE_ENV: 'production',
+      PUBLIC_SUPABASE_URL: '${PUBLIC_SUPABASE_URL}',
+      PUBLIC_SUPABASE_ANON_KEY: '${PUBLIC_SUPABASE_ANON_KEY}'
+    },
+    error_file: '/var/log/vecia/pm2-error.log',
+    out_file: '/var/log/vecia/pm2-out.log',
+    time: true,
+    autorestart: true,
+    max_restarts: 10,
+    min_uptime: '10s'
+  }]
+};
+EOF
+
+            echo "✅ Ecosystem config created"
+
+            # Stop existing process (ignore errors if not running)
             pm2 delete vecia-website 2>/dev/null || true
+
+            # Start with ecosystem config
             pm2 start ecosystem.config.cjs
+
+            # Wait for server to initialize
+            echo "⏳ Waiting for server to start..."
+            sleep 5
+
+            # Verify server is running
+            if pm2 status | grep -q "vecia-website.*online"; then
+              echo "✅ PM2 reports service is online"
+            else
+              echo "❌ PM2 reports service is not online"
+              pm2 logs vecia-website --lines 50
+              exit 1
+            fi
+
+            # Test server responds locally
+            if curl -f -s http://127.0.0.1:4321/api/health.json > /dev/null; then
+              echo "✅ Health check passed: Node.js server is responding"
+            else
+              echo "❌ Health check failed: Node.js server is not responding"
+              pm2 logs vecia-website --lines 50
+              exit 1
+            fi
+
+            # Save PM2 process list
             pm2 save
 
-            # Ensure PM2 starts on system boot
-            sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u ${{ secrets.VPS_USERNAME }} --hp /home/${{ secrets.VPS_USERNAME }} || true
+            # Ensure PM2 starts on system boot (idempotent)
+            sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u ${{ secrets.VPS_USERNAME }} --hp /home/${{ secrets.VPS_USERNAME }} 2>/dev/null || true
 
             # Test and reload nginx
             sudo nginx -t && sudo systemctl reload nginx
 
-            # Display deployment info
+            # Display deployment status
+            echo ""
+            echo "=========================================="
             echo "✅ Deployment successful!"
-            echo "📁 Files deployed to: ${{ secrets.VPS_TARGET_DIR }}"
-            echo "🚀 Node.js server running on port 4321"
-            echo "🌐 Website available at: https://vecia.fr"
+            echo "=========================================="
+            echo "📁 Files deployed to: $VPS_TARGET_DIR"
+            echo "🚀 Node.js server: http://127.0.0.1:4321"
+            echo "🌐 Public website: https://vecia.com"
             echo "📅 Deployed at: $(date)"
-            echo "📊 File count: $(find ${{ secrets.VPS_TARGET_DIR }} -type f | wc -l) files"
+            echo "📊 File count: $(find $VPS_TARGET_DIR -type f | wc -l) files"
+            echo ""
+            echo "PM2 Status:"
+            pm2 status
+
+      - name: Verify Deployment
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            # Test Node.js server health endpoint
+            echo "Testing health endpoint..."
+            HEALTH_RESPONSE=$(curl -f -s http://127.0.0.1:4321/api/health.json)
+
+            if [ $? -eq 0 ]; then
+              echo "✅ Health check passed"
+              echo "Response: $HEALTH_RESPONSE"
+            else
+              echo "❌ Health check failed"
+              exit 1
+            fi
+
+            # Test Nginx is serving the site
+            echo "Testing Nginx..."
+            if curl -f -s -I https://vecia.com | grep -q "200 OK"; then
+              echo "✅ Nginx serving site successfully"
+            else
+              echo "⚠️  Nginx health check inconclusive (may be redirect)"
+            fi
+
+            # Final PM2 status
+            echo ""
+            echo "Final PM2 Status:"
             pm2 status
