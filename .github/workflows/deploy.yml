@@ -62,26 +62,6 @@ jobs:
 
           echo "✅ SSH key ready for deployment"
 
-      - name: Clean VPS deployment directory
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ steps.ssh_key.outputs.decoded_key }}
-          port: ${{ secrets.VPS_PORT }}
-          script: |
-            # Stop PM2 process first (ignore errors if not running)
-            pm2 delete vecia-website 2>/dev/null || true
-
-            # Remove old deployment completely to avoid chunk hash conflicts
-            echo "🗑️  Cleaning old deployment..."
-            rm -rf ${{ secrets.VPS_TARGET_DIR }}/*
-
-            # Recreate clean directory structure if needed
-            mkdir -p ${{ secrets.VPS_TARGET_DIR }}
-
-            echo "✅ VPS directory cleaned and ready for fresh deployment"
-
       - name: Transfer dist to VPS
         run: |
           rsync -avzr --delete \
@@ -186,19 +166,18 @@ jobs:
             echo "🗑️  Clearing old PM2 logs..."
             rm -f /var/log/vecia/pm2-*.log 2>/dev/null || true
 
-            # Start with ecosystem config
-            pm2 start ecosystem.config.cjs
+            # Start or reload with zero-downtime (updates env vars from config)
+            pm2 startOrReload ecosystem.config.cjs --update-env
 
-            # Wait for server to initialize (PM2 needs time for auto-restart cycles)
-            # SSR startup + PM2 auto-restart can take 30-40 seconds
-            echo "⏳ Waiting for server to stabilize (40s)..."
-            sleep 40
+            # Wait briefly for health endpoint to be ready
+            echo "⏳ Waiting for server to stabilize (5s)..."
+            sleep 5
 
             # Test server responds locally (with generous retries for PM2 stabilization)
             # Note: We skip PM2 status check and rely on health endpoint only
             # PM2 may show "errored" during restart cycles but app eventually stabilizes
             echo "🔍 Testing health endpoint..."
-            MAX_ATTEMPTS=6
+            MAX_ATTEMPTS=3
             ATTEMPT=1
             HEALTH_SUCCESS=false
 
@@ -218,7 +197,7 @@ jobs:
             done
 
             if [ "$HEALTH_SUCCESS" = false ]; then
-              echo "❌ Health check failed after $MAX_ATTEMPTS attempts (100s total wait)"
+              echo "❌ Health check failed after $MAX_ATTEMPTS attempts (35s total wait)"
               echo "📋 PM2 Status:"
               pm2 status
               echo ""
