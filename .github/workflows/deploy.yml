@@ -55,11 +55,10 @@ jobs:
 
             # Remove old deployment completely to avoid chunk hash conflicts
             echo "🗑️  Cleaning old deployment..."
-            sudo rm -rf ${{ secrets.VPS_TARGET_DIR }}/*
+            rm -rf ${{ secrets.VPS_TARGET_DIR }}/*
 
-            # Recreate clean directory structure
-            sudo mkdir -p ${{ secrets.VPS_TARGET_DIR }}
-            sudo chown -R ${{ secrets.VPS_USERNAME }}:www-data ${{ secrets.VPS_TARGET_DIR }}
+            # Recreate clean directory structure if needed
+            mkdir -p ${{ secrets.VPS_TARGET_DIR }}
 
             echo "✅ VPS directory cleaned and ready for fresh deployment"
 
@@ -115,17 +114,17 @@ jobs:
               exit 1
             fi
 
-            # Set proper permissions
-            sudo chown -R www-data:www-data "$VPS_TARGET_DIR"
-            sudo find "$VPS_TARGET_DIR" -type d -exec chmod 755 {} \;
-            sudo find "$VPS_TARGET_DIR" -type f -exec chmod 644 {} \;
+            # Set proper permissions (no sudo - user owns files)
+            find "$VPS_TARGET_DIR" -type d -exec chmod 755 {} \;
+            find "$VPS_TARGET_DIR" -type f -exec chmod 644 {} \;
 
             # Make server entry point executable
-            sudo chmod +x "$VPS_TARGET_DIR/server/entry.mjs"
+            chmod +x "$VPS_TARGET_DIR/server/entry.mjs"
 
-            # Install PM2 if not already installed
+            # PM2 should already be installed globally
+            # If not, install without sudo (user-level install)
             if ! command -v pm2 &> /dev/null; then
-              sudo npm install -g pm2
+              npm install -g pm2
               echo "✅ PM2 installed"
             fi
 
@@ -165,9 +164,9 @@ jobs:
             };
             EOFCONFIG
 
-            # Move config from /tmp to deployment directory with proper permissions
-            sudo mv /tmp/ecosystem.config.cjs "$VPS_TARGET_DIR/ecosystem.config.cjs"
-            sudo chown www-data:www-data "$VPS_TARGET_DIR/ecosystem.config.cjs"
+            # Move config from /tmp to deployment directory (no sudo needed)
+            mv /tmp/ecosystem.config.cjs "$VPS_TARGET_DIR/ecosystem.config.cjs"
+            chmod 644 "$VPS_TARGET_DIR/ecosystem.config.cjs"
             echo "✅ Ecosystem config created and moved to deployment directory"
 
             # Start with ecosystem config
@@ -198,11 +197,8 @@ jobs:
             # Save PM2 process list
             pm2 save
 
-            # Ensure PM2 starts on system boot (idempotent)
-            sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u ${{ secrets.VPS_USERNAME }} --hp /home/${{ secrets.VPS_USERNAME }} 2>/dev/null || true
-
-            # Test and reload nginx
-            sudo nginx -t && sudo systemctl reload nginx
+            # PM2 startup already configured on VPS - skip sudo command
+            # nginx automatically picks up changes through reverse proxy
 
             # Display deployment status
             echo ""
