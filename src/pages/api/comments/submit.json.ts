@@ -14,7 +14,6 @@
 import type { APIRoute } from 'astro';
 import { supabaseServer as supabase } from '../../../lib/supabase-server';
 import { profanity } from '@2toad/profanity';
-import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
 
 // Disable prerendering for dynamic API route
 export const prerender = false;
@@ -68,13 +67,12 @@ export const POST: APIRoute = async ({ request }) => {
     let finalAuthorName = author_name?.trim() || '';
 
     if (!finalAuthorName) {
-      // Generate random name
-      finalAuthorName = uniqueNamesGenerator({
-        dictionaries: [adjectives, colors, animals],
-        separator: ' ',
-        style: 'capital',
-        length: 2,
-      });
+      // Generate random name (simple implementation)
+      const adjectives = ['Happy', 'Clever', 'Brave', 'Swift', 'Bright', 'Kind', 'Bold', 'Wise'];
+      const animals = ['Fox', 'Eagle', 'Wolf', 'Bear', 'Hawk', 'Tiger', 'Lion', 'Owl'];
+      const randomAdj = adjectives[Math.floor(Math.random() * adjectives.length)];
+      const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
+      finalAuthorName = `${randomAdj} ${randomAnimal}`;
     }
 
     // Validate author name length
