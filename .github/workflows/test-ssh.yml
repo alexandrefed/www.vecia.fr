@@ -18,13 +18,13 @@ jobs:
           echo "${{ secrets.VPS_SSH_KEY }}" | wc -c
           echo ""
           echo "Decoded key validation:"
-          echo "${{ secrets.VPS_SSH_KEY }}" | base64 -d | ssh-keygen -l -f /dev/stdin || echo "Key decode failed"
+          echo -n "${{ secrets.VPS_SSH_KEY }}" | base64 -d | ssh-keygen -l -f /dev/stdin || echo "Key decode failed"
           echo "====== End Check ======"
 
       - name: Test SSH connection
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.VPS_SSH_KEY }}" | base64 -d > ~/.ssh/test_key
+          echo -n "${{ secrets.VPS_SSH_KEY }}" | base64 -d > ~/.ssh/test_key
           chmod 600 ~/.ssh/test_key
           ssh-keyscan -H -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
 
