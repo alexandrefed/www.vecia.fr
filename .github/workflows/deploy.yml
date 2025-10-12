@@ -44,15 +44,15 @@ jobs:
 
       - name: Verify SSH key format in secret
         run: |
-          echo "====== SSH Key Format Check ======"
-          echo "First line of VPS_SSH_KEY:"
-          echo "${{ secrets.VPS_SSH_KEY }}" | head -1
+          echo "====== SSH Key Format Check (Base64) ======"
+          echo "Base64 length:"
+          echo "${{ secrets.VPS_SSH_KEY }}" | wc -c
           echo ""
-          echo "Last line of VPS_SSH_KEY:"
-          echo "${{ secrets.VPS_SSH_KEY }}" | tail -1
-          echo ""
-          echo "Line count:"
-          echo "${{ secrets.VPS_SSH_KEY }}" | wc -l
+          echo "Decoded key validation:"
+          echo -n "${{ secrets.VPS_SSH_KEY }}" | base64 -d > /tmp/validate_key
+          chmod 600 /tmp/validate_key
+          ssh-keygen -l -f /tmp/validate_key || echo "Key decode failed"
+          rm /tmp/validate_key
           echo "====== End Check ======"
 
       - name: Clean VPS deployment directory
@@ -78,7 +78,7 @@ jobs:
       - name: Setup SSH key for rsync
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          echo -n "${{ secrets.VPS_SSH_KEY }}" | base64 -d > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
 

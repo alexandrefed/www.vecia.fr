@@ -8,9 +8,9 @@ import node from '@astrojs/node';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://vecia.com',  // Production URL for canonical links and sitemap
-  output: 'static',  // Astro v5: static mode now supports selective SSR with prerender: false
+  output: 'server',  // Server mode: SSR by default, static for prerender: true routes
   adapter: node({
-    mode: 'standalone'  // Standalone server for VPS deployment (enables SSR for prerender: false routes)
+    mode: 'standalone'  // Standalone server for VPS deployment
   }),
   i18n: {
     locales: ['fr', 'en'],
