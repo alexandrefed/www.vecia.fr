@@ -42,25 +42,25 @@ jobs:
       - name: Install production dependencies
         run: npm ci --omit=dev
 
-      - name: Verify SSH key format in secret
+      - name: Setup SSH key (decode base64 and validate)
         run: |
-          echo "====== SSH Key Format Check (Base64) ======"
-          echo "Base64 length:"
-          echo "${{ secrets.VPS_SSH_KEY }}" | wc -c
-          echo ""
-          echo "Decoded key validation:"
-          echo -n "${{ secrets.VPS_SSH_KEY }}" | base64 -d > /tmp/validate_key
-          chmod 600 /tmp/validate_key
-          ssh-keygen -l -f /tmp/validate_key || echo "Key decode failed"
-          rm /tmp/validate_key
-          echo "====== End Check ======"
+          echo "====== Decoding and Validating SSH Key ======"
+          mkdir -p ~/.ssh
+          echo -n "${{ secrets.VPS_SSH_KEY }}" | base64 -d > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+          echo "Key fingerprint:"
+          ssh-keygen -l -f ~/.ssh/deploy_key || echo "❌ Key validation failed"
+
+          ssh-keyscan -H -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+          echo "✅ SSH key ready for deployment"
 
       - name: Clean VPS deployment directory
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
+          key_path: ~/.ssh/deploy_key
           port: ${{ secrets.VPS_PORT }}
           script: |
             # Stop PM2 process first (ignore errors if not running)
@@ -74,13 +74,6 @@ jobs:
             mkdir -p ${{ secrets.VPS_TARGET_DIR }}
 
             echo "✅ VPS directory cleaned and ready for fresh deployment"
-
-      - name: Setup SSH key for rsync
-        run: |
-          mkdir -p ~/.ssh
-          echo -n "${{ secrets.VPS_SSH_KEY }}" | base64 -d > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
 
       - name: Transfer dist to VPS
         run: |
@@ -108,7 +101,7 @@ jobs:
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
+          key_path: ~/.ssh/deploy_key
           port: ${{ secrets.VPS_PORT }}
           envs: VPS_TARGET_DIR
           script: |
@@ -226,7 +219,7 @@ jobs:
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
+          key_path: ~/.ssh/deploy_key
           port: ${{ secrets.VPS_PORT }}
           script: |
             # Test Node.js server health endpoint
