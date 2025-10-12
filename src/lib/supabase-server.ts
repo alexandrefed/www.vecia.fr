@@ -24,14 +24,16 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// Use ONLY process.env (no import.meta.env) to prevent Vite static replacement
-const supabaseUrl = process.env.PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.PUBLIC_SUPABASE_ANON_KEY;
+// Use non-PUBLIC prefixed env vars to prevent Vite static replacement
+// Vite replaces ALL PUBLIC_* variables at build time, even in process.env
+// Using plain SUPABASE_* names keeps them dynamic at runtime
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error(
     'Missing Supabase runtime environment variables.\n' +
-    'Required: PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY\n' +
+    'Required: SUPABASE_URL and SUPABASE_ANON_KEY (without PUBLIC_ prefix)\n' +
     'These should be provided by PM2 ecosystem config at runtime.'
   );
 }

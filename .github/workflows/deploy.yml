@@ -96,12 +96,10 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
-          envs: VPS_TARGET_DIR,PUBLIC_SUPABASE_URL,PUBLIC_SUPABASE_ANON_KEY
+          envs: VPS_TARGET_DIR
           script: |
             # Export environment variables (passed via envs parameter)
             export VPS_TARGET_DIR="${{ secrets.VPS_TARGET_DIR }}"
-            export PUBLIC_SUPABASE_URL="${{ secrets.PUBLIC_SUPABASE_URL }}"
-            export PUBLIC_SUPABASE_ANON_KEY="${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}"
 
             # Verify directory exists
             if [ ! -d "$VPS_TARGET_DIR" ]; then
@@ -132,7 +130,8 @@ jobs:
               exit 1
             fi
 
-            # Create ecosystem config with actual environment variables
+            # Create ecosystem config with hardcoded runtime environment variables
+            # Note: Using non-PUBLIC_ prefixed vars to avoid Vite static replacement
             cat > ecosystem.config.cjs << EOFCONFIG
             module.exports = {
               apps: [{
@@ -145,8 +144,8 @@ jobs:
                   HOST: '127.0.0.1',
                   PORT: 4321,
                   NODE_ENV: 'production',
-                  PUBLIC_SUPABASE_URL: '$PUBLIC_SUPABASE_URL',
-                  PUBLIC_SUPABASE_ANON_KEY: '$PUBLIC_SUPABASE_ANON_KEY'
+                  SUPABASE_URL: 'http://85.25.172.47:8100',
+                  SUPABASE_ANON_KEY: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlLWRlbW8iLCJpYXQiOjE2NDE3NjkyMDAsImV4cCI6MTc5OTUzNTYwMH0.Jp4HPK5Cr7GM2j5eu4SMSYrmyPnL_moGV_olTHvcZbQ'
                 },
                 error_file: '/var/log/vecia/pm2-error.log',
                 out_file: '/var/log/vecia/pm2-out.log',
