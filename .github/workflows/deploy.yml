@@ -39,8 +39,8 @@ jobs:
           PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
           PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
 
-      - name: Install production dependencies
-        run: npm ci --omit=dev
+      - name: Install dependencies for production
+        run: npm ci
 
       - name: Setup SSH key (decode base64 and validate)
         id: ssh_key
@@ -158,8 +158,8 @@ jobs:
                   HOST: '127.0.0.1',
                   PORT: 4321,
                   NODE_ENV: 'production',
-                  SUPABASE_URL: 'http://85.25.172.47:8100',
-                  SUPABASE_ANON_KEY: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlLWRlbW8iLCJpYXQiOjE2NDE3NjkyMDAsImV4cCI6MTc5OTUzNTYwMH0.Jp4HPK5Cr7GM2j5eu4SMSYrmyPnL_moGV_olTHvcZbQ'
+                  PUBLIC_SUPABASE_URL: 'http://85.25.172.47:8100',
+                  PUBLIC_SUPABASE_ANON_KEY: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlLWRlbW8iLCJpYXQiOjE2NDE3NjkyMDAsImV4cCI6MTc5OTUzNTYwMH0.Jp4HPK5Cr7GM2j5eu4SMSYrmyPnL_moGV_olTHvcZbQ'
                 },
                 error_file: '/var/log/vecia/pm2-error.log',
                 out_file: '/var/log/vecia/pm2-out.log',
@@ -188,7 +188,7 @@ jobs:
               echo "✅ PM2 reports service is online"
             else
               echo "❌ PM2 reports service is not online"
-              pm2 logs vecia-website --lines 50
+              pm2 logs vecia-website --lines 50 --nostream
               exit 1
             fi
 
@@ -197,7 +197,7 @@ jobs:
               echo "✅ Health check passed: Node.js server is responding"
             else
               echo "❌ Health check failed: Node.js server is not responding"
-              pm2 logs vecia-website --lines 50
+              pm2 logs vecia-website --lines 50 --nostream
               exit 1
             fi
 
