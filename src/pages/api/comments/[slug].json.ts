@@ -39,6 +39,26 @@ export const GET: APIRoute = async ({ params }) => {
 
     if (error) {
       console.error('[API] Error fetching comments:', error);
+
+      // If table doesn't exist (42P01), return empty comments gracefully
+      if (error.code === '42P01') {
+        console.warn('[API] Comments table does not exist yet - returning empty array');
+        return new Response(
+          JSON.stringify({
+            comments: [],
+            count: 0,
+          }),
+          {
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json',
+              'Cache-Control': 'public, max-age=60',
+            },
+          }
+        );
+      }
+
+      // Other errors - return error response
       return new Response(
         JSON.stringify({
           comments: [],

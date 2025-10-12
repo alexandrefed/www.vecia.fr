@@ -100,8 +100,11 @@ export const POST: APIRoute = async ({ request }) => {
         .eq('id', parent_comment_id)
         .single();
 
-      if (parentError || !parentExists) {
-        return errorResponse('Parent comment not found', 400);
+      // If table doesn't exist, skip validation (will fail at insert anyway)
+      if (parentError && parentError.code !== '42P01') {
+        if (!parentExists) {
+          return errorResponse('Parent comment not found', 400);
+        }
       }
     }
 
@@ -122,6 +125,12 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (error) {
       console.error('[API] Error inserting comment:', error);
+
+      // If table doesn't exist (42P01), return friendly error
+      if (error.code === '42P01') {
+        return errorResponse('Comments system is not yet configured. Please check back later.', 503);
+      }
+
       return errorResponse('Failed to save comment', 500);
     }
 
