@@ -14,7 +14,7 @@ const t = ui[lang];
 // Color variant mapping (required for Tailwind v4 static analysis)
 const colorVariants = {
   tab0: {
-    activeButton: 'bg-gradient-to-br from-blue-50 to-blue-100 text-primary border-blue-200/50',
+    activeButton: 'bg-primary/10 text-primary border-primary/20',
     progress: 'bg-gradient-to-r from-primary/50 to-primary',
     featureDot: 'from-secondary to-accent1',
     valueText: 'text-primary',
@@ -24,7 +24,7 @@ const colorVariants = {
     card3: 'from-sky-50 to-sky-100 to-gray-50 border-sky-200/30',
   },
   tab1: {
-    activeButton: 'bg-gradient-to-br from-purple-50 to-purple-100 text-secondary border-purple-200/50',
+    activeButton: 'bg-secondary/10 text-secondary border-secondary/20',
     progress: 'bg-gradient-to-r from-secondary/50 to-secondary',
     featureDot: 'from-primary to-accent2',
     chatHeader: 'bg-gradient-to-r from-purple-50 to-blue-50',
@@ -33,7 +33,7 @@ const colorVariants = {
     typingDot: 'bg-gradient-to-r from-secondary to-primary',
   },
   tab2: {
-    activeButton: 'bg-gradient-to-br from-cyan-50 to-cyan-100 text-accent1 border-cyan-200/50',
+    activeButton: 'bg-accent1/10 text-accent1 border-accent1/20',
     progress: 'bg-gradient-to-r from-accent1/50 to-accent1',
     featureDot: 'from-accent1 to-primary',
     valueText: 'text-accent1',
@@ -43,7 +43,7 @@ const colorVariants = {
     card3: 'from-indigo-50 to-indigo-100 to-gray-50 border-indigo-200/30',
   },
   tab3: {
-    activeButton: 'bg-gradient-to-br from-indigo-50 to-indigo-100 text-accent2 border-indigo-200/50',
+    activeButton: 'bg-accent2/10 text-accent2 border-accent2/20',
     progress: 'bg-gradient-to-r from-accent2/50 to-accent2',
     featureDot: 'from-accent2 to-secondary',
     chatHeader: 'bg-gradient-to-r from-cyan-50 to-blue-50',
@@ -438,10 +438,10 @@ const tabs = [
           @click="prevTab()"
           class="flex items-center justify-center w-12 h-12 rounded-full shadow-lg backdrop-blur-sm border border-gray-200 transition-all active:scale-95 hover:scale-105"
           :class="{
-            'bg-gradient-to-br from-blue-50 to-blue-100 text-primary': activeTab === 0,
-            'bg-gradient-to-br from-purple-50 to-purple-100 text-secondary': activeTab === 1,
-            'bg-gradient-to-br from-cyan-50 to-cyan-100 text-accent1': activeTab === 2,
-            'bg-gradient-to-br from-indigo-50 to-indigo-100 text-accent2': activeTab === 3
+            'bg-primary/10 text-primary': activeTab === 0,
+            'bg-secondary/10 text-secondary': activeTab === 1,
+            'bg-accent1/10 text-accent1': activeTab === 2,
+            'bg-accent2/10 text-accent2': activeTab === 3
           }"
           aria-label="Previous tab"
         >
@@ -455,10 +455,10 @@ const tabs = [
           @click="nextTab()"
           class="flex items-center justify-center w-12 h-12 rounded-full shadow-lg backdrop-blur-sm border border-gray-200 transition-all active:scale-95 hover:scale-105"
           :class="{
-            'bg-gradient-to-br from-blue-50 to-blue-100 text-primary': activeTab === 0,
-            'bg-gradient-to-br from-purple-50 to-purple-100 text-secondary': activeTab === 1,
-            'bg-gradient-to-br from-cyan-50 to-cyan-100 text-accent1': activeTab === 2,
-            'bg-gradient-to-br from-indigo-50 to-indigo-100 text-accent2': activeTab === 3
+            'bg-primary/10 text-primary': activeTab === 0,
+            'bg-secondary/10 text-secondary': activeTab === 1,
+            'bg-accent1/10 text-accent1': activeTab === 2,
+            'bg-accent2/10 text-accent2': activeTab === 3
           }"
           aria-label="Next tab"
         >
