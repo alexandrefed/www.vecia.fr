@@ -55,32 +55,39 @@ jobs:
             sudo chown -R ${{ secrets.VPS_USERNAME }}:www-data ${{ secrets.VPS_TARGET_DIR }}
             echo "✅ Directory prepared"
 
-      - name: Transfer files via rsync
-        run: |
-          # Setup SSH key
-          mkdir -p ~/.ssh
-          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
+      - name: Transfer dist files to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          source: "dist/*"
+          target: ${{ secrets.VPS_TARGET_DIR }}
+          strip_components: 1
+          overwrite: true
 
-          # Transfer files using rsync (much faster than scp-action)
-          rsync -avz --delete \
-            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VPS_PORT }} -o StrictHostKeyChecking=no" \
-            dist/ \
-            ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/
+      - name: Transfer node_modules to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          source: "node_modules/"
+          target: ${{ secrets.VPS_TARGET_DIR }}
+          overwrite: true
 
-          rsync -avz \
-            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VPS_PORT }} -o StrictHostKeyChecking=no" \
-            node_modules/ \
-            ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/node_modules/
-
-          rsync -avz \
-            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VPS_PORT }} -o StrictHostKeyChecking=no" \
-            package.json package-lock.json \
-            ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/
-
-          # Cleanup
-          rm -f ~/.ssh/deploy_key
-          echo "✅ Files transferred successfully"
+      - name: Transfer package files to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          source: "package.json,package-lock.json"
+          target: ${{ secrets.VPS_TARGET_DIR }}
+          overwrite: true
 
       - name: Setup and start Node.js server
         uses: appleboy/ssh-action@v1
