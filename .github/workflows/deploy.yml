@@ -42,7 +42,7 @@ jobs:
       - name: Install production dependencies
         run: npm ci --omit=dev
 
-      - name: Prepare VPS directory
+      - name: Clean VPS deployment directory
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -50,10 +50,18 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            # Create target directory if it doesn't exist
+            # Stop PM2 process first (ignore errors if not running)
+            pm2 delete vecia-website 2>/dev/null || true
+
+            # Remove old deployment completely to avoid chunk hash conflicts
+            echo "🗑️  Cleaning old deployment..."
+            sudo rm -rf ${{ secrets.VPS_TARGET_DIR }}/*
+
+            # Recreate clean directory structure
             sudo mkdir -p ${{ secrets.VPS_TARGET_DIR }}
             sudo chown -R ${{ secrets.VPS_USERNAME }}:www-data ${{ secrets.VPS_TARGET_DIR }}
-            echo "✅ Directory prepared"
+
+            echo "✅ VPS directory cleaned and ready for fresh deployment"
 
       - name: Transfer dist files to VPS
         uses: appleboy/scp-action@v0.1.7
@@ -130,9 +138,9 @@ jobs:
               exit 1
             fi
 
-            # Create ecosystem config with hardcoded runtime environment variables
+            # Create ecosystem config in /tmp (always writable) then move
             # Note: Using non-PUBLIC_ prefixed vars to avoid Vite static replacement
-            cat > ecosystem.config.cjs << EOFCONFIG
+            cat > /tmp/ecosystem.config.cjs << EOFCONFIG
             module.exports = {
               apps: [{
                 name: 'vecia-website',
@@ -157,10 +165,10 @@ jobs:
             };
             EOFCONFIG
 
-            echo "✅ Ecosystem config created"
-
-            # Stop existing process (ignore errors if not running)
-            pm2 delete vecia-website 2>/dev/null || true
+            # Move config from /tmp to deployment directory with proper permissions
+            sudo mv /tmp/ecosystem.config.cjs "$VPS_TARGET_DIR/ecosystem.config.cjs"
+            sudo chown www-data:www-data "$VPS_TARGET_DIR/ecosystem.config.cjs"
+            echo "✅ Ecosystem config created and moved to deployment directory"
 
             # Start with ecosystem config
             pm2 start ecosystem.config.cjs
