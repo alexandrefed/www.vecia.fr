@@ -33,9 +33,11 @@ jobs:
       - name: Build Astro site
         run: npm run build
         env:
-          # Add any build-time environment variables here
+          # Public environment variables (available client-side)
           PUBLIC_SITE_URL: https://vecia.fr
           PUBLIC_CAL_EMBED_URL: https://cal.vecia.fr
+          PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
 
       - name: Deploy to VPS via SSH
         uses: appleboy/ssh-action@v1
@@ -68,7 +70,7 @@ jobs:
           strip_components: 1
           overwrite: true
 
-      - name: Set permissions and reload nginx
+      - name: Setup and start Node.js server
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -81,12 +83,52 @@ jobs:
             sudo find ${{ secrets.VPS_TARGET_DIR }} -type d -exec chmod 755 {} \;
             sudo find ${{ secrets.VPS_TARGET_DIR }} -type f -exec chmod 644 {} \;
 
+            # Make server entry point executable
+            sudo chmod +x ${{ secrets.VPS_TARGET_DIR }}/server/entry.mjs
+
+            # Install PM2 if not already installed
+            if ! command -v pm2 &> /dev/null; then
+              sudo npm install -g pm2
+              echo "✅ PM2 installed"
+            fi
+
+            # Create ecosystem config for PM2
+            cat > ${{ secrets.VPS_TARGET_DIR }}/ecosystem.config.cjs << 'EOF'
+            module.exports = {
+              apps: [{
+                name: 'vecia-website',
+                script: './server/entry.mjs',
+                cwd: '${{ secrets.VPS_TARGET_DIR }}',
+                instances: 1,
+                exec_mode: 'cluster',
+                env: {
+                  HOST: '127.0.0.1',
+                  PORT: 4321,
+                  NODE_ENV: 'production',
+                  PUBLIC_SUPABASE_URL: '${{ secrets.PUBLIC_SUPABASE_URL }}',
+                  PUBLIC_SUPABASE_ANON_KEY: '${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}'
+                }
+              }]
+            };
+            EOF
+
+            # Restart the Node.js application with PM2
+            cd ${{ secrets.VPS_TARGET_DIR }}
+            pm2 delete vecia-website 2>/dev/null || true
+            pm2 start ecosystem.config.cjs
+            pm2 save
+
+            # Ensure PM2 starts on system boot
+            sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u ${{ secrets.VPS_USERNAME }} --hp /home/${{ secrets.VPS_USERNAME }} || true
+
             # Test and reload nginx
             sudo nginx -t && sudo systemctl reload nginx
 
             # Display deployment info
             echo "✅ Deployment successful!"
             echo "📁 Files deployed to: ${{ secrets.VPS_TARGET_DIR }}"
+            echo "🚀 Node.js server running on port 4321"
             echo "🌐 Website available at: https://vecia.fr"
             echo "📅 Deployed at: $(date)"
             echo "📊 File count: $(find ${{ secrets.VPS_TARGET_DIR }} -type f | wc -l) files"
+            pm2 status

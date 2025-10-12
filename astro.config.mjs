@@ -3,11 +3,15 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import { visualizer } from 'rollup-plugin-visualizer';
+import node from '@astrojs/node';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://vecia.com',  // Production URL for canonical links and sitemap
-  // output: 'static' is default in v5 and now supports selective SSR with prerender: false
+  output: 'static',  // Astro v5: static mode now supports selective SSR with prerender: false
+  adapter: node({
+    mode: 'standalone'  // Standalone server for VPS deployment (enables SSR for prerender: false routes)
+  }),
   i18n: {
     locales: ['fr', 'en'],
     defaultLocale: 'fr',
