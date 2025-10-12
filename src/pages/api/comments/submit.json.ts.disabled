@@ -17,7 +17,7 @@ import Filter from 'bad-words';
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
 
 // Enable server-side rendering for dynamic route
-export const prerender = false;
+export const prerender = true;
 
 const filter = new Filter();
 

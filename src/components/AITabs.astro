@@ -318,15 +318,16 @@ const tabs = [
               >
 
                 <!-- Metrics Dashboard (Tab 1 & 3) -->
-                {(tab.dashboard.type === 'metrics' || tab.dashboard.type === 'analytics') && (
+                {(tab.dashboard.type === 'metrics' || tab.dashboard.type === 'analytics') && 'cards' in tab.dashboard && tab.dashboard.cards && (
                   <div class="grid grid-cols-2 gap-4">
                     {tab.dashboard.cards.map((card, cardIndex) => {
                       const tabKey = `tab${index}` as keyof typeof colorVariants;
                       const cardKey = `card${cardIndex}` as 'card0' | 'card1' | 'card2' | 'card3';
+                      const variant = colorVariants[tabKey];
                       return (
-                        <div class={`rounded-xl p-5 shadow-[0_1px_2px_rgba(0,0,0,0.05)] border transition-all hover:shadow-md hover:scale-[1.02] bg-gradient-to-br ${colorVariants[tabKey][cardKey]}`}>
+                        <div class={`rounded-xl p-5 shadow-[0_1px_2px_rgba(0,0,0,0.05)] border transition-all hover:shadow-md hover:scale-[1.02] bg-gradient-to-br ${variant && cardKey in variant ? (variant as any)[cardKey] : ''}`}>
                           <h4 class="text-sm font-medium text-subtle mb-2">{card.title}</h4>
-                          <div class={`text-3xl font-bold ${'valueText' in colorVariants[tabKey] ? colorVariants[tabKey].valueText : 'text-text'} mb-1`}>{card.value}</div>
+                          <div class={`text-3xl font-bold ${'valueText' in variant ? (variant as any).valueText : 'text-text'} mb-1`}>{card.value}</div>
                           <p class="text-xs text-muted">{card.status}</p>
                         </div>
                       );
