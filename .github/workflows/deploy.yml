@@ -139,30 +139,30 @@ jobs:
             fi
 
             # Create ecosystem config with actual environment variables
-            cat > ecosystem.config.cjs << EOF
-module.exports = {
-  apps: [{
-    name: 'vecia-website',
-    script: './server/entry.mjs',
-    cwd: '${VPS_TARGET_DIR}',
-    instances: 1,
-    exec_mode: 'cluster',
-    env: {
-      HOST: '127.0.0.1',
-      PORT: 4321,
-      NODE_ENV: 'production',
-      PUBLIC_SUPABASE_URL: '${PUBLIC_SUPABASE_URL}',
-      PUBLIC_SUPABASE_ANON_KEY: '${PUBLIC_SUPABASE_ANON_KEY}'
-    },
-    error_file: '/var/log/vecia/pm2-error.log',
-    out_file: '/var/log/vecia/pm2-out.log',
-    time: true,
-    autorestart: true,
-    max_restarts: 10,
-    min_uptime: '10s'
-  }]
-};
-EOF
+            cat > ecosystem.config.cjs << 'EOFCONFIG'
+            module.exports = {
+              apps: [{
+                name: 'vecia-website',
+                script: './server/entry.mjs',
+                cwd: '${VPS_TARGET_DIR}',
+                instances: 1,
+                exec_mode: 'cluster',
+                env: {
+                  HOST: '127.0.0.1',
+                  PORT: 4321,
+                  NODE_ENV: 'production',
+                  PUBLIC_SUPABASE_URL: '${PUBLIC_SUPABASE_URL}',
+                  PUBLIC_SUPABASE_ANON_KEY: '${PUBLIC_SUPABASE_ANON_KEY}'
+                },
+                error_file: '/var/log/vecia/pm2-error.log',
+                out_file: '/var/log/vecia/pm2-out.log',
+                time: true,
+                autorestart: true,
+                max_restarts: 10,
+                min_uptime: '10s'
+              }]
+            };
+            EOFCONFIG
 
             echo "✅ Ecosystem config created"
 
