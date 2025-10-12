@@ -25,6 +25,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Clear Astro build cache to ensure fresh build
+      - name: Clear Astro cache
+        run: rm -rf node_modules/.astro node_modules/.vite
+
       # Type checking temporarily disabled - 77 errors to fix
       # TODO: Re-enable after fixing TypeScript errors
       # - name: Run type checking
