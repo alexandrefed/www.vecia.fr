@@ -42,7 +42,7 @@ jobs:
       - name: Install production dependencies
         run: npm ci --omit=dev
 
-      - name: Deploy to VPS and transfer files
+      - name: Prepare VPS directory
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -50,12 +50,6 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            # Backup current deployment
-            if [ -d "${{ secrets.VPS_TARGET_DIR }}" ] && [ "$(ls -A ${{ secrets.VPS_TARGET_DIR }})" ]; then
-              sudo cp -r ${{ secrets.VPS_TARGET_DIR }} ${{ secrets.VPS_TARGET_DIR }}.backup.$(date +%Y%m%d_%H%M%S)
-              echo "✅ Backup created"
-            fi
-
             # Create target directory if it doesn't exist
             sudo mkdir -p ${{ secrets.VPS_TARGET_DIR }}
             sudo chown -R ${{ secrets.VPS_USERNAME }}:www-data ${{ secrets.VPS_TARGET_DIR }}
