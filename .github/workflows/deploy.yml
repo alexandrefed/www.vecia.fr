@@ -83,6 +83,26 @@ jobs:
             package.json package-lock.json \
             ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/
 
+      - name: Restart PM2 and Verify
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ steps.ssh_key.outputs.decoded_key }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            cd ${{ secrets.VPS_TARGET_DIR }}
+
+            echo "🔄 Restarting PM2 to load new code..."
+            pm2 restart vecia-website
+
+            sleep 3
+
+            echo "📊 PM2 Status:"
+            pm2 status
+
+            echo "✅ PM2 restarted successfully"
+
       - name: Setup and start Node.js server
         uses: appleboy/ssh-action@v1
         with:
@@ -166,16 +186,10 @@ jobs:
             echo "🗑️  Clearing old PM2 logs..."
             rm -f /var/log/vecia/pm2-*.log 2>/dev/null || true
 
-            # Start or reload with zero-downtime (updates env vars from config)
-            pm2 startOrReload ecosystem.config.cjs --update-env
+            # Note: PM2 restart happens in dedicated step after file deployment
+            # This ensures new code is fully deployed before PM2 reloads
 
-            # Wait briefly for health endpoint to be ready
-            echo "⏳ Waiting for server to stabilize (5s)..."
-            sleep 5
-
-            # Test server responds locally (with generous retries for PM2 stabilization)
-            # Note: We skip PM2 status check and rely on health endpoint only
-            # PM2 may show "errored" during restart cycles but app eventually stabilizes
+            # Test server responds locally (PM2 already restarted in previous step)
             echo "🔍 Testing health endpoint..."
             MAX_ATTEMPTS=3
             ATTEMPT=1
