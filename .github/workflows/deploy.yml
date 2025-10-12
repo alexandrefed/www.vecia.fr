@@ -176,6 +176,9 @@ jobs:
             chmod 644 "$VPS_TARGET_DIR/ecosystem.config.cjs"
             echo "✅ Ecosystem config created and moved to deployment directory"
 
+            # Clear old PM2 logs to avoid confusion
+            pm2 flush vecia-website 2>/dev/null || true
+
             # Start with ecosystem config
             pm2 start ecosystem.config.cjs
 
