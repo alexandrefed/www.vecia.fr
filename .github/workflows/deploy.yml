@@ -189,9 +189,10 @@ jobs:
             # Start with ecosystem config
             pm2 start ecosystem.config.cjs
 
-            # Wait for server to initialize (increased to 10s for SSR startup)
-            echo "⏳ Waiting for server to start (10s)..."
-            sleep 10
+            # Wait for server to initialize (PM2 needs time to load new code)
+            # SSR startup + PM2 process restart can take 15-20 seconds
+            echo "⏳ Waiting for server to start (20s)..."
+            sleep 20
 
             # Verify server is running
             if pm2 status | grep -q "vecia-website.*online"; then
@@ -209,11 +210,29 @@ jobs:
               exit 1
             fi
 
-            # Test server responds locally
-            if curl -f -s http://127.0.0.1:4321/api/health.json > /dev/null; then
-              echo "✅ Health check passed: Node.js server is responding"
-            else
-              echo "❌ Health check failed: Node.js server is not responding"
+            # Test server responds locally (with retries for PM2 restart delays)
+            echo "🔍 Testing health endpoint..."
+            MAX_ATTEMPTS=3
+            ATTEMPT=1
+            HEALTH_SUCCESS=false
+
+            while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
+              echo "Attempt $ATTEMPT/$MAX_ATTEMPTS..."
+              if curl -f -s http://127.0.0.1:4321/api/health.json > /dev/null; then
+                echo "✅ Health check passed: Node.js server is responding"
+                HEALTH_SUCCESS=true
+                break
+              else
+                if [ $ATTEMPT -lt $MAX_ATTEMPTS ]; then
+                  echo "⏳ Server not ready yet, waiting 5 seconds..."
+                  sleep 5
+                fi
+                ATTEMPT=$((ATTEMPT + 1))
+              fi
+            done
+
+            if [ "$HEALTH_SUCCESS" = false ]; then
+              echo "❌ Health check failed after $MAX_ATTEMPTS attempts"
               echo "🔴 Error logs:"
               pm2 logs vecia-website --err --lines 50 --nostream
               exit 1
