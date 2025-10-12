@@ -1,0 +1,44 @@
+# Test SSH Connection to VPS
+# This workflow tests SSH authentication before full deployment
+
+name: Test SSH Connection
+
+on:
+  workflow_dispatch:  # Manual trigger only
+
+jobs:
+  test-ssh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Verify SSH key format in secret
+        run: |
+          echo "====== SSH Key Format Check ======"
+          echo "First line of VPS_SSH_KEY:"
+          echo "${{ secrets.VPS_SSH_KEY }}" | head -1
+          echo ""
+          echo "Last line of VPS_SSH_KEY:"
+          echo "${{ secrets.VPS_SSH_KEY }}" | tail -1
+          echo ""
+          echo "Line count:"
+          echo "${{ secrets.VPS_SSH_KEY }}" | wc -l
+          echo ""
+          echo "Expected: 8 lines"
+          echo "====== End Check ======"
+
+      - name: Test SSH connection
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/test_key
+          chmod 600 ~/.ssh/test_key
+          ssh-keyscan -H -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+          echo "Testing SSH connection..."
+          ssh -i ~/.ssh/test_key -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "echo 'SSH connection successful!' && whoami && pwd"
+
+          if [ $? -eq 0 ]; then
+            echo "✅ SSH authentication successful!"
+          else
+            echo "❌ SSH authentication failed!"
+            exit 1
+          fi
