@@ -62,6 +62,23 @@ jobs:
 
             echo "✅ VPS directory cleaned and ready for fresh deployment"
 
+      - name: Debug SSH key format
+        run: |
+          echo "${{ secrets.VPS_SSH_KEY }}" > /tmp/test_key
+          echo "====== SSH Key Format Check ======"
+          echo "First line:"
+          head -1 /tmp/test_key
+          echo ""
+          echo "Last line:"
+          tail -1 /tmp/test_key
+          echo ""
+          echo "Line count:"
+          wc -l /tmp/test_key
+          echo ""
+          echo "File size:"
+          wc -c /tmp/test_key
+          rm /tmp/test_key
+
       - name: Setup SSH key for rsync
         run: |
           mkdir -p ~/.ssh
