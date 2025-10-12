@@ -176,22 +176,36 @@ jobs:
             chmod 644 "$VPS_TARGET_DIR/ecosystem.config.cjs"
             echo "✅ Ecosystem config created and moved to deployment directory"
 
-            # Clear old PM2 logs to avoid confusion
-            pm2 flush vecia-website 2>/dev/null || true
+            # Startup diagnostics
+            echo "🔍 Pre-startup diagnostics:"
+            echo "Node.js version: $(node --version)"
+            echo "Entry point exists: $(test -f './server/entry.mjs' && echo 'YES' || echo 'NO')"
+            echo "Port 4321 status: $(lsof -ti:4321 && echo 'IN USE' || echo 'AVAILABLE')"
+
+            # Delete old PM2 log files (pm2 flush doesn't work reliably)
+            echo "🗑️  Clearing old PM2 logs..."
+            rm -f /var/log/vecia/pm2-*.log 2>/dev/null || true
 
             # Start with ecosystem config
             pm2 start ecosystem.config.cjs
 
-            # Wait for server to initialize
-            echo "⏳ Waiting for server to start..."
-            sleep 5
+            # Wait for server to initialize (increased to 10s for SSR startup)
+            echo "⏳ Waiting for server to start (10s)..."
+            sleep 10
 
             # Verify server is running
             if pm2 status | grep -q "vecia-website.*online"; then
               echo "✅ PM2 reports service is online"
             else
               echo "❌ PM2 reports service is not online"
-              pm2 logs vecia-website --lines 50 --nostream
+              echo "📋 PM2 Status:"
+              pm2 status
+              echo ""
+              echo "🔴 Error logs (last 50 lines):"
+              pm2 logs vecia-website --err --lines 50 --nostream
+              echo ""
+              echo "📘 Output logs (last 20 lines):"
+              pm2 logs vecia-website --out --lines 20 --nostream
               exit 1
             fi
 
@@ -200,7 +214,8 @@ jobs:
               echo "✅ Health check passed: Node.js server is responding"
             else
               echo "❌ Health check failed: Node.js server is not responding"
-              pm2 logs vecia-website --lines 50 --nostream
+              echo "🔴 Error logs:"
+              pm2 logs vecia-website --err --lines 50 --nostream
               exit 1
             fi
 
