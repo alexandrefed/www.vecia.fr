@@ -62,38 +62,33 @@ jobs:
 
             echo "✅ VPS directory cleaned and ready for fresh deployment"
 
-      - name: Transfer dist files to VPS
-        uses: burnett01/rsync-deployments@7.0.2
-        with:
-          switches: -avzr --delete
-          path: dist/
-          remote_path: ${{ secrets.VPS_TARGET_DIR }}/
-          remote_host: ${{ secrets.VPS_HOST }}
-          remote_port: ${{ secrets.VPS_PORT }}
-          remote_user: ${{ secrets.VPS_USERNAME }}
-          remote_key: ${{ secrets.VPS_SSH_KEY }}
+      - name: Setup SSH key for rsync
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Transfer dist to VPS
+        run: |
+          rsync -avzr --delete \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VPS_PORT }}" \
+            dist/ \
+            ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/
 
       - name: Transfer node_modules to VPS
-        uses: burnett01/rsync-deployments@7.0.2
-        with:
-          switches: -avzr
-          path: node_modules/
-          remote_path: ${{ secrets.VPS_TARGET_DIR }}/
-          remote_host: ${{ secrets.VPS_HOST }}
-          remote_port: ${{ secrets.VPS_PORT }}
-          remote_user: ${{ secrets.VPS_USERNAME }}
-          remote_key: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          rsync -avzr \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VPS_PORT }}" \
+            node_modules/ \
+            ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/node_modules/
 
       - name: Transfer package files to VPS
-        uses: burnett01/rsync-deployments@7.0.2
-        with:
-          switches: -avzr
-          path: package*.json
-          remote_path: ${{ secrets.VPS_TARGET_DIR }}/
-          remote_host: ${{ secrets.VPS_HOST }}
-          remote_port: ${{ secrets.VPS_PORT }}
-          remote_user: ${{ secrets.VPS_USERNAME }}
-          remote_key: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          rsync -avz \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VPS_PORT }}" \
+            package.json package-lock.json \
+            ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/
 
       - name: Setup and start Node.js server
         uses: appleboy/ssh-action@v1
