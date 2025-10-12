@@ -43,6 +43,7 @@ jobs:
         run: npm ci --omit=dev
 
       - name: Setup SSH key (decode base64 and validate)
+        id: ssh_key
         run: |
           echo "====== Decoding and Validating SSH Key ======"
           mkdir -p ~/.ssh
@@ -53,6 +54,12 @@ jobs:
           ssh-keygen -l -f ~/.ssh/deploy_key || echo "❌ Key validation failed"
 
           ssh-keyscan -H -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+          # Output decoded key for appleboy/ssh-action
+          echo "decoded_key<<EOF" >> $GITHUB_OUTPUT
+          cat ~/.ssh/deploy_key >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
           echo "✅ SSH key ready for deployment"
 
       - name: Clean VPS deployment directory
@@ -60,7 +67,7 @@ jobs:
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
-          key_path: ~/.ssh/deploy_key
+          key: ${{ steps.ssh_key.outputs.decoded_key }}
           port: ${{ secrets.VPS_PORT }}
           script: |
             # Stop PM2 process first (ignore errors if not running)
@@ -101,7 +108,7 @@ jobs:
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
-          key_path: ~/.ssh/deploy_key
+          key: ${{ steps.ssh_key.outputs.decoded_key }}
           port: ${{ secrets.VPS_PORT }}
           envs: VPS_TARGET_DIR
           script: |
@@ -219,7 +226,7 @@ jobs:
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
-          key_path: ~/.ssh/deploy_key
+          key: ${{ steps.ssh_key.outputs.decoded_key }}
           port: ${{ secrets.VPS_PORT }}
           script: |
             # Test Node.js server health endpoint
