@@ -163,7 +163,7 @@ jobs:
               apps: [{
                 name: 'vecia-website',
                 script: './server/entry.mjs',
-                cwd: '$VPS_TARGET_DIR',
+                cwd: process.cwd(),
                 instances: 1,
                 exec_mode: 'cluster',
                 env: {
