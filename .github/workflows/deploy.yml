@@ -25,9 +25,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Clear Astro build cache to ensure fresh build
-      - name: Clear Astro cache
-        run: rm -rf node_modules/.astro node_modules/.vite
+      # Clear ALL build artifacts and caches to force 100% fresh build
+      - name: Clear all build caches
+        run: |
+          echo "🗑️  Clearing all build artifacts..."
+          rm -rf node_modules/.astro node_modules/.vite dist/ .astro/
+          echo "✅ All caches cleared"
 
       # Type checking temporarily disabled - 77 errors to fix
       # TODO: Re-enable after fixing TypeScript errors
@@ -104,11 +107,13 @@ jobs:
             pm2 stop vecia-website || true
             pm2 delete vecia-website || true
 
-            echo "🗑️  Clearing Node.js cache..."
+            echo "🗑️  Clearing ALL VPS-side caches..."
+            # Remove any potential cache directories on VPS
+            rm -rf .astro/ node_modules/.astro node_modules/.vite || true
             # Clear Node.js require cache by stopping process
             # PM2 will reload all modules on next start
 
-            echo "✅ PM2 process stopped and deleted"
+            echo "✅ PM2 process stopped and all caches cleared"
 
       - name: Setup and start Node.js server
         uses: appleboy/ssh-action@v1
