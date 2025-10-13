@@ -102,19 +102,3 @@ const GA_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID || 'G-3RQR1S5ZK3';
     });
   });
 </script>
-
-<!-- Debug Mode (remove in production) -->
-<script is:inline>
-  // Check if GA4 is loaded
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      if (typeof window.gtag !== 'undefined') {
-        console.log('[GA4] Status: Loaded ✅');
-        console.log('[GA4] Measurement ID:', GA_ID);
-        console.log('[GA4] Consent Mode V2: Active ✅');
-      } else {
-        console.warn('[GA4] Status: Not loaded ⚠️');
-      }
-    }, 1000);
-  });
-</script>
