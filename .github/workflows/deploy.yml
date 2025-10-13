@@ -68,10 +68,13 @@ jobs:
 
       - name: Transfer dist to VPS
         run: |
-          rsync -avzr --delete \
+          echo "🔄 Syncing dist/ to VPS (this will DELETE old files)..."
+          rsync -avzr --delete --progress \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VPS_PORT }}" \
             dist/ \
-            ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/
+            ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/ \
+          | tail -20
+          echo "✅ Dist sync complete"
 
       - name: Transfer node_modules to VPS
         run: |
@@ -87,7 +90,7 @@ jobs:
             package.json package-lock.json \
             ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/
 
-      - name: Restart PM2 and Verify
+      - name: Stop PM2 Process (Force Clean Restart)
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -97,15 +100,15 @@ jobs:
           script: |
             cd ${{ secrets.VPS_TARGET_DIR }}
 
-            echo "🔄 Restarting PM2 to load new code..."
-            pm2 restart vecia-website
+            echo "🛑 Stopping PM2 process completely..."
+            pm2 stop vecia-website || true
+            pm2 delete vecia-website || true
 
-            sleep 3
+            echo "🗑️  Clearing Node.js cache..."
+            # Clear Node.js require cache by stopping process
+            # PM2 will reload all modules on next start
 
-            echo "📊 PM2 Status:"
-            pm2 status
-
-            echo "✅ PM2 restarted successfully"
+            echo "✅ PM2 process stopped and deleted"
 
       - name: Setup and start Node.js server
         uses: appleboy/ssh-action@v1
@@ -190,10 +193,14 @@ jobs:
             echo "🗑️  Clearing old PM2 logs..."
             rm -f /var/log/vecia/pm2-*.log 2>/dev/null || true
 
-            # Note: PM2 restart happens in dedicated step after file deployment
-            # This ensures new code is fully deployed before PM2 reloads
+            # Start PM2 with ecosystem config (fresh start after delete)
+            echo "🚀 Starting PM2 with fresh process..."
+            pm2 start ecosystem.config.cjs --update-env
 
-            # Test server responds locally (PM2 already restarted in previous step)
+            echo "⏳ Waiting for server to start (5s)..."
+            sleep 5
+
+            # Test server responds locally
             echo "🔍 Testing health endpoint..."
             MAX_ATTEMPTS=3
             ATTEMPT=1
