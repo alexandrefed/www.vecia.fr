@@ -1,0 +1,2859 @@
+
+> grateful-galaxy@0.0.1 test:a11y
+> pa11y-ci
+
+Running Pa11y on 5 URLs:
+ > https://vecia.fr/ - 123 errors
+ > https://vecia.fr/en/ - 123 errors
+ > https://vecia.fr/blog/ - 21 errors
+ > https://vecia.fr/en/blog/ - 21 errors
+ > https://vecia.fr/about/ - 17 errors
+
+Errors in https://vecia.fr/:
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(2) > ul > li:nth-child(1))
+
+   <li data-astro-cid-6ly44mgg="">Notation et priorisation intell...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(2) > ul > li:nth-child(2))
+
+   <li data-astro-cid-6ly44mgg="">Séquences de nurturing automati...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(2) > ul > li:nth-child(3))
+
+   <li data-astro-cid-6ly44mgg="">Stratégies de conversion optimi...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(3) > ul > li:nth-child(1))
+
+   <li data-astro-cid-6ly44mgg="">Parcours d'onboarding personnal...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(3) > ul > li:nth-child(2))
+
+   <li data-astro-cid-6ly44mgg="">Schémas d'apprentissage adaptat...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(3) > ul > li:nth-child(3))
+
+   <li data-astro-cid-6ly44mgg="">Taux d'activation accrus</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(7) > ul > li:nth-child(1))
+
+   <li data-astro-cid-6ly44mgg="">Messages hyper-personnalisés ba...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(8) > ul > li:nth-child(1))
+
+   <li data-astro-cid-6ly44mgg="">Synchronisation et migration de...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(8) > ul > li:nth-child(2))
+
+   <li data-astro-cid-6ly44mgg="">Nettoyage et déduplication auto...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(8) > ul > li:nth-child(3))
+
+   <li data-astro-cid-6ly44mgg="">Optimisation et indexation inte...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) > h3)
+
+   <h3 class="font-display text-xl md:text-2xl font-bold text-text mb-4"
+   data-astro-cid-ryziy4ua=""> Les Publicités Intelligentes ...</h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) > h3 > span)
+
+   <span class="text-primary" data-astro-cid-ryziy4ua=""> Augmentent les
+   Inscriptions </span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) > h3)
+
+   <h3 class="font-display text-xl md:text-2xl font-bold text-text mb-4"
+   data-astro-cid-ryziy4ua=""> L'Assistant IA Offre <span cl...</h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) > h3 > span)
+
+   <span class="text-primary" data-astro-cid-ryziy4ua=""> Rapidité &amp;
+   Précision </span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) > h3)
+
+   <h3 class="font-display text-xl md:text-2xl font-bold text-text mb-4"
+   data-astro-cid-ryziy4ua=""> Une Communication Proactive <...</h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) > h3 > span)
+
+   <span class="text-primary" data-astro-cid-ryziy4ua=""> Satisfait les Clients
+   </span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(1))
+
+   <a href="/about" class="text-base font-display font-bold uppercase
+   tracking-wide text-muted hover:text-primary transition-colors"> À PROPOS </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(2))
+
+   <a href="/blog" class="text-base font-display font-bold uppercase
+   tracking-wide text-muted hover:text-primary transition-colors"> BLOG </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(3))
+
+   <a href="/contact" class="text-base font-display font-bold uppercase
+   tracking-wide text-muted hover:text-primary transition-colors"> CONTACT </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > div > button > span)
+
+   <span>fr</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(5))
+
+   <a href="https://cal.com/vecia/consultation" target="_blank" rel="noopener
+   noreferrer" data-track="book-call" data-location="navigation-desktop"
+   class="px-5 py-2.5 text-base font-semibold border-2 border-primary/30
+   rounded-lg text-primary bg-white/10...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(6))
+
+   <a href="/commencer" class="px-6 py-2.5 text-base font-semibold rounded-lg
+   text-white bg-gradient-to-r from-primary to-secondary hover:scale-105
+   hover:shadow-lg transition-all capitalize"> commencer </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(1) > div:nth-child(3) > h1)
+
+   <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display
+   font-bold mb-8" style="line-height: 1.3;"> Automatisez Vos Processus,
+   <br...</h1>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(1) > div:nth-child(3) > h1 > span)
+
+   <span class="text-primary text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
+   Économisez Plus de 20h par Sem...</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(1) > div:nth-child(3) > p)
+
+   <p class="text-base md:text-lg lg:text-xl text-muted max-w-3xl mx-auto mb-12
+   leading-relaxed"> Nous aidons les entreprises à ...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(1) > div:nth-child(3) > div >
+   a:nth-child(2))
+
+   <a href="#cases" class="flex items-center justify-center gap-2 px-8 py-4
+   text-white font-semibold rounded-lg shadow-lg bg-gradient-to-r
+   from-secondary to-accent1 hover:shadow-xl hover:-translate-y-1
+   hover:scale-105 active:scale-95 transition-all"> VO...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(1) > h2)
+
+   <h2 class="font-display text-4xl font-bold text-text mb-4"> <span
+   class="title-icon"></spa...</h2>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(1) > p)
+
+   <p class="text-lg text-muted max-w-3xl mx-auto"> Suite d'automatisation
+   complèt...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(1) > nav > button:nth-child(1))
+
+   <button @click="selectTab(0)" :class="activeTab === 0 ? 'bg-primary/10
+   text-primary border-primary/20 shadow-sm' : 'text-muted hover:text-text
+   hover:bg-gray-50 border-transparent'" class="relative flex-1 min-w-[140px]
+   py-3.5 px-4 rounded-xl font-head...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(1) > nav > button:nth-child(2))
+
+   <button @click="selectTab(1)" :class="activeTab === 1 ? 'bg-secondary/10
+   text-secondary border-secondary/20 shadow-sm' : 'text-muted hover:text-text
+   hover:bg-gray-50 border-transparent'" class="relative flex-1 min-w-[140px]
+   py-3.5 px-4 rounded-xl fon...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(1) > nav > button:nth-child(3))
+
+   <button @click="selectTab(2)" :class="activeTab === 2 ? 'bg-accent1/10
+   text-accent1 border-accent1/20 shadow-sm' : 'text-muted hover:text-text
+   hover:bg-gray-50 border-transparent'" class="relative flex-1 min-w-[140px]
+   py-3.5 px-4 rounded-xl font-head...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(1) > nav > button:nth-child(4))
+
+   <button @click="selectTab(3)" :class="activeTab === 3 ? 'bg-accent2/10
+   text-accent2 border-accent2/20 shadow-sm' : 'text-muted hover:text-text
+   hover:bg-gray-50 border-transparent'" class="relative flex-1 min-w-[140px]
+   py-3.5 px-4 rounded-xl font-head...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(1) > h4)
+
+   <h4 class="text-sm font-medium text-subtle mb-2">Données Traitées</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(1) > div)
+
+   <div class="text-3xl font-bold text-primary mb-1">12.4TB</div>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(1) > p)
+
+   <p class="text-xs text-muted">↑ 34.7% aujourd'hui</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(2) > h4)
+
+   <h4 class="text-sm font-medium text-subtle mb-2">Workflows Actifs</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(2) > div)
+
+   <div class="text-3xl font-bold text-primary mb-1">847</div>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(2) > p)
+
+   <p class="text-xs text-muted">Fonctionnement optimal</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(3) > h4)
+
+   <h4 class="text-sm font-medium text-subtle mb-2">Taux de Réussite</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(3) > div)
+
+   <div class="text-3xl font-bold text-primary mb-1">99.97%</div>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(3) > p)
+
+   <p class="text-xs text-muted">Dernières 24 heures</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(4) > h4)
+
+   <h4 class="text-sm font-medium text-subtle mb-2">Traitement Moyen</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(4) > div)
+
+   <div class="text-3xl font-bold text-primary mb-1">0.3s</div>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(4) > p)
+
+   <p class="text-xs text-muted">Par opération</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(1) > h3)
+
+   <h3 class="product-card-title" data-astro-cid-6ly44mgg=""> Analyses et
+   Rapports Internes </h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(1) > ul > li:nth-child(1))
+
+   <li data-astro-cid-6ly44mgg="">Tableaux de bord et insights en...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(1) > ul > li:nth-child(2))
+
+   <li data-astro-cid-6ly44mgg="">Analyses prédictives propulsées...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(1) > ul > li:nth-child(3))
+
+   <li data-astro-cid-6ly44mgg="">Rapports personnalisés qui s'ad...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(2) > h3)
+
+   <h3 class="product-card-title" data-astro-cid-6ly44mgg=""> Automatisation du
+   Pipeline de ...</h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(3) > h3)
+
+   <h3 class="product-card-title" data-astro-cid-6ly44mgg=""> Automatisation de
+   l'Onboarding...</h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(7) > h3)
+
+   <h3 class="product-card-title" data-astro-cid-6ly44mgg=""> Personnalisation
+   Profonde </h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(7) > ul > li:nth-child(2))
+
+   <li data-astro-cid-6ly44mgg="">Analyse comportementale et adap...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(7) > ul > li:nth-child(3))
+
+   <li data-astro-cid-6ly44mgg="">Campagnes de sensibilisation mu...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(8) > h3)
+
+   <h3 class="product-card-title" data-astro-cid-6ly44mgg=""> Automatisation de
+   Base de Donn...</h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(1) > div:nth-child(4) > a)
+
+   <a href="#contact" class="block w-full bg-gradient-to-r from-primary
+   to-secondary text-white font-bold py-3 px-6 rounded-lg text-center
+   hover:shadow-lg hover:shadow-primary/30 hover:scale-[1.02] transition-all
+   duration-300"> Consultation Gratuite </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (#currency-switcher)
+
+   <select id="currency-switcher" class="px-3 py-2 bg-gradient-to-r
+   from-primary/10 to-secondary/10 border-2 border-primary/30 rounded-lg
+   text-sm font-semibold text-text cursor-pointer hover:border-primary/50
+   focus:outline-none focus:ring-2 focus:ring-p...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > h4)
+
+   <h4 class="font-display font-bold text-lg text-text mb-2"> Victoires Rapides
+   </h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (#tier1Price)
+
+   <span id="tier1Price" class="text-3xl font-bold text-primary">1,900 €</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > ul >
+   li:nth-child(1) > span)
+
+   <span class="text-muted">1 automatisation principale</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > ul >
+   li:nth-child(2) > span)
+
+   <span class="text-muted">2 semaines d'implémentation</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > ul >
+   li:nth-child(3) > span)
+
+   <span class="text-muted">30 jours de maintenance inclus</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) >
+   span)
+
+   <span class="px-4 py-1 bg-gradient-to-r from-secondary to-accent1 text-white
+   text-[10px] font-bold rounded-full shadow-lg uppercase tracking-wide"> LE
+   PLUS POPULAIRE </span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(2) > h4)
+
+   <h4 class="font-display font-bold text-lg text-text mb-2 mt-2">
+   Transformation </h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (#tier2Price)
+
+   <span id="tier2Price" class="text-3xl font-bold text-secondary">4,500
+   €</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(2) > ul >
+   li:nth-child(1) > span)
+
+   <span class="text-muted">2-3 automatisations intégrées</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(2) > ul >
+   li:nth-child(2) > span)
+
+   <span class="text-muted">4 semaines d'implémentation</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(2) > ul >
+   li:nth-child(3) > span)
+
+   <span class="text-muted">90 jours de suivi et d'optimisa...</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > h4)
+
+   <h4 class="font-display font-bold text-lg text-text mb-2"> Accélération
+   Entreprise </h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (#tier3Price)
+
+   <span id="tier3Price" class="text-3xl font-bold text-accent1">9,000 €</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > ul >
+   li:nth-child(1) > span)
+
+   <span class="text-muted">Suite complète d'automatisation</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > ul >
+   li:nth-child(2) > span)
+
+   <span class="text-muted">6-8 semaines d'implémentation</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > ul >
+   li:nth-child(3) > span)
+
+   <span class="text-muted">6 mois de partenariat</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(1) > button:nth-child(1))
+
+   <button @click="selectTab(0)" :class="activeTab === 0 ? 'bg-gradient-to-r
+   from-secondary to-primary text-white shadow-lg' : 'bg-transparent text-muted
+   hover:bg-gray-100'" class="px-4 py-2 rounded-lg font-semibold text-sm
+   whitespace-nowrap transition-...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(1) > span)
+
+   <span class="px-4 py-1 rounded-full text-sm font-bold text-white
+   bg-gradient-to-r from-primary to-secondary" data-astro-cid-ryziy4ua="">
+   E-commerce </span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(1) > h4)
+
+   <h4 class="font-bold text-sm text-primary mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-alert...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(1) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua=""> 4
+   boutiques Shopify nécessitan...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(2) > h4)
+
+   <h4 class="font-bold text-sm text-secondary mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-setti...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(2) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Tableau de bord automatisé con...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(3) > h4)
+
+   <h4 class="font-bold text-sm text-accent1 mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-check...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(3) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Automatisation complète des pr...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(4) > div)
+
+   <div class="text-4xl md:text-5xl font-bold text-primary mb-1"
+   data-astro-cid-ryziy4ua=""> 8h </div>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(4) > p:nth-child(2))
+
+   <p class="text-base font-semibold text-text mb-1"
+   data-astro-cid-ryziy4ua=""> économisées par mois </p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(4) > p:nth-child(3))
+
+   <p class="text-xs text-muted" data-astro-cid-ryziy4ua=""> 96 heures/an ×
+   50€/heure = 4 8...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(1) > span)
+
+   <span class="px-4 py-1 rounded-full text-sm font-bold text-white
+   bg-gradient-to-r from-secondary to-accent1" data-astro-cid-ryziy4ua="">
+   Éducation </span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(1) > h4)
+
+   <h4 class="font-bold text-sm text-primary mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-alert...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(1) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Création manuelle de publicité...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(2) > h4)
+
+   <h4 class="font-bold text-sm text-secondary mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-setti...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(2) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Automatisation des publicités ...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(3) > h4)
+
+   <h4 class="font-bold text-sm text-accent1 mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-check...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(3) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Augmentation significative des...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(4) > div)
+
+   <div class="text-4xl md:text-5xl font-bold text-primary mb-1"
+   data-astro-cid-ryziy4ua=""> +47% </div>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(4) > p:nth-child(2))
+
+   <p class="text-base font-semibold text-text mb-1"
+   data-astro-cid-ryziy4ua=""> d'augmentation des inscription...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(4) > p:nth-child(3))
+
+   <p class="text-xs text-muted" data-astro-cid-ryziy4ua=""> De 100 à 147
+   inscriptions/mois...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(1) > span)
+
+   <span class="px-4 py-1 rounded-full text-sm font-bold text-white
+   bg-gradient-to-r from-accent1 to-accent2" data-astro-cid-ryziy4ua="">
+   Services Professionnels </span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(1) > h4)
+
+   <h4 class="font-bold text-sm text-primary mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-alert...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(1) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Submergé par les emails, suivi...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(2) > h4)
+
+   <h4 class="font-bold text-sm text-secondary mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-setti...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(2) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Assistant IA gérant la boîte d...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(3) > h4)
+
+   <h4 class="font-bold text-sm text-accent1 mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-check...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(3) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Amélioration spectaculaire des...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(4) > div)
+
+   <div class="text-4xl md:text-5xl font-bold text-primary mb-1"
+   data-astro-cid-ryziy4ua=""> 3x </div>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(4) > p:nth-child(2))
+
+   <p class="text-base font-semibold text-text mb-1"
+   data-astro-cid-ryziy4ua=""> plus rapide </p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(4) > p:nth-child(3))
+
+   <p class="text-xs text-muted" data-astro-cid-ryziy4ua=""> De plus de 24h à
+   8h en moyenne...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(1) > span)
+
+   <span class="px-4 py-1 rounded-full text-sm font-bold text-white
+   bg-gradient-to-r from-accent2 to-primary" data-astro-cid-ryziy4ua="">
+   Logistique </span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(1) > h4)
+
+   <h4 class="font-bold text-sm text-primary mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-alert...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(1) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Clients frustrés par le manque...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(2) > h4)
+
+   <h4 class="font-bold text-sm text-secondary mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-setti...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(2) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Système de notification automa...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(3) > h4)
+
+   <h4 class="font-bold text-sm text-accent1 mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-check...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(3) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Amélioration significative de ...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(4) > div)
+
+   <div class="text-4xl md:text-5xl font-bold text-primary mb-1"
+   data-astro-cid-ryziy4ua=""> 4.2/5 </div>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(4) > p:nth-child(2))
+
+   <p class="text-base font-semibold text-text mb-1"
+   data-astro-cid-ryziy4ua=""> score de satisfaction client </p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(4) > p:nth-child(3))
+
+   <p class="text-xs text-muted" data-astro-cid-ryziy4ua=""> Passant de 3.1/5 à
+   4.2/5 en mo...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(8) > div > h2)
+
+   <h2 class="text-3xl md:text-4xl font-heading font-bold text-center mb-4
+   text-text" data-astro-cid-poebme3s=""> <span class="title-icon" data-...</h2>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (#companySize)
+
+   <select id="companySize" name="companySize" x-model="formData.companySize"
+   required="" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg
+   focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none
+   transition-all text-text bg-white ...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(8) > div > form > button >
+   span:nth-child(1))
+
+   <span x-show="!loading" data-astro-cid-poebme3s="">Obtenir Mon Évaluation
+   Gratuite</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(9) > div:nth-child(1) > h2)
+
+   <h2 class="text-3xl sm:text-4xl md:text-5xl font-heading font-bold
+   text-white mb-6" data-astro-cid-66itwakk=""> Prêt à Automatiser et
+   Développ...</h2>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(9) > div:nth-child(1) > p)
+
+   <p class="text-base md:text-lg lg:text-xl text-white max-w-3xl mx-auto
+   mb-12" data-astro-cid-66itwakk=""> Rejoignez plus de 100 entrepri...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(9) > div:nth-child(1) > div >
+   a:nth-child(2))
+
+   <a href="/blog" class="inline-block px-8 py-4 border-2 border-white
+   text-white font-bold text-lg rounded-full hover:bg-white/10
+   hover:scale-[1.02] active:scale-[0.98] transition-all duration-300
+   min-w-[240px]" data-astro-cid-66itwakk=""> Voir Notre B...
+
+ • This link points to a named anchor "audit" within the document, but no
+   anchor exists with that name.
+
+   (html > body > main > section:nth-child(1) > div:nth-child(3) > div >
+   a:nth-child(1))
+
+   <a href="#audit" class="flex items-center justify-center gap-2 px-8 py-4
+   text-white font-semibold rounded-lg shadow-lg bg-primary hover:bg-primary/90
+   hover:shadow-xl hover:-translate-y-1 hover:scale-105 active:scale-95
+   transition-all"> AUDIT IA GRATU...
+
+ • This link points to a named anchor "cases" within the document, but no
+   anchor exists with that name.
+
+   (html > body > main > section:nth-child(1) > div:nth-child(3) > div >
+   a:nth-child(2))
+
+   <a href="#cases" class="flex items-center justify-center gap-2 px-8 py-4
+   text-white font-semibold rounded-lg shadow-lg bg-gradient-to-r
+   from-secondary to-accent1 hover:shadow-xl hover:-translate-y-1
+   hover:scale-105 active:scale-95 transition-all"> VO...
+
+ • This link points to a named anchor "contact" within the document, but no
+   anchor exists with that name.
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(1) > div:nth-child(4) > a)
+
+   <a href="#contact" class="block w-full bg-gradient-to-r from-primary
+   to-secondary text-white font-bold py-3 px-6 rounded-lg text-center
+   hover:shadow-lg hover:shadow-primary/30 hover:scale-[1.02] transition-all
+   duration-300"> Consultation Gratuite </a>
+
+ • This emailinput element does not have a name available to an accessibility
+   API. Valid names are: label element, title undefined, aria-label undefined,
+   aria-labelledby undefined.
+
+   (html > body > div:nth-child(6) > div > div:nth-child(3) > div:nth-child(2)
+   > form > div > input)
+
+   <input type="email" x-model="email" required=""
+   placeholder="votre@email.com" class="w-full px-4 py-3.5 border-2
+   border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2
+   focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white
+   ...
+
+Errors in https://vecia.fr/en/:
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(2) > ul > li:nth-child(1))
+
+   <li data-astro-cid-6ly44mgg="">Intelligent lead scoring &amp; ...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(2) > ul > li:nth-child(2))
+
+   <li data-astro-cid-6ly44mgg="">Automated nurturing sequences</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(2) > ul > li:nth-child(3))
+
+   <li data-astro-cid-6ly44mgg="">AI-optimized conversion strateg...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(3) > ul > li:nth-child(1))
+
+   <li data-astro-cid-6ly44mgg="">Personalized onboarding journey...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(3) > ul > li:nth-child(2))
+
+   <li data-astro-cid-6ly44mgg="">Adaptive learning patterns</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(3) > ul > li:nth-child(3))
+
+   <li data-astro-cid-6ly44mgg="">Increased activation rates</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(7) > ul > li:nth-child(1))
+
+   <li data-astro-cid-6ly44mgg="">AI-driven hyper-personalized me...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(8) > ul > li:nth-child(1))
+
+   <li data-astro-cid-6ly44mgg="">Data synchronization and migrat...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(8) > ul > li:nth-child(2))
+
+   <li data-astro-cid-6ly44mgg="">Automated cleaning and deduplic...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(8) > ul > li:nth-child(3))
+
+   <li data-astro-cid-6ly44mgg="">Intelligent optimization and in...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) > h3)
+
+   <h3 class="font-display text-xl md:text-2xl font-bold text-text mb-4"
+   data-astro-cid-ryziy4ua=""> Smart Ads Drive <span class="...</h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) > h3 > span)
+
+   <span class="text-primary" data-astro-cid-ryziy4ua=""> Course Growth </span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) > h3)
+
+   <h3 class="font-display text-xl md:text-2xl font-bold text-text mb-4"
+   data-astro-cid-ryziy4ua=""> AI Assistant Delivers <span c...</h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) > h3 > span)
+
+   <span class="text-primary" data-astro-cid-ryziy4ua=""> Speed &amp; Precision
+   </span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) > h3)
+
+   <h3 class="font-display text-xl md:text-2xl font-bold text-text mb-4"
+   data-astro-cid-ryziy4ua=""> Proactive Communication <span...</h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) > h3 > span)
+
+   <span class="text-primary" data-astro-cid-ryziy4ua=""> Builds Client Loyalty
+   </span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(1))
+
+   <a href="/en/about" class="text-base font-display font-bold uppercase
+   tracking-wide text-muted hover:text-primary transition-colors"> ABOUT </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(2))
+
+   <a href="/en/blog" class="text-base font-display font-bold uppercase
+   tracking-wide text-muted hover:text-primary transition-colors"> BLOG </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(3))
+
+   <a href="/en/contact" class="text-base font-display font-bold uppercase
+   tracking-wide text-muted hover:text-primary transition-colors"> CONTACT </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > div > button > span)
+
+   <span>en</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(5))
+
+   <a href="https://cal.com/vecia/consultation" target="_blank" rel="noopener
+   noreferrer" data-track="book-call" data-location="navigation-desktop"
+   class="px-5 py-2.5 text-base font-semibold border-2 border-primary/30
+   rounded-lg text-primary bg-white/10...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(6))
+
+   <a href="/en/get-started" class="px-6 py-2.5 text-base font-semibold
+   rounded-lg text-white bg-gradient-to-r from-primary to-secondary
+   hover:scale-105 hover:shadow-lg transition-all capitalize"> get started </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(1) > div:nth-child(3) > h1)
+
+   <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display
+   font-bold mb-8" style="line-height: 1.3;"> Automate Your Processes, <br>
+   ...</h1>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(1) > div:nth-child(3) > h1 > span)
+
+   <span class="text-primary text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
+   Save 20+ Hours Per Week, </span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(1) > div:nth-child(3) > p)
+
+   <p class="text-base md:text-lg lg:text-xl text-muted max-w-3xl mx-auto mb-12
+   leading-relaxed"> We help businesses implement A...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(1) > div:nth-child(3) > div >
+   a:nth-child(2))
+
+   <a href="#cases" class="flex items-center justify-center gap-2 px-8 py-4
+   text-white font-semibold rounded-lg shadow-lg bg-gradient-to-r
+   from-secondary to-accent1 hover:shadow-xl hover:-translate-y-1
+   hover:scale-105 active:scale-95 transition-all"> SE...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(1) > h2)
+
+   <h2 class="font-display text-4xl font-bold text-text mb-4"> <span
+   class="title-icon"></spa...</h2>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(1) > p)
+
+   <p class="text-lg text-muted max-w-3xl mx-auto"> Comprehensive automation
+   suite...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(1) > nav > button:nth-child(1))
+
+   <button @click="selectTab(0)" :class="activeTab === 0 ? 'bg-primary/10
+   text-primary border-primary/20 shadow-sm' : 'text-muted hover:text-text
+   hover:bg-gray-50 border-transparent'" class="relative flex-1 min-w-[140px]
+   py-3.5 px-4 rounded-xl font-head...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(1) > nav > button:nth-child(2))
+
+   <button @click="selectTab(1)" :class="activeTab === 1 ? 'bg-secondary/10
+   text-secondary border-secondary/20 shadow-sm' : 'text-muted hover:text-text
+   hover:bg-gray-50 border-transparent'" class="relative flex-1 min-w-[140px]
+   py-3.5 px-4 rounded-xl fon...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(1) > nav > button:nth-child(3))
+
+   <button @click="selectTab(2)" :class="activeTab === 2 ? 'bg-accent1/10
+   text-accent1 border-accent1/20 shadow-sm' : 'text-muted hover:text-text
+   hover:bg-gray-50 border-transparent'" class="relative flex-1 min-w-[140px]
+   py-3.5 px-4 rounded-xl font-head...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(1) > nav > button:nth-child(4))
+
+   <button @click="selectTab(3)" :class="activeTab === 3 ? 'bg-accent2/10
+   text-accent2 border-accent2/20 shadow-sm' : 'text-muted hover:text-text
+   hover:bg-gray-50 border-transparent'" class="relative flex-1 min-w-[140px]
+   py-3.5 px-4 rounded-xl font-head...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(1) > h4)
+
+   <h4 class="text-sm font-medium text-subtle mb-2">Data Processed</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(1) > div)
+
+   <div class="text-3xl font-bold text-primary mb-1">12.4TB</div>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(1) > p)
+
+   <p class="text-xs text-muted">↑ 34.7% today</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(2) > h4)
+
+   <h4 class="text-sm font-medium text-subtle mb-2">Active Workflows</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(2) > div)
+
+   <div class="text-3xl font-bold text-primary mb-1">847</div>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(2) > p)
+
+   <p class="text-xs text-muted">Operating optimally</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(3) > h4)
+
+   <h4 class="text-sm font-medium text-subtle mb-2">Success Rate</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(3) > div)
+
+   <div class="text-3xl font-bold text-primary mb-1">99.97%</div>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(3) > p)
+
+   <p class="text-xs text-muted">Last 24 hours</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(4) > h4)
+
+   <h4 class="text-sm font-medium text-subtle mb-2">Average Processing</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(4) > div)
+
+   <div class="text-3xl font-bold text-primary mb-1">0.3s</div>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div > div:nth-child(1) > div:nth-child(2) > div >
+   div:nth-child(4) > p)
+
+   <p class="text-xs text-muted">Per operation</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(1) > h3)
+
+   <h3 class="product-card-title" data-astro-cid-6ly44mgg=""> Internal
+   Analytics &amp; Repor...</h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(1) > ul > li:nth-child(1))
+
+   <li data-astro-cid-6ly44mgg="">Real-time dashboards and insigh...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(1) > ul > li:nth-child(2))
+
+   <li data-astro-cid-6ly44mgg="">ML-powered predictive analytics</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(1) > ul > li:nth-child(3))
+
+   <li data-astro-cid-6ly44mgg="">Custom reports that adapt to yo...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(2) > h3)
+
+   <h3 class="product-card-title" data-astro-cid-6ly44mgg=""> Sales Pipeline
+   Automation </h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(3) > h3)
+
+   <h3 class="product-card-title" data-astro-cid-6ly44mgg=""> Onboarding
+   Automation </h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(7) > h3)
+
+   <h3 class="product-card-title" data-astro-cid-6ly44mgg=""> Deep
+   Personalization Outreach </h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(7) > ul > li:nth-child(2))
+
+   <li data-astro-cid-6ly44mgg="">Behavioral analysis and adaptat...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(7) > ul > li:nth-child(3))
+
+   <li data-astro-cid-6ly44mgg="">Multi-channel outreach campaign...</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div:nth-child(2) >
+   div:nth-child(1) > article:nth-child(8) > h3)
+
+   <h3 class="product-card-title" data-astro-cid-6ly44mgg=""> Database
+   Automation </h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(1) > div:nth-child(4) > a)
+
+   <a href="#contact" class="block w-full bg-gradient-to-r from-primary
+   to-secondary text-white font-bold py-3 px-6 rounded-lg text-center
+   hover:shadow-lg hover:shadow-primary/30 hover:scale-[1.02] transition-all
+   duration-300"> Free Consultation </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (#currency-switcher)
+
+   <select id="currency-switcher" class="px-3 py-2 bg-gradient-to-r
+   from-primary/10 to-secondary/10 border-2 border-primary/30 rounded-lg
+   text-sm font-semibold text-text cursor-pointer hover:border-primary/50
+   focus:outline-none focus:ring-2 focus:ring-p...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > h4)
+
+   <h4 class="font-display font-bold text-lg text-text mb-2"> Quick Wins </h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (#tier1Price)
+
+   <span id="tier1Price" class="text-3xl font-bold text-primary">1,900 €</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > ul >
+   li:nth-child(1) > span)
+
+   <span class="text-muted">1 main automation</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > ul >
+   li:nth-child(2) > span)
+
+   <span class="text-muted">2-week implementation</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > ul >
+   li:nth-child(3) > span)
+
+   <span class="text-muted">30-day support</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) >
+   span)
+
+   <span class="px-4 py-1 bg-gradient-to-r from-secondary to-accent1 text-white
+   text-[10px] font-bold rounded-full shadow-lg uppercase tracking-wide"> MOST
+   POPULAR </span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(2) > h4)
+
+   <h4 class="font-display font-bold text-lg text-text mb-2 mt-2">
+   Transformation </h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (#tier2Price)
+
+   <span id="tier2Price" class="text-3xl font-bold text-secondary">4,500
+   €</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(2) > ul >
+   li:nth-child(1) > span)
+
+   <span class="text-muted">2-3 integrated automations</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(2) > ul >
+   li:nth-child(2) > span)
+
+   <span class="text-muted">4-week implementation</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(2) > ul >
+   li:nth-child(3) > span)
+
+   <span class="text-muted">90-day optimization</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > h4)
+
+   <h4 class="font-display font-bold text-lg text-text mb-2"> Enterprise
+   Acceleration </h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (#tier3Price)
+
+   <span id="tier3Price" class="text-3xl font-bold text-accent1">9,000 €</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > ul >
+   li:nth-child(1) > span)
+
+   <span class="text-muted">Full automation suite</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > ul >
+   li:nth-child(2) > span)
+
+   <span class="text-muted">6-8 week implementation</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > ul >
+   li:nth-child(3) > span)
+
+   <span class="text-muted">6-month partnership</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(1) > button:nth-child(1))
+
+   <button @click="selectTab(0)" :class="activeTab === 0 ? 'bg-gradient-to-r
+   from-secondary to-primary text-white shadow-lg' : 'bg-transparent text-muted
+   hover:bg-gray-100'" class="px-4 py-2 rounded-lg font-semibold text-sm
+   whitespace-nowrap transition-...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(1) > span)
+
+   <span class="px-4 py-1 rounded-full text-sm font-bold text-white
+   bg-gradient-to-r from-primary to-secondary" data-astro-cid-ryziy4ua="">
+   E-commerce </span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(1) > h4)
+
+   <h4 class="font-bold text-sm text-primary mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-alert...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(1) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua=""> 4
+   Shopify stores requiring 8 h...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(2) > h4)
+
+   <h4 class="font-bold text-sm text-secondary mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-setti...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(2) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Automated dashboard connecting...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(3) > h4)
+
+   <h4 class="font-bold text-sm text-accent1 mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-check...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(3) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Complete automation of reporti...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(4) > div)
+
+   <div class="text-4xl md:text-5xl font-bold text-primary mb-1"
+   data-astro-cid-ryziy4ua=""> 8h </div>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(4) > p:nth-child(2))
+
+   <p class="text-base font-semibold text-text mb-1"
+   data-astro-cid-ryziy4ua=""> saved per month </p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(1) > div > div:nth-child(2) >
+   div:nth-child(4) > p:nth-child(3))
+
+   <p class="text-xs text-muted" data-astro-cid-ryziy4ua=""> 96 hours/year ×
+   $50/hour = $4,...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(1) > span)
+
+   <span class="px-4 py-1 rounded-full text-sm font-bold text-white
+   bg-gradient-to-r from-secondary to-accent1" data-astro-cid-ryziy4ua="">
+   Education </span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(1) > h4)
+
+   <h4 class="font-bold text-sm text-primary mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-alert...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(1) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Manual ad creation, imprecise ...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(2) > h4)
+
+   <h4 class="font-bold text-sm text-secondary mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-setti...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(2) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   AI-powered Meta ad automation ...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(3) > h4)
+
+   <h4 class="font-bold text-sm text-accent1 mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-check...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(3) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Significant increase in course...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(4) > div)
+
+   <div class="text-4xl md:text-5xl font-bold text-primary mb-1"
+   data-astro-cid-ryziy4ua=""> +47% </div>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(4) > p:nth-child(2))
+
+   <p class="text-base font-semibold text-text mb-1"
+   data-astro-cid-ryziy4ua=""> increase in enrollments </p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(2) > div > div:nth-child(2) >
+   div:nth-child(4) > p:nth-child(3))
+
+   <p class="text-xs text-muted" data-astro-cid-ryziy4ua=""> From 100 to 147
+   enrollments/mo...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(1) > span)
+
+   <span class="px-4 py-1 rounded-full text-sm font-bold text-white
+   bg-gradient-to-r from-accent1 to-accent2" data-astro-cid-ryziy4ua="">
+   Professional Services </span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(1) > h4)
+
+   <h4 class="font-bold text-sm text-primary mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-alert...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(1) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Overwhelmed by emails, missed ...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(2) > h4)
+
+   <h4 class="font-bold text-sm text-secondary mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-setti...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(2) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua=""> AI
+   assistant managing inbox, s...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(3) > h4)
+
+   <h4 class="font-bold text-sm text-accent1 mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-check...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(3) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Dramatic improvement in client...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(4) > div)
+
+   <div class="text-4xl md:text-5xl font-bold text-primary mb-1"
+   data-astro-cid-ryziy4ua=""> 3x </div>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(4) > p:nth-child(2))
+
+   <p class="text-base font-semibold text-text mb-1"
+   data-astro-cid-ryziy4ua=""> faster response </p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(3) > div > div:nth-child(2) >
+   div:nth-child(4) > p:nth-child(3))
+
+   <p class="text-xs text-muted" data-astro-cid-ryziy4ua=""> From 24h+ to 8h
+   average </p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(1) > span)
+
+   <span class="px-4 py-1 rounded-full text-sm font-bold text-white
+   bg-gradient-to-r from-accent2 to-primary" data-astro-cid-ryziy4ua="">
+   Logistics </span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(1) > h4)
+
+   <h4 class="font-bold text-sm text-primary mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-alert...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(1) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Clients frustrated by lack of ...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(2) > h4)
+
+   <h4 class="font-bold text-sm text-secondary mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-setti...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(2) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Automated notification system ...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(3) > h4)
+
+   <h4 class="font-bold text-sm text-accent1 mb-2 flex items-center gap-2"
+   data-astro-cid-ryziy4ua=""> <i class="hgi-stroke hgi-check...</h4>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(3) > div:nth-child(3) > p)
+
+   <p class="text-sm text-muted leading-relaxed" data-astro-cid-ryziy4ua="">
+   Significant improvement in cus...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(4) > div)
+
+   <div class="text-4xl md:text-5xl font-bold text-primary mb-1"
+   data-astro-cid-ryziy4ua=""> +22% </div>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(4) > p:nth-child(2))
+
+   <p class="text-base font-semibold text-text mb-1"
+   data-astro-cid-ryziy4ua=""> increase in retention </p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(7) > div > div:nth-child(2) >
+   div:nth-child(4) > div:nth-child(4) > div > div:nth-child(2) >
+   div:nth-child(4) > p:nth-child(3))
+
+   <p class="text-xs text-muted" data-astro-cid-ryziy4ua=""> From 78% to 95%
+   retention rate...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(8) > div > h2)
+
+   <h2 class="text-3xl md:text-4xl font-heading font-bold text-center mb-4
+   text-text" data-astro-cid-poebme3s=""> <span class="title-icon" data-...</h2>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (#companySize)
+
+   <select id="companySize" name="companySize" x-model="formData.companySize"
+   required="" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg
+   focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none
+   transition-all text-text bg-white ...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(8) > div > form > button >
+   span:nth-child(1))
+
+   <span x-show="!loading" data-astro-cid-poebme3s="">Get My Free
+   Assessment</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(9) > div:nth-child(1) > h2)
+
+   <h2 class="text-3xl sm:text-4xl md:text-5xl font-heading font-bold
+   text-white mb-6" data-astro-cid-66itwakk=""> Ready to Automate and Scale?
+   </h2>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(9) > div:nth-child(1) > p)
+
+   <p class="text-base md:text-lg lg:text-xl text-white max-w-3xl mx-auto
+   mb-12" data-astro-cid-66itwakk=""> Join 100+ businesses saving 20...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(9) > div:nth-child(1) > div >
+   a:nth-child(2))
+
+   <a href="/en/blog" class="inline-block px-8 py-4 border-2 border-white
+   text-white font-bold text-lg rounded-full hover:bg-white/10
+   hover:scale-[1.02] active:scale-[0.98] transition-all duration-300
+   min-w-[240px]" data-astro-cid-66itwakk=""> See Our B...
+
+ • This link points to a named anchor "audit" within the document, but no
+   anchor exists with that name.
+
+   (html > body > main > section:nth-child(1) > div:nth-child(3) > div >
+   a:nth-child(1))
+
+   <a href="#audit" class="flex items-center justify-center gap-2 px-8 py-4
+   text-white font-semibold rounded-lg shadow-lg bg-primary hover:bg-primary/90
+   hover:shadow-xl hover:-translate-y-1 hover:scale-105 active:scale-95
+   transition-all"> FREE AI AUDIT ...
+
+ • This link points to a named anchor "cases" within the document, but no
+   anchor exists with that name.
+
+   (html > body > main > section:nth-child(1) > div:nth-child(3) > div >
+   a:nth-child(2))
+
+   <a href="#cases" class="flex items-center justify-center gap-2 px-8 py-4
+   text-white font-semibold rounded-lg shadow-lg bg-gradient-to-r
+   from-secondary to-accent1 hover:shadow-xl hover:-translate-y-1
+   hover:scale-105 active:scale-95 transition-all"> SE...
+
+ • This link points to a named anchor "contact" within the document, but no
+   anchor exists with that name.
+
+   (html > body > main > section:nth-child(6) > div > div:nth-child(2) > div >
+   div:nth-child(1) > div:nth-child(4) > a)
+
+   <a href="#contact" class="block w-full bg-gradient-to-r from-primary
+   to-secondary text-white font-bold py-3 px-6 rounded-lg text-center
+   hover:shadow-lg hover:shadow-primary/30 hover:scale-[1.02] transition-all
+   duration-300"> Free Consultation </a>
+
+ • This emailinput element does not have a name available to an accessibility
+   API. Valid names are: label element, title undefined, aria-label undefined,
+   aria-labelledby undefined.
+
+   (html > body > div:nth-child(6) > div > div:nth-child(3) > div:nth-child(2)
+   > form > div > input)
+
+   <input type="email" x-model="email" required=""
+   placeholder="votre@email.com" class="w-full px-4 py-3.5 border-2
+   border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2
+   focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white
+   ...
+
+Errors in https://vecia.fr/blog/:
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(1))
+
+   <a href="/about" class="text-base font-display font-bold uppercase
+   tracking-wide text-muted hover:text-primary transition-colors"> À PROPOS </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(2))
+
+   <a href="/blog" class="text-base font-display font-bold uppercase
+   tracking-wide text-muted hover:text-primary transition-colors"> BLOG </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(3))
+
+   <a href="/contact" class="text-base font-display font-bold uppercase
+   tracking-wide text-muted hover:text-primary transition-colors"> CONTACT </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > div > button > span)
+
+   <span>fr</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(5))
+
+   <a href="https://cal.com/vecia/consultation" target="_blank" rel="noopener
+   noreferrer" data-track="book-call" data-location="navigation-desktop"
+   class="px-5 py-2.5 text-base font-semibold border-2 border-primary/30
+   rounded-lg text-primary bg-white/10...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(6))
+
+   <a href="/commencer" class="px-6 py-2.5 text-base font-semibold rounded-lg
+   text-white bg-gradient-to-r from-primary to-secondary hover:scale-105
+   hover:shadow-lg transition-all capitalize"> commencer </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(1) > div > div > h1)
+
+   <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-text
+   mb-6" data-astro-cid-ijnerlr2=""> Blog <span class="text-primary...</h1>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(1) > div > div > h1 > span)
+
+   <span class="text-primary" data-astro-cid-ijnerlr2="">Vecia</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(1) > div > div > p)
+
+   <p class="text-xl text-text leading-relaxed max-w-2xl mx-auto"
+   data-astro-cid-ijnerlr2=""> Conseils d'automatisation IA, ...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(2) > div > div > div > article > a >
+   div:nth-child(1) > span)
+
+   <span class="text-white font-bold text-sm uppercase tracking-wide"
+   data-astro-cid-ijnerlr2=""> ⭐ Article en Vedette </span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(2) > div > div > aside > aside >
+   div:nth-child(1) > h3)
+
+   <h3 class="text-xl font-heading font-bold text-text mb-2"
+   data-astro-cid-rmfyhdrx=""> Évaluation IA Gratuite </h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(2) > div > div > aside > aside >
+   div:nth-child(1) > p)
+
+   <p class="text-sm text-text mb-4" data-astro-cid-rmfyhdrx=""> Découvrez 10+
+   heures d'économi...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(2) > div > div > aside > aside >
+   div:nth-child(1) > form > input)
+
+   <input x-model="email" type="email" required=""
+   placeholder="votre@email.com" class="w-full px-4 py-3 rounded-lg border
+   border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent
+   transition-all" x-show="!submitted" data-astro-cid-rmfyhd...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(2) > div > div > aside > aside >
+   div:nth-child(1) > form > button > span:nth-child(1))
+
+   <span x-show="!loading" data-astro-cid-rmfyhdrx="">Obtenir Mon Audit</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(2) > div > div > aside > aside >
+   div:nth-child(1) > form > p)
+
+   <p class="text-xs text-muted text-center" data-astro-cid-rmfyhdrx=""> 🔒 Pas
+   de spam. Désinscription...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(2) > div > div > aside > aside >
+   div:nth-child(3) > div > div:nth-child(2) > h3)
+
+   <h3 class="text-sm font-heading font-bold text-text mb-2"
+   data-astro-cid-rmfyhdrx=""> Astuce Rapide </h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(2) > div > div > aside > aside >
+   div:nth-child(3) > div > div:nth-child(2) > p)
+
+   <p class="text-xs text-text leading-relaxed" data-astro-cid-rmfyhdrx="">
+   Automatisez d'abord les tâches...</p>
+
+ • This textinput element does not have a name available to an accessibility
+   API. Valid names are: label element, title undefined, aria-label undefined,
+   aria-labelledby undefined.
+
+   (html > body > main > section:nth-child(2) > div > div > div >
+   div:nth-child(2) > div:nth-child(1) > input)
+
+   <input type="text" x-model="searchQuery" @input="filterPosts()"
+   placeholder="Rechercher un article..." class="w-full px-6 py-4 pl-14
+   rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary
+   focus:border-transparent shadow-sm" data-astro-cid-...
+
+ • This form field should be labelled in some way. Use the label element
+   (either with a "for" attribute or wrapped around the form field), or
+   "title", "aria-label" or "aria-labelledby" attributes as appropriate.
+
+   (html > body > main > section:nth-child(2) > div > div > div >
+   div:nth-child(2) > div:nth-child(1) > input)
+
+   <input type="text" x-model="searchQuery" @input="filterPosts()"
+   placeholder="Rechercher un article..." class="w-full px-6 py-4 pl-14
+   rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary
+   focus:border-transparent shadow-sm" data-astro-cid-...
+
+ • This emailinput element does not have a name available to an accessibility
+   API. Valid names are: label element, title undefined, aria-label undefined,
+   aria-labelledby undefined.
+
+   (html > body > main > section:nth-child(2) > div > div > aside > aside >
+   div:nth-child(1) > form > input)
+
+   <input x-model="email" type="email" required=""
+   placeholder="votre@email.com" class="w-full px-4 py-3 rounded-lg border
+   border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent
+   transition-all" x-show="!submitted" data-astro-cid-rmfyhd...
+
+ • This emailinput element does not have a name available to an accessibility
+   API. Valid names are: label element, title undefined, aria-label undefined,
+   aria-labelledby undefined.
+
+   (html > body > div:nth-child(6) > div > div:nth-child(3) > div:nth-child(2)
+   > form > div > input)
+
+   <input type="email" x-model="email" required=""
+   placeholder="votre@email.com" class="w-full px-4 py-3.5 border-2
+   border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2
+   focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white
+   ...
+
+Errors in https://vecia.fr/en/blog/:
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(1))
+
+   <a href="/en/about" class="text-base font-display font-bold uppercase
+   tracking-wide text-muted hover:text-primary transition-colors"> ABOUT </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(2))
+
+   <a href="/en/blog" class="text-base font-display font-bold uppercase
+   tracking-wide text-muted hover:text-primary transition-colors"> BLOG </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(3))
+
+   <a href="/en/contact" class="text-base font-display font-bold uppercase
+   tracking-wide text-muted hover:text-primary transition-colors"> CONTACT </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > div > button > span)
+
+   <span>en</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(5))
+
+   <a href="https://cal.com/vecia/consultation" target="_blank" rel="noopener
+   noreferrer" data-track="book-call" data-location="navigation-desktop"
+   class="px-5 py-2.5 text-base font-semibold border-2 border-primary/30
+   rounded-lg text-primary bg-white/10...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(6))
+
+   <a href="/en/get-started" class="px-6 py-2.5 text-base font-semibold
+   rounded-lg text-white bg-gradient-to-r from-primary to-secondary
+   hover:scale-105 hover:shadow-lg transition-all capitalize"> get started </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(1) > div > nav > ol >
+   li:nth-child(1) > a)
+
+   <a href="/en" class="hover:text-primary transition-colors"
+   data-astro-cid-zkuempfj="">Home</a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(1) > div > nav > ol >
+   li:nth-child(3))
+
+   <li class="text-neutral-900 dark:text-neutral-100 font-medium"
+   data-astro-cid-zkuempfj="">Blog</li>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(1) > div > div > h1)
+
+   <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-neutral-900
+   dark:text-white mb-6" data-astro-cid-zkuempfj=""> Automation Guides &amp;
+   <span ...</h1>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(1) > div > div > h1 > span)
+
+   <span class="text-gradient" data-astro-cid-zkuempfj="">Insights</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(1) > div > div > p)
+
+   <p class="text-lg sm:text-xl text-neutral-700 dark:text-neutral-300
+   leading-relaxed" data-astro-cid-zkuempfj=""> Discover how to automate your
+   ...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(2) > div > div > div > article > a >
+   div:nth-child(1) > span)
+
+   <span class="inline-flex items-center px-3 py-1 rounded-full text-sm
+   font-semibold bg-accent text-white shadow-lg" data-astro-cid-zkuempfj="">
+   <svg class="w-4 h-4 mr-1" fill...</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(2) > div > div > aside > aside >
+   div:nth-child(1) > h3)
+
+   <h3 class="text-xl font-heading font-bold text-text mb-2"
+   data-astro-cid-rmfyhdrx=""> Free AI Assessment </h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(2) > div > div > aside > aside >
+   div:nth-child(1) > p)
+
+   <p class="text-sm text-text mb-4" data-astro-cid-rmfyhdrx=""> Discover 10+
+   hours of savings ...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(2) > div > div > aside > aside >
+   div:nth-child(1) > form > input)
+
+   <input x-model="email" type="email" required="" placeholder="your@email.com"
+   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2
+   focus:ring-primary focus:border-transparent transition-all"
+   x-show="!submitted" data-astro-cid-rmfyhdr...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(2) > div > div > aside > aside >
+   div:nth-child(1) > form > button > span:nth-child(1))
+
+   <span x-show="!loading" data-astro-cid-rmfyhdrx="">Get My Audit</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(2) > div > div > aside > aside >
+   div:nth-child(1) > form > p)
+
+   <p class="text-xs text-muted text-center" data-astro-cid-rmfyhdrx=""> 🔒 No
+   spam. Unsubscribe anytim...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(2) > div > div > aside > aside >
+   div:nth-child(3) > div > div:nth-child(2) > h3)
+
+   <h3 class="text-sm font-heading font-bold text-text mb-2"
+   data-astro-cid-rmfyhdrx=""> Quick Tip </h3>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(2) > div > div > aside > aside >
+   div:nth-child(3) > div > div:nth-child(2) > p)
+
+   <p class="text-xs text-text leading-relaxed" data-astro-cid-rmfyhdrx="">
+   Automate repetitive tasks taki...</p>
+
+ • This emailinput element does not have a name available to an accessibility
+   API. Valid names are: label element, title undefined, aria-label undefined,
+   aria-labelledby undefined.
+
+   (html > body > main > section:nth-child(2) > div > div > aside > aside >
+   div:nth-child(1) > form > input)
+
+   <input x-model="email" type="email" required="" placeholder="your@email.com"
+   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2
+   focus:ring-primary focus:border-transparent transition-all"
+   x-show="!submitted" data-astro-cid-rmfyhdr...
+
+ • This emailinput element does not have a name available to an accessibility
+   API. Valid names are: label element, title undefined, aria-label undefined,
+   aria-labelledby undefined.
+
+   (html > body > div:nth-child(6) > div > div:nth-child(3) > div:nth-child(2)
+   > form > div > input)
+
+   <input type="email" x-model="email" required=""
+   placeholder="votre@email.com" class="w-full px-4 py-3.5 border-2
+   border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2
+   focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white
+   ...
+
+Errors in https://vecia.fr/about/:
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(1))
+
+   <a href="/about" class="text-base font-display font-bold uppercase
+   tracking-wide text-muted hover:text-primary transition-colors"> À PROPOS </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(2))
+
+   <a href="/blog" class="text-base font-display font-bold uppercase
+   tracking-wide text-muted hover:text-primary transition-colors"> BLOG </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(3))
+
+   <a href="/contact" class="text-base font-display font-bold uppercase
+   tracking-wide text-muted hover:text-primary transition-colors"> CONTACT </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > div > button > span)
+
+   <span>fr</span>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(5))
+
+   <a href="https://cal.com/vecia/consultation" target="_blank" rel="noopener
+   noreferrer" data-track="book-call" data-location="navigation-desktop"
+   class="px-5 py-2.5 text-base font-semibold border-2 border-primary/30
+   rounded-lg text-primary bg-white/10...
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > nav > div > div:nth-child(1) > div > a:nth-child(6))
+
+   <a href="/commencer" class="px-6 py-2.5 text-base font-semibold rounded-lg
+   text-white bg-gradient-to-r from-primary to-secondary hover:scale-105
+   hover:shadow-lg transition-all capitalize"> commencer </a>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(1) > div:nth-child(2) > div > h1)
+
+   <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">
+   Nous transformons la façon don...</h1>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(1) > div:nth-child(2) > div > p)
+
+   <p class="text-xl md:text-2xl text-muted"> En déployant des agents IA
+   qui...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(3) > div > div > div:nth-child(1) >
+   h2)
+
+   <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4"> <span
+   class="title-icon"></spa...</h2>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(3) > div > div > div:nth-child(1) >
+   p)
+
+   <p class="text-lg text-muted"> Les principes qui guident chaq...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div > div:nth-child(1) >
+   h2)
+
+   <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4"> <span
+   class="title-icon"></spa...</h2>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div > div:nth-child(1) >
+   p)
+
+   <p class="text-lg text-muted"> Une équipe passionnée par l'in...</p>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div > h2)
+
+   <h2 class="text-3xl md:text-4xl font-heading font-bold mb-6"> <span
+   class="title-icon"></spa...</h2>
+
+ • Elements must meet minimum color contrast ratio thresholds
+   (https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI)
+
+   (html > body > main > section:nth-child(6) > div > div > p)
+
+   <p class="text-xl mb-8 opacity-90"> Découvrez comment l'IA agentiq...</p>
+
+ • Links must be distinguishable without relying on color
+   (https://dequeuniversity.com/rules/axe/4.10/link-in-text-block?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div > div:nth-child(2) >
+   div:nth-child(1) > div:nth-child(2) > a)
+
+   <a href="https://linkedin.com/in/alexandre-fedotov" target="_blank"
+   rel="noopener noreferrer" class="inline-flex items-center text-primary
+   hover:text-secondary transition-colors"> <svg class="w-5 h-5 mr-2"
+   fill...</a>
+
+ • Links must be distinguishable without relying on color
+   (https://dequeuniversity.com/rules/axe/4.10/link-in-text-block?application=axeAPI)
+
+   (html > body > main > section:nth-child(5) > div > div > div:nth-child(2) >
+   div:nth-child(2) > div:nth-child(2) > a)
+
+   <a href="https://linkedin.com/in/tanguy-dray" target="_blank" rel="noopener
+   noreferrer" class="inline-flex items-center text-primary
+   hover:text-secondary transition-colors"> <svg class="w-5 h-5 mr-2"
+   fill...</a>
+
+ • This emailinput element does not have a name available to an accessibility
+   API. Valid names are: label element, title undefined, aria-label undefined,
+   aria-labelledby undefined.
+
+   (html > body > div:nth-child(6) > div > div:nth-child(3) > div:nth-child(2)
+   > form > div > input)
+
+   <input type="email" x-model="email" required=""
+   placeholder="votre@email.com" class="w-full px-4 py-3.5 border-2
+   border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2
+   focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white
+   ...
+
+✘ 0/5 URLs passed

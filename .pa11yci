@@ -14,29 +14,36 @@
   },
   "urls": [
     {
-      "url": "http://localhost:4322/",
+      "url": "https://vecia.fr/",
       "screenCapture": "./pa11y-reports/homepage-fr.png",
       "actions": [
         "wait for element body to be visible"
       ]
     },
     {
-      "url": "http://localhost:4322/en/",
+      "url": "https://vecia.fr/en/",
       "screenCapture": "./pa11y-reports/homepage-en.png",
       "actions": [
         "wait for element body to be visible"
       ]
     },
     {
-      "url": "http://localhost:4322/blog/",
+      "url": "https://vecia.fr/blog/",
       "screenCapture": "./pa11y-reports/blog-homepage.png",
       "actions": [
         "wait for element body to be visible"
       ]
     },
     {
-      "url": "http://localhost:4322/en/blog/",
+      "url": "https://vecia.fr/en/blog/",
       "screenCapture": "./pa11y-reports/blog-homepage-en.png",
+      "actions": [
+        "wait for element body to be visible"
+      ]
+    },
+    {
+      "url": "https://vecia.fr/about/",
+      "screenCapture": "./pa11y-reports/about-page.png",
       "actions": [
         "wait for element body to be visible"
       ]
