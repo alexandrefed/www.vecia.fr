@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogSidebar from '../../components/blog/BlogSidebar.astro';
+import StructuredData from '../../components/seo/StructuredData.astro';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 
 const lang = 'en' as const;
@@ -63,7 +64,17 @@ const seoData = {
   keywords: 'business automation, no-code automation, process optimization, workflow automation, Make.com guides, n8n tutorials, Zapier alternatives',
   ogImage: '/images/og/blog-en.jpg'
 };
+
+// Breadcrumb structured data for SEO
+const breadcrumbData = {
+  items: [
+    { name: 'Home', url: 'https://vecia.com/en/' },
+    { name: 'Blog', url: 'https://vecia.com/en/blog/' }
+  ]
+};
 ---
+
+<StructuredData type="breadcrumb" data={breadcrumbData} />
 
 <BaseLayout
   title={seoData.title}

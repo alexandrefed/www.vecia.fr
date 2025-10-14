@@ -1,10 +1,21 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import StructuredData from '../../components/seo/StructuredData.astro';
 import { ui } from '../../i18n/ui';
 
 const lang = 'en';
 const t = ui[lang];
+
+// Breadcrumb structured data for SEO
+const breadcrumbData = {
+  items: [
+    { name: 'Home', url: 'https://vecia.com/en/' },
+    { name: 'About', url: 'https://vecia.com/en/about/' }
+  ]
+};
 ---
+
+<StructuredData type="breadcrumb" data={breadcrumbData} />
 
 <BaseLayout
   title={t['about.meta.title']}

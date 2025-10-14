@@ -15,6 +15,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogSidebar from '../components/blog/BlogSidebar.astro';
+import StructuredData from '../components/seo/StructuredData.astro';
 
 const lang = 'fr';
 
@@ -66,7 +67,17 @@ function formatDate(date: Date): string {
 // Page metadata
 const pageTitle = 'Blog Vecia - Automatisation IA & Conseils Business';
 const pageDescription = 'Découvrez nos articles sur l\'automatisation IA, les meilleures pratiques business et les cas d\'usage concrets pour transformer votre entreprise.';
+
+// Breadcrumb structured data for SEO
+const breadcrumbData = {
+  items: [
+    { name: 'Accueil', url: 'https://vecia.com/' },
+    { name: 'Blog', url: 'https://vecia.com/blog/' }
+  ]
+};
 ---
+
+<StructuredData type="breadcrumb" data={breadcrumbData} />
 
 <BaseLayout title={pageTitle} description={pageDescription} lang={lang}>
   <!-- Blog Hero Section -->
