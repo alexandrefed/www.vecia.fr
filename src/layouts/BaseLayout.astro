@@ -131,6 +131,15 @@ const structuredData = {
     <GoogleAnalytics />
 
     <!-- Breadcrumb structured data (if provided) -->
+    {(() => {
+      if (breadcrumbData) {
+        console.log('[DEBUG BaseLayout] ✅ Breadcrumb data received:', JSON.stringify(breadcrumbData, null, 2));
+        console.log('[DEBUG BaseLayout] Pathname:', Astro.url.pathname);
+        console.log('[DEBUG BaseLayout] Items count:', breadcrumbData.items?.length);
+      } else {
+        console.log('[DEBUG BaseLayout] ❌ No breadcrumb data for:', Astro.url.pathname);
+      }
+    })()}
     {breadcrumbData && <StructuredData type="breadcrumb" data={breadcrumbData} />}
 
     <!-- Page-specific head content (e.g., article schemas) -->
