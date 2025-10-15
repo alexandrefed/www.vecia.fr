@@ -15,13 +15,12 @@ const breadcrumbData = {
 };
 ---
 
-<StructuredData type="breadcrumb" data={breadcrumbData} />
-
 <BaseLayout
   title={t['about.meta.title']}
   description={t['about.meta.description']}
   lang={lang}
 >
+  <StructuredData slot="head" type="breadcrumb" data={breadcrumbData} />
   <!-- Hero Section -->
   <section class="relative py-20 overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent1/5"></div>

@@ -77,9 +77,8 @@ const breadcrumbData = {
 };
 ---
 
-<StructuredData type="breadcrumb" data={breadcrumbData} />
-
 <BaseLayout title={pageTitle} description={pageDescription} lang={lang}>
+  <StructuredData slot="head" type="breadcrumb" data={breadcrumbData} />
   <!-- Blog Hero Section -->
   <section class="bg-gradient-to-br from-accent3 via-white to-accent1/20 pt-32 pb-16">
     <div class="container mx-auto px-4 md:px-6">

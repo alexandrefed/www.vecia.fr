@@ -74,8 +74,6 @@ const breadcrumbData = {
 };
 ---
 
-<StructuredData type="breadcrumb" data={breadcrumbData} />
-
 <BaseLayout
   title={seoData.title}
   description={seoData.description}
@@ -83,6 +81,7 @@ const breadcrumbData = {
   lang={lang}
   ogImage={seoData.ogImage}
 >
+  <StructuredData slot="head" type="breadcrumb" data={breadcrumbData} />
   <!-- Blog Header -->
   <section class="bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 pt-24 pb-12 md:pt-32 md:pb-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
