@@ -93,7 +93,7 @@ jobs:
             package.json package-lock.json \
             ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/
 
-      - name: Stop PM2 Process (Force Clean Restart)
+      - name: Kill PM2 Daemon (Complete Restart)
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -103,9 +103,10 @@ jobs:
           script: |
             cd ${{ secrets.VPS_TARGET_DIR }}
 
-            echo "🛑 Stopping PM2 process completely..."
-            pm2 stop vecia-website || true
-            pm2 delete vecia-website || true
+            echo "🛑 Killing PM2 daemon completely (ensures no stale processes)..."
+            # pm2 kill stops the entire PM2 daemon (all processes)
+            # This is stronger than pm2 stop/delete and ensures clean state
+            pm2 kill || true
 
             echo "🗑️  Clearing ALL VPS-side caches..."
             # Remove any potential cache directories on VPS
@@ -113,7 +114,7 @@ jobs:
             # Clear Node.js require cache by stopping process
             # PM2 will reload all modules on next start
 
-            echo "✅ PM2 process stopped and all caches cleared"
+            echo "✅ PM2 daemon killed and all caches cleared"
 
       - name: Setup and start Node.js server
         uses: appleboy/ssh-action@v1
@@ -176,9 +177,14 @@ jobs:
                 error_file: '/var/log/vecia/pm2-error.log',
                 out_file: '/var/log/vecia/pm2-out.log',
                 time: true,
-                autorestart: true,
-                max_restarts: 10,
-                min_uptime: '10s'
+                // Hardened restart policies (2025 best practices)
+                autorestart: true,              // Always restart on crash
+                max_restarts: 15,               // Increased from 10 (allow more retries)
+                min_uptime: '5s',               // Reduced from 10s (faster crash detection)
+                restart_delay: 4000,            // 4s delay between restarts (prevent rapid loops)
+                kill_timeout: 5000,             // 5s graceful shutdown timeout
+                wait_ready: true,               // Wait for process.send('ready') signal
+                listen_timeout: 10000           // 10s timeout for server to start listening
               }]
             };
             EOFCONFIG
@@ -198,41 +204,70 @@ jobs:
             echo "🗑️  Clearing old PM2 logs..."
             rm -f /var/log/vecia/pm2-*.log 2>/dev/null || true
 
-            # Start PM2 with ecosystem config (fresh start after delete)
+            # Start PM2 with ecosystem config (fresh start after daemon kill)
             echo "🚀 Starting PM2 with fresh process..."
-            pm2 start ecosystem.config.cjs --update-env
+            pm2 start ecosystem.config.cjs --update-env --log-date-format="YYYY-MM-DD HH:mm:ss"
 
-            echo "⏳ Waiting for server to start (5s)..."
-            sleep 5
+            echo "⏳ Waiting for server to fully initialize (10s)..."
+            sleep 10
 
-            # Test server responds locally
-            echo "🔍 Testing health endpoint..."
-            MAX_ATTEMPTS=3
+            # Check if PM2 crashed immediately after start
+            echo "🔍 Verifying PM2 didn't crash..."
+            PM2_STATUS=$(pm2 jlist | jq -r '.[0].pm2_env.status' 2>/dev/null || echo "unknown")
+            echo "PM2 Status: $PM2_STATUS"
+
+            if [ "$PM2_STATUS" = "errored" ] || [ "$PM2_STATUS" = "stopped" ]; then
+              echo "❌ CRITICAL: PM2 crashed after startup!"
+              echo "📋 PM2 Status:"
+              pm2 status
+              echo ""
+              echo "🔴 Error logs (last 100 lines):"
+              pm2 logs vecia-website --err --lines 100 --nostream || cat /var/log/vecia/pm2-error.log 2>/dev/null || echo "No error logs found"
+              exit 1
+            fi
+
+            echo "✅ PM2 process running stably"
+
+            # Test server responds locally with retries
+            echo "🔍 Testing health endpoint with retries..."
+            MAX_ATTEMPTS=5
             ATTEMPT=1
             HEALTH_SUCCESS=false
 
             while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
-              echo "Attempt $ATTEMPT/$MAX_ATTEMPTS..."
+              echo "Health check attempt $ATTEMPT/$MAX_ATTEMPTS..."
+
+              # Check if PM2 is still running before health check
+              PM2_STATUS=$(pm2 jlist | jq -r '.[0].pm2_env.status' 2>/dev/null || echo "unknown")
+              if [ "$PM2_STATUS" = "errored" ] || [ "$PM2_STATUS" = "stopped" ]; then
+                echo "❌ PM2 crashed during health check (attempt $ATTEMPT)"
+                break
+              fi
+
+              # Perform health check
               if curl -f -s http://127.0.0.1:4321/api/health.json > /dev/null; then
                 echo "✅ Health check passed: Node.js server is responding"
                 HEALTH_SUCCESS=true
                 break
               else
                 if [ $ATTEMPT -lt $MAX_ATTEMPTS ]; then
-                  echo "⏳ Server not ready yet, waiting 10 seconds..."
-                  sleep 10
+                  echo "⏳ Server not ready yet, waiting 5 seconds..."
+                  sleep 5
                 fi
                 ATTEMPT=$((ATTEMPT + 1))
               fi
             done
 
             if [ "$HEALTH_SUCCESS" = false ]; then
-              echo "❌ Health check failed after $MAX_ATTEMPTS attempts (35s total wait)"
+              echo "❌ Health check failed after $MAX_ATTEMPTS attempts"
               echo "📋 PM2 Status:"
               pm2 status
               echo ""
-              echo "🔴 Error logs:"
-              pm2 logs vecia-website --err --lines 50 --nostream
+              echo "🔴 PM2 Error logs (last 100 lines):"
+              pm2 logs vecia-website --err --lines 100 --nostream || cat /var/log/vecia/pm2-error.log 2>/dev/null || echo "No error logs found"
+              echo ""
+              echo "📘 PM2 Output logs (last 50 lines):"
+              pm2 logs vecia-website --out --lines 50 --nostream || cat /var/log/vecia/pm2-out.log 2>/dev/null || echo "No output logs found"
               exit 1
             fi
 
