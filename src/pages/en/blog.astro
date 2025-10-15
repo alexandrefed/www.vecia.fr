@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogSidebar from '../../components/blog/BlogSidebar.astro';
-import StructuredData from '../../components/seo/StructuredData.astro';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 
 const lang = 'en' as const;
@@ -77,13 +76,9 @@ const breadcrumbData = {
 <BaseLayout
   title={seoData.title}
   description={seoData.description}
-  keywords={seoData.keywords}
   lang={lang}
-  ogImage={seoData.ogImage}
+  breadcrumbData={breadcrumbData}
 >
-  <Fragment slot="head">
-    <StructuredData type="breadcrumb" data={breadcrumbData} />
-  </Fragment>
   <!-- Blog Header -->
   <section class="bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 pt-24 pb-12 md:pt-32 md:pb-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

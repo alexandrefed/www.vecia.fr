@@ -23,9 +23,10 @@ interface Props {
   title: string;
   description: string;
   lang: 'fr' | 'en';
+  breadcrumbData?: { items: Array<{ name: string; url: string }> };
 }
 
-const { title, description, lang } = Astro.props;
+const { title, description, lang, breadcrumbData } = Astro.props;
 
 // SEO: Canonical URL setup
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://vecia.com');
@@ -129,7 +130,10 @@ const structuredData = {
     <!-- Google Analytics 4 with Consent Mode V2 -->
     <GoogleAnalytics />
 
-    <!-- Page-specific head content (e.g., breadcrumbs, article schemas) -->
+    <!-- Breadcrumb structured data (if provided) -->
+    {breadcrumbData && <StructuredData type="breadcrumb" data={breadcrumbData} />}
+
+    <!-- Page-specific head content (e.g., article schemas) -->
     <slot name="head" />
   </head>
 

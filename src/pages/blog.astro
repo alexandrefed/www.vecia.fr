@@ -15,7 +15,6 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogSidebar from '../components/blog/BlogSidebar.astro';
-import StructuredData from '../components/seo/StructuredData.astro';
 
 const lang = 'fr';
 
@@ -77,10 +76,7 @@ const breadcrumbData = {
 };
 ---
 
-<BaseLayout title={pageTitle} description={pageDescription} lang={lang}>
-  <Fragment slot="head">
-    <StructuredData type="breadcrumb" data={breadcrumbData} />
-  </Fragment>
+<BaseLayout title={pageTitle} description={pageDescription} lang={lang} breadcrumbData={breadcrumbData}>
   <!-- Blog Hero Section -->
   <section class="bg-gradient-to-br from-accent3 via-white to-accent1/20 pt-32 pb-16">
     <div class="container mx-auto px-4 md:px-6">
