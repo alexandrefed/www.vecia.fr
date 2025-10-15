@@ -114,6 +114,12 @@ jobs:
             # Clear Node.js require cache by stopping process
             # PM2 will reload all modules on next start
 
+            # Clear Nginx cache if it exists
+            echo "🗑️  Clearing Nginx cache..."
+            sudo rm -rf /var/cache/nginx/* || true
+            sudo rm -rf /tmp/nginx_cache/* || true
+            echo "✅ Nginx cache cleared"
+
             echo "✅ PM2 daemon killed and all caches cleared"
 
       - name: Setup and start Node.js server
@@ -274,8 +280,10 @@ jobs:
             # Save PM2 process list
             pm2 save
 
-            # PM2 startup already configured on VPS - skip sudo command
-            # nginx automatically picks up changes through reverse proxy
+            # Reload Nginx to clear any reverse proxy cache
+            echo "🔄 Reloading Nginx..."
+            sudo nginx -t && sudo systemctl reload nginx || echo "⚠️  Nginx reload failed (may need manual intervention)"
+            echo "✅ Nginx reloaded"
 
             # Display deployment status
             echo ""
