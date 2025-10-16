@@ -1,7 +1,7 @@
-# GitHub Actions Workflow for Astro Deployment to Vecia VPS
-# Save this file as .github/workflows/deploy.yml in your Astro repository
+# GitHub Actions Workflow for Astro Deployment to Vecia VPS (Docker)
+# Migrated from PM2 to Docker for better reliability and automatic restarts
 
-name: Deploy Astro to Vecia VPS
+name: Deploy Astro to Vecia VPS (Docker)
 
 on:
   push:
@@ -16,38 +16,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
         with:
-          node-version: 20
-          cache: 'npm'
+          context: .
+          file: ./Dockerfile
+          push: false
+          load: true
+          tags: vecia-website:${{ github.sha }},vecia-website:latest
+          build-args: |
+            NODE_VERSION=20.18.1
+            PUBLIC_SITE_URL=https://vecia.fr
+            PUBLIC_CAL_EMBED_URL=https://cal.vecia.fr
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-      - name: Install dependencies
-        run: npm ci
-
-      # Clear ALL build artifacts and caches to force 100% fresh build
-      - name: Clear all build caches
+      - name: Save Docker image to tar
         run: |
-          echo "🗑️  Clearing all build artifacts..."
-          rm -rf node_modules/.astro node_modules/.vite dist/ .astro/
-          echo "✅ All caches cleared"
-
-      # Type checking temporarily disabled - 77 errors to fix
-      # TODO: Re-enable after fixing TypeScript errors
-      # - name: Run type checking
-      #   run: npm run astro check
-
-      - name: Build Astro site
-        run: npm run build
-        env:
-          # Public environment variables (available client-side)
-          PUBLIC_SITE_URL: https://vecia.fr
-          PUBLIC_CAL_EMBED_URL: https://cal.vecia.fr
-          PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
-          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
-
-      - name: Install dependencies for production
-        run: npm ci
+          echo "📦 Saving Docker image..."
+          docker save vecia-website:latest | gzip > vecia-website.tar.gz
+          ls -lh vecia-website.tar.gz
+          echo "✅ Image saved"
 
       - name: Setup SSH key (decode base64 and validate)
         id: ssh_key
@@ -69,31 +61,26 @@ jobs:
 
           echo "✅ SSH key ready for deployment"
 
-      - name: Transfer dist to VPS
+      - name: Transfer Docker image to VPS
         run: |
-          echo "🔄 Syncing dist/ to VPS (this will DELETE old files)..."
-          rsync -avzr --delete --progress \
+          echo "🚀 Transferring Docker image to VPS..."
+          rsync -avz --progress \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VPS_PORT }}" \
-            dist/ \
+            vecia-website.tar.gz \
             ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/ \
           | tail -20
-          echo "✅ Dist sync complete"
+          echo "✅ Image transfer complete"
 
-      - name: Transfer node_modules to VPS
+      - name: Transfer Docker Compose files to VPS
         run: |
-          rsync -avzr \
-            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VPS_PORT }}" \
-            node_modules/ \
-            ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/node_modules/
-
-      - name: Transfer package files to VPS
-        run: |
+          echo "📋 Transferring docker-compose.yml..."
           rsync -avz \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VPS_PORT }}" \
-            package.json package-lock.json \
+            docker-compose.yml \
             ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET_DIR }}/
+          echo "✅ Compose file transferred"
 
-      - name: Kill PM2 Daemon (Complete Restart)
+      - name: Deploy with Docker Compose on VPS
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -103,201 +90,52 @@ jobs:
           script: |
             cd ${{ secrets.VPS_TARGET_DIR }}
 
-            echo "🛑 Killing PM2 daemon completely (ensures no stale processes)..."
-            # pm2 kill stops the entire PM2 daemon (all processes)
-            # This is stronger than pm2 stop/delete and ensures clean state
-            pm2 kill || true
+            echo "📥 Loading Docker image..."
+            gunzip -c vecia-website.tar.gz | docker load
 
-            echo "🗑️  Clearing ALL VPS-side caches..."
-            # Remove any potential cache directories on VPS
-            rm -rf .astro/ node_modules/.astro node_modules/.vite || true
-            # Clear Node.js require cache by stopping process
-            # PM2 will reload all modules on next start
+            echo "🔧 Creating/updating .env file..."
+            cat > .env << 'EOF'
+            PUBLIC_SUPABASE_URL=http://85.25.172.47:8100
+            PUBLIC_SUPABASE_ANON_KEY=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlLWRlbW8iLCJpYXQiOjE2NDE3NjkyMDAsImV4cCI6MTc5OTUzNTYwMH0.Jp4HPK5Cr7GM2j5eu4SMSYrmyPnL_moGV_olTHvcZbQ
+            EOF
 
-            # Clear Nginx cache if it exists
-            echo "🗑️  Clearing Nginx cache..."
-            sudo rm -rf /var/cache/nginx/* || true
-            sudo rm -rf /tmp/nginx_cache/* || true
-            echo "✅ Nginx cache cleared"
+            echo "🔄 Deploying with Docker Compose..."
+            docker compose down || true
+            docker compose up -d
 
-            echo "✅ PM2 daemon killed and all caches cleared"
-
-      - name: Setup and start Node.js server
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ steps.ssh_key.outputs.decoded_key }}
-          port: ${{ secrets.VPS_PORT }}
-          envs: VPS_TARGET_DIR
-          script: |
-            # Export environment variables (passed via envs parameter)
-            export VPS_TARGET_DIR="${{ secrets.VPS_TARGET_DIR }}"
-
-            # Verify directory exists
-            if [ ! -d "$VPS_TARGET_DIR" ]; then
-              echo "❌ Error: VPS_TARGET_DIR does not exist: $VPS_TARGET_DIR"
-              exit 1
-            fi
-
-            # Set proper permissions (no sudo - user owns files)
-            find "$VPS_TARGET_DIR" -type d -exec chmod 755 {} \;
-            find "$VPS_TARGET_DIR" -type f -exec chmod 644 {} \;
-
-            # Make server entry point executable
-            chmod +x "$VPS_TARGET_DIR/server/entry.mjs"
-
-            # PM2 should already be installed globally
-            # If not, install without sudo (user-level install)
-            if ! command -v pm2 &> /dev/null; then
-              npm install -g pm2
-              echo "✅ PM2 installed"
-            fi
-
-            # Navigate to deployment directory
-            cd "$VPS_TARGET_DIR"
-
-            # Verify server entry point exists
-            if [ ! -f "./server/entry.mjs" ]; then
-              echo "❌ Error: server/entry.mjs not found in $VPS_TARGET_DIR"
-              exit 1
-            fi
-
-            # Create ecosystem config in /tmp (always writable) then move
-            # Note: Using non-PUBLIC_ prefixed vars to avoid Vite static replacement
-            cat > /tmp/ecosystem.config.cjs << EOFCONFIG
-            module.exports = {
-              apps: [{
-                name: 'vecia-website',
-                script: './server/entry.mjs',
-                cwd: process.cwd(),
-                instances: 1,
-                exec_mode: 'cluster',
-                env: {
-                  HOST: '127.0.0.1',
-                  PORT: 4321,
-                  NODE_ENV: 'production',
-                  PUBLIC_SUPABASE_URL: 'http://85.25.172.47:8100',
-                  PUBLIC_SUPABASE_ANON_KEY: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlLWRlbW8iLCJpYXQiOjE2NDE3NjkyMDAsImV4cCI6MTc5OTUzNTYwMH0.Jp4HPK5Cr7GM2j5eu4SMSYrmyPnL_moGV_olTHvcZbQ'
-                },
-                error_file: '/var/log/vecia/pm2-error.log',
-                out_file: '/var/log/vecia/pm2-out.log',
-                time: true,
-                // Hardened restart policies (2025 best practices)
-                autorestart: true,              // Always restart on crash
-                max_restarts: 15,               // Increased from 10 (allow more retries)
-                min_uptime: '5s',               // Reduced from 10s (faster crash detection)
-                restart_delay: 4000,            // 4s delay between restarts (prevent rapid loops)
-                kill_timeout: 5000,             // 5s graceful shutdown timeout
-                wait_ready: true,               // Wait for process.send('ready') signal
-                listen_timeout: 10000           // 10s timeout for server to start listening
-              }]
-            };
-            EOFCONFIG
-
-            # Move config from /tmp to deployment directory (no sudo needed)
-            mv /tmp/ecosystem.config.cjs "$VPS_TARGET_DIR/ecosystem.config.cjs"
-            chmod 644 "$VPS_TARGET_DIR/ecosystem.config.cjs"
-            echo "✅ Ecosystem config created and moved to deployment directory"
-
-            # Startup diagnostics
-            echo "🔍 Pre-startup diagnostics:"
-            echo "Node.js version: $(node --version)"
-            echo "Entry point exists: $(test -f './server/entry.mjs' && echo 'YES' || echo 'NO')"
-            echo "Port 4321 status: $(lsof -ti:4321 && echo 'IN USE' || echo 'AVAILABLE')"
-
-            # Delete old PM2 log files (pm2 flush doesn't work reliably)
-            echo "🗑️  Clearing old PM2 logs..."
-            rm -f /var/log/vecia/pm2-*.log 2>/dev/null || true
-
-            # Start PM2 with ecosystem config (fresh start after daemon kill)
-            echo "🚀 Starting PM2 with fresh process..."
-            pm2 start ecosystem.config.cjs --update-env --log-date-format="YYYY-MM-DD HH:mm:ss"
-
-            echo "⏳ Waiting for server to fully initialize (10s)..."
-            sleep 10
-
-            # Check if PM2 crashed immediately after start
-            echo "🔍 Verifying PM2 didn't crash..."
-            PM2_STATUS=$(pm2 jlist | jq -r '.[0].pm2_env.status' 2>/dev/null || echo "unknown")
-            echo "PM2 Status: $PM2_STATUS"
-
-            if [ "$PM2_STATUS" = "errored" ] || [ "$PM2_STATUS" = "stopped" ]; then
-              echo "❌ CRITICAL: PM2 crashed after startup!"
-              echo "📋 PM2 Status:"
-              pm2 status
+            echo "⏳ Waiting for container to be healthy..."
+            timeout 60 bash -c 'until docker inspect vecia-website --format="{{.State.Health.Status}}" 2>/dev/null | grep -q "healthy"; do sleep 2; echo -n "."; done' || {
               echo ""
-              echo "🔴 Error logs (last 100 lines):"
-              pm2 logs vecia-website --err --lines 100 --nostream || cat /var/log/vecia/pm2-error.log 2>/dev/null || echo "No error logs found"
-              exit 1
-            fi
-
-            echo "✅ PM2 process running stably"
-
-            # Test server responds locally with retries
-            echo "🔍 Testing health endpoint with retries..."
-            MAX_ATTEMPTS=5
-            ATTEMPT=1
-            HEALTH_SUCCESS=false
-
-            while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
-              echo "Health check attempt $ATTEMPT/$MAX_ATTEMPTS..."
-
-              # Check if PM2 is still running before health check
-              PM2_STATUS=$(pm2 jlist | jq -r '.[0].pm2_env.status' 2>/dev/null || echo "unknown")
-              if [ "$PM2_STATUS" = "errored" ] || [ "$PM2_STATUS" = "stopped" ]; then
-                echo "❌ PM2 crashed during health check (attempt $ATTEMPT)"
-                break
-              fi
-
-              # Perform health check
-              if curl -f -s http://127.0.0.1:4321/api/health.json > /dev/null; then
-                echo "✅ Health check passed: Node.js server is responding"
-                HEALTH_SUCCESS=true
-                break
-              else
-                if [ $ATTEMPT -lt $MAX_ATTEMPTS ]; then
-                  echo "⏳ Server not ready yet, waiting 5 seconds..."
-                  sleep 5
-                fi
-                ATTEMPT=$((ATTEMPT + 1))
-              fi
-            done
-
-            if [ "$HEALTH_SUCCESS" = false ]; then
-              echo "❌ Health check failed after $MAX_ATTEMPTS attempts"
-              echo "📋 PM2 Status:"
-              pm2 status
+              echo "❌ Health check timeout!"
+              echo "📋 Container status:"
+              docker compose ps
               echo ""
-              echo "🔴 PM2 Error logs (last 100 lines):"
-              pm2 logs vecia-website --err --lines 100 --nostream || cat /var/log/vecia/pm2-error.log 2>/dev/null || echo "No error logs found"
-              echo ""
-              echo "📘 PM2 Output logs (last 50 lines):"
-              pm2 logs vecia-website --out --lines 50 --nostream || cat /var/log/vecia/pm2-out.log 2>/dev/null || echo "No output logs found"
+              echo "🔴 Container logs:"
+              docker compose logs --tail=100
               exit 1
-            fi
+            }
 
-            # Save PM2 process list
-            pm2 save
+            echo ""
+            echo "✅ Container is healthy!"
 
-            # Reload Nginx to clear any reverse proxy cache
-            echo "🔄 Reloading Nginx..."
-            sudo nginx -t && sudo systemctl reload nginx || echo "⚠️  Nginx reload failed (may need manual intervention)"
-            echo "✅ Nginx reloaded"
+            # Clean up old images (keep last 2 versions)
+            echo "🗑️  Cleaning up old Docker images..."
+            docker image prune -f || true
 
-            # Display deployment status
             echo ""
             echo "=========================================="
             echo "✅ Deployment successful!"
             echo "=========================================="
-            echo "📁 Files deployed to: $VPS_TARGET_DIR"
-            echo "🚀 Node.js server: http://127.0.0.1:4321"
-            echo "🌐 Public website: https://vecia.com"
+            echo "📁 Deployed to: ${{ secrets.VPS_TARGET_DIR }}"
+            echo "🐳 Container: vecia-website"
+            echo "🌐 Website: https://vecia.com"
             echo "📅 Deployed at: $(date)"
-            echo "📊 File count: $(find $VPS_TARGET_DIR -type f | wc -l) files"
             echo ""
-            echo "PM2 Status:"
-            pm2 status
+            echo "📊 Container status:"
+            docker compose ps
+            echo ""
+            echo "💾 Resource usage:"
+            docker stats vecia-website --no-stream
 
       - name: Verify Deployment
         uses: appleboy/ssh-action@v1
@@ -307,27 +145,25 @@ jobs:
           key: ${{ steps.ssh_key.outputs.decoded_key }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            # Test Node.js server health endpoint
-            echo "Testing health endpoint..."
-            HEALTH_RESPONSE=$(curl -f -s http://127.0.0.1:4321/api/health.json)
+            echo "🔍 Testing health endpoint..."
+            HEALTH_RESPONSE=$(curl -f -s http://127.0.0.1:4322/api/health.json)
 
             if [ $? -eq 0 ]; then
               echo "✅ Health check passed"
               echo "Response: $HEALTH_RESPONSE"
             else
               echo "❌ Health check failed"
+              docker compose logs --tail=50
               exit 1
             fi
 
-            # Test Nginx is serving the site
-            echo "Testing Nginx..."
+            echo ""
+            echo "🔍 Testing Nginx..."
             if curl -f -s -I https://vecia.com | grep -q "200 OK"; then
               echo "✅ Nginx serving site successfully"
             else
-              echo "⚠️  Nginx health check inconclusive (may be redirect)"
+              echo "⚠️  Nginx health check inconclusive"
             fi
 
-            # Final PM2 status
             echo ""
-            echo "Final PM2 Status:"
-            pm2 status
+            echo "✅ All checks passed - Deployment verified!"
