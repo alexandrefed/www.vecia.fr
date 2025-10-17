@@ -3,14 +3,6 @@
 
 services:
   vecia-website:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        NODE_VERSION: 20.18.1
-        PUBLIC_SITE_URL: https://vecia.fr
-        PUBLIC_CAL_EMBED_URL: https://cal.vecia.fr
-
     image: vecia-website:latest
 
     container_name: vecia-website
