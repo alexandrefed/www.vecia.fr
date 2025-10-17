@@ -20,14 +20,6 @@ interface Props {
 
 const { type, data } = Astro.props;
 
-// Debug logging for breadcrumb
-if (type === 'breadcrumb') {
-  console.log('[DEBUG StructuredData] 📦 Component received breadcrumb request');
-  console.log('[DEBUG StructuredData] Data:', JSON.stringify(data, null, 2));
-  console.log('[DEBUG StructuredData] Items array:', data?.items);
-  console.log('[DEBUG StructuredData] Items length:', data?.items?.length);
-}
-
 // Schema templates based on type
 const schemas: Record<string, any> = {
   website: {
