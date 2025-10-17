@@ -103,6 +103,11 @@ jobs:
             docker compose down || true
             docker compose up -d
 
+            echo "🧹 Clearing nginx cache..."
+            # Clear nginx proxy cache to prevent serving stale HTML with old asset hashes
+            sudo rm -rf /var/cache/nginx/* 2>/dev/null || true
+            sudo systemctl reload nginx 2>/dev/null || echo "⚠️  Nginx reload skipped (not critical)"
+
             echo "⏳ Waiting for container to be healthy..."
             timeout 60 bash -c 'until docker inspect vecia-website --format="{{.State.Health.Status}}" 2>/dev/null | grep -q "healthy"; do sleep 2; echo -n "."; done' || {
               echo ""

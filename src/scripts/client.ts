@@ -5,6 +5,7 @@
  * - Alpine.js initialization and plugins
  * - Dynamic pricing system
  * - Alpine.js components (lead capture form, etc.)
+ * - Deployment error handling (asset hash changes)
  *
  * Astro will automatically bundle this file and all its dependencies
  * into optimized production JavaScript in /_astro/*.js
@@ -13,6 +14,7 @@
 import Alpine from 'alpinejs';
 import intersect from '@alpinejs/intersect';
 import { detectCurrency, updatePriceElements } from './pricing';
+import './deployment-handler'; // Handle stale assets after deployment
 
 // Register Alpine.js plugins
 Alpine.plugin(intersect);
