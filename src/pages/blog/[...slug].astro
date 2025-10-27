@@ -1,5 +1,5 @@
 ---
-import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { getCollection, getEntry, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogHeader from '../../components/blog/BlogHeader.astro';
 import ShareButtons from '../../components/blog/ShareButtons.astro';
@@ -11,22 +11,17 @@ import { config } from '../../config';
 const lang = 'fr' as const;
 const t = useTranslations(lang);
 
-export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ id }) => {
-    return id.startsWith('fr/');
-  });
+// Get the slug from URL params
+const { slug } = Astro.params;
 
-  return posts.map(post => ({
-    params: { slug: post.id.replace('fr/', '') },
-    props: { post },
-  }));
+// Fetch the blog post entry using the slug with 'fr/' prefix
+const post = await getEntry('blog', `fr/${slug}`);
+
+// If post doesn't exist, return 404
+if (!post) {
+  return Astro.redirect('/404');
 }
 
-type Props = {
-  post: CollectionEntry<'blog'>;
-};
-
-const { post } = Astro.props;
 // Astro 5.x: Use render() function from 'astro:content'
 const { Content } = await render(post);
 
