@@ -26,6 +26,7 @@ const blog = defineCollection({
     title: z.string(),
     description: z.string(),
     publishDate: z.coerce.date(), // Flexible date parsing (YYYY-MM-DD, etc.)
+    updatedDate: z.coerce.date().optional(), // Optional last update date
     author: z.string(),
 
     // Blog categories (type-safe enum)

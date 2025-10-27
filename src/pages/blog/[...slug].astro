@@ -1,11 +1,11 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogHeader from '../../components/blog/BlogHeader.astro';
 import ShareButtons from '../../components/blog/ShareButtons.astro';
 import ArticleFooter from '../../components/blog/ArticleFooter.astro';
 import InteractiveComments from '../../components/blog/InteractiveComments.astro';
-import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { useTranslations } from '../../i18n/utils';
 import { config } from '../../config';
 
 const lang = 'fr' as const;
@@ -27,8 +27,8 @@ type Props = {
 };
 
 const { post } = Astro.props;
-// Astro 5.x: Call render() on the post object directly
-const { Content } = await post.render();
+// Astro 5.x: Use render() function from 'astro:content'
+const { Content } = await render(post);
 
 // Get related articles (same category, excluding current)
 const relatedPosts = (await getCollection('blog', ({ id, data }) => {
@@ -41,7 +41,7 @@ const relatedPosts = (await getCollection('blog', ({ id, data }) => {
 
 // Calculate reading time (200 words/min - 2025 standard)
 const wordsPerMinute = 200;
-const wordCount = post.body.split(/\s+/).length;
+const wordCount = post.body?.split(/\s+/).length || 0;
 const readingTime = Math.ceil(wordCount / wordsPerMinute);
 
 // Canonical URL
