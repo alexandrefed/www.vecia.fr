@@ -1,0 +1,86 @@
+name: Investigate VPS State
+
+on:
+  workflow_dispatch:  # Manual trigger only
+
+jobs:
+  investigate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Investigate VPS Configuration and Services
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            echo "========================================="
+            echo "VPS INVESTIGATION REPORT"
+            echo "Date: $(date)"
+            echo "Hostname: $(hostname)"
+            echo "========================================="
+
+            echo -e "\n=== SYSTEM INFO ==="
+            uname -a
+            echo "Uptime: $(uptime)"
+
+            echo -e "\n=== DOCKER CONTAINERS (ALL) ==="
+            docker ps -a --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}"
+
+            echo -e "\n=== DOCKER COMPOSE FILES ==="
+            find /var/www /home /opt -name "docker-compose.yml" 2>/dev/null || echo "No docker-compose files found in common locations"
+
+            echo -e "\n=== NGINX CONFIGURATION ==="
+            echo "--- Enabled Sites ---"
+            ls -la /etc/nginx/sites-enabled/ 2>/dev/null || echo "Sites-enabled not found"
+
+            echo -e "\n--- Vecia Unified Config ---"
+            if [ -f /etc/nginx/sites-available/vecia-unified ]; then
+              cat /etc/nginx/sites-available/vecia-unified
+            else
+              echo "vecia-unified config not found"
+            fi
+
+            echo -e "\n--- All Site Configs ---"
+            ls -la /etc/nginx/sites-available/ 2>/dev/null || echo "Sites-available not found"
+
+            echo -e "\n=== SSL CERTIFICATES ==="
+            sudo certbot certificates 2>/dev/null || echo "Certbot not available or no certificates"
+
+            echo -e "\n=== LISTENING PORTS ==="
+            sudo ss -tulpn | grep LISTEN | sort -k5
+
+            echo -e "\n=== DIRECTORY STRUCTURE ==="
+            echo "--- /var/www ---"
+            ls -lah /var/www/ 2>/dev/null || echo "/var/www not accessible"
+
+            echo -e "\n--- VPS_TARGET_DIR (if set) ---"
+            if [ -n "$VPS_TARGET_DIR" ]; then
+              ls -lah "$VPS_TARGET_DIR" 2>/dev/null || echo "VPS_TARGET_DIR not accessible: $VPS_TARGET_DIR"
+            else
+              echo "VPS_TARGET_DIR environment variable not set"
+            fi
+
+            echo -e "\n--- Home Directories ---"
+            ls -la /home/ 2>/dev/null || echo "/home not accessible"
+
+            echo -e "\n=== SYSTEMD SERVICES (Running) ==="
+            systemctl list-units --type=service --state=running --no-pager | grep -E 'nginx|docker|n8n|cal|supabase|neo4j' || echo "No matching services found"
+
+            echo -e "\n=== DISK USAGE ==="
+            df -h | grep -E 'Filesystem|/dev/|/$'
+
+            echo -e "\n=== MEMORY USAGE ==="
+            free -h
+
+            echo -e "\n=== DOCKER IMAGES ==="
+            docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}\t{{.CreatedAt}}" | head -20
+
+            echo -e "\n=== NETWORK INTERFACES ==="
+            ip addr show | grep -E "^[0-9]+:|inet "
+
+            echo -e "\n========================================="
+            echo "INVESTIGATION COMPLETE"
+            echo "========================================="
