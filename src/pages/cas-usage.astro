@@ -1,0 +1,527 @@
+---
+/**
+ * French Use Cases Page (/cas-usage)
+ *
+ * Showcases concrete automation examples answering "what do you do exactly?"
+ * Categories: Sales, Operations, Support, Marketing
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { config } from '../config';
+
+const pageTitle = "Cas d'Usage - Automatisations IA Concrètes";
+const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâches répétitives, réduisent les erreurs de 95% et libèrent 20+ heures par semaine.";
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  lang="fr"
+>
+  <!-- Hero Section -->
+  <section class="pt-[100px] pb-20 bg-gradient-to-b from-background to-accent3/20">
+    <div class="max-w-6xl mx-auto px-8 text-center">
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6">
+        L'IA en Action : <br/>
+        <span class="text-primary">7 Automatisations Qui Changent Tout</span>
+      </h1>
+      <p class="text-lg md:text-xl text-muted max-w-3xl mx-auto mb-8">
+        Vous vous demandez "qu'est-ce que Vecia fait exactement ?" Voici la réponse :
+        <strong>des automatisations concrètes qui éliminent vos tâches les plus chronophages.</strong>
+      </p>
+      <p class="text-base text-subtle max-w-2xl mx-auto">
+        Pas de blabla marketing. Juste des exemples réels avec des chiffres, des outils, et des résultats mesurables.
+      </p>
+    </div>
+  </section>
+
+  <!-- Category Tabs (Alpine.js powered) -->
+  <section class="py-16 bg-white">
+    <div class="max-w-6xl mx-auto px-8">
+
+      <!-- Tabs Navigation -->
+      <div
+        x-data="{ activeTab: 'all' }"
+        class="mb-12"
+      >
+        <!-- Tab Buttons -->
+        <div class="flex flex-wrap justify-center gap-4 mb-12 border-b border-gray-200 pb-4">
+          <button
+            @click="activeTab = 'all'"
+            :class="activeTab === 'all' ? 'bg-primary text-white' : 'bg-gray-100 text-muted hover:bg-gray-200'"
+            class="px-6 py-3 rounded-lg font-semibold transition-all"
+          >
+            Tous les Cas
+          </button>
+          <button
+            @click="activeTab = 'sales'"
+            :class="activeTab === 'sales' ? 'bg-primary text-white' : 'bg-gray-100 text-muted hover:bg-gray-200'"
+            class="px-6 py-3 rounded-lg font-semibold transition-all"
+          >
+            🎯 Ventes
+          </button>
+          <button
+            @click="activeTab = 'operations'"
+            :class="activeTab === 'operations' ? 'bg-primary text-white' : 'bg-gray-100 text-muted hover:bg-gray-200'"
+            class="px-6 py-3 rounded-lg font-semibold transition-all"
+          >
+            ⚙️ Opérations
+          </button>
+          <button
+            @click="activeTab = 'support'"
+            :class="activeTab === 'support' ? 'bg-primary text-white' : 'bg-gray-100 text-muted hover:bg-gray-200'"
+            class="px-6 py-3 rounded-lg font-semibold transition-all"
+          >
+            💬 Support
+          </button>
+          <button
+            @click="activeTab = 'marketing'"
+            :class="activeTab === 'marketing' ? 'bg-primary text-white' : 'bg-gray-100 text-muted hover:bg-gray-200'"
+            class="px-6 py-3 rounded-lg font-semibold transition-all"
+          >
+            📢 Marketing
+          </button>
+        </div>
+
+        <!-- Use Cases Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          <!-- Use Case 1: Lead Qualification -->
+          <div
+            x-show="activeTab === 'all' || activeTab === 'sales'"
+            x-transition
+            class="bg-gradient-to-br from-white to-accent3/10 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all border border-gray-100"
+          >
+            <div class="text-5xl mb-4">🎯</div>
+            <h3 class="text-2xl font-display font-bold mb-4 text-text">
+              Qualification de Leads Automatique
+            </h3>
+
+            <div class="mb-6">
+              <h4 class="font-semibold text-error mb-2">❌ Avant :</h4>
+              <ul class="text-sm text-subtle space-y-1">
+                <li>• Commercial perd 3h/jour à trier les leads</li>
+                <li>• 60% des leads non qualifiés contactés</li>
+                <li>• Pipeline saturé de prospects froids</li>
+              </ul>
+            </div>
+
+            <div class="mb-6">
+              <h4 class="font-semibold text-success mb-2">✅ Après :</h4>
+              <ul class="text-sm text-subtle space-y-1">
+                <li>• IA analyse + scoring automatique</li>
+                <li>• Leads chauds routés direct aux commerciaux</li>
+                <li>• Leads froids vers nurture automatique</li>
+              </ul>
+            </div>
+
+            <div class="bg-primary/10 rounded-lg p-4 mb-6">
+              <p class="text-sm font-bold text-primary mb-2">💰 ROI :</p>
+              <ul class="text-sm space-y-1">
+                <li>• <strong>+40%</strong> de taux de conversion</li>
+                <li>• <strong>-70%</strong> de temps perdu</li>
+                <li>• <strong>15h/semaine</strong> libérées par commercial</li>
+              </ul>
+            </div>
+
+            <div class="text-xs text-muted border-t pt-4">
+              <p class="font-semibold mb-1">Stack Technique :</p>
+              <p>n8n + OpenAI GPT-4 + HubSpot/Pipedrive + Webhooks</p>
+            </div>
+
+            <a
+              href={config.calcom.bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-6 block w-full text-center px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all"
+            >
+              Automatiser mes Leads
+            </a>
+          </div>
+
+          <!-- Use Case 2: Invoice Processing -->
+          <div
+            x-show="activeTab === 'all' || activeTab === 'operations'"
+            x-transition
+            class="bg-gradient-to-br from-white to-accent3/10 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all border border-gray-100"
+          >
+            <div class="text-5xl mb-4">📄</div>
+            <h3 class="text-2xl font-display font-bold mb-4 text-text">
+              Traitement de Factures Intelligent
+            </h3>
+
+            <div class="mb-6">
+              <h4 class="font-semibold text-error mb-2">❌ Avant :</h4>
+              <ul class="text-sm text-subtle space-y-1">
+                <li>• 15 min/facture de saisie manuelle</li>
+                <li>• 5-10% d'erreurs de frappe</li>
+                <li>• Retards de paiement fréquents</li>
+              </ul>
+            </div>
+
+            <div class="mb-6">
+              <h4 class="font-semibold text-success mb-2">✅ Après :</h4>
+              <ul class="text-sm text-subtle space-y-1">
+                <li>• OCR IA extrait toutes les données</li>
+                <li>• Validation auto + alerte si anomalie</li>
+                <li>• Intégration directe ERP/compta</li>
+              </ul>
+            </div>
+
+            <div class="bg-primary/10 rounded-lg p-4 mb-6">
+              <p class="text-sm font-bold text-primary mb-2">💰 ROI :</p>
+              <ul class="text-sm space-y-1">
+                <li>• <strong>-80%</strong> de temps de traitement</li>
+                <li>• <strong>-95%</strong> d'erreurs</li>
+                <li>• <strong>55 000€</strong> économisés/an (5000 factures)</li>
+              </ul>
+            </div>
+
+            <div class="text-xs text-muted border-t pt-4">
+              <p class="font-semibold mb-1">Stack Technique :</p>
+              <p>n8n + Google Vision AI + QuickBooks/Sage + Gmail API</p>
+            </div>
+
+            <a
+              href={config.calcom.bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-6 block w-full text-center px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all"
+            >
+              Automatiser mes Factures
+            </a>
+          </div>
+
+          <!-- Use Case 3: Customer Support Triage -->
+          <div
+            x-show="activeTab === 'all' || activeTab === 'support'"
+            x-transition
+            class="bg-gradient-to-br from-white to-accent3/10 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all border border-gray-100"
+          >
+            <div class="text-5xl mb-4">💬</div>
+            <h3 class="text-2xl font-display font-bold mb-4 text-text">
+              Support Client Intelligent
+            </h3>
+
+            <div class="mb-6">
+              <h4 class="font-semibold text-error mb-2">❌ Avant :</h4>
+              <ul class="text-sm text-subtle space-y-1">
+                <li>• Tickets urgent/normal mélangés</li>
+                <li>• Client attend 2-4h pour réponse</li>
+                <li>• Agent perd temps sur tickets bas niveau</li>
+              </ul>
+            </div>
+
+            <div class="mb-6">
+              <h4 class="font-semibold text-success mb-2">✅ Après :</h4>
+              <ul class="text-sm text-subtle space-y-1">
+                <li>• IA catégorise + priorise automatiquement</li>
+                <li>• Routage vers l'expert adapté</li>
+                <li>• Réponses auto pour FAQ (60% tickets)</li>
+              </ul>
+            </div>
+
+            <div class="bg-primary/10 rounded-lg p-4 mb-6">
+              <p class="text-sm font-bold text-primary mb-2">💰 ROI :</p>
+              <ul class="text-sm space-y-1">
+                <li>• <strong>-70%</strong> temps de réponse</li>
+                <li>• <strong>+35%</strong> satisfaction client (CSAT)</li>
+                <li>• <strong>20h/semaine</strong> libérées par agent</li>
+              </ul>
+            </div>
+
+            <div class="text-xs text-muted border-t pt-4">
+              <p class="font-semibold mb-1">Stack Technique :</p>
+              <p>n8n + OpenAI + Zendesk/Freshdesk + Slack webhooks</p>
+            </div>
+
+            <a
+              href={config.calcom.bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-6 block w-full text-center px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all"
+            >
+              Automatiser mon Support
+            </a>
+          </div>
+
+          <!-- Use Case 4: Social Media Content Pipeline -->
+          <div
+            x-show="activeTab === 'all' || activeTab === 'marketing'"
+            x-transition
+            class="bg-gradient-to-br from-white to-accent3/10 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all border border-gray-100"
+          >
+            <div class="text-5xl mb-4">📢</div>
+            <h3 class="text-2xl font-display font-bold mb-4 text-text">
+              Pipeline de Contenu Social
+            </h3>
+
+            <div class="mb-6">
+              <h4 class="font-semibold text-error mb-2">❌ Avant :</h4>
+              <ul class="text-sm text-subtle space-y-1">
+                <li>• 2h pour rédiger posts LinkedIn/Twitter</li>
+                <li>• Publication manuelle = oublis fréquents</li>
+                <li>• Pas de cohérence multi-plateformes</li>
+              </ul>
+            </div>
+
+            <div class="mb-6">
+              <h4 class="font-semibold text-success mb-2">✅ Après :</h4>
+              <ul class="text-sm text-subtle space-y-1">
+                <li>• IA génère posts depuis article blog</li>
+                <li>• Adaptation auto par plateforme</li>
+                <li>• Programmation + publication automatique</li>
+              </ul>
+            </div>
+
+            <div class="bg-primary/10 rounded-lg p-4 mb-6">
+              <p class="text-sm font-bold text-primary mb-2">💰 ROI :</p>
+              <ul class="text-sm space-y-1">
+                <li>• <strong>-85%</strong> temps de création</li>
+                <li>• <strong>3x</strong> plus de posts publiés</li>
+                <li>• <strong>10h/semaine</strong> économisées</li>
+              </ul>
+            </div>
+
+            <div class="text-xs text-muted border-t pt-4">
+              <p class="font-semibold mb-1">Stack Technique :</p>
+              <p>n8n + Claude/GPT-4 + Buffer/Hootsuite + RSS/Webhooks</p>
+            </div>
+
+            <a
+              href={config.calcom.bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-6 block w-full text-center px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all"
+            >
+              Automatiser mon Contenu
+            </a>
+          </div>
+
+          <!-- Use Case 5: Meeting Notes to CRM -->
+          <div
+            x-show="activeTab === 'all' || activeTab === 'sales'"
+            x-transition
+            class="bg-gradient-to-br from-white to-accent3/10 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all border border-gray-100"
+          >
+            <div class="text-5xl mb-4">📝</div>
+            <h3 class="text-2xl font-display font-bold mb-4 text-text">
+              Comptes-Rendus Automatiques
+            </h3>
+
+            <div class="mb-6">
+              <h4 class="font-semibold text-error mb-2">❌ Avant :</h4>
+              <ul class="text-sm text-subtle space-y-1">
+                <li>• 30 min post-réunion pour notes</li>
+                <li>• Actions oubliées ou mal trackées</li>
+                <li>• CRM jamais à jour</li>
+              </ul>
+            </div>
+
+            <div class="mb-6">
+              <h4 class="font-semibold text-success mb-2">✅ Après :</h4>
+              <ul class="text-sm text-subtle space-y-1">
+                <li>• IA transcrit + extrait actions/décisions</li>
+                <li>• CRM auto-mis à jour avec insights</li>
+                <li>• Emails de récap envoyés automatiquement</li>
+              </ul>
+            </div>
+
+            <div class="bg-primary/10 rounded-lg p-4 mb-6">
+              <p class="text-sm font-bold text-primary mb-2">💰 ROI :</p>
+              <ul class="text-sm space-y-1">
+                <li>• <strong>-90%</strong> temps admin post-réunion</li>
+                <li>• <strong>0</strong> actions oubliées</li>
+                <li>• <strong>5h/semaine</strong> par commercial</li>
+              </ul>
+            </div>
+
+            <div class="text-xs text-muted border-t pt-4">
+              <p class="font-semibold mb-1">Stack Technique :</p>
+              <p>n8n + AssemblyAI/Whisper + HubSpot + Gmail API</p>
+            </div>
+
+            <a
+              href={config.calcom.bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-6 block w-full text-center px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all"
+            >
+              Automatiser mes CR
+            </a>
+          </div>
+
+          <!-- Use Case 6: Data Entry Elimination -->
+          <div
+            x-show="activeTab === 'all' || activeTab === 'operations'"
+            x-transition
+            class="bg-gradient-to-br from-white to-accent3/10 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all border border-gray-100"
+          >
+            <div class="text-5xl mb-4">⚙️</div>
+            <h3 class="text-2xl font-display font-bold mb-4 text-text">
+              Élimination de Saisie Manuelle
+            </h3>
+
+            <div class="mb-6">
+              <h4 class="font-semibold text-error mb-2">❌ Avant :</h4>
+              <ul class="text-sm text-subtle space-y-1">
+                <li>• Données copiées entre 3 systèmes</li>
+                <li>• 2h/jour de double/triple saisie</li>
+                <li>• Incohérences + données obsolètes</li>
+              </ul>
+            </div>
+
+            <div class="mb-6">
+              <h4 class="font-semibold text-success mb-2">✅ Après :</h4>
+              <ul class="text-sm text-subtle space-y-1">
+                <li>• IA extrait données de PDFs/scans</li>
+                <li>• Sync auto entre tous les systèmes</li>
+                <li>• Source de vérité unique</li>
+              </ul>
+            </div>
+
+            <div class="bg-primary/10 rounded-lg p-4 mb-6">
+              <p class="text-sm font-bold text-primary mb-2">💰 ROI :</p>
+              <ul class="text-sm space-y-1">
+                <li>• <strong>-95%</strong> saisie manuelle</li>
+                <li>• <strong>-98%</strong> erreurs de données</li>
+                <li>• <strong>10h/semaine</strong> économisées par personne</li>
+              </ul>
+            </div>
+
+            <div class="text-xs text-muted border-t pt-4">
+              <p class="font-semibold mb-1">Stack Technique :</p>
+              <p>n8n + OCR (Tesseract/Google) + Zapier/Make + API multi-systèmes</p>
+            </div>
+
+            <a
+              href={config.calcom.bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-6 block w-full text-center px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all"
+            >
+              Automatiser ma Saisie
+            </a>
+          </div>
+
+          <!-- Use Case 7: Email Response Drafts -->
+          <div
+            x-show="activeTab === 'all' || activeTab === 'support'"
+            x-transition
+            class="bg-gradient-to-br from-white to-accent3/10 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all border border-gray-100"
+          >
+            <div class="text-5xl mb-4">✉️</div>
+            <h3 class="text-2xl font-display font-bold mb-4 text-text">
+              Brouillons de Réponses IA
+            </h3>
+
+            <div class="mb-6">
+              <h4 class="font-semibold text-error mb-2">❌ Avant :</h4>
+              <ul class="text-sm text-subtle space-y-1">
+                <li>• 10-15 min par email client complexe</li>
+                <li>• Ton incohérent selon collaborateur</li>
+                <li>• 50+ emails/jour = 8h de travail</li>
+              </ul>
+            </div>
+
+            <div class="mb-6">
+              <h4 class="font-semibold text-success mb-2">✅ Après :</h4>
+              <ul class="text-sm text-subtle space-y-1">
+                <li>• IA analyse contexte + historique client</li>
+                <li>• Génère brouillon personnalisé</li>
+                <li>• Humain revoit + envoie en 2 min</li>
+              </ul>
+            </div>
+
+            <div class="bg-primary/10 rounded-lg p-4 mb-6">
+              <p class="text-sm font-bold text-primary mb-2">💰 ROI :</p>
+              <ul class="text-sm space-y-1">
+                <li>• <strong>-75%</strong> temps par email</li>
+                <li>• <strong>100%</strong> cohérence de ton</li>
+                <li>• <strong>6h/jour</strong> économisées</li>
+              </ul>
+            </div>
+
+            <div class="text-xs text-muted border-t pt-4">
+              <p class="font-semibold mb-1">Stack Technique :</p>
+              <p>n8n + GPT-4 + Gmail/Outlook API + Base de connaissance</p>
+            </div>
+
+            <a
+              href={config.calcom.bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-6 block w-full text-center px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all"
+            >
+              Automatiser mes Emails
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="py-16 bg-gradient-to-b from-accent3/20 to-background">
+    <div class="max-w-6xl mx-auto px-8 text-center">
+      <h2 class="text-3xl md:text-4xl font-display font-bold mb-12">
+        Impact Réel sur Votre Entreprise
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div class="bg-white rounded-xl p-8 shadow-lg">
+          <div class="text-5xl font-bold text-primary mb-2">20+</div>
+          <p class="text-lg font-semibold mb-2">Heures Économisées</p>
+          <p class="text-sm text-muted">Par collaborateur, chaque semaine</p>
+        </div>
+
+        <div class="bg-white rounded-xl p-8 shadow-lg">
+          <div class="text-5xl font-bold text-primary mb-2">-95%</div>
+          <p class="text-lg font-semibold mb-2">Erreurs Éliminées</p>
+          <p class="text-sm text-muted">Précision quasi-parfaite de l'IA</p>
+        </div>
+
+        <div class="bg-white rounded-xl p-8 shadow-lg">
+          <div class="text-5xl font-bold text-primary mb-2">423%</div>
+          <p class="text-lg font-semibold mb-2">ROI Moyen</p>
+          <p class="text-sm text-muted">En 30 jours pour les PME</p>
+        </div>
+      </div>
+
+      <p class="text-lg text-muted max-w-3xl mx-auto mb-8">
+        Ces chiffres ne sont pas de la science-fiction. Ce sont les résultats moyens obtenus
+        par les entreprises qui automatisent intelligemment.
+      </p>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-gradient-to-r from-primary to-secondary text-white">
+    <div class="max-w-4xl mx-auto px-8 text-center">
+      <h2 class="text-3xl md:text-4xl font-display font-bold mb-6">
+        Prêt à Automatiser Votre Entreprise ?
+      </h2>
+      <p class="text-lg mb-8 opacity-90">
+        Réservez un audit gratuit de 30 minutes. Nous identifierons les 3 automatisations
+        les plus rentables pour votre business.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href={config.calcom.bookingUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-8 py-4 bg-white text-primary font-bold rounded-lg hover:bg-gray-100 transition-all text-lg"
+        >
+          Réserver mon Audit Gratuit
+        </a>
+        <a
+          href="/blog"
+          class="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white/10 transition-all text-lg"
+        >
+          Lire le Blog
+        </a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

@@ -6,9 +6,20 @@ interface Props {
   subheadline: string;
   cta1Text: string;
   cta2Text: string;
+  cta1Href?: string;  // Optional, defaults to #audit
+  cta2Href?: string;  // Optional, defaults to #cases
 }
 
-const { headlinePart1, headlinePart2, headlinePart3, subheadline, cta1Text, cta2Text } = Astro.props;
+const {
+  headlinePart1,
+  headlinePart2,
+  headlinePart3,
+  subheadline,
+  cta1Text,
+  cta2Text,
+  cta1Href = '#audit',
+  cta2Href = '#cases'
+} = Astro.props;
 ---
 
 <section class="relative min-h-screen flex items-center justify-center overflow-visible pt-[70px]">
@@ -41,7 +52,7 @@ const { headlinePart1, headlinePart2, headlinePart3, subheadline, cta1Text, cta2
     <!-- CTA Buttons -->
     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
       <a
-        href="#audit"
+        href={cta1Href}
         class="flex items-center justify-center gap-2 px-8 py-4 text-white font-semibold rounded-lg shadow-lg bg-primary hover:bg-primary/90 hover:shadow-xl hover:-translate-y-1 hover:scale-105 active:scale-95 transition-all"
       >
         {cta1Text}
@@ -50,7 +61,7 @@ const { headlinePart1, headlinePart2, headlinePart3, subheadline, cta1Text, cta2
         </svg>
       </a>
       <a
-        href="#cases"
+        href={cta2Href}
         class="flex items-center justify-center gap-2 px-8 py-4 text-white font-semibold rounded-lg shadow-lg bg-gradient-to-r from-secondary to-accent1 hover:shadow-xl hover:-translate-y-1 hover:scale-105 active:scale-95 transition-all"
       >
         {cta2Text}
