@@ -1,0 +1,185 @@
+---
+/**
+ * Meta Pixel (Facebook Pixel) with Consent Mode V2
+ *
+ * Implements Meta Pixel tracking with GDPR compliance
+ * Only loads after user consent via CookieConsent component
+ *
+ * Features:
+ * - Consent Mode V2 integration
+ * - Standard events (PageView, ViewContent, etc.)
+ * - Advanced Matching for improved attribution
+ * - View Transitions compatibility (astro:page-load events)
+ *
+ * Setup Instructions:
+ * 1. Get your Pixel ID from Meta Business Manager:
+ *    https://business.facebook.com/events_manager2/list/pixel/
+ * 2. Add to .env file: PUBLIC_META_PIXEL_ID=YOUR_PIXEL_ID
+ * 3. Verify installation with Meta Pixel Helper Chrome extension
+ *
+ * 2025 Best Practices:
+ * - Use with Conversions API (CAPI) for server-side tracking
+ * - Enable Advanced Matching (email, phone, user data)
+ * - Configure Event Match Quality in Events Manager
+ */
+
+// Access environment variable (Astro 5.x compatible)
+const PIXEL_ID = import.meta.env.PUBLIC_META_PIXEL_ID || '';
+
+// Only render if Pixel ID is configured
+const shouldRender = PIXEL_ID && PIXEL_ID.length > 0;
+---
+
+{shouldRender ? (
+  <>
+    <!-- Meta Pixel Base Code -->
+    <script is:inline define:vars={{ PIXEL_ID }}>
+      // Initialize Meta Pixel
+      !(function(f, b, e, v, n, t, s) {
+        if (f.fbq) return;
+        n = f.fbq = function() {
+          n.callMethod
+            ? n.callMethod.apply(n, arguments)
+            : n.queue.push(arguments);
+        };
+        if (!f._fbq) f._fbq = n;
+        n.push = n;
+        n.loaded = !0;
+        n.version = '2.0';
+        n.queue = [];
+        t = b.createElement(e);
+        t.async = !0;
+        t.src = v;
+        s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s);
+      })(
+        window,
+        document,
+        'script',
+        'https://connect.facebook.net/en_US/fbevents.js'
+      );
+
+      // Configure with Advanced Matching (improves attribution)
+      // Note: Will be populated by CookieConsent component if user provides data
+      fbq('init', PIXEL_ID, {
+        // Advanced Matching parameters (optional, improves match quality)
+        // em: user email (hashed)
+        // ph: user phone (hashed)
+        // external_id: user ID from your system
+      });
+
+      // Consent Mode V2 integration
+      // Default: Only non-personalized tracking (respects GDPR)
+      fbq('consent', 'revoke');
+
+      // Log initialization
+      console.log('[Meta Pixel] Initialized with Pixel ID:', PIXEL_ID);
+      console.log('[Meta Pixel] Consent: REVOKED (waiting for user consent)');
+
+      // Track initial PageView (non-personalized)
+      fbq('track', 'PageView');
+      console.log('[Meta Pixel] PageView tracked');
+    </script>
+
+    <!-- Noscript fallback for PageView -->
+    <noscript>
+      <img
+        height="1"
+        width="1"
+        style="display:none"
+        src={`https://www.facebook.com/tr?id=${PIXEL_ID}&ev=PageView&noscript=1`}
+        alt=""
+      />
+    </noscript>
+
+    <!-- Astro View Transitions Support -->
+    <script>
+      // Re-trigger PageView on View Transitions navigation
+      document.addEventListener('astro:page-load', () => {
+        if (typeof window.fbq !== 'undefined') {
+          window.fbq('track', 'PageView');
+          console.log('[Meta Pixel] PageView tracked:', window.location.pathname);
+        }
+      });
+
+      // Track standard events based on page interactions
+      document.addEventListener('astro:page-load', () => {
+        // Track ViewContent on specific pages
+        const path = window.location.pathname;
+
+        if (path.includes('/cas-usage') || path.includes('/use-cases')) {
+          // User viewing use cases (high intent)
+          if (typeof window.fbq !== 'undefined') {
+            window.fbq('track', 'ViewContent', {
+              content_name: 'Use Cases Page',
+              content_category: 'Sales Material',
+            });
+            console.log('[Meta Pixel] ViewContent tracked: Use Cases');
+          }
+        }
+
+        if (path.includes('/blog/')) {
+          // User reading blog post (engagement)
+          if (typeof window.fbq !== 'undefined') {
+            window.fbq('track', 'ViewContent', {
+              content_name: document.title,
+              content_category: 'Blog Post',
+            });
+            console.log('[Meta Pixel] ViewContent tracked: Blog');
+          }
+        }
+
+        // Track clicks on Cal.com booking buttons (high intent)
+        const bookingLinks = document.querySelectorAll('a[href*="cal.vecia.fr"], a[data-track="book-call"]');
+        bookingLinks.forEach((link) => {
+          link.addEventListener('click', () => {
+            if (typeof window.fbq !== 'undefined') {
+              window.fbq('track', 'InitiateCheckout', {
+                content_name: 'Consultation Booking',
+                value: 0,
+                currency: 'EUR',
+              });
+              console.log('[Meta Pixel] InitiateCheckout tracked: Cal.com click');
+            }
+          });
+        });
+
+        // Track form submissions (leads)
+        const forms = document.querySelectorAll('form[data-track="lead-form"]');
+        forms.forEach((form) => {
+          form.addEventListener('submit', () => {
+            if (typeof window.fbq !== 'undefined') {
+              window.fbq('track', 'Lead', {
+                content_name: 'Contact Form',
+                content_category: 'Lead Generation',
+              });
+              console.log('[Meta Pixel] Lead tracked: Form submission');
+            }
+          });
+        });
+      });
+
+      // Listen for consent updates from CookieConsent component
+      window.addEventListener('cookie-consent-update', (event) => {
+        if (typeof window.fbq !== 'undefined') {
+          const { analytics, marketing } = event.detail;
+
+          if (marketing) {
+            // User accepted marketing cookies - grant full tracking
+            window.fbq('consent', 'grant');
+            console.log('[Meta Pixel] Consent: GRANTED (marketing cookies accepted)');
+          } else {
+            // User rejected marketing cookies - revoke tracking
+            window.fbq('consent', 'revoke');
+            console.log('[Meta Pixel] Consent: REVOKED (marketing cookies rejected)');
+          }
+        }
+      });
+    </script>
+  </>
+) : (
+  <!-- Meta Pixel not configured -->
+  <script is:inline>
+    console.warn('[Meta Pixel] Not configured. Add PUBLIC_META_PIXEL_ID to .env file.');
+  </script>
+)}

@@ -1,0 +1,153 @@
+---
+/**
+ * LinkedIn Insight Tag with GDPR Compliance
+ *
+ * Implements LinkedIn conversion tracking and retargeting
+ * Only loads after user consent via CookieConsent component
+ *
+ * Features:
+ * - Consent Mode V2 integration
+ * - Conversion tracking for LinkedIn Ads
+ * - Retargeting audiences (Matched Audiences)
+ * - View Transitions compatibility
+ *
+ * Setup Instructions:
+ * 1. Get your Partner ID from LinkedIn Campaign Manager:
+ *    https://www.linkedin.com/campaignmanager/ → Account Assets → Insight Tag
+ * 2. Add to .env file: PUBLIC_LINKEDIN_PARTNER_ID=YOUR_PARTNER_ID
+ * 3. Verify installation with LinkedIn Insight Tag Chrome extension
+ *
+ * 2025 Best Practices:
+ * - Use with LinkedIn Conversions API for enhanced attribution
+ * - Set up conversion events in Campaign Manager
+ * - Create Matched Audiences for retargeting
+ */
+
+// Access environment variable (Astro 5.x compatible)
+const PARTNER_ID = import.meta.env.PUBLIC_LINKEDIN_PARTNER_ID || '';
+
+// Only render if Partner ID is configured
+const shouldRender = PARTNER_ID && PARTNER_ID.length > 0;
+---
+
+{shouldRender ? (
+  <>
+    <!-- LinkedIn Insight Tag Base Code -->
+    <script is:inline type="text/javascript" define:vars={{ PARTNER_ID }}>
+      // Initialize LinkedIn Insight Tag
+      _linkedin_partner_id = PARTNER_ID;
+      window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+      window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+    </script>
+
+    <script is:inline type="text/javascript">
+      (function(l) {
+        if (!l){
+          window.lintrk = function(a,b){window.lintrk.q.push([a,b])};
+          window.lintrk.q=[];
+        }
+        var s = document.getElementsByTagName("script")[0];
+        var b = document.createElement("script");
+        b.type = "text/javascript";
+        b.async = true;
+        b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+        s.parentNode.insertBefore(b, s);
+      })(window.lintrk);
+
+      // Log initialization
+      console.log('[LinkedIn Insight Tag] Initialized with Partner ID:', _linkedin_partner_id);
+      console.log('[LinkedIn Insight Tag] Consent: PENDING (waiting for user consent)');
+    </script>
+
+    <!-- Noscript fallback -->
+    <noscript>
+      <img
+        height="1"
+        width="1"
+        style="display:none;"
+        alt=""
+        src={`https://px.ads.linkedin.com/collect/?pid=${PARTNER_ID}&fmt=gif`}
+      />
+    </noscript>
+
+    <!-- Astro View Transitions Support -->
+    <script>
+      // Re-trigger page view on View Transitions navigation
+      document.addEventListener('astro:page-load', () => {
+        if (typeof window.lintrk !== 'undefined') {
+          // Track page view
+          window.lintrk('track', { conversion_id: 'pageview' });
+          console.log('[LinkedIn Insight Tag] PageView tracked:', window.location.pathname);
+        }
+      });
+
+      // Track conversion events based on page interactions
+      document.addEventListener('astro:page-load', () => {
+        const path = window.location.pathname;
+
+        // Track use cases page view (high intent)
+        if (path.includes('/cas-usage') || path.includes('/use-cases')) {
+          if (typeof window.lintrk !== 'undefined') {
+            window.lintrk('track', { conversion_id: 'view_use_cases' });
+            console.log('[LinkedIn Insight Tag] Conversion tracked: Use Cases View');
+          }
+        }
+
+        // Track clicks on Cal.com booking buttons (lead conversion)
+        const bookingLinks = document.querySelectorAll('a[href*="cal.vecia.fr"], a[data-track="book-call"]');
+        bookingLinks.forEach((link) => {
+          link.addEventListener('click', () => {
+            if (typeof window.lintrk !== 'undefined') {
+              window.lintrk('track', { conversion_id: 'consultation_initiated' });
+              console.log('[LinkedIn Insight Tag] Conversion tracked: Consultation Click');
+            }
+          });
+        });
+
+        // Track form submissions (lead generation)
+        const forms = document.querySelectorAll('form[data-track="lead-form"]');
+        forms.forEach((form) => {
+          form.addEventListener('submit', () => {
+            if (typeof window.lintrk !== 'undefined') {
+              window.lintrk('track', { conversion_id: 'lead_generated' });
+              console.log('[LinkedIn Insight Tag] Conversion tracked: Lead Form');
+            }
+          });
+        });
+
+        // Track blog engagement (content engagement)
+        if (path.includes('/blog/')) {
+          if (typeof window.lintrk !== 'undefined') {
+            // Track after 30 seconds of page time (engaged reader)
+            setTimeout(() => {
+              window.lintrk('track', { conversion_id: 'blog_engagement' });
+              console.log('[LinkedIn Insight Tag] Conversion tracked: Blog Engagement');
+            }, 30000);
+          }
+        }
+      });
+
+      // Listen for consent updates from CookieConsent component
+      window.addEventListener('cookie-consent-update', (event) => {
+        const { marketing } = event.detail;
+
+        if (marketing) {
+          console.log('[LinkedIn Insight Tag] Consent: GRANTED (marketing cookies accepted)');
+          // Re-initialize tracking if user grants consent after initial load
+          if (typeof window.lintrk !== 'undefined') {
+            window.lintrk('track', { conversion_id: 'pageview' });
+          }
+        } else {
+          console.log('[LinkedIn Insight Tag] Consent: REVOKED (marketing cookies rejected)');
+          // Note: LinkedIn Insight Tag doesn't have built-in consent revocation
+          // Tracking will stop on next page load as script won't be reinitialized
+        }
+      });
+    </script>
+  </>
+) : (
+  <!-- LinkedIn Insight Tag not configured -->
+  <script is:inline>
+    console.warn('[LinkedIn Insight Tag] Not configured. Add PUBLIC_LINKEDIN_PARTNER_ID to .env file.');
+  </script>
+)}

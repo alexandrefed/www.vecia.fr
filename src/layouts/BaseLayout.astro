@@ -14,6 +14,8 @@
 import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
 import GoogleAnalytics from '../components/GoogleAnalytics.astro';
+import MetaPixel from '../components/MetaPixel.astro';
+import LinkedInInsightTag from '../components/LinkedInInsightTag.astro';
 import CookieConsent from '../components/CookieConsent.astro';
 import NewsletterPopup from '../components/NewsletterPopup.astro';
 import StructuredData from '../components/seo/StructuredData.astro';
@@ -129,6 +131,12 @@ const structuredData = {
 
     <!-- Google Analytics 4 with Consent Mode V2 -->
     <GoogleAnalytics />
+
+    <!-- Meta Pixel (Facebook Pixel) with Consent Mode V2 -->
+    <MetaPixel />
+
+    <!-- LinkedIn Insight Tag with GDPR Compliance -->
+    <LinkedInInsightTag />
 
     <!-- Breadcrumb structured data (if provided) -->
     {breadcrumbData && <StructuredData type="breadcrumb" data={breadcrumbData} />}
