@@ -6,6 +6,7 @@
  * Categories: Sales, Operations, Support, Marketing
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import HugeIcon from '../components/HugeIcon.astro';
 import { config } from '../config';
 
 const pageTitle = "Cas d'Usage - Automatisations IA Concrètes";
@@ -55,30 +56,30 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
           <button
             @click="activeTab = 'sales'"
             :class="activeTab === 'sales' ? 'bg-primary text-white' : 'bg-gray-100 text-muted hover:bg-gray-200'"
-            class="px-6 py-3 rounded-lg font-semibold transition-all"
+            class="px-6 py-3 rounded-lg font-semibold transition-all flex items-center gap-2"
           >
-            🎯 Ventes
+            <HugeIcon name="target-01" class="text-xl" /> Ventes
           </button>
           <button
             @click="activeTab = 'operations'"
             :class="activeTab === 'operations' ? 'bg-primary text-white' : 'bg-gray-100 text-muted hover:bg-gray-200'"
-            class="px-6 py-3 rounded-lg font-semibold transition-all"
+            class="px-6 py-3 rounded-lg font-semibold transition-all flex items-center gap-2"
           >
-            ⚙️ Opérations
+            <HugeIcon name="settings-02" class="text-xl" /> Opérations
           </button>
           <button
             @click="activeTab = 'support'"
             :class="activeTab === 'support' ? 'bg-primary text-white' : 'bg-gray-100 text-muted hover:bg-gray-200'"
-            class="px-6 py-3 rounded-lg font-semibold transition-all"
+            class="px-6 py-3 rounded-lg font-semibold transition-all flex items-center gap-2"
           >
-            💬 Support
+            <HugeIcon name="customer-support" class="text-xl" /> Support
           </button>
           <button
             @click="activeTab = 'marketing'"
             :class="activeTab === 'marketing' ? 'bg-primary text-white' : 'bg-gray-100 text-muted hover:bg-gray-200'"
-            class="px-6 py-3 rounded-lg font-semibold transition-all"
+            class="px-6 py-3 rounded-lg font-semibold transition-all flex items-center gap-2"
           >
-            📢 Marketing
+            <HugeIcon name="megaphone-01" class="text-xl" /> Marketing
           </button>
         </div>
 
@@ -91,13 +92,15 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             x-transition
             class="bg-gradient-to-br from-white to-accent3/10 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all border border-gray-100"
           >
-            <div class="text-5xl mb-4">🎯</div>
+            <HugeIcon name="target-01" class="text-5xl mb-4" />
             <h3 class="text-2xl font-display font-bold mb-4 text-text">
               Qualification de Leads Automatique
             </h3>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-error mb-2">❌ Avant :</h4>
+              <h4 class="font-semibold text-error mb-2 flex items-center gap-2">
+                <HugeIcon name="cancel-circle" class="text-xl" /> Avant :
+              </h4>
               <ul class="text-sm text-subtle space-y-1">
                 <li>• Commercial perd 3h/jour à trier les leads</li>
                 <li>• 60% des leads non qualifiés contactés</li>
@@ -106,7 +109,9 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             </div>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-success mb-2">✅ Après :</h4>
+              <h4 class="font-semibold text-success mb-2 flex items-center gap-2">
+                <HugeIcon name="checkmark-circle-02" class="text-xl" /> Après :
+              </h4>
               <ul class="text-sm text-subtle space-y-1">
                 <li>• IA analyse + scoring automatique</li>
                 <li>• Leads chauds routés direct aux commerciaux</li>
@@ -115,7 +120,9 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             </div>
 
             <div class="bg-primary/10 rounded-lg p-4 mb-6">
-              <p class="text-sm font-bold text-primary mb-2">💰 ROI :</p>
+              <p class="text-sm font-bold text-primary mb-2 flex items-center gap-2">
+                <HugeIcon name="money-bag-01" class="text-lg" /> ROI :
+              </p>
               <ul class="text-sm space-y-1">
                 <li>• <strong>+40%</strong> de taux de conversion</li>
                 <li>• <strong>-70%</strong> de temps perdu</li>
@@ -144,13 +151,15 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             x-transition
             class="bg-gradient-to-br from-white to-accent3/10 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all border border-gray-100"
           >
-            <div class="text-5xl mb-4">📄</div>
+            <HugeIcon name="invoice-01" class="text-5xl mb-4" />
             <h3 class="text-2xl font-display font-bold mb-4 text-text">
               Traitement de Factures Intelligent
             </h3>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-error mb-2">❌ Avant :</h4>
+              <h4 class="font-semibold text-error mb-2 flex items-center gap-2">
+                <HugeIcon name="cancel-circle" class="text-xl" /> Avant :
+              </h4>
               <ul class="text-sm text-subtle space-y-1">
                 <li>• 15 min/facture de saisie manuelle</li>
                 <li>• 5-10% d'erreurs de frappe</li>
@@ -159,7 +168,9 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             </div>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-success mb-2">✅ Après :</h4>
+              <h4 class="font-semibold text-success mb-2 flex items-center gap-2">
+                <HugeIcon name="checkmark-circle-02" class="text-xl" /> Après :
+              </h4>
               <ul class="text-sm text-subtle space-y-1">
                 <li>• OCR IA extrait toutes les données</li>
                 <li>• Validation auto + alerte si anomalie</li>
@@ -168,7 +179,9 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             </div>
 
             <div class="bg-primary/10 rounded-lg p-4 mb-6">
-              <p class="text-sm font-bold text-primary mb-2">💰 ROI :</p>
+              <p class="text-sm font-bold text-primary mb-2 flex items-center gap-2">
+                <HugeIcon name="money-bag-01" class="text-lg" /> ROI :
+              </p>
               <ul class="text-sm space-y-1">
                 <li>• <strong>-80%</strong> de temps de traitement</li>
                 <li>• <strong>-95%</strong> d'erreurs</li>
@@ -197,13 +210,15 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             x-transition
             class="bg-gradient-to-br from-white to-accent3/10 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all border border-gray-100"
           >
-            <div class="text-5xl mb-4">💬</div>
+            <HugeIcon name="customer-support" class="text-5xl mb-4" />
             <h3 class="text-2xl font-display font-bold mb-4 text-text">
               Support Client Intelligent
             </h3>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-error mb-2">❌ Avant :</h4>
+              <h4 class="font-semibold text-error mb-2 flex items-center gap-2">
+                <HugeIcon name="cancel-circle" class="text-xl" /> Avant :
+              </h4>
               <ul class="text-sm text-subtle space-y-1">
                 <li>• Tickets urgent/normal mélangés</li>
                 <li>• Client attend 2-4h pour réponse</li>
@@ -212,7 +227,9 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             </div>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-success mb-2">✅ Après :</h4>
+              <h4 class="font-semibold text-success mb-2 flex items-center gap-2">
+                <HugeIcon name="checkmark-circle-02" class="text-xl" /> Après :
+              </h4>
               <ul class="text-sm text-subtle space-y-1">
                 <li>• IA catégorise + priorise automatiquement</li>
                 <li>• Routage vers l'expert adapté</li>
@@ -221,7 +238,9 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             </div>
 
             <div class="bg-primary/10 rounded-lg p-4 mb-6">
-              <p class="text-sm font-bold text-primary mb-2">💰 ROI :</p>
+              <p class="text-sm font-bold text-primary mb-2 flex items-center gap-2">
+                <HugeIcon name="money-bag-01" class="text-lg" /> ROI :
+              </p>
               <ul class="text-sm space-y-1">
                 <li>• <strong>-70%</strong> temps de réponse</li>
                 <li>• <strong>+35%</strong> satisfaction client (CSAT)</li>
@@ -250,13 +269,15 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             x-transition
             class="bg-gradient-to-br from-white to-accent3/10 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all border border-gray-100"
           >
-            <div class="text-5xl mb-4">📢</div>
+            <HugeIcon name="megaphone-01" class="text-5xl mb-4" />
             <h3 class="text-2xl font-display font-bold mb-4 text-text">
               Pipeline de Contenu Social
             </h3>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-error mb-2">❌ Avant :</h4>
+              <h4 class="font-semibold text-error mb-2 flex items-center gap-2">
+                <HugeIcon name="cancel-circle" class="text-xl" /> Avant :
+              </h4>
               <ul class="text-sm text-subtle space-y-1">
                 <li>• 2h pour rédiger posts LinkedIn/Twitter</li>
                 <li>• Publication manuelle = oublis fréquents</li>
@@ -265,7 +286,9 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             </div>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-success mb-2">✅ Après :</h4>
+              <h4 class="font-semibold text-success mb-2 flex items-center gap-2">
+                <HugeIcon name="checkmark-circle-02" class="text-xl" /> Après :
+              </h4>
               <ul class="text-sm text-subtle space-y-1">
                 <li>• IA génère posts depuis article blog</li>
                 <li>• Adaptation auto par plateforme</li>
@@ -274,7 +297,9 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             </div>
 
             <div class="bg-primary/10 rounded-lg p-4 mb-6">
-              <p class="text-sm font-bold text-primary mb-2">💰 ROI :</p>
+              <p class="text-sm font-bold text-primary mb-2 flex items-center gap-2">
+                <HugeIcon name="money-bag-01" class="text-lg" /> ROI :
+              </p>
               <ul class="text-sm space-y-1">
                 <li>• <strong>-85%</strong> temps de création</li>
                 <li>• <strong>3x</strong> plus de posts publiés</li>
@@ -303,13 +328,15 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             x-transition
             class="bg-gradient-to-br from-white to-accent3/10 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all border border-gray-100"
           >
-            <div class="text-5xl mb-4">📝</div>
+            <HugeIcon name="note-01" class="text-5xl mb-4" />
             <h3 class="text-2xl font-display font-bold mb-4 text-text">
               Comptes-Rendus Automatiques
             </h3>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-error mb-2">❌ Avant :</h4>
+              <h4 class="font-semibold text-error mb-2 flex items-center gap-2">
+                <HugeIcon name="cancel-circle" class="text-xl" /> Avant :
+              </h4>
               <ul class="text-sm text-subtle space-y-1">
                 <li>• 30 min post-réunion pour notes</li>
                 <li>• Actions oubliées ou mal trackées</li>
@@ -318,7 +345,9 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             </div>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-success mb-2">✅ Après :</h4>
+              <h4 class="font-semibold text-success mb-2 flex items-center gap-2">
+                <HugeIcon name="checkmark-circle-02" class="text-xl" /> Après :
+              </h4>
               <ul class="text-sm text-subtle space-y-1">
                 <li>• IA transcrit + extrait actions/décisions</li>
                 <li>• CRM auto-mis à jour avec insights</li>
@@ -327,7 +356,9 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             </div>
 
             <div class="bg-primary/10 rounded-lg p-4 mb-6">
-              <p class="text-sm font-bold text-primary mb-2">💰 ROI :</p>
+              <p class="text-sm font-bold text-primary mb-2 flex items-center gap-2">
+                <HugeIcon name="money-bag-01" class="text-lg" /> ROI :
+              </p>
               <ul class="text-sm space-y-1">
                 <li>• <strong>-90%</strong> temps admin post-réunion</li>
                 <li>• <strong>0</strong> actions oubliées</li>
@@ -356,13 +387,15 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             x-transition
             class="bg-gradient-to-br from-white to-accent3/10 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all border border-gray-100"
           >
-            <div class="text-5xl mb-4">⚙️</div>
+            <HugeIcon name="settings-02" class="text-5xl mb-4" />
             <h3 class="text-2xl font-display font-bold mb-4 text-text">
               Élimination de Saisie Manuelle
             </h3>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-error mb-2">❌ Avant :</h4>
+              <h4 class="font-semibold text-error mb-2 flex items-center gap-2">
+                <HugeIcon name="cancel-circle" class="text-xl" /> Avant :
+              </h4>
               <ul class="text-sm text-subtle space-y-1">
                 <li>• Données copiées entre 3 systèmes</li>
                 <li>• 2h/jour de double/triple saisie</li>
@@ -371,7 +404,9 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             </div>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-success mb-2">✅ Après :</h4>
+              <h4 class="font-semibold text-success mb-2 flex items-center gap-2">
+                <HugeIcon name="checkmark-circle-02" class="text-xl" /> Après :
+              </h4>
               <ul class="text-sm text-subtle space-y-1">
                 <li>• IA extrait données de PDFs/scans</li>
                 <li>• Sync auto entre tous les systèmes</li>
@@ -380,7 +415,9 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             </div>
 
             <div class="bg-primary/10 rounded-lg p-4 mb-6">
-              <p class="text-sm font-bold text-primary mb-2">💰 ROI :</p>
+              <p class="text-sm font-bold text-primary mb-2 flex items-center gap-2">
+                <HugeIcon name="money-bag-01" class="text-lg" /> ROI :
+              </p>
               <ul class="text-sm space-y-1">
                 <li>• <strong>-95%</strong> saisie manuelle</li>
                 <li>• <strong>-98%</strong> erreurs de données</li>
@@ -409,13 +446,15 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             x-transition
             class="bg-gradient-to-br from-white to-accent3/10 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all border border-gray-100"
           >
-            <div class="text-5xl mb-4">✉️</div>
+            <HugeIcon name="mail-01" class="text-5xl mb-4" />
             <h3 class="text-2xl font-display font-bold mb-4 text-text">
               Brouillons de Réponses IA
             </h3>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-error mb-2">❌ Avant :</h4>
+              <h4 class="font-semibold text-error mb-2 flex items-center gap-2">
+                <HugeIcon name="cancel-circle" class="text-xl" /> Avant :
+              </h4>
               <ul class="text-sm text-subtle space-y-1">
                 <li>• 10-15 min par email client complexe</li>
                 <li>• Ton incohérent selon collaborateur</li>
@@ -424,7 +463,9 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             </div>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-success mb-2">✅ Après :</h4>
+              <h4 class="font-semibold text-success mb-2 flex items-center gap-2">
+                <HugeIcon name="checkmark-circle-02" class="text-xl" /> Après :
+              </h4>
               <ul class="text-sm text-subtle space-y-1">
                 <li>• IA analyse contexte + historique client</li>
                 <li>• Génère brouillon personnalisé</li>
@@ -433,7 +474,9 @@ const pageDescription = "Découvrez 7 automatisations IA qui éliminent les tâc
             </div>
 
             <div class="bg-primary/10 rounded-lg p-4 mb-6">
-              <p class="text-sm font-bold text-primary mb-2">💰 ROI :</p>
+              <p class="text-sm font-bold text-primary mb-2 flex items-center gap-2">
+                <HugeIcon name="money-bag-01" class="text-lg" /> ROI :
+              </p>
               <ul class="text-sm space-y-1">
                 <li>• <strong>-75%</strong> temps par email</li>
                 <li>• <strong>100%</strong> cohérence de ton</li>

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import HugeIcon from '../../components/HugeIcon.astro';
 import { config } from '../../config';
 
 const pageTitle = 'Use Cases - Concrete AI Automations';
@@ -35,35 +36,35 @@ const pageDescription = 'Discover 7 concrete automation examples with real ROI: 
             :class="activeTab === 'all' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
             class="px-6 py-3 rounded-lg font-semibold transition-all"
           >
-            🎯 All
+            All
           </button>
           <button
             @click="activeTab = 'sales'"
             :class="activeTab === 'sales' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-            class="px-6 py-3 rounded-lg font-semibold transition-all"
+            class="px-6 py-3 rounded-lg font-semibold transition-all flex items-center gap-2"
           >
-            💼 Sales
+            <HugeIcon name="briefcase-01" class="text-xl" /> Sales
           </button>
           <button
             @click="activeTab = 'operations'"
             :class="activeTab === 'operations' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-            class="px-6 py-3 rounded-lg font-semibold transition-all"
+            class="px-6 py-3 rounded-lg font-semibold transition-all flex items-center gap-2"
           >
-            ⚙️ Operations
+            <HugeIcon name="settings-02" class="text-xl" /> Operations
           </button>
           <button
             @click="activeTab = 'support'"
             :class="activeTab === 'support' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-            class="px-6 py-3 rounded-lg font-semibold transition-all"
+            class="px-6 py-3 rounded-lg font-semibold transition-all flex items-center gap-2"
           >
-            💬 Support
+            <HugeIcon name="customer-support" class="text-xl" /> Support
           </button>
           <button
             @click="activeTab = 'marketing'"
             :class="activeTab === 'marketing' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-            class="px-6 py-3 rounded-lg font-semibold transition-all"
+            class="px-6 py-3 rounded-lg font-semibold transition-all flex items-center gap-2"
           >
-            📢 Marketing
+            <HugeIcon name="megaphone-01" class="text-xl" /> Marketing
           </button>
         </div>
 
@@ -76,21 +77,27 @@ const pageDescription = 'Discover 7 concrete automation examples with real ROI: 
             x-transition
             class="bg-white border-2 border-gray-100 rounded-xl p-8 hover:border-primary hover:shadow-xl transition-all"
           >
-            <div class="text-4xl mb-4">🎯</div>
+            <HugeIcon name="target-01" class="text-4xl mb-4" />
             <h3 class="text-2xl font-bold text-primary mb-4">Intelligent Lead Qualification</h3>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-gray-800 mb-2">❌ Before:</h4>
+              <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="cancel-circle" class="text-lg" /> Before:
+              </h4>
               <p class="text-gray-600 text-sm">Sales rep spends 2 hours/day manually sorting 50+ daily leads. 30% of qualified leads slip through the cracks due to response delays.</p>
             </div>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-gray-800 mb-2">✅ After:</h4>
+              <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="checkmark-circle-02" class="text-lg" /> After:
+              </h4>
               <p class="text-gray-600 text-sm">AI analyzes each lead in 10 seconds (website data, LinkedIn, engagement history). Auto-scoring and instant routing to the right sales rep with a personalized brief.</p>
             </div>
 
             <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
-              <h4 class="font-bold text-green-800 mb-2">📊 ROI:</h4>
+              <h4 class="font-bold text-green-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="money-bag-01" class="text-base" /> ROI:
+              </h4>
               <ul class="text-sm text-green-700 space-y-1">
                 <li>• <strong>+40%</strong> conversion rate</li>
                 <li>• <strong>-70%</strong> qualification time</li>
@@ -119,21 +126,27 @@ const pageDescription = 'Discover 7 concrete automation examples with real ROI: 
             x-transition
             class="bg-white border-2 border-gray-100 rounded-xl p-8 hover:border-primary hover:shadow-xl transition-all"
           >
-            <div class="text-4xl mb-4">📄</div>
+            <HugeIcon name="invoice-01" class="text-4xl mb-4" />
             <h3 class="text-2xl font-bold text-primary mb-4">Automatic Invoice Processing</h3>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-gray-800 mb-2">❌ Before:</h4>
+              <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="cancel-circle" class="text-lg" /> Before:
+              </h4>
               <p class="text-gray-600 text-sm">Accountant manually enters 200 invoices/month. 15 minutes per invoice. 3-5 data entry errors per day requiring follow-up.</p>
             </div>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-gray-800 mb-2">✅ After:</h4>
+              <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="checkmark-circle-02" class="text-lg" /> After:
+              </h4>
               <p class="text-gray-600 text-sm">OCR + AI extracts data (amounts, dates, suppliers). Auto-validation against POs. Direct integration to QuickBooks/Sage. Manual review only for exceptions.</p>
             </div>
 
             <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
-              <h4 class="font-bold text-green-800 mb-2">📊 ROI:</h4>
+              <h4 class="font-bold text-green-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="money-bag-01" class="text-base" /> ROI:
+              </h4>
               <ul class="text-sm text-green-700 space-y-1">
                 <li>• <strong>-80%</strong> processing time</li>
                 <li>• <strong>-95%</strong> entry errors</li>
@@ -162,21 +175,27 @@ const pageDescription = 'Discover 7 concrete automation examples with real ROI: 
             x-transition
             class="bg-white border-2 border-gray-100 rounded-xl p-8 hover:border-primary hover:shadow-xl transition-all"
           >
-            <div class="text-4xl mb-4">💬</div>
+            <HugeIcon name="customer-support" class="text-4xl mb-4" />
             <h3 class="text-2xl font-bold text-primary mb-4">Intelligent Support Triage</h3>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-gray-800 mb-2">❌ Before:</h4>
+              <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="cancel-circle" class="text-lg" /> Before:
+              </h4>
               <p class="text-gray-600 text-sm">100+ daily tickets pile up in a generic inbox. Average 4h response time. Junior support agents waste time on senior-level tickets.</p>
             </div>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-gray-800 mb-2">✅ After:</h4>
+              <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="checkmark-circle-02" class="text-lg" /> After:
+              </h4>
               <p class="text-gray-600 text-sm">AI categorizes tickets by urgency/complexity. Auto-routing to the right expert. Pre-populated responses for FAQs. Smart escalation for critical issues.</p>
             </div>
 
             <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
-              <h4 class="font-bold text-green-800 mb-2">📊 ROI:</h4>
+              <h4 class="font-bold text-green-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="money-bag-01" class="text-base" /> ROI:
+              </h4>
               <ul class="text-sm text-green-700 space-y-1">
                 <li>• <strong>-70%</strong> initial response time</li>
                 <li>• <strong>+35%</strong> customer satisfaction (CSAT)</li>
@@ -205,21 +224,27 @@ const pageDescription = 'Discover 7 concrete automation examples with real ROI: 
             x-transition
             class="bg-white border-2 border-gray-100 rounded-xl p-8 hover:border-primary hover:shadow-xl transition-all"
           >
-            <div class="text-4xl mb-4">📢</div>
+            <HugeIcon name="megaphone-01" class="text-4xl mb-4" />
             <h3 class="text-2xl font-bold text-primary mb-4">Automated Content Pipeline</h3>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-gray-800 mb-2">❌ Before:</h4>
+              <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="cancel-circle" class="text-lg" /> Before:
+              </h4>
               <p class="text-gray-600 text-sm">Marketing manager spends 10h/week creating LinkedIn/Twitter posts. Struggles to maintain 3 posts/week. Engagement inconsistent due to irregular posting.</p>
             </div>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-gray-800 mb-2">✅ After:</h4>
+              <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="checkmark-circle-02" class="text-lg" /> After:
+              </h4>
               <p class="text-gray-600 text-sm">AI generates posts from your blog/news/industry data. Auto-adaptation by platform (LinkedIn ≠ Twitter tone). Scheduling and analytics tracking. Human validation before posting.</p>
             </div>
 
             <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
-              <h4 class="font-bold text-green-800 mb-2">📊 ROI:</h4>
+              <h4 class="font-bold text-green-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="money-bag-01" class="text-base" /> ROI:
+              </h4>
               <ul class="text-sm text-green-700 space-y-1">
                 <li>• <strong>-85%</strong> content creation time</li>
                 <li>• <strong>3x more</strong> posts published</li>
@@ -248,21 +273,27 @@ const pageDescription = 'Discover 7 concrete automation examples with real ROI: 
             x-transition
             class="bg-white border-2 border-gray-100 rounded-xl p-8 hover:border-primary hover:shadow-xl transition-all"
           >
-            <div class="text-4xl mb-4">📝</div>
+            <HugeIcon name="note-01" class="text-4xl mb-4" />
             <h3 class="text-2xl font-bold text-primary mb-4">Meeting Notes → CRM Sync</h3>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-gray-800 mb-2">❌ Before:</h4>
+              <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="cancel-circle" class="text-lg" /> Before:
+              </h4>
               <p class="text-gray-600 text-sm">Sales rep spends 30 min after each meeting writing up notes in CRM. Forgotten action items. Delayed follow-ups. Incomplete data for sales forecasting.</p>
             </div>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-gray-800 mb-2">✅ After:</h4>
+              <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="checkmark-circle-02" class="text-lg" /> After:
+              </h4>
               <p class="text-gray-600 text-sm">AI transcribes and analyzes the Zoom/Teams call. Extracts: key points, next steps, pain points, budget signals. Auto-syncs to CRM with action reminders.</p>
             </div>
 
             <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
-              <h4 class="font-bold text-green-800 mb-2">📊 ROI:</h4>
+              <h4 class="font-bold text-green-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="money-bag-01" class="text-base" /> ROI:
+              </h4>
               <ul class="text-sm text-green-700 space-y-1">
                 <li>• <strong>-90%</strong> admin time post-meeting</li>
                 <li>• <strong>0 forgotten</strong> action items</li>
@@ -291,21 +322,27 @@ const pageDescription = 'Discover 7 concrete automation examples with real ROI: 
             x-transition
             class="bg-white border-2 border-gray-100 rounded-xl p-8 hover:border-primary hover:shadow-xl transition-all"
           >
-            <div class="text-4xl mb-4">⚙️</div>
+            <HugeIcon name="settings-02" class="text-4xl mb-4" />
             <h3 class="text-2xl font-bold text-primary mb-4">Zero Data Entry</h3>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-gray-800 mb-2">❌ Before:</h4>
+              <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="cancel-circle" class="text-lg" /> Before:
+              </h4>
               <p class="text-gray-600 text-sm">Operations team re-types data between systems: Emails → ERP → Inventory → Accounting. 3 hours/day of pure copy-paste. Typos cause inventory discrepancies.</p>
             </div>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-gray-800 mb-2">✅ After:</h4>
+              <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="checkmark-circle-02" class="text-lg" /> After:
+              </h4>
               <p class="text-gray-600 text-sm">AI extracts structured data from emails/PDFs/forms. Auto-validation against business rules. Direct sync to all systems with field mapping. Alert on anomalies only.</p>
             </div>
 
             <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
-              <h4 class="font-bold text-green-800 mb-2">📊 ROI:</h4>
+              <h4 class="font-bold text-green-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="money-bag-01" class="text-base" /> ROI:
+              </h4>
               <ul class="text-sm text-green-700 space-y-1">
                 <li>• <strong>-95%</strong> manual data entry</li>
                 <li>• <strong>-98%</strong> entry errors</li>
@@ -334,21 +371,27 @@ const pageDescription = 'Discover 7 concrete automation examples with real ROI: 
             x-transition
             class="bg-white border-2 border-gray-100 rounded-xl p-8 hover:border-primary hover:shadow-xl transition-all"
           >
-            <div class="text-4xl mb-4">✉️</div>
+            <HugeIcon name="mail-01" class="text-4xl mb-4" />
             <h3 class="text-2xl font-bold text-primary mb-4">AI Email Response Drafts</h3>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-gray-800 mb-2">❌ Before:</h4>
+              <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="cancel-circle" class="text-lg" /> Before:
+              </h4>
               <p class="text-gray-600 text-sm">Customer success team handles 80+ emails/day. Each response requires context checking across 3 systems. Average 8 min per email response.</p>
             </div>
 
             <div class="mb-6">
-              <h4 class="font-semibold text-gray-800 mb-2">✅ After:</h4>
+              <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="checkmark-circle-02" class="text-lg" /> After:
+              </h4>
               <p class="text-gray-600 text-sm">AI analyzes email intent + customer history. Generates context-aware draft response with relevant info. Human reviews and personalizes in 2 minutes. One-click send.</p>
             </div>
 
             <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
-              <h4 class="font-bold text-green-800 mb-2">📊 ROI:</h4>
+              <h4 class="font-bold text-green-800 mb-2 flex items-center gap-2">
+                <HugeIcon name="money-bag-01" class="text-base" /> ROI:
+              </h4>
               <ul class="text-sm text-green-700 space-y-1">
                 <li>• <strong>-75%</strong> time per email</li>
                 <li>• <strong>Same quality</strong> (human-reviewed)</li>
