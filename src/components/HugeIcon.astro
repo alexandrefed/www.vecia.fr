@@ -2,12 +2,11 @@
 /**
  * HugeIcon Component
  *
- * Renders Hugeicons using unicode characters
- * No runtime dependencies - all glyphs are hardcoded
+ * Renders Hugeicons using the official Hugeicons CDN font
+ * Uses CSS classes for icon rendering
  *
  * @prop {string} name - Icon name (e.g., "target-01", "briefcase-01")
  * @prop {string} class - Tailwind CSS classes for styling
- * @prop {string} style - Icon style (default: "stroke-rounded")
  *
  * Available icons:
  * - target-01: Sales/Goals icon
@@ -26,46 +25,28 @@
 interface Props {
   name: string;
   class?: string;
-  style?: string;
 }
 
-const { name, class: className = '', style = 'stroke-rounded' } = Astro.props;
+const { name, class: className = '' } = Astro.props;
 
-// Icon unicode mappings (stroke-rounded style)
-const iconGlyphs: Record<string, string> = {
-  'target-01': '&#990909;',
-  'briefcase-01': '&#984173;',
-  'settings-02': '&#989899;',
-  'customer-support': '&#985477;',
-  'megaphone-01': '&#987957;',
-  'note-01': '&#988579;',
-  'invoice-01': '&#987133;',
-  'mail-01': '&#987729;',
-  'cancel-circle': '&#984513;',
-  'checkmark-circle-02': '&#984827;',
-  'money-bag-01': '&#988195;',
-};
+// Validate icon name
+const validIcons = [
+  'target-01',
+  'briefcase-01',
+  'settings-02',
+  'customer-support',
+  'megaphone-01',
+  'note-01',
+  'invoice-01',
+  'mail-01',
+  'cancel-circle',
+  'checkmark-circle-02',
+  'money-bag-01',
+];
 
-const glyph = iconGlyphs[name];
-
-if (!glyph) {
-  console.warn(`[HugeIcon] Unknown icon name: "${name}". Available icons:`, Object.keys(iconGlyphs));
+if (!validIcons.includes(name)) {
+  console.warn(`[HugeIcon] Unknown icon name: "${name}". Available icons:`, validIcons);
 }
 ---
 
-{glyph ? (
-  <span class={`hugeicon ${className}`} set:html={glyph} aria-hidden="true" />
-) : (
-  <span class={className} aria-hidden="true">?</span>
-)}
-
-<style>
-  .hugeicon {
-    display: inline-block;
-    font-family: 'Hugeicons', sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    line-height: 1;
-    vertical-align: middle;
-  }
-</style>
+<i class={`hgi-stroke hgi-${name} ${className}`} aria-hidden="true"></i>

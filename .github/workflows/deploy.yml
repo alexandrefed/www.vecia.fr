@@ -31,6 +31,9 @@ jobs:
             NODE_VERSION=20.18.1
             PUBLIC_SITE_URL=https://vecia.fr
             PUBLIC_CAL_EMBED_URL=https://cal.vecia.fr
+            PUBLIC_META_PIXEL_ID=${{ secrets.PUBLIC_META_PIXEL_ID }}
+            PUBLIC_LINKEDIN_PARTNER_ID=${{ secrets.PUBLIC_LINKEDIN_PARTNER_ID }}
+            PUBLIC_GA_MEASUREMENT_ID=${{ secrets.PUBLIC_GA_MEASUREMENT_ID }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

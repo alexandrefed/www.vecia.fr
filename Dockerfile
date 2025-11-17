@@ -22,10 +22,19 @@ RUN --mount=type=cache,target=/root/.npm \
 COPY . .
 
 # Build Astro site (outputs to dist/)
+# Accept build-time environment variables
 ARG PUBLIC_SITE_URL=https://vecia.fr
 ARG PUBLIC_CAL_EMBED_URL=https://cal.vecia.fr
+ARG PUBLIC_META_PIXEL_ID
+ARG PUBLIC_LINKEDIN_PARTNER_ID
+ARG PUBLIC_GA_MEASUREMENT_ID
+
+# Set as environment variables for Astro build
 ENV PUBLIC_SITE_URL=${PUBLIC_SITE_URL}
 ENV PUBLIC_CAL_EMBED_URL=${PUBLIC_CAL_EMBED_URL}
+ENV PUBLIC_META_PIXEL_ID=${PUBLIC_META_PIXEL_ID}
+ENV PUBLIC_LINKEDIN_PARTNER_ID=${PUBLIC_LINKEDIN_PARTNER_ID}
+ENV PUBLIC_GA_MEASUREMENT_ID=${PUBLIC_GA_MEASUREMENT_ID}
 
 RUN npm run build
 
