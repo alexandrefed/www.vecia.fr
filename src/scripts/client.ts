@@ -180,6 +180,270 @@ Alpine.data('leadCaptureForm', () => ({
   }
 }));
 
+// Register Alpine.js Multi-Step Form component
+Alpine.data('multiStepForm', () => ({
+  currentStep: 1,
+  formData: {
+    goal: '',
+    companySize: '',
+    industry: '',
+    pain: '',
+    budget: '',
+    timeline: '',
+    name: '',
+    email: '',
+    company: ''
+  },
+  loading: false,
+  success: false,
+  error: false,
+  errorMessage: '',
+
+  nextStep() {
+    if (this.currentStep < 4) {
+      this.currentStep++;
+    }
+  },
+
+  prevStep() {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+    }
+  },
+
+  async submitForm() {
+    this.loading = true;
+    this.error = false;
+    this.errorMessage = '';
+
+    try {
+      const lang = window.location.pathname.startsWith('/en') ? 'en' : 'fr';
+
+      // Rate limiting check
+      const rateLimit = checkRateLimit('vecia-getstarted-submissions');
+      if (!rateLimit.allowed) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? `Limite atteinte. Réessayez dans ${rateLimit.message.match(/\d+/)?.[0]} minute(s).`
+          : rateLimit.message;
+        this.loading = false;
+        return;
+      }
+
+      // Input sanitization
+      const sanitizedName = sanitizeInput(this.formData.name);
+      const sanitizedEmail = sanitizeInput(this.formData.email);
+      const sanitizedCompany = sanitizeInput(this.formData.company);
+      const sanitizedPain = this.formData.pain.trim().slice(0, 2000);
+
+      // Email validation
+      if (!isValidEmail(sanitizedEmail)) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? 'Veuillez saisir une adresse email valide.'
+          : 'Please enter a valid email address.';
+        this.loading = false;
+        return;
+      }
+
+      // Name length validation
+      if (sanitizedName.length < 2 || sanitizedName.length > 100) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? 'Le nom doit contenir entre 2 et 100 caractères.'
+          : 'Name must be between 2 and 100 characters.';
+        this.loading = false;
+        return;
+      }
+
+      // Prepare data for submission
+      const submissionData = {
+        timestamp: new Date().toISOString(),
+        formType: 'get-started',
+        goal: this.formData.goal,
+        companySize: this.formData.companySize,
+        industry: this.formData.industry,
+        pain: sanitizedPain,
+        budget: this.formData.budget,
+        timeline: this.formData.timeline,
+        name: sanitizedName,
+        email: sanitizedEmail,
+        company: sanitizedCompany || 'Non spécifié',
+        language: lang,
+        source: document.referrer || 'Direct',
+        utm_campaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
+        utm_source: new URLSearchParams(window.location.search).get('utm_source') || '',
+        utm_medium: new URLSearchParams(window.location.search).get('utm_medium') || '',
+        page_url: window.location.href
+      };
+
+      // Google Apps Script webhook URL
+      const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby_23XSfxU0NBNgfbufOqhDa6ywjs34tjXp1-kEYLtNMauZiA2B64kzXUAKFKeRqB-VXA/exec';
+
+      // Submit to webhook
+      await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionData)
+      });
+
+      // Success
+      this.success = true;
+      this.loading = false;
+
+      // Track conversion in analytics
+      if (typeof window.plausible !== 'undefined') {
+        window.plausible('Get Started Lead', {
+          props: {
+            goal: this.formData.goal,
+            companySize: this.formData.companySize,
+            budget: this.formData.budget,
+            lang
+          }
+        });
+      }
+
+    } catch (err) {
+      console.error('Multi-step form submission error:', err);
+      this.error = true;
+      this.errorMessage = window.location.pathname.startsWith('/en')
+        ? 'An error occurred. Please try again.'
+        : 'Une erreur s\'est produite. Veuillez réessayer.';
+      this.loading = false;
+    }
+  }
+}));
+
+// Register Alpine.js Contact Form component
+Alpine.data('contactForm', () => ({
+  formData: {
+    name: '',
+    email: '',
+    company: '',
+    message: ''
+  },
+  loading: false,
+  success: false,
+  error: false,
+  errorMessage: '',
+
+  async submitForm() {
+    // Reset states
+    this.loading = true;
+    this.error = false;
+    this.success = false;
+    this.errorMessage = '';
+
+    try {
+      // Get language from current page
+      const lang = window.location.pathname.startsWith('/en') ? 'en' : 'fr';
+
+      // Rate limiting check
+      const rateLimit = checkRateLimit('vecia-contact-submissions');
+      if (!rateLimit.allowed) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? `Limite atteinte. Réessayez dans ${rateLimit.message.match(/\d+/)?.[0]} minute(s).`
+          : rateLimit.message;
+        this.loading = false;
+        return;
+      }
+
+      // Input sanitization
+      const sanitizedName = sanitizeInput(this.formData.name);
+      const sanitizedEmail = sanitizeInput(this.formData.email);
+      const sanitizedCompany = sanitizeInput(this.formData.company);
+      const sanitizedMessage = this.formData.message.trim().slice(0, 5000); // Allow longer messages
+
+      // Email validation
+      if (!isValidEmail(sanitizedEmail)) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? 'Veuillez saisir une adresse email valide.'
+          : 'Please enter a valid email address.';
+        this.loading = false;
+        return;
+      }
+
+      // Name length validation
+      if (sanitizedName.length < 2 || sanitizedName.length > 100) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? 'Le nom doit contenir entre 2 et 100 caractères.'
+          : 'Name must be between 2 and 100 characters.';
+        this.loading = false;
+        return;
+      }
+
+      // Message length validation
+      if (sanitizedMessage.length < 10) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? 'Le message doit contenir au moins 10 caractères.'
+          : 'Message must be at least 10 characters.';
+        this.loading = false;
+        return;
+      }
+
+      // Prepare data for submission
+      const submissionData = {
+        timestamp: new Date().toISOString(),
+        formType: 'contact',
+        name: sanitizedName,
+        email: sanitizedEmail,
+        company: sanitizedCompany || 'Non spécifié',
+        message: sanitizedMessage,
+        language: lang,
+        source: document.referrer || 'Direct',
+        page_url: window.location.href
+      };
+
+      // Google Apps Script webhook URL
+      const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby_23XSfxU0NBNgfbufOqhDa6ywjs34tjXp1-kEYLtNMauZiA2B64kzXUAKFKeRqB-VXA/exec';
+
+      // Submit to webhook
+      await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionData)
+      });
+
+      // Success (with no-cors, assume success if no error)
+      this.success = true;
+      this.loading = false;
+
+      // Reset form after 3 seconds
+      setTimeout(() => {
+        this.formData = {
+          name: '',
+          email: '',
+          company: '',
+          message: ''
+        };
+      }, 3000);
+
+      // Track conversion in analytics
+      if (typeof window.plausible !== 'undefined') {
+        window.plausible('Contact Form', { props: { lang } });
+      }
+
+    } catch (err) {
+      console.error('Contact form submission error:', err);
+      this.error = true;
+      this.errorMessage = lang === 'fr'
+        ? 'Une erreur s\'est produite. Veuillez réessayer.'
+        : 'An error occurred. Please try again.';
+      this.loading = false;
+    }
+  }
+}));
+
 // Make Alpine available globally (required for x-data, x-show, etc.)
 window.Alpine = Alpine;
 

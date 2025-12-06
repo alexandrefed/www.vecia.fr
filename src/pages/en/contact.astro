@@ -1,0 +1,187 @@
+---
+/**
+ * Contact Page (English)
+ *
+ * Simple contact form that sends messages to contact@vecia.fr
+ * via Google Apps Script webhook
+ */
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const lang = 'en';
+
+// Breadcrumb structured data for SEO
+const breadcrumbData = {
+  items: [
+    { name: 'Home', url: 'https://vecia.com/en/' },
+    { name: 'Contact', url: 'https://vecia.com/en/contact/' }
+  ]
+};
+
+const pageTitle = 'Contact Us | Vecia - AI Agency';
+const pageDescription = 'Have a question about AI automation for your business? Contact the Vecia team. We respond within 24 hours.';
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  lang={lang}
+  breadcrumbData={breadcrumbData}
+>
+  <!-- Hero Section -->
+  <section class="relative py-20 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent1/5"></div>
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">
+          Let's talk about your <span class="text-primary">project</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-muted">
+          Have a question? An automation project? We're here to help.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form Section -->
+  <section class="py-20">
+    <div class="container mx-auto px-6">
+      <div class="max-w-2xl mx-auto">
+        <form
+          x-data="contactForm()"
+          @submit.prevent="submitForm"
+          class="bg-white rounded-2xl shadow-xl p-8 md:p-10"
+        >
+          <div class="space-y-6">
+            <!-- Name -->
+            <div>
+              <label for="name" class="block text-sm font-medium text-text mb-2">
+                Your name <span class="text-secondary">*</span>
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                x-model="formData.name"
+                required
+                placeholder="John Smith"
+                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle"
+              />
+            </div>
+
+            <!-- Email -->
+            <div>
+              <label for="email" class="block text-sm font-medium text-text mb-2">
+                Professional email <span class="text-secondary">*</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                x-model="formData.email"
+                required
+                placeholder="john@company.com"
+                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle"
+              />
+            </div>
+
+            <!-- Company (optional) -->
+            <div>
+              <label for="company" class="block text-sm font-medium text-text mb-2">
+                Company <span class="text-muted">(optional)</span>
+              </label>
+              <input
+                type="text"
+                id="company"
+                name="company"
+                x-model="formData.company"
+                placeholder="Your company name"
+                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle"
+              />
+            </div>
+
+            <!-- Message -->
+            <div>
+              <label for="message" class="block text-sm font-medium text-text mb-2">
+                Your message <span class="text-secondary">*</span>
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                x-model="formData.message"
+                required
+                rows="5"
+                placeholder="Describe your project or ask your question..."
+                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle resize-none"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            :disabled="loading"
+            class="w-full mt-8 px-6 py-4 bg-gradient-to-r from-primary to-secondary text-white font-bold text-lg rounded-full hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+          >
+            <span x-show="!loading">Send message</span>
+            <span x-show="loading" class="flex items-center justify-center gap-2">
+              <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>Sending...</span>
+            </span>
+          </button>
+
+          <!-- Privacy Notice -->
+          <p class="text-sm text-center text-muted mt-6">
+            Your data is protected. We respond within 24 hours.
+          </p>
+
+          <!-- Error Message -->
+          <div
+            x-show="error"
+            x-transition
+            class="mt-6 p-4 bg-red-50 border-2 border-red-200 rounded-lg"
+          >
+            <p class="text-red-600 text-center font-medium" x-text="errorMessage"></p>
+          </div>
+
+          <!-- Success Message -->
+          <div
+            x-show="success"
+            x-transition
+            class="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-lg"
+          >
+            <p class="text-green-600 text-center font-medium">
+              Message sent! We'll get back to you within 24 hours.
+            </p>
+          </div>
+        </form>
+
+        <!-- Alternative Contact Info -->
+        <div class="mt-12 text-center">
+          <p class="text-muted mb-4">Prefer to reach out directly?</p>
+          <a
+            href="mailto:contact@vecia.fr"
+            class="inline-flex items-center text-primary hover:text-secondary transition-colors font-medium"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            contact@vecia.fr
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Prevent zoom on iOS when focusing inputs */
+  @media (max-width: 640px) {
+    input, select, textarea {
+      font-size: 16px;
+    }
+  }
+</style>

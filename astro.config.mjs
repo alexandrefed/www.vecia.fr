@@ -2,7 +2,8 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
-import { visualizer } from 'rollup-plugin-visualizer';
+// Bundle analyzer - only needed for local development, not production
+// import { visualizer } from 'rollup-plugin-visualizer';
 import node from '@astrojs/node';
 
 // https://astro.build/config
@@ -34,12 +35,13 @@ export default defineConfig({
     plugins: [
       tailwindcss(),
       // Bundle analyzer - generates stats.html after build
-      visualizer({
-        open: false,  // Set to true to auto-open in browser
-        filename: './dist/stats.html',
-        gzipSize: true,
-        brotliSize: true,
-      }),
+      // Commented out for production deployment - uncomment locally if needed
+      // visualizer({
+      //   open: false,  // Set to true to auto-open in browser
+      //   filename: './dist/stats.html',
+      //   gzipSize: true,
+      //   brotliSize: true,
+      // }),
     ]
   }
 });

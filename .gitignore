@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# infrastructure documentation (contains sensitive server info)
+docs/INFRASTRUCTURE-OVERVIEW.md

@@ -1,0 +1,89 @@
+---
+/**
+ * Get Started Page (English)
+ *
+ * High-converting multi-step lead capture form
+ * Based on BANT framework for qualified leads
+ */
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MultiStepForm from '../../components/MultiStepForm.astro';
+
+const lang = 'en';
+
+// Breadcrumb structured data for SEO
+const breadcrumbData = {
+  items: [
+    { name: 'Home', url: 'https://vecia.com/en/' },
+    { name: 'Get Started', url: 'https://vecia.com/en/get-started/' }
+  ]
+};
+
+const pageTitle = 'Get Started with Vecia | Free Consultation';
+const pageDescription = 'Book your free 30-minute consultation. Discover how AI automation can transform your business.';
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  lang={lang}
+  breadcrumbData={breadcrumbData}
+>
+  <!-- Hero Section -->
+  <section class="relative py-16 md:py-20 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent1/5"></div>
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="max-w-3xl mx-auto text-center mb-10">
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4">
+          Transform your business with <span class="text-primary">AI</span>
+        </h1>
+        <p class="text-lg md:text-xl text-muted">
+          Answer a few questions to get personalized recommendations and book your free consultation.
+        </p>
+      </div>
+
+      <!-- Multi-Step Form -->
+      <MultiStepForm lang="en" />
+    </div>
+  </section>
+
+  <!-- Trust Indicators -->
+  <section class="py-12 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+        <!-- Free -->
+        <div class="text-center">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-green-100 flex items-center justify-center">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-text mb-1">100% Free</h3>
+          <p class="text-sm text-muted">No-obligation consultation</p>
+        </div>
+
+        <!-- Fast -->
+        <div class="text-center">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-blue-100 flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-text mb-1">24h Response</h3>
+          <p class="text-sm text-muted">An expert will contact you quickly</p>
+        </div>
+
+        <!-- Personalized -->
+        <div class="text-center">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-purple-100 flex items-center justify-center">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-text mb-1">Tailored Advice</h3>
+          <p class="text-sm text-muted">Solutions adapted to your needs</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
