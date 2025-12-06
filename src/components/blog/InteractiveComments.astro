@@ -38,6 +38,7 @@ const translations = {
     reply: 'Répondre',
     cancel: 'Annuler',
     error: 'Une erreur est survenue. Veuillez réessayer.',
+    loadError: 'Commentaires temporairement indisponibles.',
     success: 'Commentaire publié avec succès !',
     teamBadge: 'Équipe Vecia',
     commentPlaceholder: 'Partagez votre avis...',
@@ -58,6 +59,7 @@ const translations = {
     reply: 'Reply',
     cancel: 'Cancel',
     error: 'An error occurred. Please try again.',
+    loadError: 'Comments temporarily unavailable.',
     success: 'Comment posted successfully!',
     teamBadge: 'Vecia Team',
     commentPlaceholder: 'Share your thoughts...',
@@ -94,7 +96,7 @@ const t = translations[lang];
         }
       } catch (err) {
         console.error('Failed to load comments:', err);
-        this.error = this.t.error;
+        this.error = this.t.loadError;
       } finally {
         this.loading = false;
       }
@@ -251,7 +253,7 @@ const t = translations[lang];
     <div
       x-show="error"
       x-text="error"
-      class="mb-6 p-4 bg-red-100 border border-red-300 text-red-700 rounded-xl"
+      class="mb-6 p-4 bg-gray-100 border border-gray-300 text-gray-600 rounded-xl text-sm"
     ></div>
 
     <!-- Success Message -->
