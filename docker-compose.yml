@@ -14,8 +14,12 @@ services:
       - HOST=0.0.0.0
       - PORT=4322
       - NODE_ENV=production
+      # Public vars (for static pages)
       - PUBLIC_SUPABASE_URL=${PUBLIC_SUPABASE_URL:-http://85.25.172.47:8100}
       - PUBLIC_SUPABASE_ANON_KEY=${PUBLIC_SUPABASE_ANON_KEY}
+      # SSR vars (for API routes - supabase-server.ts expects non-PUBLIC prefix)
+      - SUPABASE_URL=${PUBLIC_SUPABASE_URL:-http://85.25.172.47:8100}
+      - SUPABASE_ANON_KEY=${PUBLIC_SUPABASE_ANON_KEY}
 
     # Expose to localhost only (nginx reverse proxy)
     ports:
