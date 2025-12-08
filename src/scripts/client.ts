@@ -14,6 +14,7 @@
 import Alpine from 'alpinejs';
 import intersect from '@alpinejs/intersect';
 import { detectCurrency, updatePriceElements } from './pricing';
+import { submitToWebhook } from '../lib/webhook-handler';
 import './deployment-handler'; // Handle stale assets after deployment
 
 // Register Alpine.js plugins
@@ -124,6 +125,7 @@ Alpine.data('leadCaptureForm', () => ({
       // Prepare data for submission (using sanitized inputs)
       const submissionData = {
         timestamp: new Date().toISOString(),
+        formType: 'lead-capture',
         name: sanitizedName, // 🔒 Sanitized
         email: sanitizedEmail, // 🔒 Sanitized
         companySize: this.formData.companySize,
@@ -135,21 +137,18 @@ Alpine.data('leadCaptureForm', () => ({
         page_url: window.location.href
       };
 
-      // Google Apps Script webhook URL
-      const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby_23XSfxU0NBNgfbufOqhDa6ywjs34tjXp1-kEYLtNMauZiA2B64kzXUAKFKeRqB-VXA/exec';
-
       // Submit to webhook
-      const response = await fetch(WEBHOOK_URL, {
-        method: 'POST',
-        mode: 'no-cors', // Required for Google Apps Script
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submissionData)
-      });
+      const result = await submitToWebhook(submissionData);
 
-      // Note: With no-cors mode, we can't read the response
-      // Assume success if no error was thrown
+      if (!result.success) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? 'Erreur lors de la soumission. Veuillez réessayer.'
+          : 'Submission error. Please try again.';
+        this.loading = false;
+        return;
+      }
+
       this.success = true;
       this.loading = false;
 
@@ -277,18 +276,17 @@ Alpine.data('multiStepForm', () => ({
         page_url: window.location.href
       };
 
-      // Google Apps Script webhook URL
-      const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby_23XSfxU0NBNgfbufOqhDa6ywjs34tjXp1-kEYLtNMauZiA2B64kzXUAKFKeRqB-VXA/exec';
-
       // Submit to webhook
-      await fetch(WEBHOOK_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submissionData)
-      });
+      const result = await submitToWebhook(submissionData);
+
+      if (!result.success) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? 'Erreur lors de la soumission. Veuillez réessayer.'
+          : 'Submission error. Please try again.';
+        this.loading = false;
+        return;
+      }
 
       // Success
       this.success = true;
@@ -398,23 +396,25 @@ Alpine.data('contactForm', () => ({
         message: sanitizedMessage,
         language: lang,
         source: document.referrer || 'Direct',
+        utm_campaign: '',
+        utm_source: '',
+        utm_medium: '',
         page_url: window.location.href
       };
 
-      // Google Apps Script webhook URL
-      const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby_23XSfxU0NBNgfbufOqhDa6ywjs34tjXp1-kEYLtNMauZiA2B64kzXUAKFKeRqB-VXA/exec';
-
       // Submit to webhook
-      await fetch(WEBHOOK_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submissionData)
-      });
+      const result = await submitToWebhook(submissionData);
 
-      // Success (with no-cors, assume success if no error)
+      if (!result.success) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? 'Erreur lors de la soumission. Veuillez réessayer.'
+          : 'Submission error. Please try again.';
+        this.loading = false;
+        return;
+      }
+
+      // Success
       this.success = true;
       this.loading = false;
 

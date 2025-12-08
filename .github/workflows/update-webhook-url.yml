@@ -1,0 +1,50 @@
+name: Update Webhook URL
+
+on:
+  repository_dispatch:
+    types: [ngrok-url-update]
+
+jobs:
+  update-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update .env file with new webhook URL
+        run: |
+          WEBHOOK_URL="${{ github.event.client_payload.webhook_url }}"
+          if [ -z "$WEBHOOK_URL" ]; then
+            echo "Error: webhook_url not provided in payload"
+            exit 1
+          fi
+
+          # Update or create the PUBLIC_N8N_WEBHOOK_URL in .env
+          if grep -q "^PUBLIC_N8N_WEBHOOK_URL=" .env; then
+            sed -i "s|^PUBLIC_N8N_WEBHOOK_URL=.*|PUBLIC_N8N_WEBHOOK_URL=$WEBHOOK_URL|" .env
+          else
+            echo "PUBLIC_N8N_WEBHOOK_URL=$WEBHOOK_URL" >> .env
+          fi
+
+          echo "Updated .env with new webhook URL"
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+        env:
+          PUBLIC_N8N_WEBHOOK_URL: ${{ github.event.client_payload.webhook_url }}
+
+      - name: Deploy
+        run: |
+          echo "Deployment step placeholder"
+          echo "Webhook URL: ${{ github.event.client_payload.webhook_url }}"
+          echo "Ready for deployment configuration"
