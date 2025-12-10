@@ -9,20 +9,21 @@ services:
 
     restart: unless-stopped
 
-    # Allow container to reach host services (Supabase runs on host at port 8100)
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    # Connect to supabase network for direct container-to-container communication
+    networks:
+      - default
+      - supabase_default
 
     # Environment variables (runtime)
     environment:
       - HOST=0.0.0.0
       - PORT=4322
       - NODE_ENV=production
-      # Public vars (for static pages)
-      - PUBLIC_SUPABASE_URL=${PUBLIC_SUPABASE_URL:-http://host.docker.internal:8100}
+      # Public vars (for static pages) - use external URL for client-side
+      - PUBLIC_SUPABASE_URL=${PUBLIC_SUPABASE_URL:-http://85.25.172.47:8100}
       - PUBLIC_SUPABASE_ANON_KEY=${PUBLIC_SUPABASE_ANON_KEY}
-      # SSR vars (for API routes - supabase-server.ts expects non-PUBLIC prefix)
-      - SUPABASE_URL=${SUPABASE_URL:-http://host.docker.internal:8100}
+      # SSR vars (for API routes) - use internal Docker network (supabase-kong:8000)
+      - SUPABASE_URL=${SUPABASE_URL:-http://supabase-kong:8000}
       - SUPABASE_ANON_KEY=${PUBLIC_SUPABASE_ANON_KEY}
 
     # Expose to localhost only (nginx reverse proxy)
@@ -55,3 +56,8 @@ services:
     # Security options
     security_opt:
       - no-new-privileges:true
+
+# Define networks - supabase_default is external (created by Supabase stack)
+networks:
+  supabase_default:
+    external: true

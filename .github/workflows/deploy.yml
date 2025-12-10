@@ -97,12 +97,12 @@ jobs:
             gunzip -c vecia-website.tar.gz | docker load
 
             echo "🔧 Creating/updating .env file..."
-            # Use host.docker.internal for container->host communication
-            # The docker-compose.yml maps this to the host gateway
+            # PUBLIC_SUPABASE_URL: External IP for client-side (browser) requests
+            # SUPABASE_URL: Internal Docker network for server-side (SSR) requests
             cat > .env << EOF
-            PUBLIC_SUPABASE_URL=http://host.docker.internal:8100
+            PUBLIC_SUPABASE_URL=http://85.25.172.47:8100
             PUBLIC_SUPABASE_ANON_KEY=${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
-            SUPABASE_URL=http://host.docker.internal:8100
+            SUPABASE_URL=http://supabase-kong:8000
             SUPABASE_ANON_KEY=${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
             PUBLIC_GA_MEASUREMENT_ID=${{ secrets.PUBLIC_GA_MEASUREMENT_ID }}
             PUBLIC_META_PIXEL_ID=${{ secrets.PUBLIC_META_PIXEL_ID }}
