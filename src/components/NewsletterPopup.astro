@@ -8,6 +8,8 @@
  * - Remembers user choice via localStorage (30 days)
  * - Fully responsive (mobile/tablet/desktop)
  * - GA4 event tracking integration
+ * - n8n webhook integration for Odoo Email Marketing
+ * - Meta Pixel + LinkedIn tracking with event_id for CAPI deduplication
  *
  * Alpine.js patterns from Context7 research:
  * - x-show with x-transition for smooth animations
@@ -15,7 +17,16 @@
  * - @click.outside for dismissal
  * - localStorage for persistence
  */
+
+// n8n newsletter webhook URL (connects to Odoo Email Marketing)
+const N8N_NEWSLETTER_WEBHOOK = import.meta.env.PUBLIC_N8N_NEWSLETTER_WEBHOOK
+  || 'https://christel-brachystomatous-mertie.ngrok-free.dev/webhook/vecia-newsletter';
 ---
+
+<!-- Pass webhook URL to client-side script -->
+<script is:inline define:vars={{ N8N_NEWSLETTER_WEBHOOK }}>
+  window.__VECIA_NEWSLETTER_WEBHOOK__ = N8N_NEWSLETTER_WEBHOOK;
+</script>
 
 <!-- Newsletter Popup Modal -->
 <div
@@ -24,6 +35,7 @@
     dismissed: false,
     email: '',
     submitted: false,
+    webhookUrl: window.__VECIA_NEWSLETTER_WEBHOOK__ || 'https://christel-brachystomatous-mertie.ngrok-free.dev/webhook/vecia-newsletter',
 
     init() {
       // Check if user dismissed before
@@ -84,7 +96,7 @@
       }
     },
 
-    handleSubmit() {
+    async handleSubmit() {
       if (!this.email) return;
 
       // 🔒 Security: Email validation (RFC 5322 simplified)
@@ -117,7 +129,10 @@
         .trim()
         .slice(0, 255);
 
-      // Track newsletter signup attempt
+      // Generate unique event ID for Meta CAPI deduplication
+      const eventId = 'vecia_' + Date.now() + '_' + Math.random().toString(36).substring(2, 11);
+
+      // Track newsletter signup attempt in GA4
       if (typeof window.gtag !== 'undefined') {
         window.gtag('event', 'newsletter_signup_attempt', {
           event_category: 'conversion',
@@ -126,8 +141,57 @@
         });
       }
 
-      // TODO: Integrate with your email service (Mailchimp, ConvertKit, etc.)
-      console.log('[Newsletter] Signup:', sanitizedEmail);
+      // Prepare data for n8n/Odoo
+      const submissionData = {
+        timestamp: new Date().toISOString(),
+        event_id: eventId,
+        formType: 'newsletter',
+        email: sanitizedEmail,
+        language: window.location.pathname.startsWith('/en') ? 'en' : 'fr',
+        source: document.referrer || 'Direct',
+        trigger: 'popup_modal',
+        utm_campaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
+        utm_source: new URLSearchParams(window.location.search).get('utm_source') || '',
+        utm_medium: new URLSearchParams(window.location.search).get('utm_medium') || '',
+        page_url: window.location.href,
+        page_title: document.title,
+      };
+
+      // Send to n8n webhook (connects to Odoo Email Marketing)
+      try {
+        const response = await fetch(this.webhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(submissionData)
+        });
+
+        if (!response.ok) {
+          console.warn('[Newsletter] Webhook failed:', response.status);
+        } else {
+          console.log('[Newsletter] Successfully sent to n8n/Odoo');
+        }
+      } catch (error) {
+        console.warn('[Newsletter] Webhook error:', error);
+        // Continue to show success (don't block user experience for webhook failure)
+      }
+
+      // Track conversion in Meta Pixel with event_id for CAPI deduplication
+      if (typeof window.fbq !== 'undefined') {
+        window.fbq('track', 'Lead', {
+          content_name: 'Newsletter Signup',
+          content_category: 'Newsletter',
+          event_id: eventId,
+        });
+        console.log('[Meta Pixel] Newsletter Lead tracked with event_id:', eventId);
+      }
+
+      // Track conversion in LinkedIn
+      if (typeof window.lintrk !== 'undefined') {
+        window.lintrk('track', { conversion_id: 'newsletter_signup' });
+        console.log('[LinkedIn] Newsletter conversion tracked');
+      }
 
       // Show success state
       this.submitted = true;

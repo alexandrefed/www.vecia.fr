@@ -6,6 +6,7 @@
  * - Dynamic pricing system
  * - Alpine.js components (lead capture form, etc.)
  * - Deployment error handling (asset hash changes)
+ * - n8n webhook integration for Odoo CRM
  *
  * Astro will automatically bundle this file and all its dependencies
  * into optimized production JavaScript in /_astro/*.js
@@ -18,6 +19,23 @@ import './deployment-handler'; // Handle stale assets after deployment
 
 // Register Alpine.js plugins
 Alpine.plugin(intersect);
+
+// =============================================================================
+// WEBHOOK CONFIGURATION
+// =============================================================================
+
+// n8n webhook URL (connects to Odoo CRM)
+// Can be overridden via window.__VECIA_CONFIG__ for SSR hydration
+const N8N_LEAD_WEBHOOK = (window as any).__VECIA_CONFIG__?.n8nLeadWebhook
+  || 'https://christel-brachystomatous-mertie.ngrok-free.dev/webhook/vecia-lead';
+
+// Legacy Google Sheets webhook (fallback)
+const GOOGLE_SHEETS_WEBHOOK = 'https://script.google.com/macros/s/AKfycby_23XSfxU0NBNgfbufOqhDa6ywjs34tjXp1-kEYLtNMauZiA2B64kzXUAKFKeRqB-VXA/exec';
+
+// Generate unique event ID for Meta CAPI deduplication
+const generateEventId = (): string => {
+  return `vecia_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+};
 
 // Input sanitization helper
 const sanitizeInput = (input: string): string => {
@@ -121,9 +139,14 @@ Alpine.data('leadCaptureForm', () => ({
         return;
       }
 
+      // Generate unique event ID for Meta CAPI deduplication
+      const eventId = generateEventId();
+
       // Prepare data for submission (using sanitized inputs)
       const submissionData = {
         timestamp: new Date().toISOString(),
+        event_id: eventId, // For Meta CAPI deduplication
+        formType: 'lead-capture',
         name: sanitizedName, // 🔒 Sanitized
         email: sanitizedEmail, // 🔒 Sanitized
         companySize: this.formData.companySize,
@@ -132,26 +155,60 @@ Alpine.data('leadCaptureForm', () => ({
         utm_campaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
         utm_source: new URLSearchParams(window.location.search).get('utm_source') || '',
         utm_medium: new URLSearchParams(window.location.search).get('utm_medium') || '',
-        page_url: window.location.href
+        utm_content: new URLSearchParams(window.location.search).get('utm_content') || '',
+        utm_term: new URLSearchParams(window.location.search).get('utm_term') || '',
+        page_url: window.location.href,
+        page_title: document.title,
+        user_agent: navigator.userAgent,
       };
 
-      // Google Apps Script webhook URL
-      const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby_23XSfxU0NBNgfbufOqhDa6ywjs34tjXp1-kEYLtNMauZiA2B64kzXUAKFKeRqB-VXA/exec';
+      // Submit to n8n webhook (primary - connects to Odoo CRM)
+      try {
+        const n8nResponse = await fetch(N8N_LEAD_WEBHOOK, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(submissionData)
+        });
 
-      // Submit to webhook
-      const response = await fetch(WEBHOOK_URL, {
-        method: 'POST',
-        mode: 'no-cors', // Required for Google Apps Script
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submissionData)
-      });
+        if (!n8nResponse.ok) {
+          console.warn('[Lead Form] n8n webhook failed, falling back to Google Sheets');
+          throw new Error('n8n webhook failed');
+        }
 
-      // Note: With no-cors mode, we can't read the response
-      // Assume success if no error was thrown
+        console.log('[Lead Form] Successfully sent to n8n/Odoo');
+      } catch (n8nError) {
+        // Fallback to Google Sheets if n8n fails
+        console.warn('[Lead Form] Falling back to Google Sheets:', n8nError);
+        await fetch(GOOGLE_SHEETS_WEBHOOK, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(submissionData)
+        });
+      }
+
       this.success = true;
       this.loading = false;
+
+      // Track conversion in Meta Pixel with event_id for CAPI deduplication
+      if (typeof window.fbq !== 'undefined') {
+        window.fbq('track', 'Lead', {
+          content_name: 'Lead Capture Form',
+          content_category: 'Lead Generation',
+          event_id: eventId, // Same ID sent to server for deduplication
+        });
+        console.log('[Meta Pixel] Lead tracked with event_id:', eventId);
+      }
+
+      // Track conversion in LinkedIn
+      if (typeof window.lintrk !== 'undefined') {
+        window.lintrk('track', { conversion_id: 'lead_generated' });
+        console.log('[LinkedIn] Lead conversion tracked');
+      }
 
       // Reset form after 2 seconds
       setTimeout(() => {
@@ -162,7 +219,7 @@ Alpine.data('leadCaptureForm', () => ({
         };
       }, 2000);
 
-      // Optional: Track conversion in analytics
+      // Optional: Track conversion in Plausible
       if (typeof window.plausible !== 'undefined') {
         window.plausible('Lead Capture', {
           props: { companySize: this.formData.companySize, lang }
@@ -256,9 +313,13 @@ Alpine.data('multiStepForm', () => ({
         return;
       }
 
+      // Generate unique event ID for Meta CAPI deduplication
+      const eventId = generateEventId();
+
       // Prepare data for submission
       const submissionData = {
         timestamp: new Date().toISOString(),
+        event_id: eventId, // For Meta CAPI deduplication
         formType: 'get-started',
         goal: this.formData.goal,
         companySize: this.formData.companySize,
@@ -274,27 +335,65 @@ Alpine.data('multiStepForm', () => ({
         utm_campaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
         utm_source: new URLSearchParams(window.location.search).get('utm_source') || '',
         utm_medium: new URLSearchParams(window.location.search).get('utm_medium') || '',
-        page_url: window.location.href
+        utm_content: new URLSearchParams(window.location.search).get('utm_content') || '',
+        utm_term: new URLSearchParams(window.location.search).get('utm_term') || '',
+        page_url: window.location.href,
+        page_title: document.title,
+        user_agent: navigator.userAgent,
       };
 
-      // Google Apps Script webhook URL
-      const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby_23XSfxU0NBNgfbufOqhDa6ywjs34tjXp1-kEYLtNMauZiA2B64kzXUAKFKeRqB-VXA/exec';
+      // Submit to n8n webhook (primary - connects to Odoo CRM)
+      try {
+        const n8nResponse = await fetch(N8N_LEAD_WEBHOOK, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(submissionData)
+        });
 
-      // Submit to webhook
-      await fetch(WEBHOOK_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submissionData)
-      });
+        if (!n8nResponse.ok) {
+          console.warn('[Get Started Form] n8n webhook failed, falling back to Google Sheets');
+          throw new Error('n8n webhook failed');
+        }
+
+        console.log('[Get Started Form] Successfully sent to n8n/Odoo');
+      } catch (n8nError) {
+        // Fallback to Google Sheets if n8n fails
+        console.warn('[Get Started Form] Falling back to Google Sheets:', n8nError);
+        await fetch(GOOGLE_SHEETS_WEBHOOK, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(submissionData)
+        });
+      }
 
       // Success
       this.success = true;
       this.loading = false;
 
-      // Track conversion in analytics
+      // Track conversion in Meta Pixel with event_id for CAPI deduplication
+      if (typeof window.fbq !== 'undefined') {
+        window.fbq('track', 'Lead', {
+          content_name: 'Get Started Form',
+          content_category: 'Lead Generation',
+          value: submissionData.budget === '20k+' ? 20000 : submissionData.budget === '10k-20k' ? 15000 : 5000,
+          currency: 'EUR',
+          event_id: eventId,
+        });
+        console.log('[Meta Pixel] Lead tracked with event_id:', eventId);
+      }
+
+      // Track conversion in LinkedIn
+      if (typeof window.lintrk !== 'undefined') {
+        window.lintrk('track', { conversion_id: 'lead_generated' });
+        console.log('[LinkedIn] Lead conversion tracked');
+      }
+
+      // Track conversion in Plausible
       if (typeof window.plausible !== 'undefined') {
         window.plausible('Get Started Lead', {
           props: {
@@ -388,9 +487,13 @@ Alpine.data('contactForm', () => ({
         return;
       }
 
+      // Generate unique event ID for Meta CAPI deduplication
+      const eventId = generateEventId();
+
       // Prepare data for submission
       const submissionData = {
         timestamp: new Date().toISOString(),
+        event_id: eventId, // For Meta CAPI deduplication
         formType: 'contact',
         name: sanitizedName,
         email: sanitizedEmail,
@@ -398,25 +501,62 @@ Alpine.data('contactForm', () => ({
         message: sanitizedMessage,
         language: lang,
         source: document.referrer || 'Direct',
-        page_url: window.location.href
+        utm_campaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
+        utm_source: new URLSearchParams(window.location.search).get('utm_source') || '',
+        utm_medium: new URLSearchParams(window.location.search).get('utm_medium') || '',
+        page_url: window.location.href,
+        page_title: document.title,
+        user_agent: navigator.userAgent,
       };
 
-      // Google Apps Script webhook URL
-      const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby_23XSfxU0NBNgfbufOqhDa6ywjs34tjXp1-kEYLtNMauZiA2B64kzXUAKFKeRqB-VXA/exec';
+      // Submit to n8n webhook (primary - connects to Odoo CRM)
+      try {
+        const n8nResponse = await fetch(N8N_LEAD_WEBHOOK, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(submissionData)
+        });
 
-      // Submit to webhook
-      await fetch(WEBHOOK_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submissionData)
-      });
+        if (!n8nResponse.ok) {
+          console.warn('[Contact Form] n8n webhook failed, falling back to Google Sheets');
+          throw new Error('n8n webhook failed');
+        }
 
-      // Success (with no-cors, assume success if no error)
+        console.log('[Contact Form] Successfully sent to n8n/Odoo');
+      } catch (n8nError) {
+        // Fallback to Google Sheets if n8n fails
+        console.warn('[Contact Form] Falling back to Google Sheets:', n8nError);
+        await fetch(GOOGLE_SHEETS_WEBHOOK, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(submissionData)
+        });
+      }
+
+      // Success
       this.success = true;
       this.loading = false;
+
+      // Track conversion in Meta Pixel with event_id for CAPI deduplication
+      if (typeof window.fbq !== 'undefined') {
+        window.fbq('track', 'Lead', {
+          content_name: 'Contact Form',
+          content_category: 'Lead Generation',
+          event_id: eventId,
+        });
+        console.log('[Meta Pixel] Lead tracked with event_id:', eventId);
+      }
+
+      // Track conversion in LinkedIn
+      if (typeof window.lintrk !== 'undefined') {
+        window.lintrk('track', { conversion_id: 'lead_generated' });
+        console.log('[LinkedIn] Lead conversion tracked');
+      }
 
       // Reset form after 3 seconds
       setTimeout(() => {
@@ -428,7 +568,7 @@ Alpine.data('contactForm', () => ({
         };
       }, 3000);
 
-      // Track conversion in analytics
+      // Track conversion in Plausible
       if (typeof window.plausible !== 'undefined') {
         window.plausible('Contact Form', { props: { lang } });
       }
