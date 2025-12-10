@@ -409,22 +409,24 @@ VITE_SUPABASE_URL=https://api.vecia.fr
 
 ### View All Comments (psql)
 ```bash
-PGPASSWORD=bs1ClhIb8FFXqQc4qQvoa6pH2SXoEZ9b docker compose -f /opt/vecia/supabase/docker/docker/docker-compose.yml exec -T db psql -U postgres -d postgres -c "SELECT * FROM comments ORDER BY created_at DESC LIMIT 10;"
+PGPASSWORD=$SUPABASE_DB_PASSWORD docker compose -f /opt/vecia/supabase/docker/docker/docker-compose.yml exec -T db psql -U postgres -d postgres -c "SELECT * FROM comments ORDER BY created_at DESC LIMIT 10;"
 ```
 
 ### Moderate Comments (Approve/Unapprove)
 ```bash
 # Unapprove a comment
-PGPASSWORD=bs1ClhIb8FFXqQc4qQvoa6pH2SXoEZ9b docker compose -f /opt/vecia/supabase/docker/docker/docker-compose.yml exec -T db psql -U postgres -d postgres -c "UPDATE comments SET approved = false WHERE id = 'comment-uuid';"
+PGPASSWORD=$SUPABASE_DB_PASSWORD docker compose -f /opt/vecia/supabase/docker/docker/docker-compose.yml exec -T db psql -U postgres -d postgres -c "UPDATE comments SET approved = false WHERE id = 'comment-uuid';"
 
 # Approve a comment
-PGPASSWORD=bs1ClhIb8FFXqQc4qQvoa6pH2SXoEZ9b docker compose -f /opt/vecia/supabase/docker/docker/docker-compose.yml exec -T db psql -U postgres -d postgres -c "UPDATE comments SET approved = true WHERE id = 'comment-uuid';"
+PGPASSWORD=$SUPABASE_DB_PASSWORD docker compose -f /opt/vecia/supabase/docker/docker/docker-compose.yml exec -T db psql -U postgres -d postgres -c "UPDATE comments SET approved = true WHERE id = 'comment-uuid';"
 ```
 
 ### Delete Spam Comment
 ```bash
-PGPASSWORD=bs1ClhIb8FFXqQc4qQvoa6pH2SXoEZ9b docker compose -f /opt/vecia/supabase/docker/docker/docker-compose.yml exec -T db psql -U postgres -d postgres -c "DELETE FROM comments WHERE id = 'comment-uuid';"
+PGPASSWORD=$SUPABASE_DB_PASSWORD docker compose -f /opt/vecia/supabase/docker/docker/docker-compose.yml exec -T db psql -U postgres -d postgres -c "DELETE FROM comments WHERE id = 'comment-uuid';"
 ```
+
+> **Note:** Set `SUPABASE_DB_PASSWORD` environment variable before running these commands, or replace with your actual password.
 
 ---
 
