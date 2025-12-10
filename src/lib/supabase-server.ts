@@ -41,8 +41,13 @@ if (!supabaseUrl || !supabaseAnonKey) {
 /**
  * Supabase client configured for SSR routes
  * Reads credentials from process.env at runtime
+ * Uses 'vecia' schema for complete isolation from other projects
  */
-export const supabaseServer = createClient(supabaseUrl, supabaseAnonKey);
+export const supabaseServer = createClient(supabaseUrl, supabaseAnonKey, {
+  db: {
+    schema: 'vecia', // Use dedicated vecia schema instead of public
+  },
+});
 
 /**
  * Re-export types from main supabase module for convenience
