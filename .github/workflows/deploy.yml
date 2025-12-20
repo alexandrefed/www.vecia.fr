@@ -182,3 +182,27 @@ jobs:
 
             echo ""
             echo "✅ All checks passed - Deployment verified!"
+
+      - name: Ensure Certbot Auto-Renewal
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ steps.ssh_key.outputs.decoded_key }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            echo "🔐 Checking Certbot auto-renewal configuration..."
+
+            # Check if certbot renewal cron exists
+            if ! sudo crontab -l 2>/dev/null | grep -q "certbot renew"; then
+              echo "📝 Setting up certbot auto-renewal..."
+              (sudo crontab -l 2>/dev/null; echo "0 3 * * * /usr/bin/certbot renew --quiet --deploy-hook 'nginx -s reload'") | sudo crontab -
+              echo "✅ Certbot auto-renewal configured (daily at 3am)"
+            else
+              echo "✅ Certbot auto-renewal already configured"
+            fi
+
+            # Show current cron job
+            echo ""
+            echo "📋 Current certbot cron:"
+            sudo crontab -l 2>/dev/null | grep certbot || echo "  (none found)"
