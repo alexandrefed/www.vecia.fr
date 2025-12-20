@@ -27,7 +27,7 @@ Alpine.plugin(intersect);
 // n8n webhook URL (connects to Odoo CRM)
 // Can be overridden via window.__VECIA_CONFIG__ for SSR hydration
 const N8N_LEAD_WEBHOOK = (window as any).__VECIA_CONFIG__?.n8nLeadWebhook
-  || 'https://christel-brachystomatous-mertie.ngrok-free.dev/webhook/vecia-lead';
+  || 'https://srvdev2025.taildb74a2.ts.net/webhook/vecia-lead';
 
 // Legacy Google Sheets webhook (fallback)
 const GOOGLE_SHEETS_WEBHOOK = 'https://script.google.com/macros/s/AKfycby_23XSfxU0NBNgfbufOqhDa6ywjs34tjXp1-kEYLtNMauZiA2B64kzXUAKFKeRqB-VXA/exec';
@@ -100,10 +100,10 @@ Alpine.data('leadCaptureForm', () => ({
     this.success = false;
     this.errorMessage = '';
 
-    try {
-      // Get language from current page
-      const lang = window.location.pathname.startsWith('/en') ? 'en' : 'fr';
+    // Get language from current page (defined outside try for catch block access)
+    const lang = window.location.pathname.startsWith('/en') ? 'en' : 'fr';
 
+    try {
       // 🔒 Security: Rate limiting check
       const rateLimit = checkRateLimit('vecia-lead-submissions');
       if (!rateLimit.allowed) {
@@ -436,10 +436,10 @@ Alpine.data('contactForm', () => ({
     this.success = false;
     this.errorMessage = '';
 
-    try {
-      // Get language from current page
-      const lang = window.location.pathname.startsWith('/en') ? 'en' : 'fr';
+    // Get language from current page (defined outside try for catch block access)
+    const lang = window.location.pathname.startsWith('/en') ? 'en' : 'fr';
 
+    try {
       // Rate limiting check
       const rateLimit = checkRateLimit('vecia-contact-submissions');
       if (!rateLimit.allowed) {

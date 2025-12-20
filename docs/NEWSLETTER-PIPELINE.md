@@ -22,7 +22,7 @@ Newsletter signups from the Vecia website are now automatically captured in Odoo
 │  │ NewsletterPopup.astro│               │  n8n Workflow             │   │
 │  │ ┌─────────────────┐  │               │  ┌─────────────────────┐  │   │
 │  │ │ email input     │  │               │  │ 1. Validate Email   │  │   │
-│  │ │ GDPR notice     │──┼───ngrok──────>│  │ 2. Check Duplicate  │  │   │
+│  │ │ GDPR notice     │──┼───Funnel─────>│  │ 2. Check Duplicate  │  │   │
 │  │ └─────────────────┘  │               │  │ 3. Create/Update    │  │   │
 │  │                      │               │  │ 4. Telegram Notify  │  │   │
 │  │ event_id generated   │               │  │ 5. Return Response  │  │   │
@@ -52,9 +52,9 @@ Newsletter signups from the Vecia website are now automatically captured in Odoo
 - GA4 event tracking
 - Meta Pixel + LinkedIn tracking with event_id for CAPI deduplication
 
-**Webhook URL (current):**
+**Webhook URL (Tailscale Funnel - permanent):**
 ```
-https://christel-brachystomatous-mertie.ngrok-free.dev/webhook/vecia-newsletter
+https://srvdev2025.taildb74a2.ts.net/webhook/vecia-newsletter
 ```
 
 **Payload sent:**
@@ -138,7 +138,7 @@ Chat ID: -5067108668
 ### Manual Webhook Test
 
 ```bash
-curl -s "https://christel-brachystomatous-mertie.ngrok-free.dev/webhook/vecia-newsletter" \
+curl -s "https://srvdev2025.taildb74a2.ts.net/webhook/vecia-newsletter" \
   -X POST \
   -H "Content-Type: application/json" \
   -d '{
@@ -186,7 +186,7 @@ ssh odoo-server 'curl -s -X POST http://localhost:8069/jsonrpc \
 
 ## Known Limitations
 
-1. **ngrok URL is temporary** - URL changes on restart. Requires Tailscale Funnel setup for permanent URL.
+1. ~~**ngrok URL is temporary**~~ - **RESOLVED**: Now using Tailscale Funnel with permanent URL.
 
 2. **No welcome email automation** - Marketing Automation module is Enterprise-only. Options:
    - Configure SMTP in Odoo for manual sending
@@ -210,10 +210,10 @@ ssh odoo-server 'curl -s -X POST http://localhost:8069/jsonrpc \
 
 ## Future Improvements
 
-1. **Tailscale Funnel** - Replace ngrok with permanent URL
+1. ~~**Tailscale Funnel**~~ - **DONE**: Permanent URL active
 2. **Welcome email sequence** - 3-5 emails over 14 days
 3. **Meta CAPI integration** - Server-side Subscribe event
-4. **Double opt-in** - Confirmation email flow
+4. **Double opt-in** - Confirmation email flow (GDPR compliance)
 5. **Lead scoring** - Based on email engagement
 
 ---

@@ -20,7 +20,7 @@
 
 // n8n newsletter webhook URL (connects to Odoo Email Marketing)
 const N8N_NEWSLETTER_WEBHOOK = import.meta.env.PUBLIC_N8N_NEWSLETTER_WEBHOOK
-  || 'https://christel-brachystomatous-mertie.ngrok-free.dev/webhook/vecia-newsletter';
+  || 'https://srvdev2025.taildb74a2.ts.net/webhook/vecia-newsletter';
 ---
 
 <!-- Pass webhook URL to client-side script -->
@@ -35,7 +35,7 @@ const N8N_NEWSLETTER_WEBHOOK = import.meta.env.PUBLIC_N8N_NEWSLETTER_WEBHOOK
     dismissed: false,
     email: '',
     submitted: false,
-    webhookUrl: window.__VECIA_NEWSLETTER_WEBHOOK__ || 'https://christel-brachystomatous-mertie.ngrok-free.dev/webhook/vecia-newsletter',
+    webhookUrl: window.__VECIA_NEWSLETTER_WEBHOOK__ || 'https://srvdev2025.taildb74a2.ts.net/webhook/vecia-newsletter',
 
     init() {
       // Check if user dismissed before

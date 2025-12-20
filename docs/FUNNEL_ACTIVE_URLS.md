@@ -133,10 +133,11 @@ docker ps | grep ngrok  # Ne devrait rien afficher
 
 - [x] Funnel activé sur serveur
 - [x] URL publique disponible : `https://srvdev2025.taildb74a2.ts.net/`
-- [ ] URLs webhook communiquées à Alexandre
-- [ ] Alexandre a mis à jour le `.env` du site
-- [ ] Site web rebuild et redéployé
+- [x] URLs webhook communiquées à Alexandre
+- [x] Alexandre a mis à jour le code source (2025-12-20)
+- [x] Site web rebuild réussi
 - [ ] Test formulaire site → Lead dans Odoo ✅
+- [ ] Déployer sur VPS production
 - [ ] ngrok supprimé (optionnel)
 
 ---
