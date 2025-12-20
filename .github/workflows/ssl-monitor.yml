@@ -61,7 +61,7 @@ jobs:
 
       - name: Create Issue if Expiring Soon
         if: failure()
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const daysLeft = '${{ steps.ssl-check.outputs.days_left }}';
