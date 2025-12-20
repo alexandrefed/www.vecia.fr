@@ -34,9 +34,9 @@ export const config = {
     webhookUrl: 'https://script.google.com/macros/s/AKfycby_23XSfxU0NBNgfbufOqhDa6ywjs34tjXp1-kEYLtNMauZiA2B64kzXUAKFKeRqB-VXA/exec',
   },
 
-  // n8n webhook endpoints (primary - connects to Odoo CRM)
+  // n8n webhook endpoints (primary - connects to Odoo CRM via Tailscale Funnel)
   n8n: {
-    leadWebhookUrl: import.meta.env.PUBLIC_N8N_LEAD_WEBHOOK || 'https://christel-brachystomatous-mertie.ngrok-free.dev/webhook/vecia-lead',
-    newsletterWebhookUrl: import.meta.env.PUBLIC_N8N_NEWSLETTER_WEBHOOK || 'https://christel-brachystomatous-mertie.ngrok-free.dev/webhook/vecia-newsletter',
+    leadWebhookUrl: import.meta.env.PUBLIC_N8N_LEAD_WEBHOOK || 'https://srvdev2025.taildb74a2.ts.net/webhook/vecia-lead',
+    newsletterWebhookUrl: import.meta.env.PUBLIC_N8N_NEWSLETTER_WEBHOOK || 'https://srvdev2025.taildb74a2.ts.net/webhook/vecia-newsletter',
   },
 } as const;
