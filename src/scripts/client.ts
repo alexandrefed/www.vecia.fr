@@ -584,6 +584,494 @@ Alpine.data('contactForm', () => ({
   }
 }));
 
+// =============================================================================
+// AI TABS COMPONENT
+// =============================================================================
+// Moved from inline x-data due to Astro 5.16.x multi-line attribute bug
+
+Alpine.data('aiTabs', () => ({
+  activeTab: 0,
+  totalTabs: 4,
+  interval: null as ReturnType<typeof setTimeout> | null,
+  progress: 0,
+  progressInterval: null as ReturnType<typeof setInterval> | null,
+  isPaused: false,
+  isInView: false,
+
+  startAutoRotate() {
+    this.isPaused = false;
+    // Clear existing intervals
+    if (this.interval) clearTimeout(this.interval);
+    if (this.progressInterval) clearInterval(this.progressInterval);
+
+    // Calculate remaining time based on current progress
+    const remainingProgress = 100 - this.progress;
+    const remainingTime = (remainingProgress / 100) * 15000;
+
+    // Progress bar animation (continue from current progress)
+    this.progressInterval = setInterval(() => {
+      this.progress += 100 / (15000 / 50); // Update every 50ms
+      if (this.progress >= 100) {
+        this.progress = 100;
+      }
+    }, 50);
+
+    // Tab rotation after remaining time
+    this.interval = setTimeout(() => {
+      this.activeTab = (this.activeTab + 1) % this.totalTabs;
+      this.progress = 0; // Reset progress when tab changes
+      this.startAutoRotate(); // Restart with full cycle
+    }, remainingTime);
+  },
+
+  stopAutoRotate() {
+    this.isPaused = true;
+    if (this.interval) clearTimeout(this.interval);
+    if (this.progressInterval) clearInterval(this.progressInterval);
+  },
+
+  selectTab(index: number) {
+    this.activeTab = index;
+    this.progress = 0;
+    this.stopAutoRotate();
+    this.startAutoRotate();
+  },
+
+  nextTab() {
+    this.activeTab = (this.activeTab + 1) % this.totalTabs;
+    this.progress = 0;
+    this.stopAutoRotate();
+    this.startAutoRotate();
+  },
+
+  prevTab() {
+    this.activeTab = (this.activeTab - 1 + this.totalTabs) % this.totalTabs;
+    this.progress = 0;
+    this.stopAutoRotate();
+    this.startAutoRotate();
+  }
+}));
+
+// =============================================================================
+// PRODUCTS CAROUSEL COMPONENT
+// =============================================================================
+// Moved from inline x-data due to Astro 5.16.x multi-line attribute bug
+
+Alpine.data('productsCarousel', () => ({
+  currentIndex: 0,
+  totalProducts: 8,
+  isAnimating: false,
+  touchStartX: 0,
+  touchEndX: 0,
+  isPaused: false,
+  autoRotateInterval: null as ReturnType<typeof setInterval> | null,
+
+  init() {
+    // Start auto-rotation (every 4 seconds)
+    this.startAutoRotate();
+
+    // Keyboard navigation
+    (this.$el as HTMLElement).addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        this.prev();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        this.next();
+      }
+    });
+
+    // Touch events for mobile swipe + hold-to-pause
+    (this.$el as HTMLElement).addEventListener('touchstart', (e: TouchEvent) => {
+      this.touchStartX = e.changedTouches[0].screenX;
+      this.isPaused = true; // Pause on touch
+      this.stopAutoRotate();
+    });
+
+    (this.$el as HTMLElement).addEventListener('touchend', (e: TouchEvent) => {
+      this.touchEndX = e.changedTouches[0].screenX;
+      this.handleSwipe();
+      this.isPaused = false; // Resume on release
+      this.startAutoRotate();
+    });
+
+    // Pause on mouse hover (desktop)
+    (this.$el as HTMLElement).addEventListener('mouseenter', () => {
+      this.isPaused = true;
+      this.stopAutoRotate();
+    });
+
+    (this.$el as HTMLElement).addEventListener('mouseleave', () => {
+      this.isPaused = false;
+      this.startAutoRotate();
+    });
+  },
+
+  startAutoRotate() {
+    if (this.autoRotateInterval) return; // Already running
+    this.autoRotateInterval = setInterval(() => {
+      if (!this.isPaused && !this.isAnimating) {
+        this.next();
+      }
+    }, 4000);
+  },
+
+  stopAutoRotate() {
+    if (this.autoRotateInterval) {
+      clearInterval(this.autoRotateInterval);
+      this.autoRotateInterval = null;
+    }
+  },
+
+  getPosition(index: number): string {
+    const diff = index - this.currentIndex;
+    const total = this.totalProducts;
+
+    // Normalize difference to handle circular array
+    let normalizedDiff = diff;
+    if (Math.abs(diff) > total / 2) {
+      normalizedDiff = diff > 0 ? diff - total : diff + total;
+    }
+
+    if (normalizedDiff === 0) return 'center';
+    if (normalizedDiff === -1) return 'left-near';
+    if (normalizedDiff === 1) return 'right-near';
+    if (normalizedDiff === -2) return 'left-far';
+    if (normalizedDiff === 2) return 'right-far';
+    return 'hidden';
+  },
+
+  prev() {
+    if (this.isAnimating) return;
+    this.isAnimating = true;
+    this.currentIndex = (this.currentIndex - 1 + this.totalProducts) % this.totalProducts;
+    setTimeout(() => { this.isAnimating = false; }, 500);
+  },
+
+  next() {
+    if (this.isAnimating) return;
+    this.isAnimating = true;
+    this.currentIndex = (this.currentIndex + 1) % this.totalProducts;
+    setTimeout(() => { this.isAnimating = false; }, 500);
+  },
+
+  goTo(index: number) {
+    if (this.isAnimating || index === this.currentIndex) return;
+    this.isAnimating = true;
+    this.currentIndex = index;
+    setTimeout(() => { this.isAnimating = false; }, 500);
+  },
+
+  handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = this.touchStartX - this.touchEndX;
+
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        this.next();
+      } else {
+        this.prev();
+      }
+    }
+  }
+}));
+
+// =============================================================================
+// NEWSLETTER POPUP COMPONENT
+// =============================================================================
+// Moved from inline x-data due to Astro 5.16.x multi-line attribute bug
+
+Alpine.data('newsletterPopup', () => ({
+  show: false,
+  dismissed: false,
+  email: '',
+  submitted: false,
+  webhookUrl: (window as any).__VECIA_NEWSLETTER_WEBHOOK__ || 'https://srvdev2025.taildb74a2.ts.net/webhook/vecia-newsletter',
+
+  init() {
+    // Check if user dismissed before
+    const dismissed = localStorage.getItem('newsletter-dismissed');
+    const dismissedTime = localStorage.getItem('newsletter-dismissed-time');
+
+    if (dismissed && dismissedTime) {
+      const daysSinceDismissed = (Date.now() - parseInt(dismissedTime)) / (1000 * 60 * 60 * 24);
+      if (daysSinceDismissed < 30) {
+        this.dismissed = true;
+        return;
+      }
+    }
+
+    // Show after 30 seconds
+    setTimeout(() => {
+      if (!this.dismissed) {
+        this.show = true;
+        // Track popup shown event
+        if (typeof window.gtag !== 'undefined') {
+          window.gtag('event', 'newsletter_popup_shown', {
+            event_category: 'engagement',
+            event_label: 'auto_trigger'
+          });
+        }
+      }
+    }, 30000);
+
+    // Show on exit intent (desktop only)
+    if (window.innerWidth > 768) {
+      document.addEventListener('mouseleave', (e: MouseEvent) => {
+        if (e.clientY < 10 && !this.dismissed && !this.show) {
+          this.show = true;
+          // Track exit intent trigger
+          if (typeof window.gtag !== 'undefined') {
+            window.gtag('event', 'newsletter_popup_shown', {
+              event_category: 'engagement',
+              event_label: 'exit_intent'
+            });
+          }
+        }
+      });
+    }
+  },
+
+  close() {
+    this.show = false;
+    localStorage.setItem('newsletter-dismissed', 'true');
+    localStorage.setItem('newsletter-dismissed-time', Date.now().toString());
+    this.dismissed = true;
+
+    // Track dismissal
+    if (typeof window.gtag !== 'undefined') {
+      window.gtag('event', 'newsletter_popup_dismissed', {
+        event_category: 'engagement',
+        event_label: 'user_close'
+      });
+    }
+  },
+
+  async handleSubmit() {
+    if (!this.email) return;
+
+    // Email validation (RFC 5322 simplified)
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(this.email) || this.email.length > 255) {
+      alert('Veuillez saisir une adresse email valide.');
+      return;
+    }
+
+    // Rate limiting (max 3 submissions per hour)
+    const now = Date.now();
+    const hourAgo = now - (60 * 60 * 1000);
+    const historyJson = localStorage.getItem('vecia-newsletter-submissions');
+    let history: number[] = historyJson ? JSON.parse(historyJson) : [];
+
+    history = history.filter(timestamp => timestamp > hourAgo);
+
+    if (history.length >= 3) {
+      const oldestSubmission = Math.min.apply(null, history);
+      const minutesUntilReset = Math.ceil((oldestSubmission + (60 * 60 * 1000) - now) / (60 * 1000));
+      alert('Limite atteinte. Réessayez dans ' + minutesUntilReset + ' minute(s).');
+      return;
+    }
+
+    history.push(now);
+    localStorage.setItem('vecia-newsletter-submissions', JSON.stringify(history));
+
+    // Input sanitization
+    const sanitizedEmail = this.email.trim().slice(0, 255);
+
+    // Generate unique event ID for Meta CAPI deduplication
+    const eventId = 'vecia_' + Date.now() + '_' + Math.random().toString(36).substring(2, 11);
+
+    // Track newsletter signup attempt in GA4
+    if (typeof window.gtag !== 'undefined') {
+      window.gtag('event', 'newsletter_signup_attempt', {
+        event_category: 'conversion',
+        event_label: 'popup_modal',
+        value: 1
+      });
+    }
+
+    // Prepare data for n8n/Odoo
+    const submissionData = {
+      timestamp: new Date().toISOString(),
+      event_id: eventId,
+      formType: 'newsletter',
+      email: sanitizedEmail,
+      language: window.location.pathname.startsWith('/en') ? 'en' : 'fr',
+      source: document.referrer || 'Direct',
+      trigger: 'popup_modal',
+      utm_campaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
+      utm_source: new URLSearchParams(window.location.search).get('utm_source') || '',
+      utm_medium: new URLSearchParams(window.location.search).get('utm_medium') || '',
+      page_url: window.location.href,
+      page_title: document.title,
+    };
+
+    // Send to n8n webhook (connects to Odoo Email Marketing)
+    try {
+      const response = await fetch(this.webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionData)
+      });
+
+      if (!response.ok) {
+        console.warn('[Newsletter] Webhook failed:', response.status);
+      } else {
+        console.log('[Newsletter] Successfully sent to n8n/Odoo');
+      }
+    } catch (error) {
+      console.warn('[Newsletter] Webhook error:', error);
+      // Continue to show success (don't block user experience for webhook failure)
+    }
+
+    // Track conversion in Meta Pixel with event_id for CAPI deduplication
+    if (typeof window.fbq !== 'undefined') {
+      window.fbq('track', 'Lead', {
+        content_name: 'Newsletter Signup',
+        content_category: 'Newsletter',
+        event_id: eventId,
+      });
+      console.log('[Meta Pixel] Newsletter Lead tracked with event_id:', eventId);
+    }
+
+    // Track conversion in LinkedIn
+    if (typeof window.lintrk !== 'undefined') {
+      window.lintrk('track', { conversion_id: 'newsletter_signup' });
+      console.log('[LinkedIn] Newsletter conversion tracked');
+    }
+
+    // Show success state
+    this.submitted = true;
+
+    // Close after 2 seconds
+    setTimeout(() => {
+      this.close();
+    }, 2000);
+  }
+}));
+
+// =============================================================================
+// BUSINESS CASES COMPONENT
+// =============================================================================
+// Moved from inline x-data due to Astro 5.16.x multi-line attribute bug
+
+Alpine.data('businessCases', () => ({
+  activeTab: 0,
+  enteringSlide: null as number | null,
+  touchStartX: 0,
+  touchEndX: 0,
+
+  selectTab(index: number) {
+    this.activeTab = index;
+
+    // Mobile: scroll horizontal container
+    if (window.innerWidth <= 768) {
+      const container = (this.$refs as Record<string, HTMLElement>).mobileContainer;
+      if (container) {
+        const cardWidth = container.offsetWidth;
+        container.scrollTo({
+          left: cardWidth * index,
+          behavior: 'smooth'
+        });
+      }
+    } else {
+      // Desktop: scroll to sticky panel
+      const targetPanel = (this.$refs as Record<string, HTMLElement>)['panel' + index];
+      if (targetPanel) {
+        targetPanel.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }
+    }
+  },
+
+  setEntering(index: number) {
+    this.enteringSlide = index;
+  },
+
+  setActive(index: number) {
+    this.activeTab = index;
+    this.enteringSlide = null;
+  },
+
+  setExiting(index: number) {
+    if (this.activeTab === index) {
+      this.enteringSlide = null;
+    }
+  },
+
+  handleMobileScroll() {
+    if (window.innerWidth <= 768) {
+      const container = (this.$refs as Record<string, HTMLElement>).mobileContainer;
+      if (container) {
+        const cardWidth = container.offsetWidth;
+        const scrollLeft = container.scrollLeft;
+        const newIndex = Math.round(scrollLeft / cardWidth);
+        this.activeTab = newIndex;
+      }
+    }
+  }
+}));
+
+// =============================================================================
+// IMPACT COUNTERS COMPONENT (BentoGrid)
+// =============================================================================
+// Moved from inline x-data due to Astro 5.16.x multi-line attribute bug
+
+Alpine.data('impactCounters', () => ({
+  costReduction: 0,
+  timeSaved: 0,
+  salesGrowth: 0,
+  hasAnimated: false,
+
+  init() {
+    // Use IntersectionObserver to trigger animation when visible
+    new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        this.animateCounters();
+      }
+    }, { threshold: 0.5 }).observe(this.$el as HTMLElement);
+  },
+
+  animateCounters() {
+    if (this.hasAnimated) return;
+    this.hasAnimated = true;
+
+    // Animate cost reduction to 30
+    const costInterval = setInterval(() => {
+      if (this.costReduction >= 30) {
+        this.costReduction = 30;
+        clearInterval(costInterval);
+      } else {
+        this.costReduction += 2;
+      }
+    }, 50);
+
+    // Animate time saved to 15
+    const timeInterval = setInterval(() => {
+      if (this.timeSaved >= 15) {
+        this.timeSaved = 15;
+        clearInterval(timeInterval);
+      } else {
+        this.timeSaved += 1;
+      }
+    }, 100);
+
+    // Animate sales growth to 35
+    const salesInterval = setInterval(() => {
+      if (this.salesGrowth >= 35) {
+        this.salesGrowth = 35;
+        clearInterval(salesInterval);
+      } else {
+        this.salesGrowth += 2;
+      }
+    }, 50);
+  }
+}));
+
 // Make Alpine available globally (required for x-data, x-show, etc.)
 window.Alpine = Alpine;
 

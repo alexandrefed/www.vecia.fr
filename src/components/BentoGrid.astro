@@ -276,56 +276,10 @@ const t = ui[lang];
       </div>
 
       <!-- Row 2 - Right: Impact Metrics (1/3) -->
+      <!-- Alpine component registered in client.ts (moved from inline due to Astro 5.16.x multi-line attribute bug) -->
       <div
         class="md:col-span-1 bg-white rounded-xl p-5 md:p-6 shadow-xl shadow-secondary/20 border border-white/30 hover:shadow-2xl hover:shadow-secondary/30 hover:scale-[1.02] hover:bg-white/95 transition-all duration-300"
-        x-data="{
-          costReduction: 0,
-          timeSaved: 0,
-          salesGrowth: 0,
-          hasAnimated: false,
-
-          animateCounters() {
-            if (this.hasAnimated) return;
-            this.hasAnimated = true;
-
-            // Animate cost reduction to 30
-            const costInterval = setInterval(() => {
-              if (this.costReduction >= 30) {
-                this.costReduction = 30;
-                clearInterval(costInterval);
-              } else {
-                this.costReduction += 2;
-              }
-            }, 50);
-
-            // Animate time saved to 15
-            const timeInterval = setInterval(() => {
-              if (this.timeSaved >= 15) {
-                this.timeSaved = 15;
-                clearInterval(timeInterval);
-              } else {
-                this.timeSaved += 1;
-              }
-            }, 100);
-
-            // Animate sales growth to 35
-            const salesInterval = setInterval(() => {
-              if (this.salesGrowth >= 35) {
-                this.salesGrowth = 35;
-                clearInterval(salesInterval);
-              } else {
-                this.salesGrowth += 2;
-              }
-            }, 50);
-          }
-        }"
-        x-init="
-          new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-              animateCounters();
-            }
-          }, { threshold: 0.5 }).observe($el);
-        "
+        x-data="impactCounters"
       >
         <h4 class="font-display font-bold text-xl text-text mb-5 text-center">
           {t['journey.impact.title']}

@@ -32,11 +32,11 @@ const cspDirectives = {
     'https://plausible.io',
   ],
 
-  // Styles: self + inline + Google Fonts
-  'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+  // Styles: self + inline + Google Fonts + Hugeicons
+  'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://use.hugeicons.com'],
 
-  // Fonts: self + Google Fonts CDN
-  'font-src': ["'self'", 'https://fonts.gstatic.com'],
+  // Fonts: self + Google Fonts CDN + Hugeicons CDN
+  'font-src': ["'self'", 'https://fonts.gstatic.com', 'https://use.hugeicons.com', 'https://cdn.hugeicons.com'],
 
   // Images: self + data URIs + any HTTPS (for external images)
   'img-src': [
@@ -56,6 +56,8 @@ const cspDirectives = {
     'https://graph.facebook.com',
     'https://srvdev2025.taildb74a2.ts.net', // n8n webhook (Tailscale Funnel)
     'https://plausible.io',
+    'https://ipapi.co', // IP geolocation for currency detection
+    'https://px.ads.linkedin.com', // LinkedIn attribution tracking
   ],
 
   // Frames: block all external frames (clickjacking protection)

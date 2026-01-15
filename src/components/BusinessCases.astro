@@ -95,59 +95,9 @@ const cases = [
     </div>
 
     <!-- Tab Navigation System with Alpine.js -->
+    <!-- Alpine component registered in client.ts (moved from inline due to Astro 5.16.x multi-line attribute bug) -->
     <div
-      x-data="{
-        activeTab: 0,
-        enteringSlide: null,
-        touchStartX: 0,
-        touchEndX: 0,
-
-        selectTab(index) {
-          this.activeTab = index;
-
-          // Mobile: scroll horizontal container
-          if (window.innerWidth <= 768) {
-            const container = this.$refs.mobileContainer;
-            const cardWidth = container.offsetWidth;
-            container.scrollTo({
-              left: cardWidth * index,
-              behavior: 'smooth'
-            });
-          } else {
-            // Desktop: scroll to sticky panel
-            const targetPanel = this.$refs['panel' + index];
-            targetPanel.scrollIntoView({
-              behavior: 'smooth',
-              block: 'center'
-            });
-          }
-        },
-
-        setEntering(index) {
-          this.enteringSlide = index;
-        },
-
-        setActive(index) {
-          this.activeTab = index;
-          this.enteringSlide = null;
-        },
-
-        setExiting(index) {
-          if (this.activeTab === index) {
-            this.enteringSlide = null;
-          }
-        },
-
-        handleMobileScroll() {
-          if (window.innerWidth <= 768) {
-            const container = this.$refs.mobileContainer;
-            const cardWidth = container.offsetWidth;
-            const scrollLeft = container.scrollLeft;
-            const newIndex = Math.round(scrollLeft / cardWidth);
-            this.activeTab = newIndex;
-          }
-        }
-      }"
+      x-data="businessCases"
       class="max-w-6xl mx-auto"
     >
 

@@ -152,69 +152,9 @@ const tabs = [
     </div>
 
     <!-- Tab Buttons -->
+    <!-- Alpine component registered in client.ts (moved from inline due to Astro 5.16.x multi-line attribute bug) -->
     <div
-      x-data="{
-        activeTab: 0,
-        totalTabs: 4,
-        interval: null,
-        progress: 0,
-        progressInterval: null,
-        isPaused: false,
-        isInView: false,
-
-        startAutoRotate() {
-          this.isPaused = false;
-          // Clear existing intervals
-          if (this.interval) clearInterval(this.interval);
-          if (this.progressInterval) clearInterval(this.progressInterval);
-
-          // Calculate remaining time based on current progress
-          const remainingProgress = 100 - this.progress;
-          const remainingTime = (remainingProgress / 100) * 15000;
-
-          // Progress bar animation (continue from current progress)
-          this.progressInterval = setInterval(() => {
-            this.progress += 100 / (15000 / 50); // Update every 50ms
-            if (this.progress >= 100) {
-              this.progress = 100;
-            }
-          }, 50);
-
-          // Tab rotation after remaining time
-          this.interval = setTimeout(() => {
-            this.activeTab = (this.activeTab + 1) % this.totalTabs;
-            this.progress = 0; // Reset progress when tab changes
-            this.startAutoRotate(); // Restart with full cycle
-          }, remainingTime);
-        },
-
-        stopAutoRotate() {
-          this.isPaused = true;
-          if (this.interval) clearTimeout(this.interval);
-          if (this.progressInterval) clearInterval(this.progressInterval);
-        },
-
-        selectTab(index) {
-          this.activeTab = index;
-          this.progress = 0;
-          this.stopAutoRotate();
-          this.startAutoRotate();
-        },
-
-        nextTab() {
-          this.activeTab = (this.activeTab + 1) % this.totalTabs;
-          this.progress = 0;
-          this.stopAutoRotate();
-          this.startAutoRotate();
-        },
-
-        prevTab() {
-          this.activeTab = (this.activeTab - 1 + this.totalTabs) % this.totalTabs;
-          this.progress = 0;
-          this.stopAutoRotate();
-          this.startAutoRotate();
-        }
-      }"
+      x-data="aiTabs"
       x-init="startAutoRotate()"
       @mouseenter="stopAutoRotate()"
       @mouseleave="startAutoRotate()"
