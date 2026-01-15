@@ -216,7 +216,7 @@ const {
       // Ease in/out: fade opacity as spiral completes
       const cycleProgress = currentRadius / maxRadius;
       const opacity = cycleProgress < 0.1 ? cycleProgress * 10 : (cycleProgress > 0.9 ? (1 - cycleProgress) * 10 : 1);
-      this.color = this.color.replace(/[\d.]+\)$/, `${opacity * 0.6})`); // Adjust opacity
+      this.color = this.color.replace(/[\d.e+-]+\)$/, `${(opacity * 0.6).toFixed(3)})`); // Adjust opacity (toFixed prevents scientific notation)
 
       this.x = this.centerX + currentRadius * Math.cos(this.theta);
       this.y = this.centerY + currentRadius * Math.sin(this.theta);
@@ -270,8 +270,8 @@ const {
       // Draw halo/glow effect
       const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 3);
       gradient.addColorStop(0, this.color);
-      gradient.addColorStop(0.4, this.color.replace(/[\d.]+\)$/, '0.3)')); // 30% opacity at 40%
-      gradient.addColorStop(1, this.color.replace(/[\d.]+\)$/, '0)')); // Fully transparent at edge
+      gradient.addColorStop(0.4, this.color.replace(/[\d.e+-]+\)$/, '0.3)')); // 30% opacity at 40%
+      gradient.addColorStop(1, this.color.replace(/[\d.e+-]+\)$/, '0)')); // Fully transparent at edge
 
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius * 3, 0, Math.PI * 2);
