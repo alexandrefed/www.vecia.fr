@@ -25,6 +25,7 @@ const cspDirectives = {
   'script-src': [
     "'self'",
     "'unsafe-inline'", // Required for inline scripts (Astro, analytics init)
+    "'unsafe-eval'", // Required for Alpine.js expression evaluation (x-show, @click, :class, etc.)
     'https://www.googletagmanager.com',
     'https://www.google-analytics.com',
     'https://connect.facebook.net',
@@ -53,6 +54,7 @@ const cspDirectives = {
     "'self'",
     'https://www.google-analytics.com',
     'https://analytics.google.com',
+    'https://*.google-analytics.com', // GA4 regional endpoints (region1, region2, etc.)
     'https://graph.facebook.com',
     'https://srvdev2025.taildb74a2.ts.net', // n8n webhook (Tailscale Funnel)
     'https://plausible.io',
