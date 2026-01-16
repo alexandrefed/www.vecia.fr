@@ -6,7 +6,7 @@ author: "Vecia Team"
 category: "tool-comparisons"
 tags: ["mcp", "ai-tools", "automation", "playwright", "brave-search", "context7", "notion"]
 featured: false
-image: "/images/blog/essential-mcps.png"
+image: "/images/blog/mcps-indispensables.png"
 linkedin:
   caption: |
     100+ MCPs exist for Claude.

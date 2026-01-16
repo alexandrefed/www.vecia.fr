@@ -17,7 +17,12 @@ const homeUrl = lang === 'fr' ? '/' : '/en/';
 const aboutUrl = lang === 'fr' ? '/about' : '/en/about';
 const blogUrl = lang === 'fr' ? '/blog' : '/en/blog';
 const contactUrl = lang === 'fr' ? '/contact' : '/en/contact';
-const altLangUrl = lang === 'fr' ? '/en/' : '/';
+// Calculate language-aware URLs that preserve current path
+const currentPath = Astro.url.pathname;
+const basePath = currentPath.replace(/^\/en(\/|$)/, '/'); // Remove /en/ prefix
+const frUrl = basePath || '/';
+const enUrl = basePath === '/' ? '/en/' : `/en${basePath}`;
+const altLangUrl = lang === 'fr' ? enUrl : frUrl;
 const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.language.code.en'];
 ---
 
@@ -87,13 +92,13 @@ const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.langu
             style="display: none;"
           >
             <a
-              href={lang === 'fr' ? '/' : altLangUrl}
+              href={frUrl}
               class="block px-4 py-2 text-sm text-muted hover:bg-gray-100 transition-colors"
             >
               {t['nav.language.fr']}
             </a>
             <a
-              href={lang === 'en' ? '/' : altLangUrl}
+              href={enUrl}
               class="block px-4 py-2 text-sm text-muted hover:bg-gray-100 transition-colors"
             >
               {t['nav.language.en']}
@@ -185,10 +190,10 @@ const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.langu
 
         <!-- Mobile Language Links -->
         <div class="flex gap-6 pt-4 mt-4 border-t border-gray-100 text-center w-full justify-center">
-          <a href="/" class="text-base text-muted hover:text-primary transition-colors font-medium">
+          <a href={frUrl} class="text-base text-muted hover:text-primary transition-colors font-medium">
             {t['nav.language.fr']}
           </a>
-          <a href="/en/" class="text-base text-muted hover:text-primary transition-colors font-medium">
+          <a href={enUrl} class="text-base text-muted hover:text-primary transition-colors font-medium">
             {t['nav.language.en']}
           </a>
         </div>

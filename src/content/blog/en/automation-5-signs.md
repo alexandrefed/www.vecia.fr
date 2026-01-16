@@ -6,6 +6,7 @@ author: "Vecia Team"
 category: "why-broken"
 tags: ["automation", "AI", "business", "productivity"]
 featured: true
+image: "/images/blog/ia-ne-marche-pas.png"
 linkedin:
   caption: |
     🚀 Is your business ready for AI automation?
