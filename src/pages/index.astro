@@ -26,6 +26,7 @@ import BusinessCases from '../components/BusinessCases.astro';
 import LeadCaptureForm from '../components/LeadCaptureForm.astro';
 import FinalCTA from '../components/FinalCTA.astro';
 import { useTranslations } from '../i18n/utils';
+import { config } from '../config';
 
 const t = useTranslations('fr');
 ---
@@ -41,9 +42,12 @@ const t = useTranslations('fr');
     headlinePart2={t('hero.headline.part2')}
     headlinePart3={t('hero.headline.part3')}
     subheadline={t('hero.subheadline')}
-    cta1Text={t('hero.cta.audit')}
-    cta2Text={t('hero.cta.cases')}
+    differentiator={t('hero.differentiator')}
+    cta1Text={t('hero.cta.primary')}
+    cta2Text={t('hero.cta.secondary')}
+    cta1Href={config.calcom.bookingUrl}
     cta2Href="/cas-usage"
+    lang="fr"
   />
 
   <!-- AI Technology Logos Carousel -->

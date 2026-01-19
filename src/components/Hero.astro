@@ -1,13 +1,17 @@
 ---
+import FounderCredibility from './FounderCredibility.astro';
+
 interface Props {
   headlinePart1: string;
   headlinePart2: string;
   headlinePart3: string;
   subheadline: string;
+  differentiator?: string;  // NEW: Differentiator tagline
   cta1Text: string;
   cta2Text: string;
   cta1Href?: string;  // Optional, defaults to #audit
   cta2Href?: string;  // Optional, defaults to #cases
+  lang?: 'fr' | 'en';  // For FounderCredibility component
 }
 
 const {
@@ -15,10 +19,12 @@ const {
   headlinePart2,
   headlinePart3,
   subheadline,
+  differentiator,
   cta1Text,
   cta2Text,
   cta1Href = '#audit',
-  cta2Href = '#cases'
+  cta2Href = '#cases',
+  lang = 'fr'
 } = Astro.props;
 ---
 
@@ -45,9 +51,16 @@ const {
     </h1>
 
     <!-- Subheadline -->
-    <p class="text-base md:text-lg lg:text-xl text-muted max-w-3xl mx-auto mb-12 leading-relaxed">
+    <p class="text-base md:text-lg lg:text-xl text-muted max-w-3xl mx-auto mb-6 leading-relaxed">
       {subheadline}
     </p>
+
+    <!-- Differentiator -->
+    {differentiator && (
+      <p class="text-sm md:text-base font-semibold text-primary max-w-2xl mx-auto mb-10 leading-relaxed bg-primary/5 px-6 py-3 rounded-lg border border-primary/20">
+        {differentiator}
+      </p>
+    )}
 
     <!-- CTA Buttons -->
     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -70,6 +83,9 @@ const {
         </svg>
       </a>
     </div>
+
+    <!-- Founder Credibility -->
+    <FounderCredibility lang={lang} />
   </div>
 </section>
 

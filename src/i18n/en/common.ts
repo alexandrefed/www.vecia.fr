@@ -17,12 +17,19 @@ export const common = {
   'nav.cta.start': 'GET STARTED',
 
   // Hero Section
-  'hero.headline.part1': 'Automate Your Processes,',
-  'hero.headline.part2': 'Save 20+ Hours Per Week,',
-  'hero.headline.part3': 'and Scale Your Business',
-  'hero.subheadline': 'We help businesses implement AI automation to eliminate repetitive tasks, reduce costs by 40%, and accelerate growth',
-  'hero.cta.audit': 'FREE AI AUDIT',
-  'hero.cta.cases': 'SEE OUR USE CASES',
+  'hero.headline.part1': 'Stop wasting time',
+  'hero.headline.part2': 'on repetitive tasks.',
+  'hero.headline.part3': 'Let AI work for you.',
+  'hero.subheadline': 'Our clients save an average of 40% on operational costs and 15+ hours per week.',
+  'hero.differentiator': 'Custom automation for SMEs. Results in 4-8 weeks, not 18 months.',
+  'hero.cta.primary': 'BOOK A CALL',
+  'hero.cta.secondary': 'SEE OUR USE CASES',
+  // Founder Credibility
+  'hero.founders.title': 'Founded by experts',
+  'hero.founders.tanguy.name': 'Tanguy',
+  'hero.founders.tanguy.credential': 'Former Ministry of Armed Forces (AI & Security)',
+  'hero.founders.alexandre.name': 'Alexandre',
+  'hero.founders.alexandre.credential': '+$1M savings generated (CAC40)',
 
   // Logo Carousel
   'logos.title': 'Powered by Cutting-Edge AI Technologies',

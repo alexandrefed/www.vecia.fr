@@ -1,0 +1,52 @@
+---
+/**
+ * FounderCredibility Component
+ * Displays founder photos with credentials below Hero CTAs
+ */
+interface Props {
+  lang: 'fr' | 'en';
+}
+
+const { lang } = Astro.props;
+
+import { useTranslations } from '../i18n/utils';
+const t = useTranslations(lang);
+---
+
+<div class="flex flex-col items-center mt-10 pt-8 border-t border-gray-200/20">
+  <!-- Title -->
+  <p class="text-xs text-muted uppercase tracking-wider mb-6">
+    {t('hero.founders.title')}
+  </p>
+
+  <!-- Founders -->
+  <div class="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
+    <!-- Tanguy -->
+    <div class="flex items-center gap-3">
+      <img
+        src="/images/about-us/tanguy-dray.jpg"
+        alt={t('hero.founders.tanguy.name')}
+        class="w-12 h-12 rounded-full object-cover border-2 border-primary/30"
+        loading="lazy"
+      />
+      <div class="text-left">
+        <p class="font-semibold text-text text-sm">{t('hero.founders.tanguy.name')}</p>
+        <p class="text-xs text-muted max-w-[180px]">{t('hero.founders.tanguy.credential')}</p>
+      </div>
+    </div>
+
+    <!-- Alexandre -->
+    <div class="flex items-center gap-3">
+      <img
+        src="/images/about-us/alexandre-fedotov.jpg"
+        alt={t('hero.founders.alexandre.name')}
+        class="w-12 h-12 rounded-full object-cover border-2 border-primary/30"
+        loading="lazy"
+      />
+      <div class="text-left">
+        <p class="font-semibold text-text text-sm">{t('hero.founders.alexandre.name')}</p>
+        <p class="text-xs text-muted max-w-[180px]">{t('hero.founders.alexandre.credential')}</p>
+      </div>
+    </div>
+  </div>
+</div>

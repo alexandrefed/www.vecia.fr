@@ -18,12 +18,19 @@ export const common = {
     'nav.cta.start': 'COMMENCER',
 
     // Hero Section
-    'hero.headline.part1': 'Automatisez Vos Processus,',
-    'hero.headline.part2': 'Économisez Plus de 20h par Semaine,',
-    'hero.headline.part3': 'et Développez Votre Entreprise',
-    'hero.subheadline': 'Nous aidons les entreprises à implémenter l\'automatisation IA pour éliminer les tâches répétitives, réduire les coûts de 40% et accélérer la croissance',
-    'hero.cta.audit': 'AUDIT IA GRATUIT',
-    'hero.cta.cases': 'VOIR NOS CAS D\'USAGE',
+    'hero.headline.part1': 'Arrêtez de perdre du temps',
+    'hero.headline.part2': 'sur des tâches répétitives.',
+    'hero.headline.part3': 'Laissez l\'IA travailler pour vous.',
+    'hero.subheadline': 'Nos clients économisent en moyenne 40% sur leurs coûts opérationnels et 15h+ par semaine.',
+    'hero.differentiator': 'Automatisation sur mesure pour PME. Résultats en 4-8 semaines, pas en 18 mois.',
+    'hero.cta.primary': 'RÉSERVER UN APPEL',
+    'hero.cta.secondary': 'VOIR NOS CAS D\'USAGE',
+    // Founder Credibility
+    'hero.founders.title': 'Fondé par des experts',
+    'hero.founders.tanguy.name': 'Tanguy',
+    'hero.founders.tanguy.credential': 'Ex-Ministère des Armées (IA & Sécurité)',
+    'hero.founders.alexandre.name': 'Alexandre',
+    'hero.founders.alexandre.credential': '+1M€ d\'économies générées (CAC40)',
 
     // Logo Carousel
     'logos.title': 'Propulsé par les Technologies IA de Pointe',
