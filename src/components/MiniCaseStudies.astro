@@ -1,0 +1,38 @@
+---
+/**
+ * MiniCaseStudies Component
+ * Compact social proof strip showing key metrics from case studies
+ * Placed after LogosCarousel for early visibility
+ */
+interface Props {
+  lang: 'fr' | 'en';
+}
+
+const { lang } = Astro.props;
+
+import { useTranslations } from '../i18n/utils';
+const t = useTranslations(lang);
+
+// Define cases with explicit color classes (Tailwind can't purge dynamic classes)
+// Uses shorter labels from miniCases.* keys for compact display
+const cases = [
+  { metric: t('cases.case1.metric'), label: t('miniCases.case1.label'), industry: t('cases.case1.industry'), colorClass: 'text-primary' },
+  { metric: t('cases.case2.metric'), label: t('miniCases.case2.label'), industry: t('cases.case2.industry'), colorClass: 'text-secondary' },
+  { metric: t('cases.case3.metric'), label: t('miniCases.case3.label'), industry: t('cases.case3.industry'), colorClass: 'text-accent1' },
+  { metric: t('cases.case4.metric'), label: t('miniCases.case4.label'), industry: t('cases.case4.industry'), colorClass: 'text-accent2' },
+];
+---
+
+<section class="py-10 bg-background">
+  <div class="max-w-5xl mx-auto px-4">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+      {cases.map(c => (
+        <div class="text-center p-5 rounded-xl bg-surface/50 border border-border/30">
+          <p class:list={['text-3xl md:text-4xl font-bold', c.colorClass]}>{c.metric}</p>
+          <p class="text-sm text-muted mt-1">{c.label}</p>
+          <p class="text-xs text-muted/60 mt-2 uppercase tracking-wider">{c.industry}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

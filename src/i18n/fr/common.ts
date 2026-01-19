@@ -221,6 +221,12 @@ export const common = {
     'cases.sectionTitleHighlight': 'd\'Entreprises Accompagnées',
     'cases.sectionSubtitle': 'Découvrez comment les entreprises de tous secteurs économisent du temps, augmentent leurs revenus et améliorent leur efficacité avec nos solutions d\'automatisation IA.',
 
+    // Mini Case Studies (compact strip)
+    'miniCases.case1.label': 'gagnées / mois',
+    'miniCases.case2.label': 'inscriptions',
+    'miniCases.case3.label': 'plus rapide',
+    'miniCases.case4.label': 'satisfaction',
+
     // Case 1: E-commerce
     'cases.case1.industry': 'E-commerce',
     'cases.case1.headline': 'De Rapports Manuels à',

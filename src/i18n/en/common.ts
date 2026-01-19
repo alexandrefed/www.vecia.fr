@@ -220,6 +220,12 @@ export const common = {
   'cases.sectionTitleHighlight': 'Real Businesses',
   'cases.sectionSubtitle': 'Discover how businesses across all sectors save time, increase revenue, and improve efficiency with our AI automation solutions.',
 
+  // Mini Case Studies (compact strip)
+  'miniCases.case1.label': 'saved / month',
+  'miniCases.case2.label': 'sign-ups',
+  'miniCases.case3.label': 'faster',
+  'miniCases.case4.label': 'satisfaction',
+
   // Case 1: E-commerce
   'cases.case1.industry': 'E-commerce',
   'cases.case1.headline': 'From Manual Reports to',
