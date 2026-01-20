@@ -282,6 +282,20 @@ export const common = {
   'whyNotChatGPT.vecia.point2': 'Connected to your CRM, email, tools',
   'whyNotChatGPT.vecia.point3': 'We maintain it, you sleep well',
 
+  // FAQ Section
+  'faq.title': 'Frequently Asked Questions',
+  'faq.subtitle': 'The real questions you\'re asking',
+  'faq.q1': 'Will this actually work for my business?',
+  'faq.a1': 'We\'ve worked with e-commerce, consulting firms, industrial SMEs, and service providers. Every solution is custom. If we think AI isn\'t right for your case, we\'ll tell you.',
+  'faq.q2': 'We already tried AI and it didn\'t work',
+  'faq.a2': '83% of AI projects fail — but not because of the technology. It\'s an integration and process problem. We don\'t sell you a tool, we integrate it into your daily operations.',
+  'faq.q3': 'Isn\'t this too expensive for an SME?',
+  'faq.a3': 'Our projects start at $2,100. Average ROI is reached in 2-3 months. We show you the exact calculation before we start.',
+  'faq.q4': 'What happens after the project?',
+  'faq.a4': '30 to 90 days of maintenance included depending on the project. You keep ownership of everything we build. No dependency, no lock-in.',
+  'faq.q5': 'Our customer data is sensitive',
+  'faq.a5': 'GDPR compliant. Your data stays on your infrastructure or in Europe. We don\'t store anything on our end. Compliance audit available on request.',
+
   // Lead Capture Form
   'leadCapture.headline': 'Not Ready for a Call? Start with Our Free Assessment',
   'leadCapture.namePlaceholder': 'Full Name',

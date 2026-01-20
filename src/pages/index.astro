@@ -25,6 +25,7 @@ import ProductsCarousel from '../components/ProductsCarousel.astro';
 import BentoGrid from '../components/BentoGrid.astro';
 import WhyNotChatGPT from '../components/WhyNotChatGPT.astro';
 import BusinessCases from '../components/BusinessCases.astro';
+import FAQ from '../components/FAQ.astro';
 import LeadCaptureForm from '../components/LeadCaptureForm.astro';
 import FinalCTA from '../components/FinalCTA.astro';
 import { useTranslations } from '../i18n/utils';
@@ -72,6 +73,9 @@ const t = useTranslations('fr');
 
   <!-- Business Cases with Stacked Cards -->
   <BusinessCases lang="fr" />
+
+  <!-- FAQ Section - Handle Final Objections -->
+  <FAQ lang="fr" />
 
   <!-- Lead Capture Form -->
   <LeadCaptureForm lang="fr" />

@@ -1,0 +1,64 @@
+---
+/**
+ * FAQ Component
+ * Accordion-style FAQ addressing Sophie's common objections
+ * Uses Alpine.js for interactivity
+ */
+interface Props {
+  lang: 'fr' | 'en';
+}
+
+const { lang } = Astro.props;
+
+import { useTranslations } from '../i18n/utils';
+const t = useTranslations(lang);
+
+const faqs = [
+  { q: t('faq.q1'), a: t('faq.a1') },
+  { q: t('faq.q2'), a: t('faq.a2') },
+  { q: t('faq.q3'), a: t('faq.a3') },
+  { q: t('faq.q4'), a: t('faq.a4') },
+  { q: t('faq.q5'), a: t('faq.a5') },
+];
+---
+
+<section class="py-16 bg-background">
+  <div class="max-w-3xl mx-auto px-4">
+    <h2 class="text-2xl md:text-3xl font-bold text-text text-center mb-4">
+      {t('faq.title')}
+    </h2>
+    <p class="text-muted text-center mb-10">
+      {t('faq.subtitle')}
+    </p>
+
+    <div class="space-y-4" x-data="{ open: null }">
+      {faqs.map((faq, i) => (
+        <div class="border border-border/50 rounded-xl overflow-hidden bg-surface/30">
+          <button
+            type="button"
+            x-on:click={`open = open === ${i} ? null : ${i}`}
+            class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-surface/50 transition-colors cursor-pointer"
+          >
+            <span class="font-medium text-text pr-4">{faq.q}</span>
+            <span
+              class="text-muted text-xl flex-shrink-0 transition-transform duration-200"
+              x-bind:class={`{ 'rotate-45': open === ${i} }`}
+            >+</span>
+          </button>
+          <div
+            x-show={`open === ${i}`}
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 -translate-y-2"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 -translate-y-2"
+            class="px-6 pb-5 text-muted text-sm leading-relaxed"
+          >
+            {faq.a}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

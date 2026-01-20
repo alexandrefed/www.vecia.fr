@@ -283,6 +283,20 @@ export const common = {
     'whyNotChatGPT.vecia.point2': 'Connecté à votre CRM, email, outils',
     'whyNotChatGPT.vecia.point3': 'On maintient, vous dormez tranquille',
 
+    // FAQ Section
+    'faq.title': 'Questions Fréquentes',
+    'faq.subtitle': 'Les vraies questions que vous vous posez',
+    'faq.q1': 'Ça marchera vraiment pour mon entreprise ?',
+    'faq.a1': 'On a accompagné des e-commerces, des cabinets de conseil, des PME industrielles et des prestataires de services. Chaque solution est sur mesure. Si on pense que l\'IA n\'est pas adaptée à votre cas, on vous le dit.',
+    'faq.q2': 'On a déjà essayé l\'IA, ça n\'a pas marché',
+    'faq.a2': '83% des projets IA échouent — mais pas à cause de la technologie. C\'est un problème d\'intégration et de process. On ne vous vend pas un outil, on l\'intègre dans votre quotidien.',
+    'faq.q3': 'C\'est pas trop cher pour une PME ?',
+    'faq.a3': 'Nos projets commencent à 1 900€. Le ROI moyen est atteint en 2-3 mois. On vous montre le calcul exact avant de commencer.',
+    'faq.q4': 'Et après le projet, vous disparaissez ?',
+    'faq.a4': '30 à 90 jours de maintenance sont inclus selon le projet. Vous gardez la propriété de tout ce qu\'on construit. Pas de dépendance, pas de lock-in.',
+    'faq.q5': 'Nos données clients sont sensibles',
+    'faq.a5': 'RGPD compliant. Vos données restent sur votre infrastructure ou en Europe. On ne stocke rien chez nous. Audit de conformité disponible sur demande.',
+
     // Lead Capture Form
     'leadCapture.headline': 'Pas Encore Prêt pour un Appel ? Commencez avec Notre Évaluation Gratuite',
     'leadCapture.namePlaceholder': 'Prénom & Nom',
