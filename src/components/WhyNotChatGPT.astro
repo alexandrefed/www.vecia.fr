@@ -1,0 +1,67 @@
+---
+/**
+ * WhyNotChatGPT Component
+ * Addresses the objection: "Why not just use ChatGPT myself?"
+ * Side-by-side comparison showing tool vs solution
+ */
+interface Props {
+  lang: 'fr' | 'en';
+}
+
+const { lang } = Astro.props;
+
+import { useTranslations } from '../i18n/utils';
+const t = useTranslations(lang);
+---
+
+<section class="py-16 bg-surface/30">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <h2 class="text-2xl md:text-3xl font-bold text-text mb-4">
+      {t('whyNotChatGPT.title')}
+    </h2>
+    <p class="text-muted mb-10 max-w-2xl mx-auto">
+      {t('whyNotChatGPT.subtitle')}
+    </p>
+
+    <!-- Comparison Grid -->
+    <div class="grid md:grid-cols-2 gap-6 text-left">
+      <!-- ChatGPT Column -->
+      <div class="p-6 rounded-xl bg-background border border-border/50">
+        <p class="font-semibold text-muted mb-4">{t('whyNotChatGPT.chatgpt.title')}</p>
+        <ul class="space-y-3 text-sm text-muted">
+          <li class="flex items-start gap-2">
+            <span class="text-red-400 flex-shrink-0">✗</span>
+            <span>{t('whyNotChatGPT.chatgpt.point1')}</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-red-400 flex-shrink-0">✗</span>
+            <span>{t('whyNotChatGPT.chatgpt.point2')}</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-red-400 flex-shrink-0">✗</span>
+            <span>{t('whyNotChatGPT.chatgpt.point3')}</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Vecia Column -->
+      <div class="p-6 rounded-xl bg-primary/5 border border-primary/20">
+        <p class="font-semibold text-primary mb-4">{t('whyNotChatGPT.vecia.title')}</p>
+        <ul class="space-y-3 text-sm text-text">
+          <li class="flex items-start gap-2">
+            <span class="text-green-400 flex-shrink-0">✓</span>
+            <span>{t('whyNotChatGPT.vecia.point1')}</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-green-400 flex-shrink-0">✓</span>
+            <span>{t('whyNotChatGPT.vecia.point2')}</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-green-400 flex-shrink-0">✓</span>
+            <span>{t('whyNotChatGPT.vecia.point3')}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

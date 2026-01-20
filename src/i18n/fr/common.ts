@@ -271,6 +271,18 @@ export const common = {
     'cases.case4.metricLabel': 'score de satisfaction client',
     'cases.case4.impact': 'Passant de 3.1/5 à 4.2/5 en moyenne',
 
+    // Why Not ChatGPT Section
+    'whyNotChatGPT.title': 'Pourquoi pas juste ChatGPT ?',
+    'whyNotChatGPT.subtitle': 'Bonne question. 79% des entreprises essaient les outils IA. Seulement 17% les intègrent vraiment.',
+    'whyNotChatGPT.chatgpt.title': 'ChatGPT seul',
+    'whyNotChatGPT.chatgpt.point1': 'Vous devez le prompter manuellement',
+    'whyNotChatGPT.chatgpt.point2': 'Copier-coller les résultats dans vos outils',
+    'whyNotChatGPT.chatgpt.point3': 'Ça casse quand l\'API change',
+    'whyNotChatGPT.vecia.title': 'Automatisation Vecia',
+    'whyNotChatGPT.vecia.point1': 'Tourne 24/7 sans intervention',
+    'whyNotChatGPT.vecia.point2': 'Connecté à votre CRM, email, outils',
+    'whyNotChatGPT.vecia.point3': 'On maintient, vous dormez tranquille',
+
     // Lead Capture Form
     'leadCapture.headline': 'Pas Encore Prêt pour un Appel ? Commencez avec Notre Évaluation Gratuite',
     'leadCapture.namePlaceholder': 'Prénom & Nom',

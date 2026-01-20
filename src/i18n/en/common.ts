@@ -270,6 +270,18 @@ export const common = {
   'cases.case4.metricLabel': 'increase in retention',
   'cases.case4.impact': 'From 78% to 95% retention rate',
 
+  // Why Not ChatGPT Section
+  'whyNotChatGPT.title': 'Why not just ChatGPT?',
+  'whyNotChatGPT.subtitle': 'Good question. 79% of businesses try AI tools. Only 17% actually integrate them.',
+  'whyNotChatGPT.chatgpt.title': 'ChatGPT alone',
+  'whyNotChatGPT.chatgpt.point1': 'You have to prompt it manually',
+  'whyNotChatGPT.chatgpt.point2': 'Copy-paste results into your tools',
+  'whyNotChatGPT.chatgpt.point3': 'Breaks when the API changes',
+  'whyNotChatGPT.vecia.title': 'Vecia Automation',
+  'whyNotChatGPT.vecia.point1': 'Runs 24/7 without you',
+  'whyNotChatGPT.vecia.point2': 'Connected to your CRM, email, tools',
+  'whyNotChatGPT.vecia.point3': 'We maintain it, you sleep well',
+
   // Lead Capture Form
   'leadCapture.headline': 'Not Ready for a Call? Start with Our Free Assessment',
   'leadCapture.namePlaceholder': 'Full Name',
