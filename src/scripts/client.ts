@@ -434,20 +434,23 @@ Alpine.data('bilanForm', () => ({
     console.log('[bilanForm] formData:', this.formData);
   },
   formData: {
-    contact_name: '',
+    first_name: '',
+    last_name: '',
     email: '',
     company_name: '',
     website: '',
     role: '',
-    activity_description: '',  // Conditional: if no website
+    activity_description: '',
     sector: '',
     company_size: '',
     ai_maturity: 1,
-    tools: '',                 // Outils fréquents
-    tools_occasional: '',      // Outils occasionnels
-    repetitive_process: '',    // Process répétitif à automatiser
+    tools: '',
+    tools_occasional: '',
+    repetitive_process: '',
     ai_objectives: '',
-    ai_priority: [] as string[],  // ['decisionnel', 'operationnel', 'commercial']
+    priority_decisionnel: 0,   // 0-5 rating
+    priority_operationnel: 0,  // 0-5 rating
+    priority_commercial: 0,    // 0-5 rating
     gdpr_consent: false
   },
   loading: false,
@@ -474,8 +477,10 @@ Alpine.data('bilanForm', () => ({
         return;
       }
 
-      // Input sanitization
-      const sanitizedName = sanitizeInput(this.formData.contact_name);
+      // Input sanitization - concatenate first + last name
+      const sanitizedFirstName = sanitizeInput(this.formData.first_name);
+      const sanitizedLastName = sanitizeInput(this.formData.last_name);
+      const sanitizedName = `${sanitizedFirstName} ${sanitizedLastName}`.trim();
       const sanitizedEmail = sanitizeInput(this.formData.email);
 
       // Email validation
@@ -488,9 +493,9 @@ Alpine.data('bilanForm', () => ({
         return;
       }
 
-      // Ensure website has protocol
+      // Ensure website has protocol (or empty string if empty - backend will handle)
       let website = this.formData.website.trim();
-      if (!website.startsWith('http://') && !website.startsWith('https://')) {
+      if (website && !website.startsWith('http://') && !website.startsWith('https://')) {
         website = 'https://' + website;
       }
 
@@ -509,7 +514,14 @@ Alpine.data('bilanForm', () => ({
         tools_occasional: this.formData.tools_occasional ? this.formData.tools_occasional.trim().slice(0, 500) : null,
         repetitive_process: this.formData.repetitive_process ? this.formData.repetitive_process.trim().slice(0, 2000) : null,
         ai_objectives: this.formData.ai_objectives ? this.formData.ai_objectives.trim().slice(0, 2000) : null,
-        ai_priority: this.formData.ai_priority.length > 0 ? this.formData.ai_priority : null,
+        ai_priority: (() => {
+          const priorities = [
+            this.formData.priority_decisionnel > 0 ? `decisionnel:${this.formData.priority_decisionnel}` : null,
+            this.formData.priority_operationnel > 0 ? `operationnel:${this.formData.priority_operationnel}` : null,
+            this.formData.priority_commercial > 0 ? `commercial:${this.formData.priority_commercial}` : null,
+          ].filter(Boolean) as string[];
+          return priorities.length > 0 ? priorities : null;
+        })(),
       };
 
       console.log('[Bilan Form] Submitting to vecia-audit-ia:', submissionData);
