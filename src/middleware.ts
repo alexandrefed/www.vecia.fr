@@ -25,6 +25,7 @@ const cspDirectives = {
   'script-src': [
     "'self'",
     "'unsafe-inline'", // Required for inline scripts (Astro, analytics init)
+    "'unsafe-eval'", // Required for Alpine.js expression evaluation
     'https://www.googletagmanager.com',
     'https://www.google-analytics.com',
     'https://connect.facebook.net',
@@ -32,8 +33,8 @@ const cspDirectives = {
     'https://plausible.io',
   ],
 
-  // Styles: self + inline + Google Fonts
-  'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+  // Styles: self + inline + Google Fonts + Hugeicons
+  'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://use.hugeicons.com'],
 
   // Fonts: self + Google Fonts CDN
   'font-src': ["'self'", 'https://fonts.gstatic.com'],
@@ -53,6 +54,7 @@ const cspDirectives = {
     "'self'",
     'https://www.google-analytics.com',
     'https://analytics.google.com',
+    'https://region1.google-analytics.com',
     'https://graph.facebook.com',
     'https://srvdev2025.taildb74a2.ts.net', // n8n webhook (Tailscale Funnel)
     'https://plausible.io',
@@ -69,20 +71,24 @@ const cspDirectives = {
 
   // Object/embed: block plugins (Flash, etc.)
   'object-src': ["'none'"],
-
-  // Upgrade insecure requests
-  'upgrade-insecure-requests': [],
 };
 
 // Build CSP header string
-const cspHeader = Object.entries(cspDirectives)
+// Note: upgrade-insecure-requests is added only in production (breaks localhost without SSL)
+const cspParts = Object.entries(cspDirectives)
   .map(([directive, sources]) => {
     if (sources.length === 0) {
       return directive;
     }
     return `${directive} ${sources.join(' ')}`;
-  })
-  .join('; ');
+  });
+
+// Add upgrade-insecure-requests only in production
+if (import.meta.env.PROD) {
+  cspParts.push('upgrade-insecure-requests');
+}
+
+const cspHeader = cspParts.join('; ');
 
 export const onRequest = defineMiddleware(async (_context, next) => {
   const response = await next();
