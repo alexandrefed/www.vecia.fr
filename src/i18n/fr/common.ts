@@ -24,7 +24,7 @@ export const common = {
     'hero.subheadline': 'Nos clients économisent en moyenne 40% sur leurs coûts opérationnels et 15h+ par semaine.',
     'hero.differentiator': 'Automatisation sur mesure pour PME. Résultats en 4-8 semaines, pas en 18 mois.',
     'hero.cta.primary': 'RÉSERVER UN APPEL',
-    'hero.cta.secondary': 'VOIR NOS CAS D\'USAGE',
+    'hero.cta.secondary': 'ÉVALUATION GRATUITE',
     // Founder Credibility
     'hero.founders.title': 'Fondé par des experts',
     'hero.founders.tanguy.name': 'Tanguy',
@@ -296,6 +296,15 @@ export const common = {
     'faq.a4': '30 à 90 jours de maintenance sont inclus selon le projet. Vous gardez la propriété de tout ce qu\'on construit. Pas de dépendance, pas de lock-in.',
     'faq.q5': 'Nos données clients sont sensibles',
     'faq.a5': 'RGPD compliant. Vos données restent sur votre infrastructure ou en Europe. On ne stocke rien chez nous. Audit de conformité disponible sur demande.',
+
+    // Savings Calculator
+    'calculator.title': 'Combien pourriez-vous économiser ?',
+    'calculator.subtitle': 'Déplacez le curseur pour estimer vos économies annuelles',
+    'calculator.hoursLabel': 'Heures passées sur des tâches répétitives',
+    'calculator.resultLabel': 'Économies annuelles potentielles',
+    'calculator.perYear': 'par an (coût salarial chargé)',
+    'calculator.perWeek': '/semaine',
+    'calculator.realExample': '💡 Un client e-commerce économise 14 400€/an en automatisant 5h de reporting hebdomadaire.',
 
     // Lead Capture Form
     'leadCapture.headline': 'Pas Encore Prêt pour un Appel ? Commencez avec Notre Évaluation Gratuite',

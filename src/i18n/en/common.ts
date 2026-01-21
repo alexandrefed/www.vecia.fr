@@ -23,7 +23,7 @@ export const common = {
   'hero.subheadline': 'Our clients save an average of 40% on operational costs and 15+ hours per week.',
   'hero.differentiator': 'Custom automation for SMEs. Results in 4-8 weeks, not 18 months.',
   'hero.cta.primary': 'BOOK A CALL',
-  'hero.cta.secondary': 'SEE OUR USE CASES',
+  'hero.cta.secondary': 'FREE ASSESSMENT',
   // Founder Credibility
   'hero.founders.title': 'Founded by experts',
   'hero.founders.tanguy.name': 'Tanguy',
@@ -295,6 +295,15 @@ export const common = {
   'faq.a4': '30 to 90 days of maintenance included depending on the project. You keep ownership of everything we build. No dependency, no lock-in.',
   'faq.q5': 'Our customer data is sensitive',
   'faq.a5': 'GDPR compliant. Your data stays on your infrastructure or in Europe. We don\'t store anything on our end. Compliance audit available on request.',
+
+  // Savings Calculator
+  'calculator.title': 'How much could you save?',
+  'calculator.subtitle': 'Move the slider to estimate your annual savings',
+  'calculator.hoursLabel': 'Hours spent on repetitive tasks',
+  'calculator.resultLabel': 'Potential annual savings',
+  'calculator.perYear': 'per year (loaded labor cost)',
+  'calculator.perWeek': '/week',
+  'calculator.realExample': '💡 An e-commerce client saves €14,400/year by automating 5h of weekly reporting.',
 
   // Lead Capture Form
   'leadCapture.headline': 'Not Ready for a Call? Start with Our Free Assessment',

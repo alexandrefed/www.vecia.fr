@@ -26,6 +26,7 @@ import BentoGrid from '../components/BentoGrid.astro';
 import WhyNotChatGPT from '../components/WhyNotChatGPT.astro';
 import BusinessCases from '../components/BusinessCases.astro';
 import FAQ from '../components/FAQ.astro';
+import SavingsCalculator from '../components/SavingsCalculator.astro';
 import LeadCaptureForm from '../components/LeadCaptureForm.astro';
 import FinalCTA from '../components/FinalCTA.astro';
 import { useTranslations } from '../i18n/utils';
@@ -49,7 +50,7 @@ const t = useTranslations('fr');
     cta1Text={t('hero.cta.primary')}
     cta2Text={t('hero.cta.secondary')}
     cta1Href={config.calcom.bookingUrl}
-    cta2Href="/cas-usage"
+    cta2Href="#audit"
     lang="fr"
   />
 
@@ -76,6 +77,9 @@ const t = useTranslations('fr');
 
   <!-- FAQ Section - Handle Final Objections -->
   <FAQ lang="fr" />
+
+  <!-- Savings Calculator - Visual Hook Before Form -->
+  <SavingsCalculator lang="fr" />
 
   <!-- Lead Capture Form -->
   <LeadCaptureForm lang="fr" />
