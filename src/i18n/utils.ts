@@ -1,4 +1,7 @@
-import { ui, type Language, type UIKeys } from './ui';
+import { ui, type Language, type TranslationKey } from './ui';
+
+// Re-export types for convenience
+export type { Language, TranslationKey };
 
 // Get language from URL pathname
 export function getLangFromUrl(url: URL): Language {
@@ -20,7 +23,7 @@ export function getRelativeLocaleUrl(locale: Language, path: string = ''): strin
 
 // Type-safe translation function with fallback
 export function useTranslations(lang: Language) {
-  return function t(key: UIKeys): string {
+  return function t(key: TranslationKey): string {
     return ui[lang][key] || ui.fr[key] || key;
   };
 }

@@ -129,7 +129,7 @@ const shouldRender = PARTNER_ID && PARTNER_ID.length > 0;
 
       // Listen for consent updates from CookieConsent component
       window.addEventListener('cookie-consent-update', (event) => {
-        const { marketing } = event.detail;
+        const { marketing } = (event as CustomEvent).detail;
 
         if (marketing) {
           console.log('[LinkedIn Insight Tag] Consent: GRANTED (marketing cookies accepted)');

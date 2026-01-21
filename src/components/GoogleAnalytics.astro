@@ -87,7 +87,7 @@ const GA_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID || 'G-3RQR1S5ZK3';
 
   // Track outbound links
   document.addEventListener('astro:page-load', () => {
-    document.querySelectorAll('a[href^="http"]').forEach((link) => {
+    document.querySelectorAll<HTMLAnchorElement>('a[href^="http"]').forEach((link) => {
       if (!link.href.includes(window.location.hostname)) {
         link.addEventListener('click', () => {
           if (typeof window.gtag !== 'undefined') {
