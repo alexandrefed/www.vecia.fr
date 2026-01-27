@@ -1,0 +1,523 @@
+---
+/**
+ * BilanForm Component
+ *
+ * Single-page form for AI assessment lead capture
+ * Sends data to vecia-audit-ia API to generate personalized PDF
+ */
+
+interface Props {
+  lang: 'fr' | 'en';
+}
+
+const { lang } = Astro.props;
+
+const t = {
+  fr: {
+    sections: {
+      company: "Vous & votre entreprise",
+      companySubtitle: "Quelques infos pour personnaliser votre bilan",
+      daily: "Votre quotidien"
+    },
+    maturity: {
+      label: "L'IA dans votre travail ?",
+      options: [
+        { value: 1, label: 'Pas encore', desc: "Je n'utilise pas l'IA dans mon travail" },
+        { value: 2, label: "J'ai testé", desc: "J'ai essayé, mais pas régulièrement" },
+        { value: 3, label: "J'utilise", desc: "L'IA m'aide sur certaines tâches" },
+        { value: 4, label: 'Partiellement intégré', desc: "J'ai quelques process IA intégrés" },
+        { value: 5, label: 'Intégré', desc: "L'IA fait partie de mes process quotidiens" }
+      ]
+    },
+    toolsFrequent: {
+      label: "Quels outils utilisez-vous très régulièrement ?",
+      placeholder: "Ex: Outlook, Excel, Teams, Notion..."
+    },
+    toolsOccasional: {
+      label: "Quels outils utilisez-vous occasionnellement ?",
+      placeholder: "Ex: Canva, ChatGPT, outils métier spécifiques..."
+    },
+    aiPriority: {
+      label: "Vos attentes vis-à-vis de l'IA",
+      optional: "(optionnel)",
+      lowLabel: "Pas prioritaire",
+      highLabel: "Prioritaire",
+      axes: [
+        { key: 'decisionnel', icon: '📊', title: 'Piloter & Décider', desc: 'Croiser les données, anticiper' },
+        { key: 'operationnel', icon: '⚡', title: 'Automatiser', desc: 'Gagner du temps sur le répétitif' },
+        { key: 'commercial', icon: '💼', title: 'Vendre & Fidéliser', desc: 'Augmenter les ventes' }
+      ]
+    },
+    repetitiveProcess: {
+      label: "Décrivez un process répétitif que vous aimeriez automatiser",
+      placeholder: "Ex: relancer les devis non signés, créer des rapports hebdo, trier les emails..."
+    },
+    objectives: {
+      label: "Quel est votre principal défi aujourd'hui ?",
+      placeholder: "Ex: gérer mes leads, relancer mes clients, automatiser ma compta..."
+    },
+    company: {
+      sizeLabel: "Taille de l'entreprise",
+      sizeOptions: [
+        { value: '1-10', label: '1-10' },
+        { value: '11-50', label: '11-50' },
+        { value: '51-200', label: '51-200' },
+        { value: '201-1000', label: '201-1000' },
+        { value: '1000+', label: '1000+' }
+      ],
+      sectorLabel: "Secteur d'activité",
+      sectorOptions: [
+        { value: 'Services', label: 'Services aux entreprises' },
+        { value: 'Commerce', label: 'Commerce / Retail' },
+        { value: 'Industrie', label: 'Industrie / Manufacturing' },
+        { value: 'Tech', label: 'Tech / SaaS' },
+        { value: 'Finance', label: 'Finance / Assurance' },
+        { value: 'Sante', label: 'Santé / Pharma' },
+        { value: 'Immobilier', label: 'Immobilier / Construction' },
+        { value: 'Transport', label: 'Transport / Logistique' },
+        { value: 'Education', label: 'Éducation / Formation' },
+        { value: 'Autre', label: 'Autre' }
+      ]
+    },
+    labels: {
+      firstName: "Prénom",
+      lastName: "Nom",
+      email: "Email professionnel",
+      emailPlaceholder: "",
+      company: "Nom de l'entreprise",
+      companyPlaceholder: "",
+      website: "Site web",
+      websitePlaceholder: "https://",
+      role: "Fonction",
+      rolePlaceholder: "Ex: Dirigeant, Commercial, RH...",
+      activityDescription: "Décrivez votre activité",
+      activityDescriptionPlaceholder: "Que fait votre entreprise ? Quels sont vos clients ?",
+      activityOptional: "(optionnel)"
+    },
+    gdpr: {
+      label: "J'accepte que mes données soient utilisées pour générer mon bilan personnalisé",
+      link: "Politique de confidentialité"
+    },
+    submit: "Recevoir mon bilan gratuit",
+    success: {
+      title: "Votre bilan est en cours !",
+      message: "Vous recevrez votre bilan personnalisé par email dans les prochaines minutes.",
+      checkSpam: "Pensez à vérifier vos spams."
+    },
+    error: "Une erreur s'est produite. Veuillez réessayer."
+  },
+  en: {
+    sections: {
+      company: "You & your company",
+      companySubtitle: "A few details to personalize your assessment",
+      daily: "Your daily work"
+    },
+    maturity: {
+      label: "AI in your work?",
+      options: [
+        { value: 1, label: 'Not yet', desc: "I don't use AI at work" },
+        { value: 2, label: "I've tried", desc: "Tested but not regularly" },
+        { value: 3, label: "I use it", desc: "AI helps me on some tasks" },
+        { value: 4, label: 'Partially integrated', desc: "I have some AI processes" },
+        { value: 5, label: 'Integrated', desc: "AI is part of my daily workflows" }
+      ]
+    },
+    toolsFrequent: {
+      label: "What tools do you use very frequently?",
+      placeholder: "e.g., Outlook, Excel, Teams, Notion..."
+    },
+    toolsOccasional: {
+      label: "What tools do you use occasionally?",
+      placeholder: "e.g., Canva, ChatGPT, specialized business tools..."
+    },
+    aiPriority: {
+      label: "Your AI expectations",
+      optional: "(optional)",
+      lowLabel: "Not a priority",
+      highLabel: "Priority",
+      axes: [
+        { key: 'decisionnel', icon: '📊', title: 'Analyze & Decide', desc: 'Cross-reference data, anticipate' },
+        { key: 'operationnel', icon: '⚡', title: 'Automate', desc: 'Save time on repetitive tasks' },
+        { key: 'commercial', icon: '💼', title: 'Sell & Retain', desc: 'Increase sales' }
+      ]
+    },
+    repetitiveProcess: {
+      label: "Describe a repetitive process you'd like to automate",
+      placeholder: "e.g., follow up on unsigned quotes, create weekly reports, sort emails..."
+    },
+    objectives: {
+      label: "What is your main challenge today?",
+      placeholder: "e.g., manage leads, follow up with clients, automate accounting..."
+    },
+    company: {
+      sizeLabel: "Company size",
+      sizeOptions: [
+        { value: '1-10', label: '1-10' },
+        { value: '11-50', label: '11-50' },
+        { value: '51-200', label: '51-200' },
+        { value: '201-1000', label: '201-1000' },
+        { value: '1000+', label: '1000+' }
+      ],
+      sectorLabel: "Industry",
+      sectorOptions: [
+        { value: 'Services', label: 'Business Services' },
+        { value: 'Commerce', label: 'Commerce / Retail' },
+        { value: 'Industrie', label: 'Manufacturing' },
+        { value: 'Tech', label: 'Tech / SaaS' },
+        { value: 'Finance', label: 'Finance / Insurance' },
+        { value: 'Sante', label: 'Healthcare / Pharma' },
+        { value: 'Immobilier', label: 'Real Estate / Construction' },
+        { value: 'Transport', label: 'Transport / Logistics' },
+        { value: 'Education', label: 'Education / Training' },
+        { value: 'Autre', label: 'Other' }
+      ]
+    },
+    labels: {
+      firstName: "First name",
+      lastName: "Last name",
+      email: "Professional email",
+      emailPlaceholder: "",
+      company: "Company name",
+      companyPlaceholder: "",
+      website: "Website",
+      websitePlaceholder: "https://",
+      role: "Role / Function",
+      rolePlaceholder: "e.g., CEO, Sales, HR...",
+      activityDescription: "Describe your business",
+      activityDescriptionPlaceholder: "What does your company do? Who are your customers?",
+      activityOptional: "(optional)"
+    },
+    gdpr: {
+      label: "I agree that my data will be used to generate my personalized assessment",
+      link: "Privacy policy"
+    },
+    submit: "Get my free assessment",
+    success: {
+      title: "Your assessment is being generated!",
+      message: "You will receive your personalized assessment by email in the next few minutes.",
+      checkSpam: "Remember to check your spam folder."
+    },
+    error: "An error occurred. Please try again."
+  }
+}[lang];
+---
+
+<div
+  x-data="bilanForm()"
+  class="max-w-2xl mx-auto"
+>
+  <!-- Form Container -->
+  <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8" x-show="!success" x-transition>
+
+    <!-- Section 1: Contact + Company Info -->
+    <div class="mb-8">
+      <h2 class="text-xl md:text-2xl font-heading font-bold text-text mb-1">{t.sections.company}</h2>
+      <p class="text-sm text-muted mb-5">{t.sections.companySubtitle}</p>
+
+      <div class="space-y-4">
+        <!-- Row 1: Prénom + Nom -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-text mb-1.5">
+              {t.labels.firstName} <span class="text-secondary">*</span>
+            </label>
+            <input
+              type="text"
+              x-model="formData.first_name"
+              required
+              class="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle text-sm"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-text mb-1.5">
+              {t.labels.lastName} <span class="text-secondary">*</span>
+            </label>
+            <input
+              type="text"
+              x-model="formData.last_name"
+              required
+              class="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle text-sm"
+            />
+          </div>
+        </div>
+
+        <!-- Row 2: Email -->
+        <div>
+          <label class="block text-sm font-medium text-text mb-1.5">
+            {t.labels.email} <span class="text-secondary">*</span>
+          </label>
+          <input
+            type="email"
+            x-model="formData.email"
+            required
+            placeholder={t.labels.emailPlaceholder}
+            class="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle text-sm"
+          />
+        </div>
+
+        <!-- Row 2: Company + Website -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-text mb-1.5">
+              {t.labels.company} <span class="text-secondary">*</span>
+            </label>
+            <input
+              type="text"
+              x-model="formData.company_name"
+              required
+              placeholder={t.labels.companyPlaceholder}
+              class="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle text-sm"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-text mb-1.5">
+              {t.labels.website}
+            </label>
+            <input
+              type="url"
+              x-model="formData.website"
+              placeholder={t.labels.websitePlaceholder}
+              class="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle text-sm"
+            />
+          </div>
+        </div>
+
+        <!-- Row 4: Role + Sector -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-text mb-1.5">{t.labels.role}</label>
+            <input
+              type="text"
+              x-model="formData.role"
+              placeholder={t.labels.rolePlaceholder}
+              class="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle text-sm"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-text mb-1.5">
+              {t.company.sectorLabel} <span class="text-secondary">*</span>
+            </label>
+            <select
+              x-model="formData.sector"
+              class="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text text-sm"
+            >
+              <option value="">-- {lang === 'fr' ? 'Sélectionnez' : 'Select'} --</option>
+              {t.company.sectorOptions.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <!-- Row 5: Company Size -->
+        <div>
+          <label class="block text-sm font-medium text-text mb-2">
+            {t.company.sizeLabel} <span class="text-secondary">*</span>
+          </label>
+          <div class="flex flex-wrap gap-2">
+            {t.company.sizeOptions.map((option) => (
+              <button
+                type="button"
+                x-on:click={`formData.company_size = '${option.value}'`}
+                x-bind:class={`formData.company_size === '${option.value}' ? 'border-primary bg-primary/10 text-primary' : 'border-gray-200 hover:border-primary/50'`}
+                class="px-4 py-2 border-2 rounded-lg transition-all text-sm font-medium"
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- Row 6: Activity Description (optional) -->
+        <div>
+          <label class="block text-sm font-medium text-text mb-1.5">
+            {t.labels.activityDescription} <span class="text-muted font-normal">{t.labels.activityOptional}</span>
+          </label>
+          <textarea
+            x-model="formData.activity_description"
+            rows="2"
+            placeholder={t.labels.activityDescriptionPlaceholder}
+            class="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle resize-none text-sm"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="border-t border-gray-200 my-6"></div>
+
+    <!-- Section 2: AI Maturity + Tools -->
+    <div>
+      <h2 class="text-xl md:text-2xl font-heading font-bold text-text mb-5">{t.sections.daily}</h2>
+
+      <div class="space-y-5">
+        <!-- AI Maturity -->
+        <div>
+          <label class="block text-sm font-medium text-text mb-2">{t.maturity.label}</label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {t.maturity.options.map((option) => (
+              <button
+                type="button"
+                x-on:click={`formData.ai_maturity = ${option.value}`}
+                x-bind:class={`formData.ai_maturity === ${option.value} ? 'border-primary bg-primary/5 ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary/50'`}
+                class="flex flex-col items-start p-3 border-2 rounded-xl transition-all text-left cursor-pointer"
+              >
+                <span class="font-medium text-text text-sm">{option.label}</span>
+                <span class="text-xs text-muted">{option.desc}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- Tools Frequent -->
+        <div>
+          <label class="block text-sm font-medium text-text mb-1.5">{t.toolsFrequent.label}</label>
+          <input
+            type="text"
+            x-model="formData.tools"
+            placeholder={t.toolsFrequent.placeholder}
+            class="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle text-sm"
+          />
+        </div>
+
+        <!-- Tools Occasional -->
+        <div>
+          <label class="block text-sm font-medium text-text mb-1.5">{t.toolsOccasional.label}</label>
+          <input
+            type="text"
+            x-model="formData.tools_occasional"
+            placeholder={t.toolsOccasional.placeholder}
+            class="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle text-sm"
+          />
+        </div>
+
+        <!-- AI Priority Ratings (optional) -->
+        <div>
+          <label class="block text-sm font-medium text-text mb-3">
+            {t.aiPriority.label} <span class="text-muted font-normal">{t.aiPriority.optional}</span>
+          </label>
+          <div class="space-y-4">
+            {t.aiPriority.axes.map((axis) => (
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                <div class="flex items-center gap-2 min-w-[180px]">
+                  <span class="text-xl">{axis.icon}</span>
+                  <div>
+                    <span class="font-medium text-text text-sm">{axis.title}</span>
+                    <span class="text-xs text-muted block">{axis.desc}</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2 flex-1">
+                  <span class="text-xs text-muted whitespace-nowrap hidden sm:inline">{t.aiPriority.lowLabel}</span>
+                  <div class="flex gap-1.5">
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <button
+                        type="button"
+                        x-on:click={`formData.priority_${axis.key} = formData.priority_${axis.key} === ${n} ? 0 : ${n}`}
+                        x-bind:class={`formData.priority_${axis.key} >= ${n} ? 'bg-primary border-primary' : 'bg-gray-100 border-gray-200 hover:border-primary/50'`}
+                        class="w-7 h-7 rounded-full border-2 transition-all"
+                      />
+                    ))}
+                  </div>
+                  <span class="text-xs text-muted whitespace-nowrap hidden sm:inline">{t.aiPriority.highLabel}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Repetitive Process -->
+        <div>
+          <label class="block text-sm font-medium text-text mb-1.5">{t.repetitiveProcess.label}</label>
+          <textarea
+            x-model="formData.repetitive_process"
+            rows="2"
+            placeholder={t.repetitiveProcess.placeholder}
+            class="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle resize-none text-sm"
+          ></textarea>
+        </div>
+
+        <!-- Objectives -->
+        <div>
+          <label class="block text-sm font-medium text-text mb-1.5">{t.objectives.label}</label>
+          <textarea
+            x-model="formData.ai_objectives"
+            rows="2"
+            placeholder={t.objectives.placeholder}
+            class="w-full px-3 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle resize-none text-sm"
+          ></textarea>
+        </div>
+
+        <!-- GDPR Consent -->
+        <div class="pt-1">
+          <label class="flex items-start gap-2.5 cursor-pointer group">
+            <input
+              type="checkbox"
+              x-model="formData.gdpr_consent"
+              class="mt-0.5 w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+            />
+            <span class="text-xs text-gray-600 group-hover:text-gray-800">
+              {t.gdpr.label}
+              <a href={lang === 'fr' ? '/confidentialite' : '/en/privacy'} target="_blank" class="text-primary hover:underline ml-1">
+                {t.gdpr.link}
+              </a>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Error Message -->
+      <div
+        x-show="error"
+        x-cloak
+        x-transition
+        class="mt-4 p-3 bg-red-50 border-2 border-red-200 rounded-lg"
+      >
+        <p class="text-red-600 text-center text-sm font-medium" x-text="errorMessage"></p>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex justify-center mt-6">
+        <button
+          type="button"
+          x-on:click="submitForm()"
+          x-bind:disabled="loading || !formData.gdpr_consent || !formData.first_name || !formData.last_name || !formData.email || !formData.company_name || !formData.sector || !formData.company_size"
+          class="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm"
+        >
+          <span x-show="!loading">{t.submit}</span>
+          <span x-show="loading" x-cloak class="flex items-center gap-2">
+            <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>{lang === 'fr' ? 'Envoi...' : 'Sending...'}</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success State -->
+  <div
+    x-show="success"
+    x-cloak
+    x-transition:enter="transition ease-out duration-500"
+    x-transition:enter-start="opacity-0 scale-95"
+    x-transition:enter-end="opacity-100 scale-100"
+    class="bg-white rounded-2xl shadow-xl p-6 md:p-8 text-center"
+  >
+    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
+      <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+    </div>
+    <h2 class="text-xl md:text-2xl font-heading font-bold text-text mb-3">{t.success.title}</h2>
+    <p class="text-muted mb-3 max-w-md mx-auto text-sm">{t.success.message}</p>
+    <p class="text-xs text-muted">{t.success.checkSpam}</p>
+  </div>
+</div>
+
+<style>
+  [x-cloak] {
+    display: none !important;
+  }
+</style>

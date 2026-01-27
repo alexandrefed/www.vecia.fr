@@ -73,20 +73,24 @@ const cspDirectives = {
 
   // Object/embed: block plugins (Flash, etc.)
   'object-src': ["'none'"],
-
-  // Upgrade insecure requests
-  'upgrade-insecure-requests': [],
 };
 
 // Build CSP header string
-const cspHeader = Object.entries(cspDirectives)
+// Note: upgrade-insecure-requests is added only in production (breaks localhost without SSL)
+const cspParts = Object.entries(cspDirectives)
   .map(([directive, sources]) => {
     if (sources.length === 0) {
       return directive;
     }
     return `${directive} ${sources.join(' ')}`;
-  })
-  .join('; ');
+  });
+
+// Add upgrade-insecure-requests only in production
+if (import.meta.env.PROD) {
+  cspParts.push('upgrade-insecure-requests');
+}
+
+const cspHeader = cspParts.join('; ');
 
 export const onRequest = defineMiddleware(async (_context, next) => {
   const response = await next();

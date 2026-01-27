@@ -416,6 +416,179 @@ Alpine.data('multiStepForm', () => ({
   }
 }));
 
+// =============================================================================
+// BILAN IA FORM (vecia-audit-ia integration)
+// =============================================================================
+
+// vecia-audit-ia API URL (port 9421 local, n8n gateway prod)
+const BILAN_API_URL = (window as any).__VECIA_CONFIG__?.bilanApiUrl
+  || (window.location.hostname === 'localhost'
+    ? 'http://localhost:9421/form/submit'
+    : 'https://srvdev2025.taildb74a2.ts.net/webhook/vecia-bilan');
+
+// Register Alpine.js Bilan Form component (single-page form)
+console.log('[Alpine] Registering bilanForm component');
+Alpine.data('bilanForm', () => ({
+  init() {
+    console.log('[bilanForm] init() called - component is working!');
+    console.log('[bilanForm] formData:', this.formData);
+  },
+  formData: {
+    first_name: '',
+    last_name: '',
+    email: '',
+    company_name: '',
+    website: '',
+    role: '',
+    activity_description: '',
+    sector: '',
+    company_size: '',
+    ai_maturity: 1,
+    tools: '',
+    tools_occasional: '',
+    repetitive_process: '',
+    ai_objectives: '',
+    priority_decisionnel: 0,   // 0-5 rating
+    priority_operationnel: 0,  // 0-5 rating
+    priority_commercial: 0,    // 0-5 rating
+    gdpr_consent: false
+  },
+  loading: false,
+  success: false,
+  error: false,
+  errorMessage: '',
+
+  async submitForm() {
+    this.loading = true;
+    this.error = false;
+    this.errorMessage = '';
+
+    const lang = window.location.pathname.startsWith('/en') ? 'en' : 'fr';
+
+    try {
+      // Rate limiting check
+      const rateLimit = checkRateLimit('vecia-audit-submissions');
+      if (!rateLimit.allowed) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? `Limite atteinte. Réessayez dans ${rateLimit.message.match(/\d+/)?.[0]} minute(s).`
+          : rateLimit.message;
+        this.loading = false;
+        return;
+      }
+
+      // Input sanitization - concatenate first + last name
+      const sanitizedFirstName = sanitizeInput(this.formData.first_name);
+      const sanitizedLastName = sanitizeInput(this.formData.last_name);
+      const sanitizedName = `${sanitizedFirstName} ${sanitizedLastName}`.trim();
+      const sanitizedEmail = sanitizeInput(this.formData.email);
+
+      // Email validation
+      if (!isValidEmail(sanitizedEmail)) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? 'Veuillez saisir une adresse email valide.'
+          : 'Please enter a valid email address.';
+        this.loading = false;
+        return;
+      }
+
+      // Ensure website has protocol (or empty string if empty - backend will handle)
+      let website = this.formData.website.trim();
+      if (website && !website.startsWith('http://') && !website.startsWith('https://')) {
+        website = 'https://' + website;
+      }
+
+      // Prepare data for vecia-audit-ia API
+      const submissionData = {
+        contact_name: sanitizedName,
+        email: sanitizedEmail,
+        company_name: sanitizeInput(this.formData.company_name),
+        website: website,
+        role: this.formData.role ? sanitizeInput(this.formData.role) : null,
+        activity_description: this.formData.activity_description ? this.formData.activity_description.trim().slice(0, 2000) : null,
+        sector: this.formData.sector || null,
+        company_size: this.formData.company_size || null,
+        ai_maturity: this.formData.ai_maturity,
+        tools: this.formData.tools ? this.formData.tools.trim().slice(0, 500) : null,
+        tools_occasional: this.formData.tools_occasional ? this.formData.tools_occasional.trim().slice(0, 500) : null,
+        repetitive_process: this.formData.repetitive_process ? this.formData.repetitive_process.trim().slice(0, 2000) : null,
+        ai_objectives: this.formData.ai_objectives ? this.formData.ai_objectives.trim().slice(0, 2000) : null,
+        ai_priority: (() => {
+          const priorities = [
+            this.formData.priority_decisionnel > 0 ? `decisionnel:${this.formData.priority_decisionnel}` : null,
+            this.formData.priority_operationnel > 0 ? `operationnel:${this.formData.priority_operationnel}` : null,
+            this.formData.priority_commercial > 0 ? `commercial:${this.formData.priority_commercial}` : null,
+          ].filter(Boolean) as string[];
+          return priorities.length > 0 ? priorities : null;
+        })(),
+      };
+
+      console.log('[Bilan Form] Submitting to vecia-audit-ia:', submissionData);
+
+      // Submit to vecia-audit-ia API
+      const response = await fetch(BILAN_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionData)
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || 'API error');
+      }
+
+      console.log('[Bilan Form] Success! Lead ID:', result.lead_id);
+
+      // Success
+      this.success = true;
+      this.loading = false;
+
+      // Generate event ID for tracking
+      const eventId = generateEventId();
+
+      // Track conversion in Meta Pixel
+      if (typeof window.fbq !== 'undefined') {
+        window.fbq('track', 'Lead', {
+          content_name: 'AI Bilan Form',
+          content_category: 'Lead Generation',
+          event_id: eventId,
+        });
+        console.log('[Meta Pixel] Bilan lead tracked');
+      }
+
+      // Track conversion in LinkedIn
+      if (typeof window.lintrk !== 'undefined') {
+        window.lintrk('track', { conversion_id: 'lead_generated' });
+        console.log('[LinkedIn] Bilan lead tracked');
+      }
+
+      // Track conversion in Plausible
+      if (typeof window.plausible !== 'undefined') {
+        window.plausible('AI Bilan Lead', {
+          props: {
+            sector: this.formData.sector,
+            companySize: this.formData.company_size,
+            aiMaturity: this.formData.ai_maturity,
+            lang
+          }
+        });
+      }
+
+    } catch (err) {
+      console.error('[Bilan Form] Submission error:', err);
+      this.error = true;
+      this.errorMessage = lang === 'fr'
+        ? 'Une erreur s\'est produite. Veuillez réessayer.'
+        : 'An error occurred. Please try again.';
+      this.loading = false;
+    }
+  }
+}));
+
 // Register Alpine.js Contact Form component
 Alpine.data('contactForm', () => ({
   formData: {
@@ -1076,7 +1249,9 @@ Alpine.data('impactCounters', () => ({
 window.Alpine = Alpine;
 
 // Initialize Alpine.js
+console.log('[Alpine] Starting Alpine.js');
 Alpine.start();
+console.log('[Alpine] Alpine.js started');
 
 // Note: Dynamic pricing system is initialized in pricing.ts
 // It handles:

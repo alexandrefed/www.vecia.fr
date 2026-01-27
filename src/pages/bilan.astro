@@ -1,0 +1,128 @@
+---
+/**
+ * Bilan IA Page (French)
+ *
+ * Free AI assessment form - collects prospect info and triggers
+ * the vecia-audit-ia service to generate personalized PDF
+ */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BilanForm from '../components/BilanForm.astro';
+
+const lang = 'fr';
+
+// Breadcrumb structured data for SEO
+const breadcrumbData = {
+  items: [
+    { name: 'Accueil', url: 'https://vecia.fr/' },
+    { name: 'Bilan IA Gratuit', url: 'https://vecia.fr/bilan/' }
+  ]
+};
+
+const pageTitle = 'Bilan IA Gratuit | Vecia';
+const pageDescription = 'Recevez gratuitement un bilan personnalisé des opportunités d\'intelligence artificielle pour votre entreprise. Analyse en 5 minutes, livré par email.';
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  lang={lang}
+  breadcrumbData={breadcrumbData}
+>
+  <!-- Hero Section -->
+  <section class="relative py-16 md:py-20 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent1/5"></div>
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="max-w-3xl mx-auto text-center mb-10">
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4">
+          Votre <span class="text-primary">Bilan IA</span> personnalisé
+        </h1>
+        <p class="text-lg md:text-xl text-muted">
+          Découvrez les opportunités d'automatisation IA pour votre entreprise.
+          Gratuit, personnalisé, livré en 5 minutes.
+        </p>
+      </div>
+
+      <!-- Bilan Form -->
+      <BilanForm lang="fr" />
+    </div>
+  </section>
+
+  <!-- What You Get Section -->
+  <section class="py-12 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <h2 class="text-2xl font-heading font-bold text-center mb-8">Ce que contient votre bilan</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+        <!-- Analysis -->
+        <div class="text-center">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-blue-100 flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-text mb-1">Analyse sectorielle</h3>
+          <p class="text-sm text-muted">Opportunités IA spécifiques à votre industrie</p>
+        </div>
+
+        <!-- Opportunities -->
+        <div class="text-center">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-green-100 flex items-center justify-center">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-text mb-1">3 opportunités concrètes</h3>
+          <p class="text-sm text-muted">Actions IA prioritaires pour votre entreprise</p>
+        </div>
+
+        <!-- Roadmap -->
+        <div class="text-center">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-purple-100 flex items-center justify-center">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-text mb-1">Feuille de route</h3>
+          <p class="text-sm text-muted">Plan d'évolution vers plus d'automatisation</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Indicators -->
+  <section class="py-12">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+        <div class="text-center">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-green-100 flex items-center justify-center">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-text mb-1">100% Gratuit</h3>
+          <p class="text-sm text-muted">Aucune carte bancaire requise</p>
+        </div>
+
+        <div class="text-center">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-blue-100 flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-text mb-1">Livré en 5 minutes</h3>
+          <p class="text-sm text-muted">PDF envoyé directement par email</p>
+        </div>
+
+        <div class="text-center">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-purple-100 flex items-center justify-center">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-text mb-1">Généré par IA</h3>
+          <p class="text-sm text-muted">Analyse personnalisée de votre site</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
