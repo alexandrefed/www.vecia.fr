@@ -420,11 +420,11 @@ Alpine.data('multiStepForm', () => ({
 // BILAN IA FORM (vecia-audit-ia integration)
 // =============================================================================
 
-// vecia-audit-ia API URL (port 9421 local, Tailscale Funnel prod)
+// vecia-audit-ia API URL (port 9421 local, n8n gateway prod)
 const BILAN_API_URL = (window as any).__VECIA_CONFIG__?.bilanApiUrl
   || (window.location.hostname === 'localhost'
     ? 'http://localhost:9421/form/submit'
-    : 'https://srvdev2025.taildb74a2.ts.net:8443/form/submit');
+    : 'https://srvdev2025.taildb74a2.ts.net/webhook/vecia-bilan');
 
 // Register Alpine.js Bilan Form component (single-page form)
 console.log('[Alpine] Registering bilanForm component');
