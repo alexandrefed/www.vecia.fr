@@ -85,7 +85,7 @@ It's like having a permanent spotter. Docker monitors your MCPs, restarts them i
 
 ---
 
-## Geeky vibes
+## The technical part (for those who want to get their hands dirty)
 
 ### Docker MCP Hub Architecture
 

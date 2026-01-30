@@ -73,7 +73,7 @@ The goal isn't to have the most MCPs. It's to have the ones that actually multip
 
 ---
 
-## Geeky vibes
+## The 4 MCPs in detail
 
 ### 1. Playwright MCP - The Squat Rack of Web Automation
 

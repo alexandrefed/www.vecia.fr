@@ -85,7 +85,7 @@ C'est comme avoir un spotter permanent. Docker surveille vos MCPs, les redémarr
 
 ---
 
-## Accroche-toi Géraldine
+## La partie technique (pour ceux qui veulent mettre les mains dedans)
 
 ### Architecture Docker MCP Hub
 

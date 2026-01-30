@@ -73,7 +73,7 @@ L'objectif n'est pas d'avoir le plus de MCPs. C'est d'avoir ceux qui multiplient
 
 ---
 
-## Accroche-toi Géraldine
+## Les 4 MCPs en détail
 
 ### 1. Playwright MCP - Le Squat Rack de l'Automatisation Web
 

@@ -19,7 +19,7 @@ linkedin:
     ✅ The Prompt Engineering framework that changes everything
     ✅ Advanced tools (MCP, Deep Search) to go further
 
-    Spoiler: As the AI addict I am, I've tested everything.
+    Spoiler: I've tested every tool on the market. All of them.
 
     👉 Full article in comments (5 min read)
 
@@ -33,7 +33,7 @@ ChatGPT disappointing you? You ask it to revolutionize your business, and it giv
 
 **Welcome to the club.**
 
-I've complained about the machine too. As the AI addict I am, I've tested every AI tool on the market, hoping that one day, finally, one would understand what I really wanted.
+I've complained about the machine too. Like someone who tests every gym machine without ever making progress, I've tried every AI tool on the market, hoping that one day, finally, one would understand what I really wanted.
 
 Spoiler: **the problem isn't the AI. It's you.**
 

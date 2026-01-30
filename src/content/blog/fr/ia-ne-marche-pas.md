@@ -19,7 +19,7 @@ linkedin:
     ✅ Le framework de Prompt Engineering qui change tout
     ✅ Les outils avancés (MCP, Deep Search) pour aller plus loin
 
-    Spoiler : tel le cocaïnomane que je suis, j'ai tout testé.
+    Spoiler : j'ai testé tous les outils du marché. Tous.
 
     👉 Article complet dans les commentaires (5 min de lecture)
 
@@ -33,7 +33,7 @@ ChatGPT vous déçoit ? Vous lui demandez de révolutionner votre business, et i
 
 **Bienvenue au club.**
 
-Moi aussi, j'ai râlé contre la machine. Tel le cocaïnomane que je suis, j'ai testé tous les outils d'IA du marché, espérant qu'un jour, enfin, l'un d'eux comprendrait ce que je voulais vraiment.
+Moi aussi, j'ai râlé contre la machine. Comme quelqu'un qui teste tous les équipements de salle sans jamais progresser, j'ai essayé tous les outils d'IA du marché, espérant qu'un jour, enfin, l'un d'eux comprendrait ce que je voulais vraiment.
 
 Spoiler : **le problème, ce n'est pas l'IA. C'est vous.**
 
@@ -156,7 +156,7 @@ Si ChatGPT vous déçoit encore, posez-vous ces questions :
 
 Si la réponse est "non" à l'une de ces questions, c'est là que ça coince.
 
-**Quote** : "Souvent, l'IA n'est pas à la traîne : c'est l'utilisateur qui est branlant."
+**Quote** : "Souvent, l'IA n'est pas à la traîne : c'est l'utilisateur qui manque de rigueur."
 
 ## Conclusion
 
