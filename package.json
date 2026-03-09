@@ -14,18 +14,18 @@
   },
   "dependencies": {
     "@2toad/profanity": "^3.2.0",
-    "@alpinejs/intersect": "^3.15.0",
+    "@alpinejs/intersect": "^3.15.8",
     "@astrojs/check": "^0.9.6",
-    "@astrojs/node": "^9.5.1",
-    "@astrojs/rss": "^4.0.14",
-    "@astrojs/sitemap": "^3.6.0",
+    "@astrojs/node": "^9.5.4",
+    "@astrojs/rss": "^4.0.15",
+    "@astrojs/sitemap": "^3.7.0",
     "@fontsource/inter": "^5.2.8",
     "@fontsource/space-grotesk": "^5.2.10",
-    "@fortawesome/fontawesome-free": "^7.1.0",
-    "@supabase/supabase-js": "^2.75.0",
+    "@fortawesome/fontawesome-free": "^7.2.0",
+    "@supabase/supabase-js": "^2.98.0",
     "@tailwindcss/typography": "^0.5.19",
-    "@tailwindcss/vite": "^4.1.14",
-    "alpinejs": "^3.15.0",
+    "@tailwindcss/vite": "^4.2.1",
+    "alpinejs": "^3.15.8",
     "astro": "^5.16.6",
     "bad-words": "^4.0.0",
     "tailwindcss": "^4.1.14",
@@ -35,7 +35,7 @@
   "devDependencies": {
     "color-contrast-checker": "^2.1.0",
     "lockfile-lint": "^4.14.1",
-    "pa11y-ci": "^4.0.1",
-    "rollup-plugin-visualizer": "^6.0.4"
+    "pa11y-ci": "^4.1.0",
+    "rollup-plugin-visualizer": "^6.0.11"
   }
 }
