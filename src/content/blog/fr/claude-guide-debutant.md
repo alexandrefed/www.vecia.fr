@@ -388,5 +388,5 @@ Réponse : téléchargez Claude Desktop, passez Pro, créez votre premier Projec
 
 *Cet article est la Partie 1 d'une série sur Claude :*
 - **Partie 1** : Claude pour débutants (vous êtes ici)
-- **Partie 2** : Claude Code - Le CLI qui change tout (à venir)
-- **Partie 3** : Claude comme les pros - workflow Boris Cherny (à venir)
+- **Partie 2** : Claude Code - Le CLI qui change tout
+- **Partie 3** : Claude comme les pros - workflow Boris Cherny

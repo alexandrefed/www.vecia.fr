@@ -31,21 +31,21 @@ interface Props {
 const { title, description, lang, breadcrumbData } = Astro.props;
 
 // SEO: Canonical URL setup
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://vecia.com');
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://vecia.fr');
 
 // SEO: Language alternates
-const frURL = new URL('/', Astro.site || 'https://vecia.com');
-const enURL = new URL('/en/', Astro.site || 'https://vecia.com');
+const frURL = new URL('/', Astro.site || 'https://vecia.fr');
+const enURL = new URL('/en/', Astro.site || 'https://vecia.fr');
 
 // SEO: Open Graph image (using logo)
-const ogImage = new URL('/vecia_logo_long_contour.png', Astro.site || 'https://vecia.com');
+const ogImage = new URL('/vecia_logo_long_contour.png', Astro.site || 'https://vecia.fr');
 
 // JSON-LD Structured Data (Organization Schema)
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "Vecia",
-  "url": String(Astro.site || 'https://vecia.com'),
+  "url": String(Astro.site || 'https://vecia.fr'),
   "logo": String(ogImage),
   "description": description,
   "sameAs": [
@@ -54,7 +54,7 @@ const structuredData = {
   "contactPoint": {
     "@type": "ContactPoint",
     "contactType": "sales",
-    "email": "contact@vecia.com"
+    "email": "contact@vecia.fr"
   },
   "address": {
     "@type": "PostalAddress",
@@ -123,9 +123,9 @@ const structuredData = {
       type="website"
       data={{
         name: "Vecia",
-        url: String(Astro.site || 'https://vecia.com'),
+        url: String(Astro.site || 'https://vecia.fr'),
         description: description,
-        searchUrl: "https://vecia.com/blog?q={search_term_string}"
+        searchUrl: "https://vecia.fr/blog?q={search_term_string}"
       }}
     />
 

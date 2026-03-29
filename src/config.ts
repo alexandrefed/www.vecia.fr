@@ -13,7 +13,7 @@ export const config = {
   site: {
     title: 'Vecia - AI Automation Agency',
     description: 'Implémentez l\'IA, Économisez Plus de 20h par Semaine, et Accélerez votre croissance',
-    url: import.meta.env.PUBLIC_SITE_URL || 'https://vecia.com',
+    url: import.meta.env.PUBLIC_SITE_URL || 'https://vecia.fr',
     author: 'Vecia Team',
   },
 
@@ -26,7 +26,7 @@ export const config = {
   },
 
   contact: {
-    email: 'contact@vecia.com',
+    email: 'contact@vecia.fr',
   },
 
   // Legacy Google Sheets webhook (backup)
@@ -38,5 +38,6 @@ export const config = {
   n8n: {
     leadWebhookUrl: import.meta.env.PUBLIC_N8N_LEAD_WEBHOOK || 'https://srvdev2025.taildb74a2.ts.net/webhook/vecia-lead',
     newsletterWebhookUrl: import.meta.env.PUBLIC_N8N_NEWSLETTER_WEBHOOK || 'https://srvdev2025.taildb74a2.ts.net/webhook/vecia-newsletter',
+    bookingWebhookUrl: import.meta.env.PUBLIC_N8N_BOOKING_WEBHOOK || 'https://srvdev2025.taildb74a2.ts.net/webhook/vecia-booking',
   },
 } as const;

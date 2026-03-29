@@ -1,0 +1,474 @@
+---
+/**
+ * BookingForm Component
+ *
+ * Multi-step booking form to replace Cal.com integration.
+ * Connects to n8n webhook for calendar availability check and booking creation.
+ *
+ * Flow:
+ * 1. Select date (next 30 weekdays)
+ * 2. Select time slot (9h-17h Europe/Paris)
+ * 3. Enter contact details
+ * 4. Success confirmation
+ */
+
+interface Props {
+  lang: 'fr' | 'en';
+}
+
+const { lang } = Astro.props;
+
+// Translations
+const translations = {
+  fr: {
+    header: {
+      title: 'Réservez votre consultation gratuite',
+      subtitle: 'Choisissez un créneau qui vous convient. Durée : 30 minutes.',
+    },
+    step1: {
+      title: 'Choisissez une date',
+      subtitle: 'Sélectionnez un jour disponible',
+    },
+    step2: {
+      title: 'Choisissez un horaire',
+      subtitle: 'Fuseau horaire : Europe/Paris',
+      noSlots: 'Aucun créneau disponible ce jour',
+    },
+    step3: {
+      title: 'Vos coordonnées',
+      nameLabel: 'Votre nom',
+      namePlaceholder: 'Jean Dupont',
+      emailLabel: 'Email professionnel',
+      emailPlaceholder: 'jean@entreprise.com',
+      companyLabel: 'Entreprise',
+      companyPlaceholder: 'Nom de votre entreprise',
+      phoneLabel: 'Téléphone',
+      phonePlaceholder: '+33 6 12 34 56 78',
+      messageLabel: 'Message (optionnel)',
+      messagePlaceholder: 'Décrivez brièvement votre projet ou vos questions...',
+    },
+    navigation: {
+      back: 'Retour',
+      next: 'Continuer',
+      submit: 'Confirmer le rendez-vous',
+      change: 'Modifier',
+    },
+    success: {
+      title: 'Demande envoyée !',
+      message: 'Votre demande de rendez-vous a été envoyée. Vous recevrez une confirmation par email sous 24h avec le lien Google Meet.',
+      summary: 'Récapitulatif',
+      date: 'Date',
+      time: 'Heure',
+      email: 'Email',
+      note: 'Un membre de notre équipe confirmera votre rendez-vous très prochainement.',
+      cta: 'Retour à l\'accueil',
+    },
+    validation: {
+      required: 'Ce champ est requis',
+      invalidEmail: 'Adresse email invalide',
+    },
+    progress: 'Étape {current} sur {total}',
+  },
+  en: {
+    header: {
+      title: 'Book your free consultation',
+      subtitle: 'Choose a time that works for you. Duration: 30 minutes.',
+    },
+    step1: {
+      title: 'Choose a date',
+      subtitle: 'Select an available day',
+    },
+    step2: {
+      title: 'Choose a time',
+      subtitle: 'Timezone: Europe/Paris',
+      noSlots: 'No slots available on this day',
+    },
+    step3: {
+      title: 'Your details',
+      nameLabel: 'Your name',
+      namePlaceholder: 'John Smith',
+      emailLabel: 'Professional email',
+      emailPlaceholder: 'john@company.com',
+      companyLabel: 'Company',
+      companyPlaceholder: 'Your company name',
+      phoneLabel: 'Phone',
+      phonePlaceholder: '+33 6 12 34 56 78',
+      messageLabel: 'Message (optional)',
+      messagePlaceholder: 'Briefly describe your project or questions...',
+    },
+    navigation: {
+      back: 'Back',
+      next: 'Continue',
+      submit: 'Confirm booking',
+      change: 'Change',
+    },
+    success: {
+      title: 'Request sent!',
+      message: 'Your booking request has been submitted. You will receive a confirmation email within 24 hours with the Google Meet link.',
+      summary: 'Summary',
+      date: 'Date',
+      time: 'Time',
+      email: 'Email',
+      note: 'A team member will confirm your appointment very soon.',
+      cta: 'Back to home',
+    },
+    validation: {
+      required: 'This field is required',
+      invalidEmail: 'Invalid email address',
+    },
+    progress: 'Step {current} of {total}',
+  },
+};
+
+const t = translations[lang];
+---
+
+<div
+  x-data="bookingForm()"
+  x-init="init()"
+  class="max-w-3xl mx-auto"
+>
+  <!-- Header -->
+  <div class="text-center mb-8" x-show="currentStep < 4">
+    <h1 class="text-3xl md:text-4xl font-heading font-bold text-text mb-3">
+      {t.header.title}
+    </h1>
+    <p class="text-lg text-muted">
+      {t.header.subtitle}
+    </p>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="mb-8" x-show="currentStep < 4">
+    <div class="flex justify-between mb-2">
+      <span class="text-sm text-muted">
+        <span x-text={`'${lang === 'fr' ? 'Étape' : 'Step'} ' + currentStep + ' ${lang === 'fr' ? 'sur' : 'of'} 3'`}></span>
+      </span>
+      <span class="text-sm font-medium text-primary" x-text="`${Math.round((currentStep / 3) * 100)}%`"></span>
+    </div>
+    <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+      <div
+        class="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-500 ease-out"
+        :style="`width: ${(currentStep / 3) * 100}%`"
+      ></div>
+    </div>
+  </div>
+
+  <!-- Form Container -->
+  <div class="bg-white rounded-2xl shadow-xl overflow-hidden" x-show="currentStep < 4" x-transition>
+
+    <!-- Step 1: Date Selection -->
+    <div x-show="currentStep === 1" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4" x-transition:enter-end="opacity-100 translate-x-0">
+      <div class="p-6 md:p-8 border-b border-gray-100">
+        <h2 class="text-xl md:text-2xl font-heading font-bold text-text mb-1">{t.step1.title}</h2>
+        <p class="text-muted">{t.step1.subtitle}</p>
+      </div>
+
+      <!-- Calendar Grid -->
+      <div class="p-6 md:p-8">
+        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
+          <template x-for="dateObj in availableDates" :key="dateObj.date">
+            <button
+              type="button"
+              @click="selectDate(dateObj.date)"
+              :class="formData.date === dateObj.date
+                ? 'border-primary bg-primary text-white ring-2 ring-primary/30'
+                : 'border-gray-200 hover:border-primary/50 hover:bg-primary/5 text-text'"
+              class="flex flex-col items-center p-3 md:p-4 border-2 rounded-xl transition-all cursor-pointer group"
+            >
+              <span
+                class="text-xs font-medium uppercase tracking-wide mb-1"
+                :class="formData.date === dateObj.date ? 'text-white/80' : 'text-muted'"
+                x-text="dateObj.dayName"
+              ></span>
+              <span
+                class="text-xl md:text-2xl font-bold"
+                x-text="dateObj.dayNumber"
+              ></span>
+              <span
+                class="text-xs"
+                :class="formData.date === dateObj.date ? 'text-white/80' : 'text-muted'"
+                x-text="dateObj.monthName"
+              ></span>
+            </button>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Time Selection -->
+    <div x-show="currentStep === 2" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4" x-transition:enter-end="opacity-100 translate-x-0">
+      <div class="p-6 md:p-8 border-b border-gray-100">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl md:text-2xl font-heading font-bold text-text mb-1">{t.step2.title}</h2>
+            <p class="text-muted">{t.step2.subtitle}</p>
+          </div>
+          <!-- Selected date badge -->
+          <div class="hidden sm:flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-lg">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span class="font-medium" x-text="availableDates.find(d => d.date === formData.date)?.label || ''"></span>
+            <button
+              type="button"
+              @click="goBack"
+              class="ml-2 text-primary/70 hover:text-primary transition-colors text-sm underline"
+            >
+              {t.navigation.change}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Time Slots Grid -->
+      <div class="p-6 md:p-8">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          <template x-for="slot in availableSlots" :key="slot.time">
+            <button
+              type="button"
+              @click="!isSlotBlocked(slot.time) && selectTime(slot.time)"
+              :disabled="isSlotBlocked(slot.time)"
+              :class="{
+                'border-primary bg-primary text-white ring-2 ring-primary/30': formData.time === slot.time,
+                'border-gray-200 hover:border-primary/50 hover:bg-primary/5 text-text': formData.time !== slot.time && !isSlotBlocked(slot.time),
+                'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed': isSlotBlocked(slot.time)
+              }"
+              class="flex items-center justify-center gap-2 p-4 border-2 rounded-xl transition-all font-medium"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span x-text="slot.label"></span>
+            </button>
+          </template>
+        </div>
+
+        <!-- Back button for mobile -->
+        <div class="mt-6 sm:hidden">
+          <button
+            type="button"
+            @click="goBack"
+            class="text-muted hover:text-text transition-colors font-medium flex items-center gap-2"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            {t.navigation.back}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Contact Form -->
+    <div x-show="currentStep === 3" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4" x-transition:enter-end="opacity-100 translate-x-0">
+      <div class="p-6 md:p-8 border-b border-gray-100">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h2 class="text-xl md:text-2xl font-heading font-bold text-text mb-1">{t.step3.title}</h2>
+          </div>
+          <!-- Selected date/time badge -->
+          <div class="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-lg text-sm">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span class="font-medium" x-text="getFormattedDateTime()"></span>
+            <button
+              type="button"
+              @click="currentStep = 1"
+              class="ml-2 text-primary/70 hover:text-primary transition-colors underline"
+            >
+              {t.navigation.change}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form Fields -->
+      <div class="p-6 md:p-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <!-- Name -->
+          <div class="md:col-span-2">
+            <label for="booking-name" class="block text-sm font-medium text-text mb-2">
+              {t.step3.nameLabel} <span class="text-secondary">*</span>
+            </label>
+            <input
+              type="text"
+              id="booking-name"
+              x-model="formData.name"
+              required
+              placeholder={t.step3.namePlaceholder}
+              class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle"
+            />
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label for="booking-email" class="block text-sm font-medium text-text mb-2">
+              {t.step3.emailLabel} <span class="text-secondary">*</span>
+            </label>
+            <input
+              type="email"
+              id="booking-email"
+              x-model="formData.email"
+              required
+              placeholder={t.step3.emailPlaceholder}
+              class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle"
+            />
+          </div>
+
+          <!-- Company -->
+          <div>
+            <label for="booking-company" class="block text-sm font-medium text-text mb-2">
+              {t.step3.companyLabel} <span class="text-secondary">*</span>
+            </label>
+            <input
+              type="text"
+              id="booking-company"
+              x-model="formData.company"
+              required
+              placeholder={t.step3.companyPlaceholder}
+              class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle"
+            />
+          </div>
+
+          <!-- Phone -->
+          <div class="md:col-span-2">
+            <label for="booking-phone" class="block text-sm font-medium text-text mb-2">
+              {t.step3.phoneLabel} <span class="text-muted">(optionnel)</span>
+            </label>
+            <input
+              type="tel"
+              id="booking-phone"
+              x-model="formData.phone"
+              placeholder={t.step3.phonePlaceholder}
+              class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle"
+            />
+          </div>
+
+          <!-- Message -->
+          <div class="md:col-span-2">
+            <label for="booking-message" class="block text-sm font-medium text-text mb-2">
+              {t.step3.messageLabel}
+            </label>
+            <textarea
+              id="booking-message"
+              x-model="formData.message"
+              rows="3"
+              placeholder={t.step3.messagePlaceholder}
+              class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text placeholder:text-subtle resize-none"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Error Message -->
+        <div
+          x-show="error"
+          x-transition
+          class="mt-6 p-4 bg-red-50 border-2 border-red-200 rounded-lg"
+        >
+          <p class="text-red-600 text-center font-medium" x-text="errorMessage"></p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex justify-between items-center mt-8 pt-6 border-t border-gray-100">
+          <button
+            type="button"
+            @click="goBack"
+            class="px-6 py-3 text-muted hover:text-text transition-colors font-medium flex items-center gap-2"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            {t.navigation.back}
+          </button>
+          <button
+            type="button"
+            @click="submitForm"
+            :disabled="loading || !formData.name || !formData.email || !formData.company"
+            class="px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-2"
+          >
+            <span x-show="!loading">{t.navigation.submit}</span>
+            <span x-show="loading" class="flex items-center gap-2">
+              <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>{lang === 'fr' ? 'Envoi...' : 'Sending...'}</span>
+            </span>
+            <svg x-show="!loading" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4: Success State -->
+  <div
+    x-show="currentStep === 4"
+    x-transition:enter="transition ease-out duration-500"
+    x-transition:enter-start="opacity-0 scale-95"
+    x-transition:enter-end="opacity-100 scale-100"
+    class="bg-white rounded-2xl shadow-xl p-8 md:p-12"
+  >
+    <!-- Success Icon -->
+    <div class="text-center mb-8">
+      <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-green-100 flex items-center justify-center">
+        <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+      <h2 class="text-2xl md:text-3xl font-heading font-bold text-text mb-3">{t.success.title}</h2>
+      <p class="text-muted max-w-md mx-auto">{t.success.message}</p>
+    </div>
+
+    <!-- Booking Summary -->
+    <div class="bg-gray-50 rounded-xl p-6 mb-8 max-w-md mx-auto">
+      <h3 class="text-sm font-semibold text-muted uppercase tracking-wide mb-4">{t.success.summary}</h3>
+      <div class="space-y-3">
+        <div class="flex justify-between">
+          <span class="text-muted">{t.success.date}</span>
+          <span class="font-medium text-text" x-text="availableDates.find(d => d.date === formData.date)?.label || ''"></span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-muted">{t.success.time}</span>
+          <span class="font-medium text-text" x-text="formData.time"></span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-muted">{t.success.email}</span>
+          <span class="font-medium text-text" x-text="formData.email"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Note -->
+    <p class="text-center text-muted text-sm mb-8">
+      {t.success.note}
+    </p>
+
+    <!-- CTA -->
+    <div class="text-center">
+      <a
+        href={lang === 'fr' ? '/' : '/en/'}
+        class="inline-block px-8 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all"
+      >
+        {t.success.cta}
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  [x-cloak] {
+    display: none !important;
+  }
+
+  /* Prevent zoom on iOS when focusing inputs */
+  @media (max-width: 640px) {
+    input, select, textarea {
+      font-size: 16px;
+    }
+  }
+</style>

@@ -1,0 +1,65 @@
+---
+/**
+ * CardLayout - Minimal standalone layout for QR/linktree-style pages
+ *
+ * No navigation, no footer, no newsletter popup.
+ * Keeps SEO meta, analytics, and global styles.
+ */
+
+import GoogleAnalytics from '../components/GoogleAnalytics.astro';
+import MetaPixel from '../components/MetaPixel.astro';
+import LinkedInInsightTag from '../components/LinkedInInsightTag.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  lang: 'fr' | 'en';
+}
+
+const { title, description, lang } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://vecia.fr');
+const ogImage = new URL('/vecia_logo_long_contour.png', Astro.site || 'https://vecia.fr');
+---
+
+<!DOCTYPE html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content={Astro.generator}>
+
+    <title>{title}</title>
+    <meta name="description" content={description}>
+
+    <link rel="canonical" href={canonicalURL}>
+    <link rel="icon" type="image/png" href="/vecia_favicon.png">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content={canonicalURL}>
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content={description}>
+    <meta property="og:image" content={ogImage}>
+    <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_US'}>
+    <meta property="og:site_name" content="Vecia">
+
+    <!-- Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <!-- Hugeicons -->
+    <link rel="stylesheet" href="https://use.hugeicons.com/font/icons.css">
+
+    <!-- Analytics -->
+    <GoogleAnalytics />
+    <MetaPixel />
+    <LinkedInInsightTag />
+
+    <slot name="head" />
+  </head>
+
+  <body class="font-body text-text bg-background min-h-screen">
+    <slot />
+  </body>
+</html>

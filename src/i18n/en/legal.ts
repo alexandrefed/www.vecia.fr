@@ -38,7 +38,7 @@ export const legal = {
   'privacy.section5.li4': 'Right to restriction: limit the processing of your data',
   'privacy.section5.li5': 'Right to portability: receive your data in a structured format',
   'privacy.section5.li6': 'Right to object: object to the processing of your data',
-  'privacy.section5.p1': 'To exercise these rights, contact us at: privacy@vecia.com',
+  'privacy.section5.p1': 'To exercise these rights, contact us at: privacy@vecia.fr',
   'privacy.section6.title': '6. Cookies',
   'privacy.section6.p1': 'We use cookies to improve your experience on our site. See our Cookie Policy for more information.',
   'privacy.section7.title': '7. Data Retention',
@@ -47,9 +47,8 @@ export const legal = {
   'privacy.section8.p1': 'We may update this privacy policy periodically. We will notify you of any significant changes by email or via a notice on our website.',
   'privacy.section9.title': '9. Contact',
   'privacy.section9.p1': 'For any questions regarding this privacy policy or our data protection practices, contact us:',
-  'privacy.contact.email': 'Email: privacy@vecia.com',
+  'privacy.contact.email': 'Email: privacy@vecia.fr',
   'privacy.contact.address': 'Address: 14 Avenue du Trays, 06590 Théoule, France',
-  'privacy.contact.phone': 'Phone: +33 1 23 45 67 89',
 
   // Terms of Service
   'terms.meta.title': 'Terms of Service - Vecia',
@@ -97,9 +96,8 @@ export const legal = {
   'terms.section10.p1': 'These terms are governed by French law. Any dispute will be subject to the exclusive jurisdiction of the courts of Nice, France.',
   'terms.section11.title': '11. Contact',
   'terms.section11.p1': 'For any questions regarding these terms and conditions, contact us:',
-  'terms.contact.email': 'Email: legal@vecia.com',
+  'terms.contact.email': 'Email: legal@vecia.fr',
   'terms.contact.address': 'Address: 14 Avenue du Trays, 06590 Théoule, France',
-  'terms.contact.phone': 'Phone: +33 1 23 45 67 89',
 
   // Cookies Policy
   'cookies.meta.title': 'Cookie Policy - Vecia',
@@ -147,7 +145,7 @@ export const legal = {
   'cookies.section7.p1': 'We may update this cookie policy to reflect changes in our practices or for other operational, legal, or regulatory reasons.',
   'cookies.section8.title': '8. Contact',
   'cookies.section8.p1': 'For any questions regarding our use of cookies, contact us:',
-  'cookies.contact.email': 'Email: privacy@vecia.com',
+  'cookies.contact.email': 'Email: privacy@vecia.fr',
   'cookies.contact.address': 'Address: 14 Avenue du Trays, 06590 Théoule, France',
 
   // AI Ethics Policy
@@ -215,7 +213,7 @@ export const legal = {
   'aiethics.section9.li3': 'Continuously improve our practices',
   'aiethics.section10.title': '10. Contact Us',
   'aiethics.section10.p1': 'For any questions or concerns regarding our AI ethics practices:',
-  'aiethics.contact.email': 'Email: ethics@vecia.com',
+  'aiethics.contact.email': 'Email: ethics@vecia.fr',
   'aiethics.contact.address': 'Address: 14 Avenue du Trays, 06590 Théoule, France',
   'aiethics.commitment': 'We are committed to maintaining the highest ethical standards in everything we do.',
 

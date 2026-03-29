@@ -398,13 +398,12 @@ export const common = {
     'footer.legal.cookies': 'Cookies',
     'footer.legal.aiethics': 'Éthique IA',
     'footer.contact.title': 'Contact',
-    'footer.contact.email': 'contact@vecia.com',
-    'footer.contact.phone': '+33 1 23 45 67 89',
+    'footer.contact.email': 'contact@vecia.fr',
     'footer.contact.copied': 'Copié !',
     'footer.trust.title': 'Certifications',
     'footer.trust.gdpr': 'Conforme GDPR',
     'footer.trust.soc2': 'SOC2 (En cours)',
     'footer.trust.iso': 'Principes ISO 27001',
-    'footer.copyright': '© 2025 Vecia. Tous droits réservés.',
+    'footer.copyright': '© 2026 Vecia. Tous droits réservés.',
 
 } as const;

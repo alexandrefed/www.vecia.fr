@@ -388,5 +388,5 @@ Answer: download Claude Desktop, upgrade to Pro, create your first Project. In 3
 
 *This article is Part 1 of a series on Claude:*
 - **Part 1**: Claude for beginners (you are here)
-- **Part 2**: Claude Code - The CLI that changes everything (coming soon)
-- **Part 3**: Claude like the pros - Boris Cherny workflow (coming soon)
+- **Part 2**: Claude Code - The CLI that changes everything
+- **Part 3**: Claude like the pros - Boris Cherny workflow

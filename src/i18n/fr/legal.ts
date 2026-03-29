@@ -38,7 +38,7 @@ export const legal = {
   'privacy.section5.li4': 'Droit à la limitation : limiter le traitement de vos données',
   'privacy.section5.li5': 'Droit à la portabilité : recevoir vos données dans un format structuré',
   'privacy.section5.li6': 'Droit d\'opposition : vous opposer au traitement de vos données',
-  'privacy.section5.p1': 'Pour exercer ces droits, contactez-nous à : privacy@vecia.com',
+  'privacy.section5.p1': 'Pour exercer ces droits, contactez-nous à : privacy@vecia.fr',
   'privacy.section6.title': '6. Cookies',
   'privacy.section6.p1': 'Nous utilisons des cookies pour améliorer votre expérience sur notre site. Consultez notre Politique de Cookies pour plus d\'informations.',
   'privacy.section7.title': '7. Conservation des données',
@@ -47,9 +47,8 @@ export const legal = {
   'privacy.section8.p1': 'Nous pouvons mettre à jour cette politique de confidentialité périodiquement. Nous vous informerons de tout changement significatif par email ou via un avis sur notre site web.',
   'privacy.section9.title': '9. Contact',
   'privacy.section9.p1': 'Pour toute question concernant cette politique de confidentialité ou nos pratiques de protection des données, contactez-nous :',
-  'privacy.contact.email': 'Email : privacy@vecia.com',
+  'privacy.contact.email': 'Email : privacy@vecia.fr',
   'privacy.contact.address': 'Adresse : 14 Avenue du Trays, 06590 Théoule, France',
-  'privacy.contact.phone': 'Téléphone : +33 1 23 45 67 89',
 
   // Terms of Service
   'terms.meta.title': 'Conditions Générales d\'Utilisation - Vecia',
@@ -97,9 +96,8 @@ export const legal = {
   'terms.section10.p1': 'Ces conditions sont régies par le droit français. Tout litige sera soumis à la compétence exclusive des tribunaux de Nice, France.',
   'terms.section11.title': '11. Contact',
   'terms.section11.p1': 'Pour toute question concernant ces conditions générales, contactez-nous :',
-  'terms.contact.email': 'Email : legal@vecia.com',
+  'terms.contact.email': 'Email : legal@vecia.fr',
   'terms.contact.address': 'Adresse : 14 Avenue du Trays, 06590 Théoule, France',
-  'terms.contact.phone': 'Téléphone : +33 1 23 45 67 89',
 
   // Cookies Policy
   'cookies.meta.title': 'Politique de Cookies - Vecia',
@@ -147,7 +145,7 @@ export const legal = {
   'cookies.section7.p1': 'Nous pouvons mettre à jour cette politique de cookies pour refléter les changements dans nos pratiques ou pour d\'autres raisons opérationnelles, légales ou réglementaires.',
   'cookies.section8.title': '8. Contact',
   'cookies.section8.p1': 'Pour toute question concernant notre utilisation des cookies, contactez-nous :',
-  'cookies.contact.email': 'Email : privacy@vecia.com',
+  'cookies.contact.email': 'Email : privacy@vecia.fr',
   'cookies.contact.address': 'Adresse : 14 Avenue du Trays, 06590 Théoule, France',
 
   // AI Ethics Policy
@@ -215,7 +213,7 @@ export const legal = {
   'aiethics.section9.li3': 'Améliorer continuellement nos pratiques',
   'aiethics.section10.title': '10. Nous contacter',
   'aiethics.section10.p1': 'Pour toute question ou préoccupation concernant nos pratiques éthiques en matière d\'IA :',
-  'aiethics.contact.email': 'Email : ethics@vecia.com',
+  'aiethics.contact.email': 'Email : ethics@vecia.fr',
   'aiethics.contact.address': 'Adresse : 14 Avenue du Trays, 06590 Théoule, France',
   'aiethics.commitment': 'Nous nous engageons à maintenir les plus hauts standards éthiques dans tout ce que nous faisons.',
 

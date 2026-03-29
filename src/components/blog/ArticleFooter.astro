@@ -16,7 +16,6 @@
  */
 
 import type { Language } from '../../i18n/ui';
-import { config } from '../../config';
 
 interface Props {
   author: string;
@@ -43,7 +42,7 @@ const authorData = {
       fr: 'L\'équipe Vecia est composée d\'experts en automatisation IA, passionnés par l\'optimisation des processus métier et l\'innovation technologique.',
       en: 'The Vecia team consists of AI automation experts, passionate about business process optimization and technological innovation.'
     },
-    photo: '/vecia_favicon.png', // Temporary placeholder - replace with team photo later
+    photo: '/vecia_favicon.png',
     linkedin: config.social.linkedin
   },
   'Alexandre Fedotov': {
@@ -104,6 +103,7 @@ const t = {
 
 const translations = t[lang];
 const blogBasePath = lang === 'fr' ? '/blog/' : '/en/blog/';
+const bookingUrl = lang === 'fr' ? '/rdv' : '/en/book';
 ---
 
 <footer class="mt-16 space-y-12">
@@ -170,9 +170,7 @@ const blogBasePath = lang === 'fr' ? '/blog/' : '/en/blog/';
       </p>
 
       <a
-        href={config.calcom.bookingUrl}
-        target="_blank"
-        rel="noopener noreferrer"
+        href={bookingUrl}
         class="inline-flex items-center justify-center px-8 py-4 bg-white text-primary font-bold rounded-lg hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-lg group"
       >
         {translations.cta.button}

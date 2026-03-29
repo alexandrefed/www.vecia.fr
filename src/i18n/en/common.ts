@@ -397,14 +397,13 @@ export const common = {
   'footer.legal.cookies': 'Cookies',
   'footer.legal.aiethics': 'AI Ethics',
   'footer.contact.title': 'Contact',
-  'footer.contact.email': 'contact@vecia.com',
-  'footer.contact.phone': '+1 (555) 123-4567',
+  'footer.contact.email': 'contact@vecia.fr',
   'footer.contact.copied': 'Copied!',
   'footer.trust.title': 'Certifications',
   'footer.trust.gdpr': 'GDPR Compliant',
   'footer.trust.soc2': 'SOC2 (In Progress)',
   'footer.trust.iso': 'ISO 27001 Principles',
-  'footer.copyright': '© 2025 Vecia. All rights reserved.',
+  'footer.copyright': '© 2026 Vecia. All rights reserved.',
 
   // ===== PHASE 8.3: STATIC PAGES =====
 

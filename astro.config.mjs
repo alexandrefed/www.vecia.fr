@@ -8,7 +8,7 @@ import node from '@astrojs/node';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://vecia.com',  // Production URL for canonical links and sitemap
+  site: 'https://vecia.fr',  // Production URL for canonical links and sitemap
   output: 'server',  // Server mode: SSR by default, static for prerender: true routes
   adapter: node({
     mode: 'standalone'  // Standalone server for VPS deployment

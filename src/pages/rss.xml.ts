@@ -52,8 +52,8 @@ export async function GET(context: APIContext) {
       <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
       <generator>Astro v${import.meta.env.ASTRO_VERSION} + @astrojs/rss</generator>
       <docs>https://www.rssboard.org/rss-specification</docs>
-      <webMaster>contact@vecia.com (Vecia Team)</webMaster>
-      <managingEditor>contact@vecia.com (Vecia Team)</managingEditor>
+      <webMaster>contact@vecia.fr (Vecia Team)</webMaster>
+      <managingEditor>contact@vecia.fr (Vecia Team)</managingEditor>
       <copyright>Copyright ${new Date().getFullYear()} Vecia. All rights reserved.</copyright>
       <ttl>60</ttl>
     `.trim(),

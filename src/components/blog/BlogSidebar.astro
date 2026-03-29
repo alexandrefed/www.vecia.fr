@@ -94,8 +94,9 @@ const popularArticles = [
       x-data="{ email: '', submitted: false, loading: false }"
       @submit.prevent="
         loading = true;
-        fetch('https://hooks.zapier.com/hooks/catch/YOUR_WEBHOOK_ID/', {
+        fetch('${config.n8n?.newsletterWebhookUrl || 'https://srvdev2025.taildb74a2.ts.net/webhook/vecia-newsletter'}', {
           method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, source: 'blog-sidebar', lang: '{lang}' })
         })
         .then(() => { submitted = true; loading = false; })
