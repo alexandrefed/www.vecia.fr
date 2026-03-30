@@ -18,7 +18,7 @@ export const config = {
   },
 
   calcom: {
-    bookingUrl: import.meta.env.PUBLIC_CAL_COM_URL || 'https://cal.vecia.fr/team/vecia/consultation',
+    bookingUrl: import.meta.env.PUBLIC_CAL_COM_URL || 'https://cal.vecia.fr/alexandre/rendez-vous',
   },
 
   social: {
