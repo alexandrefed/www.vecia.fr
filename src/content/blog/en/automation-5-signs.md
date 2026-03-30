@@ -6,7 +6,7 @@ author: "Vecia Team"
 category: "why-broken"
 tags: ["automation", "AI", "business", "productivity"]
 featured: true
-image: "/images/blog/ia-ne-marche-pas.png"
+image: "/images/blog/automatisation-5-signes.png"
 translationSlug: "automatisation-5-signes"
 linkedin:
   caption: |
