@@ -109,17 +109,20 @@ jobs:
             PUBLIC_LINKEDIN_PARTNER_ID=${{ secrets.PUBLIC_LINKEDIN_PARTNER_ID }}
             EOF
 
+            echo "🔄 Stopping existing container (any lifecycle)..."
+            # Force-stop and remove the container by name before compose takes over.
+            # docker compose down only tracks containers it launched; if the container
+            # was started manually or by a previous workflow, it silently reports
+            # "No resource found" and docker compose up then fails with a name conflict,
+            # leaving the OLD (stale) container running.
+            docker stop vecia-website 2>/dev/null || true
+            docker rm vecia-website 2>/dev/null || true
+
             echo "🔄 Deploying with Docker Compose..."
-            docker compose down || true
             docker compose up -d
 
-            echo "🧹 Clearing nginx cache..."
-            # Clear nginx proxy cache to prevent serving stale HTML with old asset hashes
-            sudo rm -rf /var/cache/nginx/* 2>/dev/null || true
-            sudo systemctl reload nginx 2>/dev/null || echo "⚠️  Nginx reload skipped (not critical)"
-
             echo "⏳ Waiting for container to be healthy..."
-            timeout 60 bash -c 'until docker inspect vecia-website --format="{{.State.Health.Status}}" 2>/dev/null | grep -q "healthy"; do sleep 2; echo -n "."; done' || {
+            timeout 90 bash -c 'until docker inspect vecia-website --format="{{.State.Health.Status}}" 2>/dev/null | grep -q "healthy"; do sleep 2; echo -n "."; done' || {
               echo ""
               echo "❌ Health check timeout!"
               echo "📋 Container status:"
@@ -160,7 +163,7 @@ jobs:
           key: ${{ steps.ssh_key.outputs.decoded_key }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            echo "🔍 Testing health endpoint..."
+            echo "🔍 Testing health endpoint (direct container)..."
             HEALTH_RESPONSE=$(curl -f -s http://127.0.0.1:4322/api/health.json)
 
             if [ $? -eq 0 ]; then
@@ -173,17 +176,29 @@ jobs:
             fi
 
             echo ""
-            echo "🔍 Testing Nginx..."
-            if curl -f -s -I https://vecia.com | grep -q "200 OK"; then
-              echo "✅ Nginx serving site successfully"
+            echo "🔍 Testing site via Traefik..."
+            HTTP_CODE=$(curl -f -s -o /dev/null -w "%{http_code}" https://vecia.fr || echo "000")
+            if [ "$HTTP_CODE" = "200" ]; then
+              echo "✅ Traefik routing site successfully (HTTP $HTTP_CODE)"
             else
-              echo "⚠️  Nginx health check inconclusive"
+              echo "⚠️  Traefik check returned HTTP $HTTP_CODE (may be OK if TLS cert is provisioning)"
+            fi
+
+            echo ""
+            echo "🔍 Testing blog page rendering..."
+            BLOG_CODE=$(curl -f -s -o /dev/null -w "%{http_code}" http://127.0.0.1:4322/blog/pourquoi-vecia || echo "000")
+            if [ "$BLOG_CODE" = "200" ]; then
+              echo "✅ Blog page renders correctly (HTTP $BLOG_CODE)"
+            else
+              echo "❌ Blog page failed with HTTP $BLOG_CODE"
+              docker compose logs --tail=50
+              exit 1
             fi
 
             echo ""
             echo "✅ All checks passed - Deployment verified!"
 
-      - name: Ensure Certbot Auto-Renewal
+      - name: Cleanup VPS Stale Artifacts
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -191,18 +206,10 @@ jobs:
           key: ${{ steps.ssh_key.outputs.decoded_key }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            echo "🔐 Checking Certbot auto-renewal configuration..."
-
-            # Check if certbot renewal cron exists
-            if ! sudo crontab -l 2>/dev/null | grep -q "certbot renew"; then
-              echo "📝 Setting up certbot auto-renewal..."
-              (sudo crontab -l 2>/dev/null; echo "0 3 * * * /usr/bin/certbot renew --quiet --deploy-hook 'nginx -s reload'") | sudo crontab -
-              echo "✅ Certbot auto-renewal configured (daily at 3am)"
-            else
-              echo "✅ Certbot auto-renewal already configured"
-            fi
-
-            # Show current cron job
-            echo ""
-            echo "📋 Current certbot cron:"
-            sudo crontab -l 2>/dev/null | grep certbot || echo "  (none found)"
+            echo "🗑️  Removing stale VPS Dockerfile (superceded by repo Dockerfile)..."
+            # The VPS had an old Dockerfile that copied pre-built artifacts instead of
+            # running npm build. This caused empty content-modules and blog crashes.
+            # The correct Dockerfile is now deployed via docker load from CI.
+            rm -f ${{ secrets.VPS_TARGET_DIR }}/Dockerfile
+            rm -f ${{ secrets.VPS_TARGET_DIR }}/.dockerignore
+            echo "✅ Stale Dockerfile removed"
