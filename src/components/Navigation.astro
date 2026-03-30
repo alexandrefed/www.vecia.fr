@@ -1,12 +1,14 @@
 ---
 import type { Language } from '../i18n/ui';
-import { config } from '../config';
 
 interface Props {
   lang: Language;
+  /** Override the alternate-language URL (e.g. correct translated blog post slug).
+   *  If omitted, falls back to the path-swap heuristic. */
+  altLangUrl?: string;
 }
 
-const { lang } = Astro.props;
+const { lang, altLangUrl: altLangUrlProp } = Astro.props;
 
 // Translation keys
 import { ui } from '../i18n/ui';
@@ -17,11 +19,15 @@ const homeUrl = lang === 'fr' ? '/' : '/en/';
 const aboutUrl = lang === 'fr' ? '/about' : '/en/about';
 const blogUrl = lang === 'fr' ? '/blog' : '/en/blog';
 const contactUrl = lang === 'fr' ? '/contact' : '/en/contact';
-// Calculate language-aware URLs that preserve current path
+const bookingUrl = lang === 'fr' ? '/rdv' : '/en/book';
+// Calculate language-aware URLs that preserve current path (fallback for non-blog pages)
 const currentPath = Astro.url.pathname;
 const basePath = currentPath.replace(/^\/en(\/|$)/, '/'); // Remove /en/ prefix
-const frUrl = basePath || '/';
-const enUrl = basePath === '/' ? '/en/' : `/en${basePath}`;
+const frUrlFallback = basePath || '/';
+const enUrlFallback = basePath === '/' ? '/en/' : `/en${basePath}`;
+// Use provided altLangUrl override (e.g. translated blog slug), or fall back to path-swap
+const frUrl = lang === 'en' && altLangUrlProp ? altLangUrlProp : frUrlFallback;
+const enUrl = lang === 'fr' && altLangUrlProp ? altLangUrlProp : enUrlFallback;
 const altLangUrl = lang === 'fr' ? enUrl : frUrl;
 const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.language.code.en'];
 ---
@@ -107,11 +113,9 @@ const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.langu
         </div>
 
         <!-- CTA Buttons -->
-        <!-- Primary Button (Outlined) -->
+        <!-- Primary Button (Outlined) - Link to internal booking page -->
         <a
-          href={config.calcom.bookingUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+          href={bookingUrl}
           data-track="book-call"
           data-location="navigation-desktop"
           class="px-5 py-2.5 text-base font-semibold border-2 border-primary/30 rounded-lg text-primary bg-white/10 hover:bg-primary hover:text-white hover:border-primary transition-all capitalize"
@@ -199,9 +203,7 @@ const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.langu
         </div>
 
         <a
-          href={config.calcom.bookingUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+          href={bookingUrl}
           data-track="book-call"
           data-location="navigation-mobile"
           class="w-full px-6 py-4 text-lg font-semibold border-2 border-primary/30 rounded-xl text-primary bg-white hover:bg-primary hover:text-white hover:border-primary transition-all text-center capitalize hover:scale-[1.02] active:scale-[0.98] mt-2"

@@ -7,6 +7,7 @@ category: "quick-wins"
 tags: ["claude", "ai", "anthropic", "tutorial", "beginner", "mcp"]
 featured: true
 image: "/images/blog/claude-guide-debutant.png"
+translationSlug: "claude-guide-debutant"
 
 linkedin:
   caption: |

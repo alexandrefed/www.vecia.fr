@@ -7,6 +7,7 @@ category: "tool-comparisons"
 tags: ["mcp", "ai-tools", "automation", "playwright", "brave-search", "context7", "notion"]
 featured: false
 image: "/images/blog/mcps-indispensables.png"
+translationSlug: "essential-mcps"
 linkedin:
   caption: |
     100+ MCPs existent pour Claude.

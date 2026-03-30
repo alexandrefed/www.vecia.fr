@@ -26,9 +26,11 @@ interface Props {
   description: string;
   lang: 'fr' | 'en';
   breadcrumbData?: { items: Array<{ name: string; url: string }> };
+  /** Correct alternate-language URL override (used by blog pages with different FR/EN slugs) */
+  altLangUrl?: string;
 }
 
-const { title, description, lang, breadcrumbData } = Astro.props;
+const { title, description, lang, breadcrumbData, altLangUrl } = Astro.props;
 
 // SEO: Canonical URL setup
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://vecia.fr');
@@ -147,7 +149,7 @@ const structuredData = {
 
   <body class="font-body text-text bg-background">
     <!-- Navigation with language switcher -->
-    <Navigation lang={lang} />
+    <Navigation lang={lang} altLangUrl={altLangUrl} />
 
     <!-- Main content area -->
     <main>

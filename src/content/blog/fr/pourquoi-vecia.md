@@ -7,6 +7,7 @@ category: "success-stories"
 tags: ["vecia", "automatisation", "histoire", "startup", "ia"]
 featured: true
 image: "/images/blog/pourquoi-vecia.png"
+translationSlug: "why-vecia"
 
 linkedin:
   caption: |

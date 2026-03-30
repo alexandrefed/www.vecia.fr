@@ -7,6 +7,7 @@ category: "industry-deep-dives"
 tags: ["mcp", "docker", "ai-tools", "automation", "claude", "centralisation"]
 featured: false
 image: "/images/blog/docker-mcp-revolution.png"
+translationSlug: "docker-mcp-revolution"
 linkedin:
   caption: |
     La révolution MCP se noie dans son propre succès.

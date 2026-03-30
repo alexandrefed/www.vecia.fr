@@ -7,6 +7,7 @@ category: "industry-deep-dives"
 tags: ["agentic-ai", "enterprise", "digital-transformation", "strategies", "roi"]
 featured: false
 image: "/images/blog/ia-agentique-entreprise-2025.png"
+translationSlug: "ia-agentique-entreprise-strategies-2025"
 
 linkedin:
   caption: |

@@ -7,6 +7,7 @@ category: "quick-wins"
 tags: ["mcp", "ai-tools", "automation", "claude", "tutorial"]
 featured: false
 image: "/images/blog/quest-ce-quun-mcp.png"
+translationSlug: "quest-ce-quun-mcp"
 linkedin:
   caption: |
     Your AI producing generic garbage?

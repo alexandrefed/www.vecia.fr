@@ -6,6 +6,7 @@ author: "Équipe Vecia"
 category: "why-broken"
 tags: ["automatisation", "IA", "business", "productivité"]
 featured: true
+translationSlug: "automation-5-signs"
 linkedin:
   caption: |
     🚀 Votre entreprise est-elle prête pour l'automatisation IA?

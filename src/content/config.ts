@@ -43,6 +43,7 @@ const blog = defineCollection({
     // Optional fields
     featured: z.boolean().optional(),      // Featured on homepage
     image: z.string().optional(),          // Cover image path
+    translationSlug: z.string().optional(), // Slug of the counterpart post in the other language
 
     // LinkedIn metadata (for social sharing)
     linkedin: z.object({

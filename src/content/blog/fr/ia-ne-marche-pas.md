@@ -7,6 +7,7 @@ category: "why-broken"
 tags: ["ia", "prompt-engineering", "deep-search", "productivité"]
 featured: false
 image: "/images/blog/ia-ne-marche-pas.png"
+translationSlug: "why-ai-fails"
 
 linkedin:
   caption: |

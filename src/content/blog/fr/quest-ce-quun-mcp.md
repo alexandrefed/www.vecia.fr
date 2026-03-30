@@ -7,6 +7,7 @@ category: "quick-wins"
 tags: ["mcp", "ai-tools", "automation", "claude", "tutorial"]
 featured: false
 image: "/images/blog/quest-ce-quun-mcp.png"
+translationSlug: "what-is-mcp"
 linkedin:
   caption: |
     Votre IA produit du générique ?
