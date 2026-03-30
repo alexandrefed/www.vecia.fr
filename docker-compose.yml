@@ -9,10 +9,19 @@ services:
 
     restart: unless-stopped
 
-    # Connect to supabase network for direct container-to-container communication
+    # Connect to traefik and supabase networks
     networks:
-      - default
+      - traefik_proxy
       - supabase_default
+
+    # Traefik reverse proxy labels
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.http.routers.website.rule=Host(`vecia.fr`) || Host(`www.vecia.fr`)"
+      - "traefik.http.routers.website.entrypoints=websecure"
+      - "traefik.http.routers.website.tls.certresolver=le"
+      - "traefik.http.services.website.loadbalancer.server.port=4322"
 
     # Environment variables (runtime)
     environment:
@@ -26,9 +35,9 @@ services:
       - SUPABASE_URL=${SUPABASE_URL:-http://supabase-kong:8000}
       - SUPABASE_ANON_KEY=${PUBLIC_SUPABASE_ANON_KEY}
 
-    # Expose to localhost only (nginx reverse proxy)
-    ports:
-      - "127.0.0.1:4322:4322"
+    # Expose port (Traefik handles SSL termination)
+    expose:
+      - "4322"
 
     # Health check
     healthcheck:
@@ -57,7 +66,9 @@ services:
     security_opt:
       - no-new-privileges:true
 
-# Define networks - supabase_default is external (created by Supabase stack)
+# Define networks
 networks:
+  traefik_proxy:
+    external: true
   supabase_default:
     external: true
