@@ -1126,6 +1126,301 @@ Alpine.data('newsletterPopup', () => ({
 }));
 
 // =============================================================================
+// BOOKING FORM COMPONENT
+// =============================================================================
+// Multi-step booking form for scheduling consultations (replaces Cal.com)
+// Step 1: Select date | Step 2: Select time | Step 3: Contact details
+
+// n8n booking webhook URL
+const N8N_BOOKING_WEBHOOK = (window as any).__VECIA_CONFIG__?.n8nBookingWebhook
+  || 'https://srvdev2025.taildb74a2.ts.net/webhook/vecia-booking';
+
+Alpine.data('bookingForm', () => ({
+  // Current step (1-4, where 4 is success)
+  currentStep: 1,
+
+  // Form data
+  formData: {
+    date: '',           // ISO date string (YYYY-MM-DD)
+    time: '',           // Time slot (e.g., "09:00")
+    name: '',
+    email: '',
+    company: '',
+    phone: '',
+    message: ''
+  },
+
+  // UI state
+  loading: false,
+  success: false,
+  error: false,
+  errorMessage: '',
+
+  // Available dates (next 30 weekdays)
+  availableDates: [] as Array<{ date: string; label: string; dayName: string; dayNumber: string; monthName: string }>,
+
+  // Available time slots (9h-17h Europe/Paris)
+  availableSlots: [
+    { time: '09:00', label: '09:00' },
+    { time: '10:00', label: '10:00' },
+    { time: '11:00', label: '11:00' },
+    { time: '14:00', label: '14:00' },
+    { time: '15:00', label: '15:00' },
+    { time: '16:00', label: '16:00' },
+    { time: '17:00', label: '17:00' },
+  ],
+
+  // Blocked slots (will be populated from API response)
+  blockedSlots: [] as string[],
+
+  init() {
+    this.generateAvailableDates();
+  },
+
+  // Generate next 30 weekdays (no weekends)
+  generateAvailableDates() {
+    const dates: typeof this.availableDates = [];
+    const today = new Date();
+    const lang = window.location.pathname.startsWith('/en') ? 'en' : 'fr';
+
+    // Start from tomorrow
+    let currentDate = new Date(today);
+    currentDate.setDate(currentDate.getDate() + 1);
+
+    const dayNames = lang === 'fr'
+      ? ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
+      : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    const monthNames = lang === 'fr'
+      ? ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc']
+      : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    while (dates.length < 30) {
+      const dayOfWeek = currentDate.getDay();
+
+      // Skip weekends (0 = Sunday, 6 = Saturday)
+      if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+        const dateStr = currentDate.toISOString().split('T')[0];
+        dates.push({
+          date: dateStr,
+          label: `${dayNames[dayOfWeek]} ${currentDate.getDate()} ${monthNames[currentDate.getMonth()]}`,
+          dayName: dayNames[dayOfWeek],
+          dayNumber: currentDate.getDate().toString(),
+          monthName: monthNames[currentDate.getMonth()]
+        });
+      }
+
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    this.availableDates = dates;
+  },
+
+  // Select a date and move to time selection
+  selectDate(date: string) {
+    this.formData.date = date;
+    this.formData.time = ''; // Reset time when date changes
+    this.blockedSlots = []; // Will be populated by API in real implementation
+    this.currentStep = 2;
+  },
+
+  // Select a time slot and move to contact form
+  selectTime(time: string) {
+    this.formData.time = time;
+    this.currentStep = 3;
+  },
+
+  // Check if a slot is blocked
+  isSlotBlocked(time: string): boolean {
+    return this.blockedSlots.includes(time);
+  },
+
+  // Get formatted datetime for display
+  getFormattedDateTime(): string {
+    if (!this.formData.date || !this.formData.time) return '';
+
+    const selectedDate = this.availableDates.find(d => d.date === this.formData.date);
+    if (!selectedDate) return '';
+
+    return `${selectedDate.label} ${this.formData.time}`;
+  },
+
+  // Navigate back
+  goBack() {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+    }
+  },
+
+  // Submit the booking form
+  async submitForm() {
+    this.loading = true;
+    this.error = false;
+    this.errorMessage = '';
+
+    const lang = window.location.pathname.startsWith('/en') ? 'en' : 'fr';
+
+    try {
+      // Rate limiting check
+      const rateLimit = checkRateLimit('vecia-booking-submissions');
+      if (!rateLimit.allowed) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? `Limite atteinte. Réessayez dans ${rateLimit.message.match(/\d+/)?.[0]} minute(s).`
+          : rateLimit.message;
+        this.loading = false;
+        return;
+      }
+
+      // Input sanitization
+      const sanitizedName = sanitizeInput(this.formData.name);
+      const sanitizedEmail = sanitizeInput(this.formData.email);
+      const sanitizedCompany = sanitizeInput(this.formData.company);
+      const sanitizedPhone = sanitizeInput(this.formData.phone);
+      const sanitizedMessage = this.formData.message.trim().slice(0, 2000);
+
+      // Email validation
+      if (!isValidEmail(sanitizedEmail)) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? 'Veuillez saisir une adresse email valide.'
+          : 'Please enter a valid email address.';
+        this.loading = false;
+        return;
+      }
+
+      // Name validation
+      if (sanitizedName.length < 2 || sanitizedName.length > 100) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? 'Le nom doit contenir entre 2 et 100 caractères.'
+          : 'Name must be between 2 and 100 characters.';
+        this.loading = false;
+        return;
+      }
+
+      // Company validation (required)
+      if (sanitizedCompany.length < 2) {
+        this.error = true;
+        this.errorMessage = lang === 'fr'
+          ? 'Veuillez indiquer le nom de votre entreprise.'
+          : 'Please enter your company name.';
+        this.loading = false;
+        return;
+      }
+
+      // Generate unique event ID for tracking
+      const eventId = generateEventId();
+
+      // Combine date and time into ISO datetime (Europe/Paris timezone)
+      const requestedDatetime = `${this.formData.date}T${this.formData.time}:00+01:00`;
+
+      // Prepare booking data
+      const bookingData = {
+        timestamp: new Date().toISOString(),
+        event_id: eventId,
+        formType: 'booking',
+
+        // Meeting details
+        requested_datetime: requestedDatetime,
+        timezone: 'Europe/Paris',
+
+        // Prospect details
+        prospect_name: sanitizedName,
+        prospect_email: sanitizedEmail,
+        prospect_company: sanitizedCompany,
+        prospect_phone: sanitizedPhone || null,
+        prospect_message: sanitizedMessage || null,
+
+        // Tracking
+        language: lang,
+        source_page: window.location.href,
+        utm_source: new URLSearchParams(window.location.search).get('utm_source') || '',
+        utm_medium: new URLSearchParams(window.location.search).get('utm_medium') || '',
+        utm_campaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
+        user_agent: navigator.userAgent,
+      };
+
+      console.log('[Booking Form] Submitting booking:', bookingData);
+
+      // Submit to n8n webhook
+      const response = await fetch(N8N_BOOKING_WEBHOOK, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bookingData)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Booking submission failed');
+      }
+
+      const result = await response.json();
+      console.log('[Booking Form] Success:', result);
+
+      // Success
+      this.success = true;
+      this.loading = false;
+      this.currentStep = 4; // Show success step
+
+      // Track conversion in Meta Pixel
+      if (typeof window.fbq !== 'undefined') {
+        window.fbq('track', 'Schedule', {
+          content_name: 'Consultation Booking',
+          content_category: 'Booking',
+          event_id: eventId,
+        });
+        console.log('[Meta Pixel] Booking tracked');
+      }
+
+      // Track conversion in LinkedIn
+      if (typeof window.lintrk !== 'undefined') {
+        window.lintrk('track', { conversion_id: 'consultation_booked' });
+        console.log('[LinkedIn] Booking conversion tracked');
+      }
+
+      // Track in Plausible
+      if (typeof window.plausible !== 'undefined') {
+        window.plausible('Consultation Booked', {
+          props: {
+            date: this.formData.date,
+            time: this.formData.time,
+            lang
+          }
+        });
+      }
+
+    } catch (err) {
+      console.error('[Booking Form] Error:', err);
+      this.error = true;
+      this.errorMessage = lang === 'fr'
+        ? 'Une erreur s\'est produite. Veuillez réessayer ou nous contacter directement.'
+        : 'An error occurred. Please try again or contact us directly.';
+      this.loading = false;
+    }
+  },
+
+  // Reset form to start over
+  resetForm() {
+    this.currentStep = 1;
+    this.formData = {
+      date: '',
+      time: '',
+      name: '',
+      email: '',
+      company: '',
+      phone: '',
+      message: ''
+    };
+    this.success = false;
+    this.error = false;
+    this.errorMessage = '';
+  }
+}));
+
+// =============================================================================
 // BUSINESS CASES COMPONENT
 // =============================================================================
 // Moved from inline x-data due to Astro 5.16.x multi-line attribute bug

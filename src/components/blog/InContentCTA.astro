@@ -11,7 +11,6 @@
  */
 
 import type { Language } from '../../i18n/ui';
-import { config } from '../../config';
 
 interface Props {
   lang: Language;
@@ -20,6 +19,9 @@ interface Props {
 
 const { lang, variant = 'audit' } = Astro.props;
 
+// Booking URL based on language (internal booking page)
+const bookingUrl = lang === 'fr' ? '/rdv' : '/en/book';
+
 // CTA content variations
 const ctaContent = {
   audit: {
@@ -27,14 +29,14 @@ const ctaContent = {
       title: '🚀 Prêt à Passer à l\'Action ?',
       description: 'Obtenez votre audit IA gratuit et découvrez comment économiser 20+ heures par semaine avec l\'automatisation.',
       buttonText: 'Obtenir Mon Audit Gratuit',
-      buttonUrl: config.calcom.bookingUrl,
+      buttonUrl: bookingUrl,
       note: '30 minutes • 100% gratuit • Sans engagement'
     },
     en: {
       title: '🚀 Ready to Take Action?',
       description: 'Get your free AI audit and discover how to save 20+ hours per week with automation.',
       buttonText: 'Get My Free Audit',
-      buttonUrl: config.calcom.bookingUrl,
+      buttonUrl: bookingUrl,
       note: '30 minutes • 100% free • No commitment'
     }
   },
@@ -43,14 +45,14 @@ const ctaContent = {
       title: '💡 Besoin d\'Aide Personnalisée ?',
       description: 'Réservez une consultation gratuite pour discuter de vos défis spécifiques et découvrir les meilleures solutions d\'automatisation pour votre entreprise.',
       buttonText: 'Réserver une Consultation',
-      buttonUrl: config.calcom.bookingUrl,
+      buttonUrl: bookingUrl,
       note: '30 minutes • Expert dédié • Solutions sur mesure'
     },
     en: {
       title: '💡 Need Personalized Help?',
       description: 'Book a free consultation to discuss your specific challenges and discover the best automation solutions for your business.',
       buttonText: 'Book a Consultation',
-      buttonUrl: config.calcom.bookingUrl,
+      buttonUrl: bookingUrl,
       note: '30 minutes • Dedicated expert • Custom solutions'
     }
   },
@@ -105,8 +107,6 @@ const content = ctaContent[variant][lang];
       <!-- CTA Button -->
       <a
         href={content.buttonUrl}
-        target={variant !== 'newsletter' ? '_blank' : undefined}
-        rel={variant !== 'newsletter' ? 'noopener noreferrer' : undefined}
         class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-200 group"
       >
         {content.buttonText}

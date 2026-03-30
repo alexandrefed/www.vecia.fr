@@ -10,7 +10,7 @@
  * - Centered layout with ample whitespace
  *
  * Links:
- * - Primary button: Cal.com booking page
+ * - Primary button: Internal booking page (/rdv or /en/book)
  * - Secondary button: Blog section
  */
 
@@ -20,10 +20,12 @@ interface Props {
 
 const { lang } = Astro.props;
 
-// Import translations and config
+// Import translations
 import { useTranslations } from '../i18n/utils';
-import { config } from '../config';
 const t = useTranslations(lang);
+
+// Booking URL based on language
+const bookingUrl = lang === 'fr' ? '/rdv' : '/en/book';
 ---
 
 <section class="final-cta relative overflow-hidden py-20 bg-gradient-to-r from-secondary via-accent2 to-accent1">
@@ -42,9 +44,7 @@ const t = useTranslations(lang);
     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
       <!-- Primary CTA Button -->
       <a
-        href={config.calcom.bookingUrl}
-        target="_blank"
-        rel="noopener noreferrer"
+        href={bookingUrl}
         data-track="book-call"
         data-location="final-cta"
         class="inline-block px-8 py-4 bg-white text-primary font-bold text-lg rounded-full hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 min-w-[240px]"

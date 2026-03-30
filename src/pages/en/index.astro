@@ -28,9 +28,9 @@ import SavingsCalculator from '../../components/SavingsCalculator.astro';
 import LeadCaptureForm from '../../components/LeadCaptureForm.astro';
 import FinalCTA from '../../components/FinalCTA.astro';
 import { useTranslations } from '../../i18n/utils';
-import { config } from '../../config';
 
 const t = useTranslations('en');
+const bookingUrl = '/en/book';
 ---
 
 <BaseLayout
@@ -47,7 +47,7 @@ const t = useTranslations('en');
     differentiator={t('hero.differentiator')}
     cta1Text={t('hero.cta.primary')}
     cta2Text={t('hero.cta.secondary')}
-    cta1Href={config.calcom.bookingUrl}
+    cta1Href={bookingUrl}
     cta2Href="#audit"
     lang="en"
   />
