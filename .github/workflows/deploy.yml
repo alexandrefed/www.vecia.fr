@@ -146,7 +146,7 @@ jobs:
             echo "=========================================="
             echo "📁 Deployed to: ${{ secrets.VPS_TARGET_DIR }}"
             echo "🐳 Container: vecia-website"
-            echo "🌐 Website: https://vecia.com"
+            echo "🌐 Website: https://vecia.fr"
             echo "📅 Deployed at: $(date)"
             echo ""
             echo "📊 Container status:"
@@ -163,8 +163,14 @@ jobs:
           key: ${{ steps.ssh_key.outputs.decoded_key }}
           port: ${{ secrets.VPS_PORT }}
           script: |
+            # Port 4322 is only exposed to the Docker network, not to the host.
+            # Use the container's internal IP for direct verification.
+            CONTAINER_IP=$(docker inspect vecia-website --format '{{(index .NetworkSettings.Networks "traefik_proxy").IPAddress}}')
+            echo "Container IP on traefik_proxy: $CONTAINER_IP"
+
+            echo ""
             echo "🔍 Testing health endpoint (direct container)..."
-            HEALTH_RESPONSE=$(curl -f -s http://127.0.0.1:4322/api/health.json)
+            HEALTH_RESPONSE=$(curl -f -s "http://${CONTAINER_IP}:4322/api/health.json")
 
             if [ $? -eq 0 ]; then
               echo "✅ Health check passed"
@@ -176,23 +182,23 @@ jobs:
             fi
 
             echo ""
-            echo "🔍 Testing site via Traefik..."
-            HTTP_CODE=$(curl -f -s -o /dev/null -w "%{http_code}" https://vecia.fr || echo "000")
-            if [ "$HTTP_CODE" = "200" ]; then
-              echo "✅ Traefik routing site successfully (HTTP $HTTP_CODE)"
-            else
-              echo "⚠️  Traefik check returned HTTP $HTTP_CODE (may be OK if TLS cert is provisioning)"
-            fi
-
-            echo ""
             echo "🔍 Testing blog page rendering..."
-            BLOG_CODE=$(curl -f -s -o /dev/null -w "%{http_code}" http://127.0.0.1:4322/blog/pourquoi-vecia || echo "000")
+            BLOG_CODE=$(curl -f -s -o /dev/null -w "%{http_code}" "http://${CONTAINER_IP}:4322/blog/pourquoi-vecia" || echo "000")
             if [ "$BLOG_CODE" = "200" ]; then
               echo "✅ Blog page renders correctly (HTTP $BLOG_CODE)"
             else
               echo "❌ Blog page failed with HTTP $BLOG_CODE"
               docker compose logs --tail=50
               exit 1
+            fi
+
+            echo ""
+            echo "🔍 Testing site via Traefik (non-blocking)..."
+            HTTP_CODE=$(curl -f -s -o /dev/null -w "%{http_code}" https://vecia.fr || echo "000")
+            if [ "$HTTP_CODE" = "200" ]; then
+              echo "✅ Traefik routing site successfully (HTTP $HTTP_CODE)"
+            else
+              echo "⚠️  Traefik returned HTTP $HTTP_CODE (may be OK if TLS cert is still provisioning)"
             fi
 
             echo ""
