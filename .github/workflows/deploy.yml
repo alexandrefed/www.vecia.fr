@@ -100,7 +100,7 @@ jobs:
             # PUBLIC_SUPABASE_URL: External IP for client-side (browser) requests
             # SUPABASE_URL: Internal Docker network for server-side (SSR) requests
             cat > .env << EOF
-            PUBLIC_SUPABASE_URL=http://85.25.172.47:8100
+            PUBLIC_SUPABASE_URL=http://85.25.172.125:8100
             PUBLIC_SUPABASE_ANON_KEY=${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
             SUPABASE_URL=http://supabase-kong:8000
             SUPABASE_ANON_KEY=${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
