@@ -165,8 +165,8 @@ jobs:
           script: |
             # Port 4322 is only exposed to the Docker network, not to the host.
             # Use the container's internal IP for direct verification.
-            CONTAINER_IP=$(docker inspect vecia-website --format '{{(index .NetworkSettings.Networks "traefik_proxy").IPAddress}}')
-            echo "Container IP on traefik_proxy: $CONTAINER_IP"
+            CONTAINER_IP=$(docker inspect vecia-website --format '{{(index .NetworkSettings.Networks "traefik-public").IPAddress}}')
+            echo "Container IP on traefik-public: $CONTAINER_IP"
 
             echo ""
             echo "🔍 Testing health endpoint (direct container)..."
