@@ -165,8 +165,8 @@ jobs:
           script: |
             # Port 4322 is only exposed to the Docker network, not to the host.
             # Use the container's internal IP for direct verification.
-            CONTAINER_IP=$(docker inspect vecia-website --format '{{(index .NetworkSettings.Networks "traefik-public").IPAddress}}')
-            echo "Container IP on traefik-public: $CONTAINER_IP"
+            CONTAINER_IP=$(docker inspect vecia-website --format '{{(index .NetworkSettings.Networks "caddy-public").IPAddress}}')
+            echo "Container IP on caddy-public: $CONTAINER_IP"
 
             echo ""
             echo "🔍 Testing health endpoint (direct container)..."
@@ -193,12 +193,12 @@ jobs:
             fi
 
             echo ""
-            echo "🔍 Testing site via Traefik (non-blocking)..."
+            echo "🔍 Testing site via Caddy (non-blocking)..."
             HTTP_CODE=$(curl -f -s -o /dev/null -w "%{http_code}" https://vecia.fr || echo "000")
             if [ "$HTTP_CODE" = "200" ]; then
-              echo "✅ Traefik routing site successfully (HTTP $HTTP_CODE)"
+              echo "✅ Caddy routing site successfully (HTTP $HTTP_CODE)"
             else
-              echo "⚠️  Traefik returned HTTP $HTTP_CODE (may be OK if TLS cert is still provisioning)"
+              echo "⚠️  Caddy returned HTTP $HTTP_CODE (may be OK if TLS cert is still provisioning)"
             fi
 
             echo ""
