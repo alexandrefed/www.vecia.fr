@@ -1,5 +1,5 @@
 # Docker Compose configuration for Vecia Astro SSR application
-# Production deployment configuration
+# Production deployment on new VPS with Caddy reverse proxy
 
 services:
   vecia-website:
@@ -9,20 +9,9 @@ services:
 
     restart: unless-stopped
 
-    # Connect to traefik and supabase networks
+    # Connect to caddy network (Caddy handles routing via Caddyfile)
     networks:
-      - traefik-public
-      - supabase_default
-
-    # Traefik reverse proxy labels
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=traefik-public"
-      - "traefik.http.routers.website.rule=Host(`vecia.fr`) || Host(`www.vecia.fr`)"
-      - "traefik.http.routers.website.entrypoints=websecure"
-      - "traefik.http.routers.website.tls=true"
-      - "traefik.http.routers.website.tls.certresolver=letsencrypt"
-      - "traefik.http.services.website.loadbalancer.server.port=4322"
+      - caddy-public
 
     # Environment variables (runtime)
     environment:
@@ -36,7 +25,7 @@ services:
       - SUPABASE_URL=${SUPABASE_URL:-http://supabase-kong:8000}
       - SUPABASE_ANON_KEY=${PUBLIC_SUPABASE_ANON_KEY}
 
-    # Expose port (Traefik handles SSL termination)
+    # Expose port (Caddy handles SSL termination)
     expose:
       - "4322"
 
@@ -69,7 +58,5 @@ services:
 
 # Define networks
 networks:
-  traefik-public:
-    external: true
-  supabase_default:
+  caddy-public:
     external: true
