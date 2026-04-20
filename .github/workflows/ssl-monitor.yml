@@ -57,7 +57,7 @@ jobs:
 
       - name: Checkout for issue creation
         if: failure()
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Create Issue if Expiring Soon
         if: failure()
