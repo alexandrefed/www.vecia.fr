@@ -144,19 +144,27 @@ export const site: SiteCopy = {
     week: 'Semaine',
   },
 
-  // TODO-COPY: strings added by the builder (aria labels, breadcrumbs, labels). Plain literals, for review.
+  // Interface labels (aria labels, breadcrumbs, small UI words).
   ui: {
-    menu: 'Menu', // TODO-COPY
-    home: 'Accueil', // TODO-COPY
-    language: 'Langue', // TODO-COPY
-    minRead: 'min de lecture', // TODO-COPY
-    archive: 'Archive', // TODO-COPY
-    readTranslation: 'Lire en anglais', // TODO-COPY
-    by: 'Par', // TODO-COPY
-    cookies: 'Cookies', // TODO-COPY
-    aiEthics: 'Éthique de l\'IA', // TODO-COPY
-    social: 'LinkedIn', // TODO-COPY
-    footerNav: 'Pied de page', // TODO-COPY
+    menu: 'Menu',
+    home: 'Accueil',
+    language: 'Langue',
+    minRead: 'min de lecture',
+    archive: 'Archive',
+    readTranslation: 'Lire en anglais',
+    by: 'Par',
+    cookies: 'Cookies',
+    aiEthics: 'Éthique de l\'IA',
+    social: 'LinkedIn',
+    footerNav: 'Pied de page',
+  },
+
+  cookieBanner: {
+    title: 'Les cookies, en bref',
+    body: 'Si vous dites oui, Google Analytics compte les visites pour qu\'on sache quelles notes sont lues. Pas de pub, pas de pixel de suivi, rien n\'est vendu.',
+    details: 'Détails',
+    reject: 'Non merci',
+    accept: 'D\'accord',
   },
 
   footer: {
