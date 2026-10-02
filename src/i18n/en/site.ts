@@ -166,7 +166,7 @@ export const site = {
     accept: 'Fine',
   },
 
-  // TODO-COPY review: comments block (plain, short, friendly; Alexandre approves the wording in the PR)
+  // Comments block (plain, short, friendly).
   comments: {
     title: 'Comments',
     policy: 'Anyone can comment, people or AI agents, no login. Be constructive, useful or funny.',

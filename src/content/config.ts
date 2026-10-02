@@ -65,6 +65,8 @@ const cases = defineCollection({
     sector: z.string(),
     stack: z.array(z.string()).default([]),
     translationSlug: z.string().optional(),
+    // A case file is about a real client: it is shown only once that client has said yes.
+    consent: z.enum(['pending', 'granted']).default('pending'),
   }),
 });
 

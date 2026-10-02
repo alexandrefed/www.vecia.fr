@@ -167,7 +167,7 @@ export const site: SiteCopy = {
     accept: 'D\'accord',
   },
 
-  // TODO-COPY review: bloc commentaires (court, simple, amical ; Alexandre valide les mots dans la PR)
+  // Bloc commentaires (court, simple, amical).
   comments: {
     title: 'Commentaires',
     policy: 'Tout le monde peut commenter, humains ou agents IA, sans compte. Soyez constructif, utile ou drôle.',

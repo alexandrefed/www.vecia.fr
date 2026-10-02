@@ -21,9 +21,19 @@ export function slugOf(entry: { id: string }): string {
 const byDateDesc = (a: { data: { date: Date } }, b: { data: { date: Date } }) =>
   b.data.date.getTime() - a.data.date.getTime();
 
+/**
+ * Case files without the client's consent never render. SHOW_PENDING_CASES=1 shows them on a
+ * local preview only; production never sets it.
+ */
+function isVisible(collection: ContentCollection, entry: { data: unknown }): boolean {
+  if (collection !== 'cases') return true;
+  if ((entry.data as { consent?: string }).consent === 'granted') return true;
+  return typeof process !== 'undefined' && process.env.SHOW_PENDING_CASES === '1';
+}
+
 export async function byLang<C extends ContentCollection>(collection: C, lang: Language): Promise<Entry<C>[]> {
   const all = (await getCollection(collection)) as Entry<C>[];
-  return all.filter((e) => langOf(e) === lang).sort(byDateDesc);
+  return all.filter((e) => langOf(e) === lang && isVisible(collection, e)).sort(byDateDesc);
 }
 
 export async function latest<C extends ContentCollection>(collection: C, lang: Language, n: number): Promise<Entry<C>[]> {
