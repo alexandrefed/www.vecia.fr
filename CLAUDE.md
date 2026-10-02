@@ -1,7 +1,6 @@
 # Vecia Website (Astro) — vecia.fr
 
-Astro-based site for Vecia (vecia-website-v5, Astro 4.x+). Server-first architecture,
-static generation by default, islands for interactivity.
+Astro 5 site for Vecia (vecia-website-v5), server-rendered through @astrojs/node (`output: 'server'`). English is the default language at `/`, French lives under `/fr/`. The site is the front door of a small crew; each person also has a page on their own subdomain (alexandre.vecia.fr) served by this same app.
 
 ## Area
 Vecia
@@ -10,6 +9,9 @@ Vecia
 
 | Task | Go to | Read |
 |---|---|---|
+| What the site is now, collections, host routing | `CONTEXT.md` | full file |
+| Site copy (all public prose, EN + FR) | `src/i18n/en/site.ts` + `src/i18n/fr/site.ts` | both; same shape (`SiteCopy`) |
+| People / subdomains | `src/content/people/` + `src/middleware.ts` | the person file, then the `hostRouter` in the middleware |
 | Astro framework reference | `docs/ASTRO_REFERENCE.md` | full file |
 | Quick start / common commands | `docs/astro-quick-start.md` | — |
 | Integrations (UI frameworks, adapters) | `docs/astro-integrations.md` | — |
