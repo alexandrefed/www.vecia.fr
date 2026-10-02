@@ -7,8 +7,6 @@
  */
 
 import GoogleAnalytics from '../components/GoogleAnalytics.astro';
-import MetaPixel from '../components/MetaPixel.astro';
-import LinkedInInsightTag from '../components/LinkedInInsightTag.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -53,8 +51,6 @@ const ogImage = new URL('/vecia_logo_long_contour.png', Astro.site || 'https://v
 
     <!-- Analytics -->
     <GoogleAnalytics />
-    <MetaPixel />
-    <LinkedInInsightTag />
 
     <slot name="head" />
   </head>

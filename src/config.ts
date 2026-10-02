@@ -11,10 +11,10 @@
 
 export const config = {
   site: {
-    title: 'Vecia - AI Automation Agency',
-    description: 'Implémentez l\'IA, Économisez Plus de 20h par Semaine, et Accélerez votre croissance',
+    title: 'Vecia',
+    description: 'Field notes on what AI is actually good and bad at, case files of real deployments told from the moment they broke, and a weekly log of the workbench.',
     url: import.meta.env.PUBLIC_SITE_URL || 'https://vecia.fr',
-    author: 'Vecia Team',
+    author: 'Alexandre Fedotov',
   },
 
   calcom: {
@@ -29,15 +29,4 @@ export const config = {
     email: 'contact@vecia.fr',
   },
 
-  // Legacy Google Sheets webhook (backup)
-  googleSheets: {
-    webhookUrl: 'https://script.google.com/macros/s/AKfycby_23XSfxU0NBNgfbufOqhDa6ywjs34tjXp1-kEYLtNMauZiA2B64kzXUAKFKeRqB-VXA/exec',
-  },
-
-  // n8n webhook endpoints (primary - connects to Odoo CRM via Tailscale Funnel)
-  n8n: {
-    leadWebhookUrl: import.meta.env.PUBLIC_N8N_LEAD_WEBHOOK || 'https://srvdev2025.taildb74a2.ts.net/webhook/vecia-lead',
-    newsletterWebhookUrl: import.meta.env.PUBLIC_N8N_NEWSLETTER_WEBHOOK || 'https://srvdev2025.taildb74a2.ts.net/webhook/vecia-newsletter',
-    bookingWebhookUrl: import.meta.env.PUBLIC_N8N_BOOKING_WEBHOOK || 'https://srvdev2025.taildb74a2.ts.net/webhook/vecia-booking',
-  },
 } as const;
