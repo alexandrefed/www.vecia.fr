@@ -15,7 +15,7 @@ vecia.fr is the front door of a small crew that builds AI systems and shows the 
 | Redirect map for retired pages | `redirects` in `astro.config.mjs`; old blog URLs in `legacyRedirects` in `src/middleware.ts` |
 | Person URLs (subdomain in production, `/people/<name>/` in dev) | `src/lib/people.ts` |
 | Feeds | `src/pages/rss.xml.ts`, `feed.json.ts`, `llms.txt.ts` (items from `src/lib/feed.ts`) |
-| Deploy | `Dockerfile` (Node 24), `.github/workflows/deploy.yml` |
+| Deploy | `Dockerfile` (Node 24), `.github/workflows/deploy.yml` (secrets from Infisical `/vecia-website` via `infisical-run`, not GitHub; comments DB on volume `vecia-comments:/data`) |
 
 ## Collections
 
@@ -30,3 +30,7 @@ vecia.fr is the front door of a small crew that builds AI systems and shows the 
 ## Plan and tasks
 
 Plan: `~/.claude/plans/hey-i-have-abandoned-linear-tulip.md`. Tasks: f912599f, d36e8d86, 31164267, 4d9145da.
+
+## Retired 2026-10-02
+
+Supabase comments (`src/lib/supabase*.ts`, `@supabase/supabase-js`, `bad-words`, the `.env` heredoc in `deploy.yml`, Supabase env in `docker-compose.yml`) were parked since the crew-site rewrite; replaced by comments v2 (commit `3b05cd2`, task 31164267). Evidence on the built server: `npm test` -> 15 passed; `npm run build` -> Complete; `npx astro check` -> 0 errors; honeypot 200 with nothing stored, <4 s post 400, 4th post in 10 min 429, bad moderate sig 403, good sig publishes and rows survive a restart. Not verified: real ntfy delivery, real Haiku calls (no API key in the test run). Mode is `shadow` until Alexandre sets `MODERATION_MODE=live`.
