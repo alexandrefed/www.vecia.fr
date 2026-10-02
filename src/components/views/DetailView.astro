@@ -3,11 +3,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogHeader from '../blog/BlogHeader.astro';
 import ShareButtons from '../blog/ShareButtons.astro';
 import ArticleFooter from '../blog/ArticleFooter.astro';
+import Comments from '../Comments.astro';
 import { render, getCollection } from 'astro:content';
 import type { Language } from '../../i18n/ui';
 import { site as siteEn } from '../../i18n/en/site';
 import { site as siteFr } from '../../i18n/fr/site';
 import { getRelativeLocaleUrl } from '../../i18n/utils';
+import { targetFor } from '../../lib/comments-core';
 import { slugOf, translationOf, readingTime, formatDate, sectionCollection, type Section } from '../../lib/content';
 
 interface Props {
@@ -28,6 +30,8 @@ const authorName = people.find((p) => p.data.subdomain === d.author)?.data.name 
 const other = await translationOf(collection, entry);
 const otherLang: Language = lang === 'fr' ? 'en' : 'fr';
 const translationUrl = other ? getRelativeLocaleUrl(otherLang, `${section}/${slugOf(other)}`) : undefined;
+
+const commentTarget = targetFor(section, lang, slugOf(entry), d.translationSlug);
 
 const description = d.description ?? d.title;
 const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
@@ -133,6 +137,8 @@ const fleet = section === 'workshop' && d.fleet ? Object.entries(d.fleet) : [];
 
       <ShareButtons url={pageUrl} title={d.title} lang={lang} />
       <ArticleFooter author={d.author} lang={lang} translationUrl={translationUrl} />
+
+      <Comments lang={lang} target={commentTarget} />
     </div>
   </article>
 </BaseLayout>

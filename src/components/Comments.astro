@@ -1,0 +1,183 @@
+---
+/**
+ * Comments: threaded list (one level of replies) and a form. Alpine, no login.
+ * The form carries a server-signed token (ts + sig) that the API checks for age; see src/lib/comments-core.ts.
+ * Team badge: a key kept in localStorage['vecia_team_key'] (set once via ?team_key=), never shown on the page.
+ */
+import type { Language } from '../i18n/ui';
+import { site as siteEn } from '../i18n/en/site';
+import { site as siteFr } from '../i18n/fr/site';
+import { signFormToken } from '../lib/comments-core';
+
+interface Props {
+  lang: Language;
+  /** Thread id, e.g. `note:what-is-mcp` (see targetFor in src/lib/comments-core.ts). */
+  target: string;
+}
+
+const { lang, target } = Astro.props;
+const t = (lang === 'fr' ? siteFr : siteEn).comments;
+const key = process.env.MODERATION_HMAC_KEY;
+const token = key ? signFormToken(key, target) : undefined;
+
+const config = {
+  target,
+  ts: token?.ts ?? 0,
+  sig: token?.sig ?? '',
+  lang,
+  t: {
+    queued: t.queued,
+    published: t.published,
+    dropped: t.dropped,
+    error: t.error,
+    loadError: t.loadError,
+    sending: t.sending,
+    submit: t.submit,
+    reply: t.reply,
+    agentBadge: t.agentBadge,
+    labels: t.labels,
+  },
+};
+---
+
+<section class="mt-16 pt-10 border-t border-gray-200" aria-labelledby="comments-title" x-data={`veciaComments(${JSON.stringify(config)})`} x-init="init()">
+  <h2 id="comments-title" class="text-2xl font-display font-bold text-text mb-2">{t.title}</h2>
+  <p class="text-sm text-muted mb-8">{t.policy}</p>
+
+  <p x-show="loadFailed" x-cloak class="mb-6 text-sm text-muted">{t.loadError}</p>
+  <p x-show="loaded && !loadFailed && comments.length === 0" x-cloak class="mb-8 text-muted">{t.empty}</p>
+
+  <ul class="space-y-4 mb-10" x-show="comments.length > 0" x-cloak>
+    <template x-for="c in comments" :key="c.id">
+      <li class="p-5 bg-white rounded-2xl border border-gray-200">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <span class="font-semibold text-text" x-text="c.author_name"></span>
+          <span x-show="c.author_kind === 'agent'" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-accent3 text-primary border border-primary/20">
+            <span aria-hidden="true">🤖</span><span x-text="c.agent_name || t.agentBadge"></span>
+          </span>
+          <span x-show="c.author_kind === 'team'" class="inline-flex px-2 py-0.5 rounded-full text-xs font-semibold bg-primary text-white">{t.crewBadge}</span>
+          <span x-show="c.verdict_label && labelText(c.verdict_label)" class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-muted border border-gray-200" x-text="labelText(c.verdict_label)"></span>
+          <time class="text-xs text-subtle" :datetime="c.created_at" x-text="when(c.created_at)"></time>
+        </div>
+        <p class="text-text whitespace-pre-wrap break-words" x-text="c.body"></p>
+        <button type="button" class="mt-3 text-sm font-medium text-primary hover:underline" @click="replyTo = c" x-text="t.reply"></button>
+
+        <ul class="mt-4 space-y-3 pl-4 border-l-2 border-gray-100" x-show="c.replies.length > 0">
+          <template x-for="r in c.replies" :key="r.id">
+            <li>
+              <div class="flex flex-wrap items-center gap-2 mb-1">
+                <span class="font-semibold text-text text-sm" x-text="r.author_name"></span>
+                <span x-show="r.author_kind === 'agent'" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-accent3 text-primary border border-primary/20">
+                  <span aria-hidden="true">🤖</span><span x-text="r.agent_name || t.agentBadge"></span>
+                </span>
+                <span x-show="r.author_kind === 'team'" class="inline-flex px-2 py-0.5 rounded-full text-xs font-semibold bg-primary text-white">{t.crewBadge}</span>
+                <span x-show="r.verdict_label && labelText(r.verdict_label)" class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-muted border border-gray-200" x-text="labelText(r.verdict_label)"></span>
+                <time class="text-xs text-subtle" :datetime="r.created_at" x-text="when(r.created_at)"></time>
+              </div>
+              <p class="text-text text-sm whitespace-pre-wrap break-words" x-text="r.body"></p>
+            </li>
+          </template>
+        </ul>
+      </li>
+    </template>
+  </ul>
+
+  {token ? (
+    <form class="p-5 bg-accent3 rounded-2xl border border-gray-200 space-y-4" @submit.prevent="submit()" novalidate>
+      <p x-show="replyTo" x-cloak class="text-sm text-muted">
+        {t.replyingTo} <strong x-text="replyTo && replyTo.author_name"></strong>
+        <button type="button" class="ml-2 text-primary hover:underline" @click="replyTo = null">{t.cancelReply}</button>
+      </p>
+      <div>
+        <label for="comment-name" class="block text-sm font-medium text-text mb-1">{t.nameLabel}</label>
+        <input id="comment-name" type="text" maxlength="60" autocomplete="nickname" placeholder={t.namePlaceholder} x-model="name" class="w-full px-3 py-2 rounded-lg border border-gray-300 bg-white text-text" />
+      </div>
+      <div>
+        <label for="comment-body" class="block text-sm font-medium text-text mb-1">{t.bodyLabel}</label>
+        <textarea id="comment-body" rows="4" maxlength="3000" required placeholder={t.bodyPlaceholder} x-model="body" class="w-full px-3 py-2 rounded-lg border border-gray-300 bg-white text-text"></textarea>
+      </div>
+      <!-- Honeypot: real people never see or fill this -->
+      <div class="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+        <label for="comment-website">Website</label>
+        <input id="comment-website" type="text" name="website" tabindex="-1" autocomplete="off" x-model="website" />
+      </div>
+      <div class="flex flex-wrap items-center gap-4">
+        <button type="submit" :disabled="sending || !body.trim()" class="px-5 py-2.5 rounded-full bg-primary text-white font-semibold disabled:opacity-50" x-text="sending ? t.sending : t.submit"></button>
+        <p role="status" aria-live="polite" class="text-sm" :class="isError ? 'text-red-700' : 'text-text'" x-text="message"></p>
+      </div>
+    </form>
+  ) : null}
+</section>
+
+<script is:inline>
+  // Runs before Alpine starts (Alpine is a deferred module), so x-data can call veciaComments().
+  (function () {
+    try {
+      var params = new URLSearchParams(location.search);
+      var k = params.get('team_key');
+      if (k) {
+        localStorage.setItem('vecia_team_key', k);
+        params.delete('team_key');
+        var qs = params.toString();
+        history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
+      }
+    } catch (e) {}
+
+    window.veciaComments = function (cfg) {
+      return {
+        t: cfg.t,
+        comments: [], loaded: false, loadFailed: false,
+        name: '', body: '', website: '', replyTo: null,
+        sending: false, message: '', isError: false,
+        async init() {
+          try {
+            var res = await fetch('/api/comments/' + encodeURIComponent(cfg.target) + '.json', { headers: { Accept: 'application/json' } });
+            if (!res.ok) throw new Error(String(res.status));
+            this.comments = (await res.json()).comments;
+          } catch (e) { this.loadFailed = true; }
+          this.loaded = true;
+        },
+        labelText(l) { return cfg.t.labels[l] || ''; },
+        when(iso) {
+          return new Date(iso).toLocaleDateString(cfg.lang === 'fr' ? 'fr-FR' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        },
+        async submit() {
+          if (this.sending || !this.body.trim()) return;
+          this.sending = true; this.message = ''; this.isError = false;
+          var teamKey = '';
+          try { teamKey = localStorage.getItem('vecia_team_key') || ''; } catch (e) {}
+          try {
+            var res = await fetch('/api/comments/submit.json', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                target: cfg.target, ts: cfg.ts, sig: cfg.sig,
+                author_name: this.name, body: this.body, website: this.website,
+                parent_id: this.replyTo ? this.replyTo.id : null,
+                team_key: teamKey || undefined
+              })
+            });
+            var data = await res.json().catch(function () { return {}; });
+            if (!res.ok || !data.success) { this.isError = true; this.message = data.error || cfg.t.error; }
+            else {
+              this.message = cfg.t[data.status] || cfg.t.queued;
+              if (data.status === 'published' && data.comment) {
+                var c = data.comment;
+                if (c.parent_id) {
+                  var p = this.comments.find(function (x) { return x.id === c.parent_id; });
+                  if (p) p.replies.push(c);
+                } else { this.comments.push(c); }
+              }
+              if (data.status) { this.body = ''; this.replyTo = null; }
+            }
+          } catch (e) { this.isError = true; this.message = cfg.t.error; }
+          this.sending = false;
+        }
+      };
+    };
+  })();
+</script>
+
+<style is:global>
+  [x-cloak] { display: none !important; }
+</style>

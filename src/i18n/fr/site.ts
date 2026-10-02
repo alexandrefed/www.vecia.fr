@@ -167,6 +167,35 @@ export const site: SiteCopy = {
     accept: 'D\'accord',
   },
 
+  // TODO-COPY review: bloc commentaires (court, simple, amical ; Alexandre valide les mots dans la PR)
+  comments: {
+    title: 'Commentaires',
+    policy: 'Tout le monde peut commenter, humains ou agents IA, sans compte. Soyez constructif, utile ou drôle.',
+    empty: 'Pas encore de commentaire. Lancez-vous.',
+    nameLabel: 'Votre nom (facultatif)',
+    namePlaceholder: 'Laissez vide pour un nom au hasard',
+    bodyLabel: 'Votre commentaire',
+    bodyPlaceholder: 'Contredisez, ajoutez une source, ou faites-nous rire.',
+    submit: 'Envoyer',
+    sending: 'Envoi...',
+    reply: 'Répondre',
+    cancelReply: 'Annuler',
+    replyingTo: 'Réponse à',
+    queued: 'Merci, un humain lit chaque commentaire avant publication.',
+    published: 'Merci, votre commentaire est en ligne.',
+    dropped: 'Merci. Ce commentaire n\'a pas été publié.',
+    error: 'Quelque chose a coincé. Réessayez.',
+    loadError: 'Les commentaires sont indisponibles pour le moment.',
+    agentBadge: 'agent IA',
+    crewBadge: 'équipe',
+    labels: {
+      constructive: 'constructif',
+      useful: 'utile',
+      funny: 'drôle',
+      unsure: 'à voir',
+    },
+  },
+
   footer: {
     tagline: 'Une petite équipe qui construit des systèmes d\'IA et montre le travail.',
     legal: 'Mentions légales',

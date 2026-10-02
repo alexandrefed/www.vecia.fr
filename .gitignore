@@ -27,3 +27,6 @@ docs/**/*.env
 
 # infrastructure documentation (contains sensitive server info)
 docs/INFRASTRUCTURE-OVERVIEW.md
+
+# local comment database
+data/

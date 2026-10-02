@@ -1,167 +1,56 @@
 /**
- * API Route: POST /api/comments/submit.json
- *
- * Handles comment submission with validation, profanity filtering, and spam prevention.
- *
- * Features:
- * - Profanity filtering (15+ languages)
- * - Random name generation if not provided
- * - Vecia team member detection (Alex/Tanguy)
- * - Honeypot spam prevention
- * - Input validation and sanitization
+ * POST /api/comments/submit.json: the human door.
+ * Order: honeypot, signed form token, rate limit, then the shared content checks and the moderator.
  */
 
 import type { APIRoute } from 'astro';
-import { supabaseServer as supabase } from '../../../lib/supabase-server';
-import { profanity } from '@2toad/profanity';
+import { getCollection } from 'astro:content';
+import { safeEqual, teamKey, verifyFormToken } from '../../../lib/comments-core';
+import { fail, json, processComment, rateLimited, requestHashes } from '../../../lib/comments-service';
 
-// Disable prerendering for dynamic API route
 export const prerender = false;
 
-// Vecia team member detection
-const VECIA_MEMBERS = ['alex', 'tanguy', 'alexandre', 'équipe vecia', 'vecia team'];
+export const POST: APIRoute = async ({ request, clientAddress }) => {
+  const key = process.env.MODERATION_HMAC_KEY;
+  const salt = process.env.IP_HASH_SALT;
+  if (!key || !salt) return fail('Comments are not available right now.', 503);
 
-export const POST: APIRoute = async ({ request }) => {
+  let data: Record<string, unknown>;
   try {
-    const body = await request.json();
-
-    // 1. Honeypot check (spam prevention)
-    if (body.website || body.url || body.honey) {
-      console.warn('[API] Honeypot triggered - potential spam');
-      // Return success to not alert bots
-      return new Response(
-        JSON.stringify({ success: true }),
-        {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
-    }
-
-    // 2. Extract and validate required fields
-    const { article_slug, author_name, comment_text, parent_comment_id, author_email } = body;
-
-    if (!article_slug || typeof article_slug !== 'string') {
-      return errorResponse('Article slug is required', 400);
-    }
-
-    if (!comment_text || typeof comment_text !== 'string') {
-      return errorResponse('Comment text is required', 400);
-    }
-
-    // 3. Validate comment length
-    const trimmedComment = comment_text.trim();
-    if (trimmedComment.length < 1) {
-      return errorResponse('Comment cannot be empty', 400);
-    }
-    if (trimmedComment.length > 5000) {
-      return errorResponse('Comment is too long (max 5000 characters)', 400);
-    }
-
-    // 4. Profanity check
-    if (profanity.exists(trimmedComment)) {
-      return errorResponse('Comment contains inappropriate language', 400);
-    }
-
-    // 5. Handle author name (generate if empty)
-    let finalAuthorName = author_name?.trim() || '';
-
-    if (!finalAuthorName) {
-      // Generate random name (simple implementation)
-      const adjectives = ['Happy', 'Clever', 'Brave', 'Swift', 'Bright', 'Kind', 'Bold', 'Wise'];
-      const animals = ['Fox', 'Eagle', 'Wolf', 'Bear', 'Hawk', 'Tiger', 'Lion', 'Owl'];
-      const randomAdj = adjectives[Math.floor(Math.random() * adjectives.length)];
-      const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
-      finalAuthorName = `${randomAdj} ${randomAnimal}`;
-    }
-
-    // Validate author name length
-    if (finalAuthorName.length > 100) {
-      return errorResponse('Author name is too long (max 100 characters)', 400);
-    }
-
-    // Check for profanity in author name
-    if (profanity.exists(finalAuthorName)) {
-      return errorResponse('Author name contains inappropriate language', 400);
-    }
-
-    // 6. Detect if author is Vecia team member
-    const isVeciaMember = VECIA_MEMBERS.some(
-      (member) => finalAuthorName.toLowerCase().includes(member)
-    );
-
-    // 7. Validate parent comment if it's a reply
-    if (parent_comment_id) {
-      const { data: parentExists, error: parentError } = await supabase
-        .from('comments')
-        .select('id')
-        .eq('id', parent_comment_id)
-        .single();
-
-      // If table doesn't exist, skip validation (will fail at insert anyway)
-      if (parentError && parentError.code !== '42P01') {
-        if (!parentExists) {
-          return errorResponse('Parent comment not found', 400);
-        }
-      }
-    }
-
-    // 8. Insert comment into database
-    const { data, error } = await supabase
-      .from('comments')
-      .insert({
-        article_slug,
-        author_name: finalAuthorName,
-        author_email: author_email || null,
-        comment_text: trimmedComment,
-        parent_comment_id: parent_comment_id || null,
-        is_vecia_member: isVeciaMember,
-        approved: true, // Auto-approve for now (can add moderation later)
-      })
-      .select()
-      .single();
-
-    if (error) {
-      console.error('[API] Error inserting comment:', error);
-
-      // If table doesn't exist (42P01), return friendly error
-      if (error.code === '42P01') {
-        return errorResponse('Comments system is not yet configured. Please check back later.', 503);
-      }
-
-      return errorResponse('Failed to save comment', 500);
-    }
-
-    // 9. Return success response
-    return new Response(
-      JSON.stringify({
-        success: true,
-        comment: data,
-        message: 'Comment submitted successfully',
-      }),
-      {
-        status: 201,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err) {
-    console.error('[API] Unexpected error:', err);
-    return errorResponse('An unexpected error occurred', 500);
+    data = JSON.parse(await request.text());
+    if (!data || typeof data !== 'object') throw new Error('not an object');
+  } catch {
+    return fail('Invalid request.');
   }
-};
 
-/**
- * Helper function to return error responses
- */
-function errorResponse(message: string, status: number) {
-  return new Response(
-    JSON.stringify({
-      success: false,
-      error: message,
-    }),
-    {
-      status,
-      headers: { 'Content-Type': 'application/json' },
+  // a. honeypot: pretend it worked, store nothing
+  if (data.website || data.url || data.honey) return json({ success: true });
+
+  // b. signed form token
+  const token = verifyFormToken(key, String(data.target ?? ''), data.ts, data.sig);
+  if (!token.ok) return fail(token.error);
+
+  // c. rate limit
+  const hashes = requestHashes(request, () => clientAddress, salt);
+  const limited = rateLimited(hashes.ipHash);
+  if (limited) return limited;
+
+  // team badge: only with the key for a person in the people collection
+  let team: { subdomain: string; name: string } | undefined;
+  if (typeof data.team_key === 'string' && data.team_key) {
+    for (const p of await getCollection('people')) {
+      if (safeEqual(data.team_key, teamKey(key, p.data.subdomain))) team = { subdomain: p.data.subdomain, name: p.data.name };
     }
-  );
-}
+  }
+
+  return processComment({
+    target: data.target,
+    body: data.body,
+    authorName: data.author_name,
+    parentId: data.parent_id,
+    kind: team ? 'team' : 'human',
+    teamMember: team?.subdomain,
+    teamDisplayName: team?.name,
+    ...hashes,
+  });
+};

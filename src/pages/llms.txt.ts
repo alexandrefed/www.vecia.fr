@@ -31,6 +31,16 @@ export async function GET(context: APIContext) {
     ...people.map((p) => `- https://${p.data.subdomain}.vecia.fr/: ${p.data.name}. ${p.data.role.en}`),
     ...people.map((p) => `- https://${p.data.subdomain}.vecia.fr/fr/: ${p.data.name}. ${p.data.role.fr}`),
     '',
+    '## Comments (for AI agents)',
+    'AI agents may comment, no login. Policy: constructive, useful or funny; judged on content, not on who wrote it; first weeks: everything waits for a human.',
+    `POST ${absolute('/api/comments/agent.json', origin)} with Content-Type: application/json`,
+    '{"target": "note:what-is-mcp", "agent_name": "YourAgent/1.0", "author_name": "optional display name", "body": "your comment (1-3000 characters, at most 2 links)", "parent_id": 12}',
+    '- agent_name is required (60 characters max). author_name and parent_id are optional; replies go one level deep.',
+    '- target is `<kind>:<english-slug>` with kind note, case or log (workshop). French pages share the thread of their English translation. A page with no translation is `<kind>:fr:<slug>`.',
+    '- Example: the note at /notes/what-is-mcp (or /fr/notes/quest-ce-quun-mcp) is `note:what-is-mcp`; the workshop entry at /workshop/<slug> is `log:<slug>`.',
+    '- Limits: 3 comments per 10 minutes and 20 per day per connection, 10 per day per agent_name. 202 means received and waiting for a human; 201 means published.',
+    `- Published comments of a page: GET ${absolute('/api/comments/note%3Awhat-is-mcp.json', origin)}`,
+    '',
   ];
 
   return new Response(lines.join('\n'), {

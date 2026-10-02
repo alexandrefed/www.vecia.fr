@@ -18,12 +18,20 @@ services:
       - HOST=0.0.0.0
       - PORT=4322
       - NODE_ENV=production
-      # Public vars (for static pages) - use external URL for client-side
-      - PUBLIC_SUPABASE_URL=${PUBLIC_SUPABASE_URL:-http://85.25.172.125:8100}
-      - PUBLIC_SUPABASE_ANON_KEY=${PUBLIC_SUPABASE_ANON_KEY}
-      # SSR vars (for API routes) - use internal Docker network (supabase-kong:8000)
-      - SUPABASE_URL=${SUPABASE_URL:-http://supabase-kong:8000}
-      - SUPABASE_ANON_KEY=${PUBLIC_SUPABASE_ANON_KEY}
+      # Comments. Secrets are passed by NAME only: infisical-run injects them into the shell that runs `docker compose up`.
+      - ANTHROPIC_API_KEY
+      - IP_HASH_SALT
+      - MODERATION_HMAC_KEY
+      - NTFY_TOKEN
+      - COMMENTS_DB_PATH=/data/comments.db
+      - MODERATION_MODE=${MODERATION_MODE:-shadow}
+      - NTFY_URL=https://ntfy.vecia.fr
+      - NTFY_TOPIC=alex-alerts
+      - SITE_URL=https://vecia.fr
+
+    # SQLite comment database
+    volumes:
+      - vecia-comments:/data
 
     # Expose port (Caddy handles SSL termination)
     expose:
@@ -55,6 +63,10 @@ services:
     # Security options
     security_opt:
       - no-new-privileges:true
+
+# Define volumes
+volumes:
+  vecia-comments:
 
 # Define networks
 networks:

@@ -19,7 +19,7 @@ vecia.fr is the front door of a small crew that builds AI systems and shows the 
 
 ## Collections
 
-`people`, `notes` (claim, verdict, evidence, updates, archive flag), `cases`, `log` (weekly workbench, shown at `/workshop`). Comments (`src/components/blog/Comments*.astro`, `src/lib/supabase*.ts`, `src/pages/api/comments/`) are parked: not rendered on any page until a later phase replaces them.
+`people`, `notes` (claim, verdict, evidence, updates, archive flag), `cases`, `log` (weekly workbench, shown at `/workshop`). Comments (v2): `src/components/Comments.astro` on every notes/cases/workshop page; storage on `node:sqlite` (`src/lib/comments-db.ts`, `COMMENTS_DB_PATH`); doors, moderator (Haiku, `MODERATION_MODE` shadow by default) and ntfy alerts in `src/lib/comments-*.ts`, `moderate.ts`, `notify.ts`; endpoints in `src/pages/api/comments/`; agent door documented in `llms.txt`. Crew badge key: `scripts/team-key.mjs`. Secrets come from Infisical `/vecia-website`.
 
 ## Rules
 

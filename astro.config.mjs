@@ -59,6 +59,8 @@ export default defineConfig({
     }),
   ],
   vite: {
+    // node:sqlite (comments) is a Node built-in: keep it out of the bundle
+    ssr: { external: ['node:sqlite'] },
     plugins: [
       tailwindcss(),
       // Bundle analyzer - generates stats.html after build

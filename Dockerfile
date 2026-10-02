@@ -53,8 +53,8 @@ RUN --mount=type=cache,target=/root/.npm \
 # Copy built Astro output from builder
 COPY --from=builder /app/dist ./dist
 
-# Set ownership to non-root user
-RUN chown -R node:node /app
+# Comments database lives on a volume at /data (see docker-compose.yml)
+RUN mkdir -p /data && chown -R node:node /app /data
 
 # Switch to non-root user
 USER node
@@ -63,6 +63,7 @@ USER node
 ENV HOST=0.0.0.0
 ENV PORT=4322
 ENV NODE_ENV=production
+ENV COMMENTS_DB_PATH=/data/comments.db
 
 # Expose port
 EXPOSE 4322

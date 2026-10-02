@@ -94,17 +94,6 @@ jobs:
             echo "📥 Loading Docker image..."
             gunzip -c vecia-website.tar.gz | docker load
 
-            echo "🔧 Creating/updating .env file..."
-            # PUBLIC_SUPABASE_URL: External IP for client-side (browser) requests
-            # SUPABASE_URL: Internal Docker network for server-side (SSR) requests
-            cat > .env << EOF
-            PUBLIC_SUPABASE_URL=http://85.25.172.125:8100
-            PUBLIC_SUPABASE_ANON_KEY=${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
-            SUPABASE_URL=http://supabase-kong:8000
-            SUPABASE_ANON_KEY=${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
-            PUBLIC_GA_MEASUREMENT_ID=${{ secrets.PUBLIC_GA_MEASUREMENT_ID }}
-            EOF
-
             echo "🔄 Stopping existing container (any lifecycle)..."
             # Force-stop and remove the container by name before compose takes over.
             # docker compose down only tracks containers it launched; if the container
@@ -115,7 +104,9 @@ jobs:
             docker rm vecia-website 2>/dev/null || true
 
             echo "🔄 Deploying with Docker Compose..."
-            docker compose up -d
+            # Runtime secrets (ANTHROPIC_API_KEY, IP_HASH_SALT, MODERATION_HMAC_KEY, NTFY_TOKEN) come from
+            # Infisical on the VPS, injected into this command only. Nothing is written to disk or GitHub.
+            infisical-run -p /vecia-website -- docker compose up -d
 
             echo "⏳ Waiting for container to be healthy..."
             timeout 90 bash -c 'until docker inspect vecia-website --format="{{.State.Health.Status}}" 2>/dev/null | grep -q "healthy"; do sleep 2; echo -n "."; done' || {

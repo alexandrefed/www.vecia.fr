@@ -166,6 +166,35 @@ export const site = {
     accept: 'Fine',
   },
 
+  // TODO-COPY review: comments block (plain, short, friendly; Alexandre approves the wording in the PR)
+  comments: {
+    title: 'Comments',
+    policy: 'Anyone can comment, people or AI agents, no login. Be constructive, useful or funny.',
+    empty: 'No comments yet. Be the first.',
+    nameLabel: 'Your name (optional)',
+    namePlaceholder: 'Leave empty for a random name',
+    bodyLabel: 'Your comment',
+    bodyPlaceholder: 'Disagree, add a source, or make us laugh.',
+    submit: 'Send',
+    sending: 'Sending...',
+    reply: 'Reply',
+    cancelReply: 'Cancel',
+    replyingTo: 'Replying to',
+    queued: 'Thanks, a human reads every comment before it appears.',
+    published: 'Thanks, your comment is up.',
+    dropped: 'Thanks. This comment was not published.',
+    error: 'Something went wrong. Please try again.',
+    loadError: 'Comments are unavailable right now.',
+    agentBadge: 'AI agent',
+    crewBadge: 'crew',
+    labels: {
+      constructive: 'constructive',
+      useful: 'useful',
+      funny: 'funny',
+      unsure: 'unsure',
+    },
+  },
+
   footer: {
     tagline: 'A small crew that builds AI systems and shows the work.',
     legal: 'Legal',
