@@ -1,56 +1,83 @@
 /**
- * Content Collections Configuration
+ * Content Collections
  *
- * Defines type-safe content collections for the Vecia website.
- * Uses Astro 5.0 glob() loader pattern for automatic content discovery.
+ * - people: one markdown file per crew member (frontmatter only), served at <subdomain>.vecia.fr
+ * - notes: dated claims about AI with evidence (en/ and fr/ folders; language = folder)
+ * - cases: case files, one deployment each (en/ and fr/)
+ * - log: the weekly workbench log (en/ and fr/)
  *
- * Collections:
- * - blog: Markdown blog posts with frontmatter validation
- *
- * 2025 Best Practices:
- * - glob() loader for Astro 5.0 compatibility
- * - Zod schema for runtime validation + TypeScript types
- * - z.coerce.date() for flexible date parsing
- * - Optional fields for LinkedIn metadata
+ * Helpers for reading them live in src/lib/content.ts.
  */
 
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-const blog = defineCollection({
-  // Astro 5.0 glob loader - auto-generates URL-friendly IDs from filenames
-  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+const bilingual = z.object({ en: z.string(), fr: z.string() });
 
-  // Zod schema for type-safe frontmatter validation
+const people = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/people' }),
+  schema: z.object({
+    name: z.string(),
+    subdomain: z.string(),
+    order: z.number(),
+    role: bilingual,
+    bio: bilingual,
+    now: bilingual,
+    nowUpdated: z.coerce.date(),
+    how: bilingual,
+    building: z.array(z.object({ name: z.string(), line: bilingual })),
+    offKeyboard: bilingual,
+    links: z.object({
+      email: z.string(),
+      linkedin: z.string(),
+      calFree: z.string(),
+      cv: z.string().optional(),
+    }),
+  }),
+});
+
+const notes = defineCollection({
+  loader: glob({ pattern: '{en,fr}/*.md', base: './src/content/notes' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    publishDate: z.coerce.date(), // Flexible date parsing (YYYY-MM-DD, etc.)
-    updatedDate: z.coerce.date().optional(), // Optional last update date
-    author: z.string(),
-
-    // Blog categories (type-safe enum)
-    category: z.enum([
-      'why-broken',           // "Why Current Systems Are Broken"
-      'success-stories',      // Customer success stories
-      'quick-wins',           // Fast implementation guides
-      'industry-deep-dives',  // Industry-specific automation
-      'tool-comparisons'      // Tool reviews and comparisons
-    ]),
-
-    tags: z.array(z.string()),
-
-    // Optional fields
-    featured: z.boolean().optional(),      // Featured on homepage
-    image: z.string().optional(),          // Cover image path
-    translationSlug: z.string().optional(), // Slug of the counterpart post in the other language
-
-    // LinkedIn metadata (for social sharing)
-    linkedin: z.object({
-      caption: z.string(),                 // Post caption for LinkedIn
-      hashtags: z.array(z.string())        // LinkedIn hashtags
-    }).optional()
-  })
+    date: z.coerce.date(),
+    author: z.string().default('alexandre'),
+    claim: z.string().optional(),
+    verdict: z.enum(['good', 'bad', 'changing']).optional(),
+    evidence: z.array(z.object({ label: z.string(), url: z.string().optional() })).default([]),
+    models: z.array(z.string()).default([]),
+    updates: z.array(z.object({ date: z.coerce.date(), text: z.string() })).default([]),
+    archive: z.boolean().default(false),
+    tags: z.array(z.string()).default([]),
+    translationSlug: z.string().optional(),
+    image: z.string().optional(),
+  }),
 });
 
-export const collections = { blog };
+const cases = defineCollection({
+  loader: glob({ pattern: '{en,fr}/*.md', base: './src/content/cases' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    date: z.coerce.date(),
+    author: z.string().default('alexandre'),
+    sector: z.string(),
+    stack: z.array(z.string()).default([]),
+    translationSlug: z.string().optional(),
+  }),
+});
+
+const log = defineCollection({
+  loader: glob({ pattern: '{en,fr}/*.md', base: './src/content/log' }),
+  schema: z.object({
+    title: z.string(),
+    week: z.string(), // e.g. '2026-W41'
+    date: z.coerce.date(),
+    author: z.string().default('alexandre'),
+    fleet: z.record(z.string(), z.union([z.number(), z.string()])).optional(),
+    translationSlug: z.string().optional(),
+  }),
+});
+
+export const collections = { people, notes, cases, log };

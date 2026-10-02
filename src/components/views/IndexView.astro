@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryCard from '../EntryCard.astro';
+import type { Language } from '../../i18n/ui';
+import { site as siteEn } from '../../i18n/en/site';
+import { site as siteFr } from '../../i18n/fr/site';
+import { getRelativeLocaleUrl } from '../../i18n/utils';
+import { byLang, slugOf, sectionCollection, type Section } from '../../lib/content';
+
+interface Props {
+  section: Section;
+  lang: Language;
+}
+
+const { section, lang } = Astro.props;
+const site = lang === 'fr' ? siteFr : siteEn;
+const copy = site[section];
+const entries = await byLang(sectionCollection[section], lang);
+const empty = site.home[section].empty;
+---
+
+<BaseLayout title={`${copy.title} — Vecia`} description={copy.description} lang={lang}>
+  <section class="pt-[110px] pb-16">
+    <div class="max-w-5xl mx-auto px-4 sm:px-8">
+      <h1 class="text-4xl md:text-5xl font-display font-bold mb-6">{copy.title}</h1>
+      <p class="text-lg text-muted leading-relaxed mb-12 max-w-3xl">{copy.intro}</p>
+
+      {entries.length === 0 ? (
+        <p class="text-muted italic">{empty}</p>
+      ) : (
+        <div class="grid gap-6 md:grid-cols-2">
+          {entries.map((e: any) => (
+            <EntryCard
+              href={getRelativeLocaleUrl(lang, `${section}/${slugOf(e)}`)}
+              title={e.data.title}
+              date={e.data.date}
+              description={e.data.description}
+              verdict={e.data.verdict}
+              archive={e.data.archive}
+              eyebrow={section === 'cases' ? e.data.sector : section === 'workshop' ? e.data.week : undefined}
+              lang={lang}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>

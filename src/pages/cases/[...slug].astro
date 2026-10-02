@@ -1,0 +1,9 @@
+---
+import DetailView from '../../components/views/DetailView.astro';
+import { findBySlug } from '../../lib/content';
+
+const entry = await findBySlug('cases', 'en', Astro.params.slug ?? '');
+if (!entry) return new Response(null, { status: 404, statusText: 'Not found' });
+---
+
+<DetailView section="cases" entry={entry} lang="en" />

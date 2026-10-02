@@ -1,0 +1,46 @@
+---
+import type { Language } from '../i18n/ui';
+import { site as siteEn } from '../i18n/en/site';
+import { site as siteFr } from '../i18n/fr/site';
+import { formatDate } from '../lib/content';
+
+interface Props {
+  href: string;
+  title: string;
+  date: Date;
+  description?: string;
+  lang: Language;
+  verdict?: 'good' | 'bad' | 'changing';
+  archive?: boolean;
+  /** Small label above the title (e.g. sector, week). */
+  eyebrow?: string;
+}
+
+const { href, title, date, description, lang, verdict, archive = false, eyebrow } = Astro.props;
+const site = lang === 'fr' ? siteFr : siteEn;
+
+const verdictStyle = {
+  good: 'bg-green-100 text-green-800 border-green-300',
+  bad: 'bg-red-100 text-red-800 border-red-300',
+  changing: 'bg-amber-100 text-amber-800 border-amber-300',
+};
+---
+
+<a href={href} class="block h-full p-6 bg-white rounded-2xl border border-gray-200 hover:border-primary/40 hover:shadow-lg transition-all">
+  <div class="flex flex-wrap items-center gap-2 mb-3">
+    {verdict && (
+      <span class={`inline-flex px-3 py-1 rounded-full text-xs font-semibold border ${verdictStyle[verdict]}`}>
+        {site.notes.verdict[verdict]}
+      </span>
+    )}
+    {archive && (
+      <span class="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-muted border border-gray-200">
+        {site.ui.archive}
+      </span>
+    )}
+    {eyebrow && <span class="text-xs font-medium text-muted">{eyebrow}</span>}
+  </div>
+  <h3 class="text-xl font-display font-bold text-text mb-2">{title}</h3>
+  <time class="block text-sm text-subtle mb-3" datetime={date.toISOString()}>{formatDate(date, lang)}</time>
+  {description && <p class="text-muted leading-relaxed">{description}</p>}
+</a>

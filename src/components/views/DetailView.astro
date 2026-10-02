@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogHeader from '../blog/BlogHeader.astro';
+import ShareButtons from '../blog/ShareButtons.astro';
+import ArticleFooter from '../blog/ArticleFooter.astro';
+import { render, getCollection } from 'astro:content';
+import type { Language } from '../../i18n/ui';
+import { site as siteEn } from '../../i18n/en/site';
+import { site as siteFr } from '../../i18n/fr/site';
+import { getRelativeLocaleUrl } from '../../i18n/utils';
+import { slugOf, translationOf, readingTime, formatDate, sectionCollection, type Section } from '../../lib/content';
+
+interface Props {
+  section: Section;
+  entry: any;
+  lang: Language;
+}
+
+const { section, entry, lang } = Astro.props;
+const site = lang === 'fr' ? siteFr : siteEn;
+const d = entry.data;
+const collection = sectionCollection[section];
+
+const { Content } = await render(entry);
+const people = await getCollection('people');
+const authorName = people.find((p) => p.data.subdomain === d.author)?.data.name ?? d.author;
+
+const other = await translationOf(collection, entry);
+const otherLang: Language = lang === 'fr' ? 'en' : 'fr';
+const translationUrl = other ? getRelativeLocaleUrl(otherLang, `${section}/${slugOf(other)}`) : undefined;
+
+const description = d.description ?? d.title;
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const verdictStyle = {
+  good: 'bg-green-100 text-green-800 border-green-300',
+  bad: 'bg-red-100 text-red-800 border-red-300',
+  changing: 'bg-amber-100 text-amber-800 border-amber-300',
+};
+const fleet = section === 'workshop' && d.fleet ? Object.entries(d.fleet) : [];
+---
+
+<BaseLayout title={`${d.title} — Vecia`} description={description} lang={lang} altLangUrl={translationUrl}>
+  <article class="pt-[110px] pb-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-8">
+      <BlogHeader
+        title={d.title}
+        description={d.description}
+        author={authorName}
+        date={d.date}
+        tags={d.tags ?? []}
+        lang={lang}
+        readingTime={readingTime(entry.body)}
+        indexPath={getRelativeLocaleUrl(lang, section)}
+        indexLabel={site[section].title}
+      />
+
+      {section === 'notes' && (
+        <>
+          {d.archive && (
+            <aside class="mb-8 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900">{site.notes.archiveBanner}</aside>
+          )}
+          {d.claim && (
+            <blockquote class="mb-8 p-6 rounded-2xl bg-accent3 border-l-4 border-primary text-2xl font-display font-bold text-text leading-snug">
+              {d.claim}
+            </blockquote>
+          )}
+          {d.verdict && (
+            <p class="mb-8">
+              <span class={`inline-flex px-3 py-1 rounded-full text-sm font-semibold border ${verdictStyle[d.verdict as 'good' | 'bad' | 'changing']}`}>
+                {site.notes.verdict[d.verdict as 'good' | 'bad' | 'changing']}
+              </span>
+            </p>
+          )}
+        </>
+      )}
+
+      {section === 'cases' && (
+        <div class="mb-8 flex flex-wrap items-center gap-2">
+          <span class="inline-flex px-3 py-1 rounded-full text-sm font-semibold bg-primary/10 text-primary border border-primary/20">{d.sector}</span>
+          {d.stack?.length > 0 && <span class="text-sm text-muted">{site.cases.stack}:</span>}
+          {(d.stack ?? []).map((s: string) => (
+            <span class="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-muted border border-gray-200">{s}</span>
+          ))}
+        </div>
+      )}
+
+      {section === 'workshop' && (
+        <div class="mb-8">
+          <p class="text-sm font-medium text-primary mb-4">{site.workshop.week} {d.week}</p>
+          {fleet.length > 0 && (
+            <>
+              <h2 class="text-xl font-display font-bold mb-3">{site.workshop.fleet}</h2>
+              <table class="w-full text-left border border-gray-200 rounded-xl overflow-hidden">
+                <tbody>
+                  {fleet.map(([k, v]) => (
+                    <tr class="border-b border-gray-100 last:border-0">
+                      <th class="py-2 px-4 font-medium text-muted bg-gray-50">{k}</th>
+                      <td class="py-2 px-4 text-text">{String(v)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          )}
+        </div>
+      )}
+
+      <div class="prose prose-lg max-w-none">
+        <Content />
+      </div>
+
+      {section === 'notes' && d.updates?.length > 0 && (
+        <section class="mt-10">
+          <h2 class="text-xl font-display font-bold mb-3">{site.notes.updatedLabel}</h2>
+          <ul class="space-y-2">
+            {d.updates.map((u: { date: Date; text: string }) => (
+              <li class="text-text"><time class="font-medium" datetime={u.date.toISOString()}>{formatDate(u.date, lang)}</time> — {u.text}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {section === 'notes' && d.evidence?.length > 0 && (
+        <section class="mt-10">
+          <h2 class="text-xl font-display font-bold mb-3">{site.notes.evidenceLabel}</h2>
+          <ul class="list-disc pl-6 space-y-1">
+            {d.evidence.map((e: { label: string; url?: string }) => (
+              <li class="text-text">{e.url ? <a href={e.url} class="text-primary hover:underline" rel="noopener noreferrer">{e.label}</a> : e.label}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <ShareButtons url={pageUrl} title={d.title} lang={lang} />
+      <ArticleFooter author={d.author} lang={lang} translationUrl={translationUrl} />
+    </div>
+  </article>
+</BaseLayout>

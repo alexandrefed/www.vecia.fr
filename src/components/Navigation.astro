@@ -1,35 +1,29 @@
 ---
 import type { Language } from '../i18n/ui';
+import { getRelativeLocaleUrl, alternatePath } from '../i18n/utils';
+import { site as siteEn } from '../i18n/en/site';
+import { site as siteFr } from '../i18n/fr/site';
 
 interface Props {
   lang: Language;
-  /** Override the alternate-language URL (e.g. correct translated blog post slug).
-   *  If omitted, falls back to the path-swap heuristic. */
+  /** Override the other-language URL (translated note slugs, person subdomains). */
   altLangUrl?: string;
 }
 
 const { lang, altLangUrl: altLangUrlProp } = Astro.props;
+const site = lang === 'fr' ? siteFr : siteEn;
 
-// Translation keys
-import { ui } from '../i18n/ui';
-const t = ui[lang];
+const url = (path: string) => getRelativeLocaleUrl(lang, path);
+const homeUrl = lang === 'fr' ? '/fr/' : '/';
+const altLangUrl = altLangUrlProp ?? alternatePath(Astro.url.pathname);
 
-// Determine URLs based on language
-const homeUrl = lang === 'fr' ? '/' : '/en/';
-const aboutUrl = lang === 'fr' ? '/about' : '/en/about';
-const blogUrl = lang === 'fr' ? '/blog' : '/en/blog';
-const contactUrl = lang === 'fr' ? '/contact' : '/en/contact';
-const bookingUrl = lang === 'fr' ? '/rdv' : '/en/book';
-// Calculate language-aware URLs that preserve current path (fallback for non-blog pages)
-const currentPath = Astro.url.pathname;
-const basePath = currentPath.replace(/^\/en(\/|$)/, '/'); // Remove /en/ prefix
-const frUrlFallback = basePath || '/';
-const enUrlFallback = basePath === '/' ? '/en/' : `/en${basePath}`;
-// Use provided altLangUrl override (e.g. translated blog slug), or fall back to path-swap
-const frUrl = lang === 'en' && altLangUrlProp ? altLangUrlProp : frUrlFallback;
-const enUrl = lang === 'fr' && altLangUrlProp ? altLangUrlProp : enUrlFallback;
-const altLangUrl = lang === 'fr' ? enUrl : frUrl;
-const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.language.code.en'];
+const links = [
+  { href: url('notes'), label: site.nav.notes },
+  { href: url('cases'), label: site.nav.cases },
+  { href: url('workshop'), label: site.nav.workshop },
+  { href: url('crew'), label: site.nav.crew },
+];
+const officeHoursUrl = url('office-hours');
 ---
 
 <nav class="fixed top-0 left-0 right-0 z-50 bg-background/0 backdrop-blur-md border-b border-gray-200/20 h-[70px]" x-data="{ mobileOpen: false }">
@@ -38,13 +32,11 @@ const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.langu
 
       <!-- Logo -->
       <a href={homeUrl} class="flex items-center group">
-        <!-- Desktop Logo -->
         <img
           src="/vecia_logo_long_contour.png"
-          alt="Vecia Logo"
+          alt="Vecia"
           class="h-10 w-auto hidden lg:block transition-transform group-hover:scale-105"
         />
-        <!-- Mobile Logo (V icon) -->
         <img
           src="/vecia_favicon.png"
           alt="Vecia"
@@ -54,92 +46,36 @@ const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.langu
 
       <!-- Desktop Navigation -->
       <div class="hidden lg:flex items-center gap-7">
-        <a href={aboutUrl} class="text-base font-display font-bold uppercase tracking-wide text-muted hover:text-primary transition-colors">
-          {t['nav.about']}
-        </a>
-        <a href={blogUrl} class="text-base font-display font-bold uppercase tracking-wide text-muted hover:text-primary transition-colors">
-          {t['nav.blog']}
-        </a>
-        <a href={contactUrl} class="text-base font-display font-bold uppercase tracking-wide text-muted hover:text-primary transition-colors">
-          {t['nav.contact']}
-        </a>
+        {links.map((l) => (
+          <a href={l.href} class="text-base font-display font-bold uppercase tracking-wide text-muted hover:text-primary transition-colors">
+            {l.label}
+          </a>
+        ))}
 
-        <!-- Language Switcher -->
-        <!-- Alpine.js is REQUIRED here for dropdown state management (open/close) -->
-        <!-- See docs/ALPINEJS-USAGE-GUIDE.md for when to use Alpine vs Tailwind -->
-        <div x-data="{ open: false }" class="relative">
-          <button
-            @click="open = !open"
-            class="flex items-center gap-2 text-sm font-medium px-3 py-1 rounded-md text-muted hover:text-primary transition-colors lowercase"
-          >
-            <span>{currentLangCode}</span>
-            <svg
-              class="w-4 h-4 transition-transform"
-              :class="{ 'rotate-180': open }"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </button>
-
-          <!-- Dropdown -->
-          <div
-            x-show="open"
-            @click.outside="open = false"
-            x-transition:enter="transition ease-out duration-200"
-            x-transition:enter-start="opacity-0 transform scale-90"
-            x-transition:enter-end="opacity-100 transform scale-100"
-            x-transition:leave="transition ease-in duration-150"
-            x-transition:leave-start="opacity-100 transform scale-100"
-            x-transition:leave-end="opacity-0 transform scale-90"
-            class="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg border border-gray-200 py-2"
-            style="display: none;"
-          >
-            <a
-              href={frUrl}
-              class="block px-4 py-2 text-sm text-muted hover:bg-gray-100 transition-colors"
-            >
-              {t['nav.language.fr']}
-            </a>
-            <a
-              href={enUrl}
-              class="block px-4 py-2 text-sm text-muted hover:bg-gray-100 transition-colors"
-            >
-              {t['nav.language.en']}
-            </a>
-          </div>
-        </div>
-
-        <!-- CTA Buttons -->
-        <!-- Primary Button (Outlined) - Link to internal booking page -->
         <a
-          href={bookingUrl}
-          data-track="book-call"
-          data-location="navigation-desktop"
-          class="px-5 py-2.5 text-base font-semibold border-2 border-primary/30 rounded-lg text-primary bg-white/10 hover:bg-primary hover:text-white hover:border-primary transition-all capitalize"
+          href={altLangUrl}
+          hreflang={lang === 'fr' ? 'en' : 'fr'}
+          lang={lang === 'fr' ? 'en' : 'fr'}
+          aria-label={site.ui.language}
+          class="text-sm font-medium px-3 py-1 rounded-md text-muted hover:text-primary transition-colors"
         >
-          {t['nav.cta.book'].toLowerCase()}
+          {site.nav.switchLang}
         </a>
-        <!-- Secondary Button (Gradient) -->
+
         <a
-          href={lang === 'fr' ? '/commencer' : '/en/get-started'}
-          class="px-6 py-2.5 text-base font-semibold rounded-lg text-white bg-gradient-to-r from-primary to-secondary hover:scale-105 hover:shadow-lg transition-all capitalize"
+          href={officeHoursUrl}
+          class="px-6 py-2.5 text-base font-semibold rounded-lg text-white bg-gradient-to-r from-primary to-secondary hover:scale-105 hover:shadow-lg transition-all"
         >
-          {t['nav.cta.start'].toLowerCase()}
+          {site.nav.officeHours}
         </a>
       </div>
 
-      <!-- Mobile Menu Button -->
-      <!-- Alpine.js is REQUIRED here for mobile menu toggle state -->
-      <!-- See docs/ALPINEJS-USAGE-GUIDE.md for when to use Alpine vs Tailwind -->
+      <!-- Mobile Menu Button (Alpine.js toggles the open state) -->
       <button
         @click="mobileOpen = !mobileOpen"
         class="lg:hidden p-2.5 text-muted hover:text-primary transition-colors relative"
-        aria-label="Toggle menu"
+        aria-label={site.ui.menu}
       >
-        <!-- Hamburger Icon -->
         <svg
           x-show="!mobileOpen"
           x-transition:enter="transition ease-out duration-200"
@@ -152,7 +88,6 @@ const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.langu
         >
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
-        <!-- X Icon -->
         <svg
           x-show="mobileOpen"
           x-transition:enter="transition ease-out duration-200"
@@ -182,39 +117,28 @@ const currentLangCode = lang === 'fr' ? t['nav.language.code.fr'] : t['nav.langu
       style="display: none;"
     >
       <div class="flex flex-col gap-6 items-center">
-        <a href={aboutUrl} class="text-lg font-display font-bold uppercase tracking-wide text-muted hover:text-primary transition-all hover:scale-105 text-center py-2">
-          {t['nav.about']}
-        </a>
-        <a href={blogUrl} class="text-lg font-display font-bold uppercase tracking-wide text-muted hover:text-primary transition-all hover:scale-105 text-center py-2">
-          {t['nav.blog']}
-        </a>
-        <a href={contactUrl} class="text-lg font-display font-bold uppercase tracking-wide text-muted hover:text-primary transition-all hover:scale-105 text-center py-2">
-          {t['nav.contact']}
-        </a>
-
-        <!-- Mobile Language Links -->
-        <div class="flex gap-6 pt-4 mt-4 border-t border-gray-100 text-center w-full justify-center">
-          <a href={frUrl} class="text-base text-muted hover:text-primary transition-colors font-medium">
-            {t['nav.language.fr']}
+        {links.map((l) => (
+          <a href={l.href} class="text-lg font-display font-bold uppercase tracking-wide text-muted hover:text-primary transition-all hover:scale-105 text-center py-2">
+            {l.label}
           </a>
-          <a href={enUrl} class="text-base text-muted hover:text-primary transition-colors font-medium">
-            {t['nav.language.en']}
+        ))}
+
+        <div class="flex gap-6 pt-4 mt-4 border-t border-gray-100 text-center w-full justify-center">
+          <a
+            href={altLangUrl}
+            hreflang={lang === 'fr' ? 'en' : 'fr'}
+            lang={lang === 'fr' ? 'en' : 'fr'}
+            class="text-base text-muted hover:text-primary transition-colors font-medium"
+          >
+            {site.nav.switchLang}
           </a>
         </div>
 
         <a
-          href={bookingUrl}
-          data-track="book-call"
-          data-location="navigation-mobile"
-          class="w-full px-6 py-4 text-lg font-semibold border-2 border-primary/30 rounded-xl text-primary bg-white hover:bg-primary hover:text-white hover:border-primary transition-all text-center capitalize hover:scale-[1.02] active:scale-[0.98] mt-2"
+          href={officeHoursUrl}
+          class="w-full px-6 py-4 text-lg font-semibold rounded-xl text-white bg-gradient-to-r from-primary to-secondary hover:scale-[1.02] active:scale-[0.98] hover:shadow-xl transition-all text-center"
         >
-          {t['nav.cta.book'].toLowerCase()}
-        </a>
-        <a
-          href={lang === 'fr' ? '/commencer' : '/en/get-started'}
-          class="w-full px-6 py-4 text-lg font-semibold rounded-xl text-white bg-gradient-to-r from-primary to-secondary hover:scale-[1.02] active:scale-[0.98] hover:shadow-xl transition-all text-center capitalize"
-        >
-          {t['nav.cta.start'].toLowerCase()}
+          {site.nav.officeHours}
         </a>
       </div>
     </div>

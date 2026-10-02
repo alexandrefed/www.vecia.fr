@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryCard from '../EntryCard.astro';
+import type { CollectionEntry } from 'astro:content';
+import type { Language } from '../../i18n/ui';
+import { site as siteEn } from '../../i18n/en/site';
+import { site as siteFr } from '../../i18n/fr/site';
+import { getRelativeLocaleUrl } from '../../i18n/utils';
+import { byAuthor, slugOf, formatDate } from '../../lib/content';
+import { personUrl } from '../../lib/people';
+
+interface Props {
+  person: CollectionEntry<'people'>;
+  lang: Language;
+}
+
+const { person, lang } = Astro.props;
+const site = lang === 'fr' ? siteFr : siteEn;
+const p = person.data;
+const url = (path: string) => getRelativeLocaleUrl(lang, path);
+
+const [notes, cases] = await Promise.all([
+  byAuthor('notes', lang, p.subdomain),
+  byAuthor('cases', lang, p.subdomain),
+]);
+
+const otherLang: Language = lang === 'fr' ? 'en' : 'fr';
+const canonical = personUrl(p.subdomain, lang);
+const absoluteCanonical = canonical.startsWith('http') ? canonical : new URL(canonical, Astro.site).href;
+const altLangUrl = personUrl(p.subdomain, otherLang);
+const vcardUrl = import.meta.env.PROD ? `https://${p.subdomain}.vecia.fr/vcard.vcf` : `/people/${p.subdomain}/vcard.vcf`;
+---
+
+<BaseLayout
+  title={`${p.name} — Vecia`}
+  description={p.bio[lang]}
+  lang={lang}
+  canonical={absoluteCanonical}
+  altLangUrl={altLangUrl}
+>
+  <article class="pt-[110px] pb-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-8">
+      <header class="mb-12">
+        <h1 class="text-4xl md:text-5xl font-display font-bold mb-3">{p.name}</h1>
+        <p class="text-lg font-medium text-primary mb-6">{p.role[lang]}</p>
+        <p class="text-lg text-text leading-relaxed">{p.bio[lang]}</p>
+      </header>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-display font-bold mb-3">{site.person.nowLabel}</h2>
+        <p class="text-text leading-relaxed">{p.now[lang]}</p>
+        <p class="text-sm text-subtle mt-2">{site.person.updatedLabel} <time datetime={p.nowUpdated.toISOString()}>{formatDate(p.nowUpdated, lang)}</time></p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-display font-bold mb-3">{site.person.howLabel}</h2>
+        <p class="text-text leading-relaxed">{p.how[lang]}</p>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-display font-bold mb-3">{site.person.buildingLabel}</h2>
+        <ul class="space-y-3">
+          {p.building.map((b) => (
+            <li class="text-text leading-relaxed"><strong class="font-semibold">{b.name}</strong> — {b.line[lang]}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-display font-bold mb-3">{site.person.offKeyboardLabel}</h2>
+        <p class="text-text leading-relaxed">{p.offKeyboard[lang]}</p>
+      </section>
+
+      {notes.length > 0 && (
+        <section class="mb-10">
+          <h2 class="text-2xl font-display font-bold mb-4">{site.person.notesBy}</h2>
+          <div class="grid gap-4">
+            {notes.slice(0, 3).map((e) => (
+              <EntryCard href={url(`notes/${slugOf(e)}`)} title={e.data.title} date={e.data.date} description={e.data.description} verdict={e.data.verdict} archive={e.data.archive} lang={lang} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {cases.length > 0 && (
+        <section class="mb-10">
+          <h2 class="text-2xl font-display font-bold mb-4">{site.person.casesBy}</h2>
+          <div class="grid gap-4">
+            {cases.slice(0, 3).map((e) => (
+              <EntryCard href={url(`cases/${slugOf(e)}`)} title={e.data.title} date={e.data.date} description={e.data.description} eyebrow={e.data.sector} lang={lang} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section class="mt-12 p-8 bg-gradient-to-br from-accent3 to-white rounded-2xl border border-gray-200">
+        <h2 class="text-2xl font-display font-bold mb-5">{site.person.contactLabel}</h2>
+        <div class="flex flex-wrap gap-3">
+          <a href={p.links.calFree} class="inline-flex px-5 py-3 font-semibold rounded-lg text-white bg-gradient-to-r from-primary to-secondary hover:shadow-lg transition-all">{site.person.bookCta}</a>
+          <a href={`mailto:${p.links.email}`} class="inline-flex px-5 py-3 font-semibold rounded-lg border-2 border-primary/30 text-primary hover:bg-primary hover:text-white transition-all">{site.person.emailCta}</a>
+          <a href={p.links.linkedin} target="_blank" rel="noopener noreferrer" class="inline-flex px-5 py-3 font-semibold rounded-lg border-2 border-primary/30 text-primary hover:bg-primary hover:text-white transition-all">{site.ui.social}</a>
+          <a href={vcardUrl} class="inline-flex px-5 py-3 font-semibold rounded-lg border-2 border-primary/30 text-primary hover:bg-primary hover:text-white transition-all">{site.person.vcardCta}</a>
+          {p.links.cv && (
+            <a href={p.links.cv} class="inline-flex px-5 py-3 font-semibold rounded-lg border-2 border-primary/30 text-primary hover:bg-primary hover:text-white transition-all">{site.person.cvCta}</a>
+          )}
+        </div>
+      </section>
+
+      <p class="mt-10"><a href={url('crew')} class="text-primary font-semibold hover:underline">&larr; {site.person.backToCrew}</a></p>
+    </div>
+  </article>
+</BaseLayout>

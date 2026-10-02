@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import type { Language } from '../../i18n/ui';
+import { site as siteEn } from '../../i18n/en/site';
+import { site as siteFr } from '../../i18n/fr/site';
+import { getRelativeLocaleUrl } from '../../i18n/utils';
+import { allPeople } from '../../lib/content';
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+const site = lang === 'fr' ? siteFr : siteEn;
+const oh = site.officeHours;
+
+const alexandre = (await allPeople()).find((p) => p.data.subdomain === 'alexandre')!;
+const { email, calFree, cv } = alexandre.data.links;
+
+const hrefFor = (kind: string) => {
+  if (kind === 'free') return calFree;
+  if (kind === 'paid') return `mailto:${email}?subject=Consulting%20call`;
+  return `mailto:${email}?subject=Project`;
+};
+---
+
+<BaseLayout title={`${oh.title} — Vecia`} description={oh.description} lang={lang}>
+  <section class="pt-[110px] pb-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-8">
+      <h1 class="text-4xl md:text-5xl font-display font-bold mb-6">{oh.title}</h1>
+      <p class="text-lg text-muted leading-relaxed">{oh.intro}</p>
+    </div>
+  </section>
+
+  <section class="py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-8 grid gap-6 md:grid-cols-3">
+      {oh.steps.map((step) => (
+        <div class="flex flex-col p-6 bg-white rounded-2xl border border-gray-200">
+          <h2 class="text-xl font-display font-bold text-text mb-1">{step.name}</h2>
+          <p class="text-sm font-medium text-primary mb-4">{step.length}</p>
+          <p class="text-muted leading-relaxed flex-1 mb-6">{step.body}</p>
+          <a href={hrefFor(step.kind)} class="inline-flex justify-center px-5 py-3 font-semibold rounded-lg text-white bg-gradient-to-r from-primary to-secondary hover:shadow-lg transition-all">
+            {step.cta}
+          </a>
+        </div>
+      ))}
+    </div>
+    <p class="max-w-4xl mx-auto px-4 sm:px-8 mt-8 text-muted italic">{oh.promise}</p>
+  </section>
+
+  <section class="py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-8 p-8 bg-gradient-to-br from-accent3 to-white rounded-2xl border border-gray-200">
+      <h2 class="text-3xl font-display font-bold mb-4">{oh.hiring.title}</h2>
+      <p class="text-text leading-relaxed mb-6">{oh.hiring.body}</p>
+      <div class="flex flex-wrap gap-4">
+        <a href={getRelativeLocaleUrl(lang, 'cases')} class="inline-flex px-5 py-3 font-semibold rounded-lg text-white bg-primary hover:bg-primary/90 transition-all">
+          {oh.hiring.casesCta}
+        </a>
+        {cv && (
+          <a href={cv} class="inline-flex px-5 py-3 font-semibold rounded-lg border-2 border-primary/30 text-primary hover:bg-primary hover:text-white transition-all">
+            {oh.hiring.cvCta}
+          </a>
+        )}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

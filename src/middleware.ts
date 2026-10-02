@@ -13,7 +13,8 @@
  * @see https://securityheaders.com/
  */
 
-import { defineMiddleware } from 'astro:middleware';
+import { defineMiddleware, sequence } from 'astro:middleware';
+import { getCollection } from 'astro:content';
 
 // Content Security Policy directives
 // Each source must be explicitly allowed
@@ -21,16 +22,13 @@ const cspDirectives = {
   // Default: only allow same-origin
   'default-src': ["'self'"],
 
-  // Scripts: self + analytics + tracking
+  // Scripts: self + Google Analytics
   'script-src': [
     "'self'",
     "'unsafe-inline'", // Required for inline scripts (Astro, analytics init)
     "'unsafe-eval'", // Required for Alpine.js expression evaluation (x-show, @click, :class, etc.)
     'https://www.googletagmanager.com',
     'https://www.google-analytics.com',
-    'https://connect.facebook.net',
-    'https://snap.licdn.com',
-    'https://plausible.io',
   ],
 
   // Styles: self + inline + Google Fonts + Hugeicons
@@ -45,28 +43,21 @@ const cspDirectives = {
     'data:',
     'https:',
     'https://www.google-analytics.com',
-    'https://www.facebook.com',
-    'https://px.ads.linkedin.com',
   ],
 
-  // Connect (XHR, fetch, WebSocket): self + analytics + webhooks
+  // Connect (XHR, fetch, WebSocket): self + Google Analytics
   'connect-src': [
     "'self'",
     'https://www.google-analytics.com',
     'https://analytics.google.com',
     'https://*.google-analytics.com', // GA4 regional endpoints (region1, region2, etc.)
-    'https://graph.facebook.com',
-    'https://srvdev2025.taildb74a2.ts.net', // n8n webhook (Tailscale Funnel)
-    'https://plausible.io',
-    'https://ipapi.co', // IP geolocation for currency detection
-    'https://px.ads.linkedin.com', // LinkedIn attribution tracking
   ],
 
   // Frames: block all external frames (clickjacking protection)
   'frame-src': ["'self'", 'https://www.youtube.com', 'https://cal.vecia.fr'],
 
-  // Forms: only allow submission to self and webhooks
-  'form-action': ["'self'", 'https://srvdev2025.taildb74a2.ts.net'],
+  // Forms: only allow submission to self
+  'form-action': ["'self'"],
 
   // Base URI: prevent base tag hijacking
   'base-uri': ["'self'"],
@@ -92,7 +83,101 @@ if (import.meta.env.PROD) {
 
 const cspHeader = cspParts.join('; ');
 
-export const onRequest = defineMiddleware(async (_context, next) => {
+
+// ---------------------------------------------------------------------------
+// Host routing: <person>.vecia.fr serves that person's page from the same app
+// ---------------------------------------------------------------------------
+
+const MAIN_HOSTS = new Set(['vecia.fr', 'www.vecia.fr', 'localhost', '127.0.0.1']);
+const MAIN_ORIGIN = import.meta.env.PROD ? 'https://vecia.fr' : 'http://localhost:4321';
+
+let peopleCache: Set<string> | undefined;
+async function peopleSubdomains(): Promise<Set<string>> {
+  if (!peopleCache) {
+    const people = await getCollection('people');
+    peopleCache = new Set(people.map((p) => p.data.subdomain));
+  }
+  return peopleCache;
+}
+
+function requestHost(request: Request): string {
+  const raw = request.headers.get('x-forwarded-host') ?? request.headers.get('host') ?? '';
+  return raw.split(',')[0].trim().toLowerCase().replace(/:\d+$/, '');
+}
+
+/** The subdomain label of <label>.vecia.fr or <label>.localhost, else undefined. */
+function personLabel(host: string): string | undefined {
+  const m = host.match(/^([a-z0-9-]+)\.(?:vecia\.fr|localhost)$/);
+  return m && m[1] !== 'www' ? m[1] : undefined;
+}
+
+const hostRouter = defineMiddleware(async (context, next) => {
+  const host = requestHost(context.request);
+  const { pathname, search } = context.url;
+
+  if (MAIN_HOSTS.has(host) || host === '') {
+    // On the main host in production, person pages live on their subdomain.
+    const m = import.meta.env.PROD && pathname.match(/^(\/fr)?\/people\/([a-z0-9-]+)(\/.*)?$/);
+    if (m) {
+      const rest = m[3] === '/vcard.vcf' ? '/vcard.vcf' : m[1] ? '/fr/' : '/';
+      return context.redirect(`https://${m[2]}.vecia.fr${rest}`, 301);
+    }
+    return next();
+  }
+
+  const label = personLabel(host);
+  if (!label) return next();
+
+  if (!(await peopleSubdomains()).has(label)) {
+    return new Response('Not found', { status: 404 });
+  }
+
+  if (pathname === '/') return next(`/people/${label}/`);
+  if (pathname === '/fr' || pathname === '/fr/') return next(`/fr/people/${label}/`);
+  if (pathname === '/vcard.vcf') return next(`/people/${label}/vcard.vcf`);
+  if (pathname.startsWith('/_astro/') || pathname.startsWith('/api/')) return next();
+  if (/\.[a-z0-9]+$/i.test(pathname) && !pathname.endsWith('.vcf')) return next();
+
+  return context.redirect(`${MAIN_ORIGIN}${pathname}${search}`, 301);
+});
+
+// ---------------------------------------------------------------------------
+// Legacy redirects: the pre-2026 blog and /en/* URLs
+// ---------------------------------------------------------------------------
+
+const technicalPosts: Record<string, string> = {
+  '/blog/quest-ce-quun-mcp': '/fr/notes/quest-ce-quun-mcp',
+  '/blog/mcps-indispensables': '/fr/notes/mcps-indispensables',
+  '/blog/claude-guide-debutant': '/fr/notes/claude-guide-debutant',
+  '/blog/docker-mcp-revolution-contexte': '/fr/notes/docker-mcp-revolution-contexte',
+  '/en/blog/what-is-mcp': '/notes/what-is-mcp',
+  '/en/blog/essential-mcps': '/notes/essential-mcps',
+  '/en/blog/claude-beginner-guide': '/notes/claude-beginner-guide',
+  '/en/blog/docker-mcp-revolution': '/notes/docker-mcp-revolution',
+};
+
+// Exact /en/* paths already redirected by `redirects` in astro.config.mjs (they must not be caught below)
+const configRedirects = new Set([
+  '/en', '/en/get-started', '/en/contact', '/en/use-cases', '/en/about', '/en/blog',
+  '/en/privacy', '/en/terms', '/en/cookies', '/en/ai-ethics', '/en/book',
+]);
+
+// Agency posts (retired) and every other post fall back to the notes index.
+const legacyRedirects = defineMiddleware(async (context, next) => {
+  const pathname = context.url.pathname.replace(/(.)\/$/, '$1');
+
+  const mapped = technicalPosts[pathname];
+  if (mapped) return context.redirect(mapped, 301);
+  if (pathname.startsWith('/blog/')) return context.redirect('/fr/notes', 301);
+  if (pathname.startsWith('/en/blog/')) return context.redirect('/notes', 301);
+  if (pathname.startsWith('/en/') && !configRedirects.has(pathname)) {
+    return context.redirect(pathname.slice(3) + context.url.search, 301);
+  }
+
+  return next();
+});
+
+const securityHeaders = defineMiddleware(async (_context, next) => {
   const response = await next();
 
   // Security headers
@@ -128,3 +213,5 @@ export const onRequest = defineMiddleware(async (_context, next) => {
 
   return response;
 });
+
+export const onRequest = sequence(hostRouter, legacyRedirects, securityHeaders);

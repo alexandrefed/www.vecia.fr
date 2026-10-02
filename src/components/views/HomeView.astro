@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ParticleField from '../ParticleField.astro';
+import EntryCard from '../EntryCard.astro';
+import type { Language } from '../../i18n/ui';
+import { site as siteEn } from '../../i18n/en/site';
+import { site as siteFr } from '../../i18n/fr/site';
+import { getRelativeLocaleUrl } from '../../i18n/utils';
+import { latest, slugOf, allPeople } from '../../lib/content';
+import { personUrl } from '../../lib/people';
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+const site = lang === 'fr' ? siteFr : siteEn;
+const url = (p: string) => getRelativeLocaleUrl(lang, p);
+
+const [notes, cases, log, people] = await Promise.all([
+  latest('notes', lang, 3),
+  latest('cases', lang, 3),
+  latest('log', lang, 3),
+  allPeople(),
+]);
+
+const sections = [
+  {
+    key: 'notes',
+    copy: site.home.notes,
+    cards: notes.map((e) => ({
+      href: url(`notes/${slugOf(e)}`), title: e.data.title, date: e.data.date, description: e.data.description,
+      verdict: e.data.verdict, archive: e.data.archive,
+    })),
+    indexHref: url('notes'),
+  },
+  {
+    key: 'cases',
+    copy: site.home.cases,
+    cards: cases.map((e) => ({
+      href: url(`cases/${slugOf(e)}`), title: e.data.title, date: e.data.date, description: e.data.description,
+      eyebrow: e.data.sector,
+    })),
+    indexHref: url('cases'),
+  },
+  {
+    key: 'workshop',
+    copy: site.home.workshop,
+    cards: log.map((e) => ({
+      href: url(`workshop/${slugOf(e)}`), title: e.data.title, date: e.data.date, eyebrow: e.data.week,
+    })),
+    indexHref: url('workshop'),
+  },
+];
+---
+
+<BaseLayout title={site.meta.title} description={site.meta.description} lang={lang}>
+  <!-- Hero -->
+  <section class="relative min-h-[85vh] flex items-center justify-center overflow-visible pt-[70px]">
+    <ParticleField />
+    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-8 py-20 text-center">
+      <p class="text-sm font-display font-bold uppercase tracking-wide text-primary mb-6">{site.home.kicker}</p>
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6" style="line-height: 1.25;">
+        {site.home.title}
+      </h1>
+      <p class="text-sm italic text-muted max-w-2xl mx-auto leading-relaxed">{site.home.aside}</p>
+    </div>
+  </section>
+
+  <!-- Intro -->
+  <section class="relative z-10 py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-8 space-y-5 text-lg text-text leading-relaxed">
+      {site.home.intro.map((p) => <p>{p}</p>)}
+    </div>
+  </section>
+
+  {sections.map((s) => (
+    <section class="relative z-10 py-12">
+      <div class="max-w-6xl mx-auto px-4 sm:px-8">
+        <h2 class="text-3xl font-display font-bold mb-3">{s.copy.title}</h2>
+        <p class="text-muted max-w-3xl mb-8">{s.copy.intro}</p>
+        {s.cards.length > 0 ? (
+          <div class="grid gap-6 md:grid-cols-3">
+            {s.cards.map((c) => <EntryCard {...c} lang={lang} />)}
+          </div>
+        ) : (
+          <p class="text-muted italic">{s.copy.empty}</p>
+        )}
+        <p class="mt-6"><a href={s.indexHref} class="font-semibold text-primary hover:underline">{s.copy.all} &rarr;</a></p>
+      </div>
+    </section>
+  ))}
+
+  <!-- Crew -->
+  <section class="relative z-10 py-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-8">
+      <h2 class="text-3xl font-display font-bold mb-3">{site.home.crew.title}</h2>
+      <p class="text-muted max-w-3xl mb-8">{site.home.crew.intro}</p>
+      <div class="grid gap-6 md:grid-cols-3">
+        {people.map((p) => (
+          <a href={personUrl(p.data.subdomain, lang)} class="block p-6 bg-white rounded-2xl border border-gray-200 hover:border-primary/40 hover:shadow-lg transition-all">
+            <h3 class="text-xl font-display font-bold text-text mb-2">{p.data.name}</h3>
+            <p class="text-muted">{p.data.role[lang]}</p>
+          </a>
+        ))}
+      </div>
+      <p class="mt-6 text-muted italic">{site.home.crew.more}</p>
+    </div>
+  </section>
+
+  <!-- Office hours teaser -->
+  <section class="relative z-10 py-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-8 p-8 bg-gradient-to-br from-accent3 to-white rounded-2xl border border-gray-200">
+      <h2 class="text-3xl font-display font-bold mb-3">{site.home.office.title}</h2>
+      <p class="text-text leading-relaxed mb-6">{site.home.office.body}</p>
+      <a href={url('office-hours')} class="inline-flex px-6 py-3 font-semibold rounded-lg text-white bg-gradient-to-r from-primary to-secondary hover:shadow-lg transition-all">
+        {site.home.office.cta}
+      </a>
+    </div>
+  </section>
+</BaseLayout>

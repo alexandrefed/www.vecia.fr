@@ -28,15 +28,7 @@ const schemas: Record<string, any> = {
     "@type": "WebSite",
     "name": data?.name || "Vecia",
     "url": data?.url || "https://vecia.fr",
-    "description": data?.description || "AI Automation Agency - Save 20+ Hours per Week",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": data?.searchUrl || "https://vecia.fr/blog?q={search_term_string}"
-      },
-      "query-input": "required name=search_term_string"
-    }
+    "description": data?.description || "A small crew that builds AI systems and shows the work",
   },
 
   article: {

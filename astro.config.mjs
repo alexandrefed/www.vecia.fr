@@ -14,19 +14,46 @@ export default defineConfig({
     mode: 'standalone'  // Standalone server for VPS deployment
   }),
   i18n: {
-    locales: ['fr', 'en'],
-    defaultLocale: 'fr',
+    locales: ['en', 'fr'],
+    defaultLocale: 'en',
     routing: {
-      prefixDefaultLocale: false  // FR at /, EN at /en/
+      prefixDefaultLocale: false  // EN at /, FR at /fr/
     }
+  },
+  // Trust X-Forwarded-Host only for our own hosts (people live on <name>.vecia.fr)
+  security: {
+    allowedDomains: [
+      { hostname: '**.vecia.fr', protocol: 'https' },
+      { hostname: 'vecia.fr', protocol: 'https' },
+    ],
+  },
+  // 301s for retired pages. Old blog post URLs are handled in src/middleware.ts (legacyRedirects).
+  redirects: {
+    '/bilan': { status: 301, destination: '/fr/office-hours' },
+    '/commencer': { status: 301, destination: '/fr/office-hours' },
+    '/contact': { status: 301, destination: '/fr/office-hours' },
+    '/cas-usage': { status: 301, destination: '/fr/cases' },
+    '/about': { status: 301, destination: '/fr/crew' },
+    '/blog': { status: 301, destination: '/fr/notes' },
+    '/en': { status: 301, destination: '/' },
+    '/en/get-started': { status: 301, destination: '/office-hours' },
+    '/en/contact': { status: 301, destination: '/office-hours' },
+    '/en/use-cases': { status: 301, destination: '/cases' },
+    '/en/about': { status: 301, destination: '/crew' },
+    '/en/blog': { status: 301, destination: '/notes' },
+    '/en/privacy': { status: 301, destination: '/privacy' },
+    '/en/terms': { status: 301, destination: '/terms' },
+    '/en/cookies': { status: 301, destination: '/cookies' },
+    '/en/ai-ethics': { status: 301, destination: '/ai-ethics' },
+    '/en/book': { status: 308, destination: 'https://cal.vecia.fr/alexandre/rendez-vous' },
   },
   integrations: [
     sitemap({
       i18n: {
-        defaultLocale: 'fr',
+        defaultLocale: 'en',
         locales: {
-          fr: 'fr-FR',
           en: 'en-US',
+          fr: 'fr-FR',
         },
       },
     }),

@@ -2,83 +2,39 @@
 /**
  * BlogHeader Component
  *
- * Displays article metadata at the top of blog posts:
- * - Title, author, publish date
- * - Reading time calculation
- * - Category badge with color coding
- * - Breadcrumb navigation
- * - Tags display
- *
- * Props:
- * - title: Article title
- * - description: Article description (optional)
- * - author: Author name
- * - publishDate: Publish date (Date object)
- * - category: Category slug
- * - tags: Array of tag strings
- * - lang: Language code ('fr' | 'en')
- * - readingTime: Pre-calculated reading time in minutes
+ * Header for note / case / log detail pages: breadcrumb, title, description,
+ * author, date, reading time, tags.
  */
 
 import type { Language } from '../../i18n/ui';
+import { site as siteEn } from '../../i18n/en/site';
+import { site as siteFr } from '../../i18n/fr/site';
 
 interface Props {
   title: string;
   description?: string;
   author: string;
-  publishDate: Date;
-  category: 'why-broken' | 'success-stories' | 'quick-wins' | 'industry-deep-dives' | 'tool-comparisons';
-  tags: string[];
+  date: Date;
+  tags?: string[];
   lang: Language;
-  readingTime: number; // Pre-calculated reading time
+  readingTime: number;
+  /** Section index this page belongs to, for the breadcrumb (e.g. /notes). */
+  indexPath: string;
+  indexLabel: string;
 }
 
-const { title, description, author, publishDate, category, tags, lang, readingTime } = Astro.props;
+const { title, description, author, date, tags = [], lang, readingTime, indexPath, indexLabel } = Astro.props;
+const site = lang === 'fr' ? siteFr : siteEn;
 
-// Category translations and colors
-const categoryConfig = {
-  'why-broken': {
-    fr: { label: 'Pourquoi Cassé', color: 'bg-red-100 text-red-700 border-red-300' },
-    en: { label: 'Why Broken', color: 'bg-red-100 text-red-700 border-red-300' }
-  },
-  'success-stories': {
-    fr: { label: 'Succès Client', color: 'bg-green-100 text-green-700 border-green-300' },
-    en: { label: 'Success Stories', color: 'bg-green-100 text-green-700 border-green-300' }
-  },
-  'quick-wins': {
-    fr: { label: 'Victoires Rapides', color: 'bg-blue-100 text-blue-700 border-blue-300' },
-    en: { label: 'Quick Wins', color: 'bg-blue-100 text-blue-700 border-blue-300' }
-  },
-  'industry-deep-dives': {
-    fr: { label: 'Analyses Sectorielles', color: 'bg-purple-100 text-purple-700 border-purple-300' },
-    en: { label: 'Industry Deep Dives', color: 'bg-purple-100 text-purple-700 border-purple-300' }
-  },
-  'tool-comparisons': {
-    fr: { label: 'Comparaisons d\'Outils', color: 'bg-orange-100 text-orange-700 border-orange-300' },
-    en: { label: 'Tool Comparisons', color: 'bg-orange-100 text-orange-700 border-orange-300' }
-  }
-};
-
-const categoryData = categoryConfig[category][lang];
-
-// Format date
-const formattedDate = publishDate.toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-US', {
+const formattedDate = date.toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-US', {
   year: 'numeric',
   month: 'long',
-  day: 'numeric'
+  day: 'numeric',
 });
 
-// Breadcrumb paths
-const blogPath = lang === 'fr' ? '/blog' : '/en/blog';
-const blogLabel = lang === 'fr' ? 'Blog' : 'Blog';
-const homeLabel = lang === 'fr' ? 'Accueil' : 'Home';
-const homePath = lang === 'fr' ? '/' : '/en/';
-
-// Reading time translation
-const readingTimeLabel = lang === 'fr' ? 'min de lecture' : 'min read';
-
-// Check if author is Vecia Team (use V logo instead of generic user icon)
-const isVeciaTeam = author === 'Vecia Team' || author === 'Équipe Vecia';
+const homeLabel = site.ui.home;
+const homePath = lang === 'fr' ? '/fr/' : '/';
+const isVeciaTeam = false;
 ---
 
 <!-- Breadcrumb Navigation -->
@@ -95,8 +51,8 @@ const isVeciaTeam = author === 'Vecia Team' || author === 'Équipe Vecia';
       </svg>
     </li>
     <li>
-      <a href={blogPath} class="hover:text-primary transition-colors">
-        {blogLabel}
+      <a href={indexPath} class="hover:text-primary transition-colors">
+        {indexLabel}
       </a>
     </li>
     <li>
@@ -112,13 +68,6 @@ const isVeciaTeam = author === 'Vecia Team' || author === 'Équipe Vecia';
 
 <!-- Article Header -->
 <header class="mb-8">
-  <!-- Category Badge -->
-  <div class="mb-4">
-    <span class={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${categoryData.color}`}>
-      {categoryData.label}
-    </span>
-  </div>
-
   <!-- Title -->
   <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-text leading-tight mb-4">
     {title}
@@ -159,7 +108,7 @@ const isVeciaTeam = author === 'Vecia Team' || author === 'Équipe Vecia';
       <svg class="w-5 h-5 mr-2 text-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
       </svg>
-      <time datetime={publishDate.toISOString()}>
+      <time datetime={date.toISOString()}>
         {formattedDate}
       </time>
     </div>
@@ -172,7 +121,7 @@ const isVeciaTeam = author === 'Vecia Team' || author === 'Équipe Vecia';
       <svg class="w-5 h-5 mr-2 text-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
-      <span>{readingTime} {readingTimeLabel}</span>
+      <span>{readingTime} {site.ui.minRead}</span>
     </div>
   </div>
 

@@ -1,0 +1,9 @@
+---
+import PersonView from '../../../../components/views/PersonView.astro';
+import { allPeople } from '../../../../lib/content';
+
+const person = (await allPeople()).find((p) => p.data.subdomain === Astro.params.person);
+if (!person) return new Response(null, { status: 404, statusText: 'Not found' });
+---
+
+<PersonView person={person} lang="fr" />
