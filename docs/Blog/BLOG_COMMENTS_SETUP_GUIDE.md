@@ -10,7 +10,7 @@ Your Supabase comment system is now ready to use on your VPS. All database table
 
 ### Supabase Connection Details
 - **API URL**: `http://85.25.172.47:8100`
-- **Anonymous Key**: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlLWRlbW8iLCJpYXQiOjE2NDE3NjkyMDAsImV4cCI6MTc5OTUzNTYwMH0.Jp4HPK5Cr7GM2j5eu4SMSYrmyPnL_moGV_olTHvcZbQ`
+- **Anonymous Key**: `<in Infisical /vecia-website as PUBLIC_SUPABASE_ANON_KEY>`
 - **Database**: `postgres` (Supabase PostgreSQL 15)
 - **Table**: `comments`
 
@@ -59,7 +59,7 @@ Copy `/tmp/vecia-blog-comments.env` to your project as `.env.local`:
 ```bash
 # For Vite/Vue projects
 VITE_SUPABASE_URL=http://85.25.172.47:8100
-VITE_SUPABASE_ANON_KEY=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlLWRlbW8iLCJpYXQiOjE2NDE3NjkyMDAsImV4cCI6MTc5OTUzNTYwMH0.Jp4HPK5Cr7GM2j5eu4SMSYrmyPnL_moGV_olTHvcZbQ
+VITE_SUPABASE_ANON_KEY=<in Infisical /vecia-website as PUBLIC_SUPABASE_ANON_KEY>
 
 # For Next.js projects - rename to NEXT_PUBLIC_
 # For Create React App - rename to REACT_APP_
